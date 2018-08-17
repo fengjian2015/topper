@@ -169,11 +169,10 @@ public class PayRecordActivity extends BaseActivity {
                             mLlError.setVisibility(View.GONE);
                             if (type == PULL_DOWN) {
                                 if (data.size() == 0) {
+                                    mDataList.clear();
                                     mRecyclerView.setVisibility(View.GONE);
                                     mLlNoData.setVisibility(View.VISIBLE);
                                     mLlError.setVisibility(View.GONE);
-                                } else {
-                                    mDataList.clear();
                                 }
                             }
                             mDataList.addAll(data);

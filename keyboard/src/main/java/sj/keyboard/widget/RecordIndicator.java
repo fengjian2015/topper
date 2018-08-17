@@ -129,17 +129,17 @@ public class RecordIndicator {
                                 cancel_record = cancelX || cancelY;
 
                                 if (cancel_record) {
-                                    recordButton.setText("松开手指，结束录音");
+                                    recordButton.setText(mContext.getString(R.string.want_to_cancle));
                                     cancelRecord(false);
                                 } else {
-                                    recordButton.setText("松开结束");
+                                    recordButton.setText(mContext.getString(R.string.btn_text_speak_over));
                                     startRecord(false);
                                 }
                             }
                             break;
                         case MotionEvent.ACTION_UP:
                             start_record = false;
-                            recordButton.setText("按住录音");
+                            recordButton.setText(mContext.getString(R.string.btn_text_speak));
                             long intervalTime = onRecordListener.getRecordTime();
                             if (cancel_record) {
                                 cancelRecord(true);
@@ -150,7 +150,7 @@ public class RecordIndicator {
                             }
                             break;
                         case MotionEvent.ACTION_CANCEL:
-                            recordButton.setText("按住录音");
+                            recordButton.setText(mContext.getString(R.string.btn_text_speak));
                             long intervalTime2 = onRecordListener.getRecordTime();
                             if (cancel_record) {
                                 cancelRecord(true);
@@ -175,7 +175,7 @@ public class RecordIndicator {
             cancel_record = false;
             start_record = true;
             recordButton.setBackgroundResource(R.drawable.btn_voice_press);
-            recordButton.setText("松开结束");
+            recordButton.setText(mContext.getString(R.string.btn_text_speak_over));
             onRecordListener.recordStart();
             show();
             decibelThread = new DecibelThread();

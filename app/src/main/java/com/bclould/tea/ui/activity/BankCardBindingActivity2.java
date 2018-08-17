@@ -36,32 +36,23 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class BankCardBindingActivity2 extends BaseActivity {
 
-
     @Bind(R.id.bark)
     ImageView mBark;
+    @Bind(R.id.et_cardholder)
+    EditText mEtCardholder;
+    @Bind(R.id.tv_bank_number)
+    TextView mTvBankNumber;
     @Bind(R.id.et_card_type)
     EditText mEtCardType;
     @Bind(R.id.et_opening_bank)
     EditText mEtOpeningBank;
-    @Bind(R.id.tv_cardholder)
-    TextView mTvCardholder;
-    @Bind(R.id.tv_card_number)
-    TextView mTvCardNumber;
     @Bind(R.id.btn_next)
     Button mBtnNext;
     private BankCardInfo.DataBean mData;
     private String mCardNumber;
     private BankCardPresenter mBankCardPresenter;
 
-    public static BankCardBindingActivity2 instance = null;
     private int mState_id;
-
-    public static BankCardBindingActivity2 getInstance() {
-        if (instance == null) {
-            instance = new BankCardBindingActivity2();
-        }
-        return instance;
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,14 +71,27 @@ public class BankCardBindingActivity2 extends BaseActivity {
 
     private void initIntent() {
         Intent intent = getIntent();
-        mData = (BankCardInfo.DataBean) intent.getSerializableExtra("data");
-        mCardNumber = intent.getStringExtra("cardNumber");
+        boolean type = intent.getBooleanExtra("type", false);
         mState_id = intent.getIntExtra("country_id", 0);
-        mTvCardholder.setText(mData.getTruename());
-        mTvCardNumber.setText(mData.getCard_number());
-        if (!mData.getBank().isEmpty()) {
-            mEtCardType.setText(mData.getBank());
-            mEtCardType.setKeyListener(null);
+        mCardNumber = intent.getStringExtra("card_number");
+        mTvBankNumber.setText(mCardNumber);
+        if (type) {
+            mData = (BankCardInfo.DataBean) intent.getSerializableExtra("data");
+            if (!mData.getBank().isEmpty()) {
+                mEtCardType.setText(mData.getBank());
+                mEtCardType.setKeyListener(null);
+            }
+            if (!mData.getTruename().isEmpty()) {
+                mEtCardholder.setText(mData.getTruename());
+                mEtCardholder.setKeyListener(null);
+            }
+        } else {
+            String card_type = intent.getStringExtra("card_type");
+            String bank_name = intent.getStringExtra("bank_name");
+            if (!bank_name.isEmpty()) {
+                mEtCardType.setText(bank_name);
+                mEtCardType.setKeyListener(null);
+            }
         }
     }
 
@@ -108,7 +112,8 @@ public class BankCardBindingActivity2 extends BaseActivity {
     private void submit() {
         String openingBank = mEtOpeningBank.getText().toString().trim();
         String bankType = mEtCardType.getText().toString().trim();
-        mBankCardPresenter.bindBankCard(mData.getTruename(), bankType, openingBank, mCardNumber, mState_id, new BankCardPresenter.CallBack3() {
+        String truename = mEtCardholder.getText().toString().trim();
+        mBankCardPresenter.bindBankCard(truename, bankType, openingBank, mCardNumber, mState_id, new BankCardPresenter.CallBack3() {
             @Override
             public void send(BaseInfo data) {
                 if (data.getStatus() == 1) {
@@ -126,10 +131,13 @@ public class BankCardBindingActivity2 extends BaseActivity {
         if (mEtOpeningBank.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_open_bank), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtOpeningBank);
-        }else if (mEtCardType.getText().toString().trim().isEmpty()) {
+        } else if (mEtCardType.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_card_type), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtCardType);
-        } else {
+        }else if (mEtCardholder.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, getString(R.string.toast_card_holder), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtCardholder);
+        }else {
             return true;
         }
         return false;

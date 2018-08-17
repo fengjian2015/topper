@@ -70,6 +70,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -765,7 +767,7 @@ public class UtilTool {
     }
 
     public static String getToken() {
-
+        UtilTool.Log("fengjiantoken","bearer" + MySharedPreferences.getInstance().getString(TOKEN));
         return "bearer" + MySharedPreferences.getInstance().getString(TOKEN);
 
     }
@@ -1606,5 +1608,28 @@ public class UtilTool {
             language = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
         }
         return language;
+    }
+
+    public static String md5(String string) {
+        if (TextUtils.isEmpty(string)) {
+            return "";
+        }
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+            byte[] bytes = md5.digest(string.getBytes());
+            String result = "";
+            for (byte b : bytes) {
+                String temp = Integer.toHexString(b & 0xff);
+                if (temp.length() == 1) {
+                    temp = "0" + temp;
+                }
+                result += temp;
+            }
+            return result;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

@@ -459,7 +459,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getChatBackGround() {
-        UtilTool.Log("token",UtilTool.getToken());
+        UtilTool.Log("fengjiantoken",UtilTool.getToken());
         new GroupPresenter(this).getBackgound(new GroupPresenter.CallBack2() {
             @Override
             public void send(String url) {
@@ -514,6 +514,11 @@ public class MainActivity extends BaseActivity {
             public void error() {
 
             }
+
+            @Override
+            public void finishRefresh() {
+
+            }
         });
     }
 
@@ -560,17 +565,17 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void onClick(View view) {
                     int index = mMainBottomMenu.indexOfChild(childAt);
-                    if (!WsConnection.getInstance().getOutConnection()) {
+//                    if (!WsConnection.getInstance().getOutConnection()) {
 
                         changeFragment(index);
 
                         setSelector(index);
                         converstonTop(index);
-                    } else {
+                    /*} else {
                         if (index != 0) {
                             startActivity(new Intent(MainActivity.this, InitialActivity.class));
                         }
-                    }
+                    }*/
                 }
             });
         }

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,8 @@ public class LoginActivity extends LoginBaseActivity {
     private DBUserCode mDBUserCode;
     private List<String> userCodeList = new ArrayList<>();
     private EmailCodeAdapter mAdapter;
+    private String mCoordinate;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -87,10 +90,10 @@ public class LoginActivity extends LoginBaseActivity {
         }
 
         MyApp.getInstance().addActivity(this);
-        if(WsConnection.getInstance().ws!=null){
-            UtilTool.Log("fengjian",WsConnection.getInstance().ws.isOpen()+"   ");
+        if (WsConnection.getInstance().ws != null) {
+            UtilTool.Log("fengjian", WsConnection.getInstance().ws.isOpen() + "   ");
         }
-        UtilTool.Log("fengjian",WsConnection.getInstance().ws+"   ");
+        UtilTool.Log("fengjian", WsConnection.getInstance().ws + "   ");
     }
 
     @Override
@@ -99,11 +102,11 @@ public class LoginActivity extends LoginBaseActivity {
     }
 
     private void initUserCodeList() {
-        mDBUserCode=new DBUserCode(this);
-        userCodeList=mDBUserCode.selectAllEmily();
+        mDBUserCode = new DBUserCode(this);
+        userCodeList = mDBUserCode.selectAllEmily();
         setloginUserNameEditHeight();
 
-        mAdapter = new EmailCodeAdapter(userCodeList,this,mDBUserCode);
+        mAdapter = new EmailCodeAdapter(userCodeList, this, mDBUserCode);
         mEtEmily.setAdapter(mAdapter);
         mEtEmily.setDropDownBackgroundResource(R.drawable.emily_listitem);// 下拉框的背景
         updateEditAdapter(userCodeList.size());
@@ -116,24 +119,24 @@ public class LoginActivity extends LoginBaseActivity {
         if (userCodeList != null && userCodeList.size() > 1) {
             setloginUserNameEditText();
         } else if (userCodeList != null && userCodeList.size() == 1) {
-            mEtEmily.setText(userCodeList.get(userCodeList.size()-1));
+            mEtEmily.setText(userCodeList.get(userCodeList.size() - 1));
             mEtEmily.setSelection(mEtEmily.getText().length());
         }
     }
 
     private void setloginUserNameEditText() {
-        UserCodeInfo userCodeInfo= mDBUserCode.queryLastUser();
+        UserCodeInfo userCodeInfo = mDBUserCode.queryLastUser();
         mEtEmily.setText(userCodeInfo.getEmail());// 这个是设置帐号，最后一个
         mEtEmily.setSelection(mEtEmily.getText().length());
     }
 
     public void updateEditAdapter(int number) {
-        if(number<=0){
+        if (number <= 0) {
             mEtEmily.setDropDownHeight(0);
-        }else if(number>0 && number<4){
+        } else if (number > 0 && number < 4) {
             mEtEmily.setDropDownHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        }else if(userCodeList.size()>=4){
-            mEtEmily.setDropDownHeight(getResources().getDimensionPixelOffset(R.dimen.y84)*4);
+        } else if (userCodeList.size() >= 4) {
+            mEtEmily.setDropDownHeight(getResources().getDimensionPixelOffset(R.dimen.y84) * 4);
         }
     }
 
@@ -195,7 +198,9 @@ public class LoginActivity extends LoginBaseActivity {
                 //判断邮箱、密码、验证码是否为空，格式是否正确
                 if (checkEdit()) {
 //                    login();
-                    startActivity(new Intent(this,AuthenticationActivity.class));
+                    Intent intent = new Intent(this, AuthenticationActivity.class);
+                    intent.putExtra("email", mEtEmily.getText().toString().trim());
+                    startActivity(intent);
                 }
                 break;
         }
@@ -204,9 +209,13 @@ public class LoginActivity extends LoginBaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if(intent!=null){
-            boolean isState=intent.getBooleanExtra("isState",false);
-            if(isState){
+        if (intent != null) {
+            boolean isState = intent.getBooleanExtra("isState", false);
+            if (isState) {
+                String email = mEtEmily.getText().toString().trim();
+                String pw = mEtPassword.getText().toString().trim();
+                String coordinate = email + pw + intent.getStringExtra("coordinate");
+                mCoordinate = UtilTool.md5(coordinate).toUpperCase();
                 login();
             }
         }
@@ -234,7 +243,7 @@ public class LoginActivity extends LoginBaseActivity {
         LoginPresenter loginPresenter = new LoginPresenter(this);
         Locale locale = getResources().getConfiguration().locale;
         String language = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
-        loginPresenter.Login(email, password, "",mDBUserCode, language);
+        loginPresenter.Login(email, password, "", mDBUserCode, language, mCoordinate);
     }
 
     //验证手机号和密码

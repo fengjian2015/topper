@@ -27,53 +27,91 @@
         android:layout_marginTop="@dimen/y250"
         android:background="@drawable/bg_bright_shape">
 
-        <ImageView
-            android:id="@+id/iv_touxiang"
-            android:layout_width="@dimen/x150"
-            android:layout_height="@dimen/x150"
-            android:layout_marginLeft="@dimen/x30"
-            android:layout_marginTop="@dimen/y30"
-            android:src="@mipmap/img_nfriend_headshot1"/>
+        <RelativeLayout
+            android:id="@+id/rl_already_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
-        <TextView
-            style="@style/MainTextDeepStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/y30"
-            android:layout_marginLeft="@dimen/x30"
-            android:layout_marginTop="@dimen/y30"
-            android:text="@string/greet_hint"/>
+            <ImageView
+                android:id="@+id/iv_touxiang"
+                android:layout_width="@dimen/x150"
+                android:layout_height="@dimen/x150"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginTop="@dimen/y30"
+                android:src="@mipmap/img_nfriend_headshot1"/>
+
+            <TextView
+                style="@style/MainTextDeepStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/y30"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginTop="@dimen/y30"
+                android:text="@string/greet_hint"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/MainTextDeepStyle36"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/y60"
+                android:layout_alignTop="@+id/iv_touxiang"
+                android:layout_marginLeft="@dimen/x50"
+                android:layout_marginTop="@dimen/y30"
+                android:layout_toRightOf="@+id/iv_touxiang"/>
+
+            <ImageView
+                android:layout_width="@dimen/x80"
+                android:layout_height="@dimen/x80"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/iv_touxiang"
+                android:layout_marginRight="@dimen/x50"
+                android:layout_marginTop="@dimen/y30"
+                android:src="@mipmap/qr_code"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/rl_no_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_login"
+                    android:layout_width="@dimen/x150"
+                    android:layout_height="@dimen/x150"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_marginTop="@dimen/y30"
+                    android:src="@mipmap/icon_notlogin_img"/>
+
+                <TextView
+                    style="@style/MainTextDeepStyle36"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:text="@string/qi_login"/>
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/MainTextDeepStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/y30"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginTop="@dimen/y30"
+                android:text="@string/my_no_login_hint"/>
 
 
-        <TextView
-            android:id="@+id/tv_name"
-            style="@style/MainTextDeepStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y60"
-            android:layout_alignTop="@+id/iv_touxiang"
-            android:layout_marginLeft="@dimen/x50"
-            android:layout_marginTop="@dimen/y30"
-            android:layout_toRightOf="@+id/iv_touxiang"/>
-
-        <!--<TextView
-            android:id="@+id/tv_tocoid"
-            style="@style/MainTextShallowStyle32"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y60"
-            android:layout_below="@+id/tv_name"
-            android:layout_marginLeft="@dimen/x30"
-            android:layout_toRightOf="@+id/iv_touxiang"
-            android:paddingTop="@dimen/y4"/>-->
-
-        <ImageView
-            android:layout_width="@dimen/x80"
-            android:layout_height="@dimen/x80"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/iv_touxiang"
-            android:layout_marginRight="@dimen/x50"
-            android:layout_marginTop="@dimen/y30"
-            android:src="@mipmap/qr_code"/>
+        </RelativeLayout>
 
     </RelativeLayout>
 

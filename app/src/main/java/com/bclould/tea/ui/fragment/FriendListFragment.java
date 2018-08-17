@@ -337,6 +337,11 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
                 public void error() {
                     mRefreshLayout.finishRefresh();
                 }
+
+                @Override
+                public void finishRefresh() {
+                    mRefreshLayout.finishRefresh();
+                }
             });
         } catch (Exception e) {
             UtilTool.Log("日志", e.getMessage());

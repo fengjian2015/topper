@@ -355,7 +355,7 @@
     <string name="protection">護照</string>
     <string name="loading">加載中....</string>
     <string name="disclaimer">免責聲明</string>
-    <string name="otc_disclaimer">\t\t\t\t比特幣等數字貨幣系特殊的虛擬商品，作為互聯網上的商品買賣行為，普通民眾在自擔風險的前提下擁有參與自由的權利。\n\t\t\t\t數字貨幣行業目前存在很多不確定性，不可控的風險因素（如預挖，暴漲暴跌，莊家操控，團隊解散，技術缺陷等），導致交易具有極高的風險。\n\t\t\t\tTopperChat APP平台不承擔任何審查，擔保，賠償的法律條款，責任。</string>
+    <string name="otc_disclaimer">\t\t\t\t數字貨幣屬特殊的虛擬商品，作為互聯網上的商品買賣行為，普通民眾在自擔風險的前提下擁有參與的權利。\n\t\t\t\t數字貨幣行業目前存在很多不確定性，不可控的風險因素（如預挖，暴漲暴跌，莊家操控，團隊解散，技術缺陷等），導致交易具有極高的風險。\n\t\t\t\tTopperChat APP平台不承擔任何審查，擔保，賠償的法律條款，責任。</string>
     <string name="show_hide">記住選擇，不再提示</string>
     <string name="compellation">姓名</string>
     <string name="my_roger">我知道了</string>
@@ -1159,5 +1159,15 @@
     <string name="authenticated">已認證</string>
     <string name="check_pending_hint">系統審核中......</string>
     <string name="submitted_realname">您已提交實名驗證信息</string>
+    <string name="message_list_no_login">趕快登陸和您的好友一起交流吧</string>
+    <string name="login_topperchat">登錄Topperchat</string>
+    <string name="no_message">您還沒有任何消息</string>
+    <string name="register_topperchat">註冊Topperchat</string>
+    <string name="my_no_login_hint">立即登錄，認識更多幣圈好友吧！ </string>
+    <string name="qi_login">請登錄</string>
+    <string name="ocr_error">識別失敗</string>
     <string name="cell_phone_store">手機存儲</string>
+    <string name="discern">識別中</string>
+    <string name="et_card_holder">輸入持卡人姓名</string>
+    <string name="toast_card_holder">持卡人不能為空</string>
 </resources>

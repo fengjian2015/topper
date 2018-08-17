@@ -198,7 +198,7 @@ public class WsConnection {
             return;
         }
         if(UtilTool.compareTokenTime(MySharedPreferences.getInstance().getLong(TOKEN_TIME))&&!isOutConnection){
-            UtilTool.Log("fengjian","登錄token過期");
+            UtilTool.Log("fengjiantoken","登錄token過期");
             new Handler(Looper.getMainLooper()){
                 @Override
                 public void handleMessage(Message msg) {
@@ -366,11 +366,11 @@ public class WsConnection {
      */
     public synchronized void closeConnection() {
         senLogout();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         LoginThread.isStartExReconnect = false;
         close();
         setLoginConnection(false);
@@ -387,7 +387,7 @@ public class WsConnection {
         if(getIsCheckActvity()) {
             setIsCheckActvity(false);
             Intent intent = new Intent(mContext, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra("whence", 2);
             mContext.startActivity(intent);
         }

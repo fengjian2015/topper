@@ -21,6 +21,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -38,13 +39,13 @@ import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.AddFriendActivity;
-import com.bclould.tea.ui.activity.ConversationActivity;
-import com.bclould.tea.ui.activity.ConversationBurnListActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.GroupListActivity;
+import com.bclould.tea.ui.activity.InitialActivity;
+import com.bclould.tea.ui.activity.LoginActivity;
 import com.bclould.tea.ui.activity.MyFriendActivity;
+import com.bclould.tea.ui.activity.RegisterActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
-import com.bclould.tea.ui.activity.SendRedAlipaylActivity;
 import com.bclould.tea.ui.adapter.ConversationAdapter;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.EventBusUtil;
@@ -102,6 +103,14 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     ProgressBar mTitleProgress;
     @Bind(R.id.status_bar_fix)
     View mStatusBarFix;
+    @Bind(R.id.iv_search)
+    ImageView mIvSearch;
+    @Bind(R.id.btn_login)
+    Button mBtnLogin;
+    @Bind(R.id.tv_register)
+    TextView mTvRegister;
+    @Bind(R.id.ll_no_login)
+    LinearLayout mLlNoLogin;
     private List<Map<String, Object>> list = new ArrayList<>();
     private List<ConversationInfo> showlist = new ArrayList<>();
     private DBManager mgr;
@@ -131,11 +140,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         View view = inflater.inflate(R.layout.fragment_conversation_list, container, false);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        /*if (receiver == null) {
-            receiver = new AddFriendReceiver();
-            IntentFilter intentFilter = new IntentFilter("XMPPConnectionListener");
-            getActivity().registerReceiver(receiver, intentFilter);
-        }*/
         ButterKnife.bind(this, view);
         mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));
         mgr = new DBManager(getActivity());
@@ -157,9 +161,15 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getPhoneSize();
-        initRelogin();
         initRecyclerView();
-        initData();
+        if (!WsConnection.getInstance().getOutConnection()) {
+            initRelogin();
+            initData();
+        } else {
+            mLlNoData.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.GONE);
+            mLlNoLogin.setVisibility(View.VISIBLE);
+        }
     }
 
     @SuppressLint("HandlerLeak")
@@ -251,11 +261,15 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         mHeightPixels = mDm.heightPixels;
     }
 
-    @OnClick({R.id.iv_more, R.id.rl_ununited, R.id.iv_search})
+    @OnClick({R.id.iv_more, R.id.rl_ununited, R.id.iv_search, R.id.btn_login, R.id.tv_register})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_search:
-                startActivity(new Intent(getActivity(), SearchActivity.class));
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    startActivity(new Intent(getActivity(), SearchActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
 //                startActivity(new Intent(getActivity(), SendRedAlipaylActivity.class));
 //                startActivity(new Intent(getActivity(), ConversationBurnListActivity.class));
                 break;
@@ -264,6 +278,12 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                 break;
             case R.id.rl_ununited:
                 startActivity(new Intent(Settings.ACTION_SETTINGS));
+                break;
+            case R.id.btn_login:
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                break;
+            case R.id.tv_register:
+                startActivity(new Intent(getActivity(), RegisterActivity.class));
                 break;
         }
     }
@@ -275,7 +295,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
         mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_message, null);
 
-        mPopupWindow = new PopupWindow(mView, ViewGroup.LayoutParams.WRAP_CONTENT, (int)(getResources().getDimension(R.dimen.y300)), true);
+        mPopupWindow = new PopupWindow(mView, ViewGroup.LayoutParams.WRAP_CONTENT, (int) (getResources().getDimension(R.dimen.y300)), true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
 
         mPopupWindow.showAsDropDown(mXx, (widthPixels - mPopupWindow.getWidth()), 0);
@@ -320,15 +340,27 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
                     switch (index) {
                         case 0:
-                            startActivity(new Intent(getActivity(), GroupListActivity.class));
+                            if (!WsConnection.getInstance().getOutConnection()) {
+                                startActivity(new Intent(getActivity(), GroupListActivity.class));
+                            } else {
+                                startActivity(new Intent(getActivity(), InitialActivity.class));
+                            }
                             mPopupWindow.dismiss();
                             break;
                         case 1:
-                            startActivity(new Intent(getActivity(), MyFriendActivity.class));
+                            if (!WsConnection.getInstance().getOutConnection()) {
+                                startActivity(new Intent(getActivity(), MyFriendActivity.class));
+                            } else {
+                                startActivity(new Intent(getActivity(), InitialActivity.class));
+                            }
                             mPopupWindow.dismiss();
                             break;
                         case 2:
-                            startActivity(new Intent(getActivity(), AddFriendActivity.class));
+                            if (!WsConnection.getInstance().getOutConnection()) {
+                                startActivity(new Intent(getActivity(), AddFriendActivity.class));
+                            } else {
+                                startActivity(new Intent(getActivity(), InitialActivity.class));
+                            }
                             mPopupWindow.dismiss();
                             break;
                         case 3:
@@ -382,6 +414,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         } else if (msg.equals(EventBusUtil.quit_group)) {
             initData();
         } else if (msg.equals(getString(R.string.refresh_the_interface))) {
+            mLlNoLogin.setVisibility(View.GONE);
+            mTitleProgress.setVisibility(View.GONE);
             initData();
         } else if (msg.equals(getString(R.string.modify_group_name))) {
             initData();

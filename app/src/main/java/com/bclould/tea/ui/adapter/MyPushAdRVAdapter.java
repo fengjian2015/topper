@@ -99,7 +99,7 @@ public class MyPushAdRVAdapter extends RecyclerView.Adapter {
                 mTvPayWay.setBackground(mContext.getDrawable(R.drawable.bg_payway_shape));
                 if (dataBean.getStatus() == 1) {
                     mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape3));
-                    mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.red));
+                    mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.red_color));
                     mBtnSellBuy.setText(mContext.getString(R.string.sold_out));
                     mBtnSellBuy.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -109,14 +109,14 @@ public class MyPushAdRVAdapter extends RecyclerView.Adapter {
                     });
                 } else {
                     mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape4));
-                    mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.gray));
+                    mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.secondary_text_color));
                     mBtnSellBuy.setText(mContext.getString(R.string.yi_sold_out));
                 }
             } else {
                 mTvPayWay.setBackground(mContext.getDrawable(R.drawable.bg_payway_shape2));
                 if (dataBean.getStatus() == 1) {
                     mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape3));
-                    mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.red));
+                    mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.red_color));
                     mBtnSellBuy.setText(mContext.getString(R.string.sold_out));
                     mBtnSellBuy.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -126,7 +126,7 @@ public class MyPushAdRVAdapter extends RecyclerView.Adapter {
                     });
                 } else {
                     mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape4));
-                    mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.gray));
+                    mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.secondary_text_color));
                     mBtnSellBuy.setText(mContext.getString(R.string.yi_sold_out));
                 }
             }

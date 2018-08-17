@@ -709,7 +709,7 @@
         
     <string name="disclaimer">免责声明</string>
         
-    <string name="otc_disclaimer">\t\t\t\t比特币等数字货币系特殊的虚拟商品，作为互联网上的商品买卖行为，普通民众在自担风险的前提下拥有参与自由的权利。 \n\t\t\t\t数字货币行业目前存在很多不确定性，不可控的风险因素（如预挖，暴涨暴跌，庄家操控，团队解散，技术缺陷等），导致交易具有极高的风险。 \n\t\t\t\tTopperChat APP平台不承担任何审查，担保，赔偿的法律条款，责任。 </string>
+    <string name="otc_disclaimer">\t\t\t\t数字货币属特殊的虚拟商品，作为互联网上的商品买卖行为，普通民众在自担风险的前提下拥有参与的权利。\n\t\t\t\t数字货币行业目前存在很多不确定性，不可控的风险因素（如预挖，暴涨暴跌，庄家操控，团队解散，技术缺陷等），导致交易具有极高的风险。\n\t\t\t\tTopperChat APP平台不承担任何审查，担保，赔偿的法律条款，责任。 </string>
         
     <string name="show_hide">记住选择，不再提示</string>
         
@@ -2252,5 +2252,15 @@
     <string name="authenticated">已认证</string>
     <string name="check_pending_hint">系统审核中......</string>
     <string name="submitted_realname">您已提交实名验证信息</string>
+    <string name="message_list_no_login">赶快登陆和您的好友一起交流吧</string>
+    <string name="login_topperchat">登录Topperchat</string>
+    <string name="no_message">您还没有任何消息</string>
+    <string name="register_topperchat">注册Topperchat</string>
+    <string name="my_no_login_hint">立即登录，认识更多币圈好友吧！</string>
+    <string name="qi_login">请登录</string>
+    <string name="ocr_error">识别失败</string>
     <string name="cell_phone_store">手机存储</string>
+    <string name="discern">识别中</string>
+    <string name="et_card_holder">输入持卡人姓名</string>
+    <string name="toast_card_holder">持卡人不能为空</string>
 </resources>

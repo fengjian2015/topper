@@ -49,6 +49,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -519,11 +521,14 @@ public class DynamicActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.bark, R.id.rl_push_dynamic_status, R.id.iv_push_dynamic, R.id.iv_my_dynamic, R.id.send})
+    @OnClick({R.id.bark, R.id.rl_push_dynamic_status, R.id.iv_push_dynamic, R.id.iv_my_dynamic, R.id.send, R.id.tv_title})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.tv_title:
+                dblclick();
                 break;
             case R.id.rl_push_dynamic_status:
                 startActivity(new Intent(this, FileUploadingActivity.class));
@@ -552,6 +557,26 @@ public class DynamicActivity extends BaseActivity {
                     }
                 }
                 break;
+        }
+    }
+
+    boolean isDblclick = false;
+
+    private void dblclick() {
+        Timer tExit = null;
+        if (isDblclick == false) {
+            isDblclick = true; // 准备退出
+            tExit = new Timer();
+            tExit.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isDblclick = false; // 取消退出
+                }
+            }, 1000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
+
+        } else {
+            mRecyclerView.scrollToPosition(0);
+            initData(PULL_DOWN);
         }
     }
 }

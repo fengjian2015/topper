@@ -37,8 +37,8 @@ android {
         applicationId "com.bclould.tea"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 75
-        versionName "0.75"
+        versionCode 77
+        versionName "0.77"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -60,10 +60,8 @@ android {
         }
     }
     sourceSets {
-        main {
-
-            jni.srcDirs = [];
-            jniLibs.srcDirs = ['libs']
+        main { //这个配置是必须的，如果你的so文件放在了libs/armeabi/下，则下面srcDir = libs即可
+            jniLibs.srcDirs = ['src/main/jniLibs']
 
         }
     }
@@ -158,7 +156,7 @@ dependencies {
 
     //rxJava 和 retrofit2.0 和okhttp
     compile 'com.squareup.okhttp3:okhttp:3.11.0'
-    compile 'io.reactivex.rxjava2:rxjava:2.1.7'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     compile 'com.squareup.retrofit2:retrofit:2.4.0'

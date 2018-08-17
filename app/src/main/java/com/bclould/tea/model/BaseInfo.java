@@ -71,8 +71,17 @@ public class BaseInfo {
         private String name;
         private String merchant_name;
         private String toco_id;
+        private String coordinate;
         private int fingerprint;
         private int gesture;
+
+        public String getCoordinate() {
+            return coordinate;
+        }
+
+        public void setCoordinate(String coordinate) {
+            this.coordinate = coordinate;
+        }
 
         public int getFingerprint() {
             return fingerprint;

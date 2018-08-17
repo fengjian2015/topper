@@ -62,7 +62,9 @@ public class NewsNoticePresenter {
     }
 
     public void getNewsList(final int page, int pageSize, final CallBack callBack) {
-        showDialog();
+        if (mCount == 1) {
+            showDialog();
+        }
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .getNewsList(UtilTool.getToken(), page, pageSize, UtilTool.getLanguage(mContext))

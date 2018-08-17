@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.baidu.ocr.sdk.OCR;
 import com.baidu.ocr.sdk.OnResultListener;
 import com.baidu.ocr.sdk.exception.OCRError;
+import com.baidu.ocr.sdk.model.AccessToken;
 import com.baidu.ocr.sdk.model.BankCardParams;
 import com.baidu.ocr.sdk.model.BankCardResult;
 import com.bclould.tea.Presenter.BankCardPresenter;
@@ -36,8 +37,11 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BankCardInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter3;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 
 import java.io.File;
@@ -77,6 +81,7 @@ public class BankCardBindingActivity extends BaseActivity {
     private BankCardPresenter mBankCardPresenter;
     private Dialog mStateDialog;
     private int mStateId;
+    private LoadingProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,6 +91,21 @@ public class BankCardBindingActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         mBankCardPresenter = new BankCardPresenter(this);
         initData();
+        initORC();
+    }
+
+    private void initORC() {
+        OCR.getInstance(this).initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
+            @Override
+            public void onResult(AccessToken result) {
+                UtilTool.Log("bank", result.getAccessToken());
+            }
+
+            @Override
+            public void onError(OCRError error) {
+                error.printStackTrace();
+            }
+        }, getApplicationContext(), Constants.ORC_AK, Constants.ORC_SK);
     }
 
     @Override
@@ -144,7 +164,8 @@ public class BankCardBindingActivity extends BaseActivity {
                 Intent intent = new Intent(BankCardBindingActivity.this, com.baidu.ocr.ui.camera.CameraActivity.class);
                 intent.putExtra(com.baidu.ocr.ui.camera.CameraActivity.KEY_OUTPUT_FILE_PATH,
                         UtilTool.getSaveFile(getApplication()).getAbsolutePath());
-                intent.putExtra(com.baidu.ocr.ui.camera.CameraActivity.KEY_CONTENT_TYPE, com.baidu.ocr.ui.camera.CameraActivity.CONTENT_TYPE_BANK_CARD);
+                intent.putExtra(com.baidu.ocr.ui.camera.CameraActivity.KEY_CONTENT_TYPE,
+                        com.baidu.ocr.ui.camera.CameraActivity.CONTENT_TYPE_BANK_CARD);
                 startActivityForResult(intent, REQUEST_CODE_CAMERA);
                 break;
             case R.id.rl_selector_state:
@@ -161,7 +182,6 @@ public class BankCardBindingActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == REQUEST_CODE_CAMERA && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 String contentType = data.getStringExtra(com.baidu.ocr.ui.camera.CameraActivity.KEY_CONTENT_TYPE);
@@ -176,23 +196,49 @@ public class BankCardBindingActivity extends BaseActivity {
     }
 
     private void recIDCard(String filePath) {
+        showLoadingDialog();
         BankCardParams param = new BankCardParams();
         param.setImageFile(new File(filePath));
         OCR.getInstance(this).recognizeBankCard(param, new OnResultListener<BankCardResult>() {
             @Override
             public void onResult(BankCardResult result) {
+                hideLoadingDialog();
                 // 调用成功，返回BankCardResult对象
                 if (result != null) {
-                    UtilTool.Log("bank", result.toString());
+                    mEtCardNumber.setText(result.getBankCardNumber());
+                    /*Intent intent = new Intent(BankCardBindingActivity.this, BankCardBindingActivity2.class);
+                    intent.putExtra("type", false);
+                    intent.putExtra("card_number", result.getBankCardNumber());
+                    intent.putExtra("card_type", result.getBankCardType());
+                    intent.putExtra("bank_name", result.getBankName());
+                    intent.putExtra("country_id", mStateId);
+                    startActivity(intent);*/
                 }
             }
 
             @Override
             public void onError(OCRError error) {
+                hideLoadingDialog();
                 // 调用失败，返回OCRError对象
-                UtilTool.Log("bank", error.getCause().getMessage());
+                ToastShow.showToast(BankCardBindingActivity.this, getString(R.string.ocr_error));
             }
         });
+    }
+
+    private void showLoadingDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = LoadingProgressDialog.createDialog(this);
+            mProgressDialog.setMessage(getString(R.string.discern));
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideLoadingDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 
     private void showStateDialog() {
@@ -245,14 +291,14 @@ public class BankCardBindingActivity extends BaseActivity {
         mStateId = id;
         mTvState.setText(name);
         if (mStateId == 44) {
-            mIvScan.setVisibility(View.GONE);
+            mIvScan.setVisibility(View.VISIBLE);
         } else {
             mIvScan.setVisibility(View.GONE);
         }
     }
 
     private void next() {
-        final String cardNumber = mEtCardNumber.getText().toString().trim();
+        final String cardNumber = mEtCardNumber.getText().toString().replace(" ", "");
         mBankCardPresenter.bankCardInfo(cardNumber, mStateId, new BankCardPresenter.CallBack() {
             @Override
             public void send(BankCardInfo.DataBean data) {
@@ -262,8 +308,9 @@ public class BankCardBindingActivity extends BaseActivity {
                         showDialog();
                     } else {
                         intent.putExtra("data", data);
-                        intent.putExtra("cardNumber", cardNumber);
+                        intent.putExtra("card_number", cardNumber);
                         intent.putExtra("country_id", mStateId);
+                        intent.putExtra("type", true);
                         startActivity(intent);
                         finish();
                     }
@@ -292,6 +339,11 @@ public class BankCardBindingActivity extends BaseActivity {
                 startActivity(new Intent(BankCardBindingActivity.this, RealNameC1Activity.class));
             }
         });
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OCR.getInstance(this).release();
     }
 }

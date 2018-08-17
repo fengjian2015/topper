@@ -152,6 +152,15 @@ public class RegisterActivity2 extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
+    }
+
     //显示隐藏密码
     boolean isEye = false;
 
