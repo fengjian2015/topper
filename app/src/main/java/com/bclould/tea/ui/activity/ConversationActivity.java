@@ -58,7 +58,6 @@ import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
-import com.bclould.tea.utils.RecordUtil;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.MessageManageListener;
@@ -108,6 +107,7 @@ import sj.keyboard.interfaces.EmoticonFilter;
 import sj.keyboard.interfaces.PageViewInstantiateListener;
 import sj.keyboard.utils.EmoticonsKeyboardUtils;
 import sj.keyboard.utils.MenuGridListPopWindow;
+import sj.keyboard.utils.RecordUtil;
 import sj.keyboard.widget.EmoticonPageView;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.FuncLayout;
@@ -217,6 +217,47 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         handler.sendMessage(message);
     }
 
+    MenuGridListPopWindow.ListOnClick mListOnClick = new MenuGridListPopWindow.ListOnClick() {
+        @Override
+        public void onclickitem(String name) {
+            if (getString(R.string.red_package).equals(name)) {
+                if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
+                    Intent intent = new Intent(ConversationActivity.this, SendRedGroupActivity.class);
+                    intent.putExtra("roomId", roomId);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(ConversationActivity.this, SendRedPacketActivity.class);
+                    intent.putExtra("user", roomId);
+                    startActivity(intent);
+                }
+            } else if (getString(R.string.image).equals(name)) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.open_photo_album)));
+            } else if (getString(R.string.file).equals(name)) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.open_file_manage)));
+            } else if (getString(R.string.location).equals(name)) {
+                Intent intent = new Intent(ConversationActivity.this, LocationActivity.class);
+                intent.putExtra("user", roomId);
+                intent.putExtra("type", 1);
+                startActivity(intent);
+            } else if (getString(R.string.transfer).equals(name)) {
+                Intent intent = new Intent(ConversationActivity.this, ChatTransferActivity.class);
+                intent.putExtra("user", roomId);
+                startActivity(intent);
+            } else if (getString(R.string.shooting).equals(name)) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.open_shooting)));
+            } else if (getString(R.string.collect).equals(name)) {
+                Intent intent = new Intent(ConversationActivity.this, CollectActivity.class);
+                intent.putExtra("type", 1);
+                intent.putExtra("roomId", roomId);
+                startActivity(intent);
+            } else if (getString(R.string.business_card).equals(name)) {
+                Intent intent = new Intent(ConversationActivity.this, SelectFriendGetActivity.class);
+                intent.putExtra("roomId", roomId);
+                startActivity(intent);
+            }
+        }
+    };
+
     //初始化表情盘
     private void initEmoticonsKeyboard() {
         //设置房间类型
@@ -224,46 +265,9 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         SimpleAppsGridView simpleAppsGridView = new SimpleAppsGridView(this);
         simpleAppsGridView.setData(roomId, roomType);
 
-        mEkbEmoticonsKeyboard.setListMenu(ConversationActivity.this).setListOnClick(new MenuGridListPopWindow.ListOnClick() {
-            @Override
-            public void onclickitem(String name) {
-                if (getString(R.string.red_package).equals(name)) {
-                    if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
-                        Intent intent = new Intent(ConversationActivity.this, SendRedGroupActivity.class);
-                        intent.putExtra("roomId", roomId);
-                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(ConversationActivity.this, SendRedPacketActivity.class);
-                        intent.putExtra("user", roomId);
-                        startActivity(intent);
-                    }
-                } else if (getString(R.string.image).equals(name)) {
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.open_photo_album)));
-                } else if (getString(R.string.file).equals(name)) {
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.open_file_manage)));
-                } else if (getString(R.string.location).equals(name)) {
-                    Intent intent = new Intent(ConversationActivity.this, LocationActivity.class);
-                    intent.putExtra("user", roomId);
-                    intent.putExtra("type", 1);
-                    startActivity(intent);
-                } else if (getString(R.string.transfer).equals(name)) {
-                    Intent intent = new Intent(ConversationActivity.this, ChatTransferActivity.class);
-                    intent.putExtra("user", roomId);
-                    startActivity(intent);
-                } else if (getString(R.string.shooting).equals(name)) {
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.open_shooting)));
-                } else if (getString(R.string.collect).equals(name)) {
-                    Intent intent = new Intent(ConversationActivity.this, CollectActivity.class);
-                    intent.putExtra("type", 1);
-                    intent.putExtra("roomId", roomId);
-                    startActivity(intent);
-                } else if (getString(R.string.business_card).equals(name)) {
-                    Intent intent = new Intent(ConversationActivity.this, SelectFriendGetActivity.class);
-                    intent.putExtra("roomId", roomId);
-                    startActivity(intent);
-                }
-            }
-        });
+        mEkbEmoticonsKeyboard.setListMenu(ConversationActivity.this).setListOnClick(mListOnClick);
+        mEkbEmoticonsKeyboard.setListOnClick(mListOnClick);
+
         mEkbEmoticonsKeyboard.addFuncView(simpleAppsGridView);
         mEkbEmoticonsKeyboard.addOnFuncKeyBoardListener(this);
         mEkbEmoticonsKeyboard.getEtChat().setText(MySharedPreferences.getInstance().getString(UtilTool.getTocoId() + roomId));
@@ -516,20 +520,22 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             }
         });
 
-        //实例化录音管理类
+        /*//实例化录音管理类
         recordIndicator = new RecordIndicator(this, new RecordIndicator.CallBack() {
             @Override
             public void send() {
                 cancelRecord();
             }
-        });
+        });*/
         //给功能盘添加录音监听
-        mEkbEmoticonsKeyboard.setRecordIndicator(recordIndicator);
+//        mEkbEmoticonsKeyboard.setRecordIndicator(recordIndicator);
+        mEkbEmoticonsKeyboard.setMediaPlayer(mediaPlayer);
         try {
-            recordIndicator.setOnRecordListener(new RecordIndicator.OnRecordListener() {
+            mEkbEmoticonsKeyboard.setOnRecordListener(new XhsEmoticonsKeyBoard.OnRecordListener() {
                 @Override
                 public void recordStart() {
                     startRecord();//开始录音
+                    scrollToBottom();
                 }
 
                 @Override
@@ -598,6 +604,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     private void startRecord() {
         if (null == recordUtil) {
             recordUtil = new RecordUtil(this);
+            mEkbEmoticonsKeyboard.setRecordUtil(recordUtil);
         }
         recordUtil.start();
         mChatAdapter.stopVoicePlay();
@@ -633,6 +640,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mediaPlayer.release();
         mediaPlayer = null;
         EventBus.getDefault().unregister(this);
+        mEkbEmoticonsKeyboard.onDestroy();
         super.onDestroy();
 
     }
@@ -1143,7 +1151,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         return super.dispatchKeyEvent(event);
     }
 
-    private void scrollToBottom() {
+    public void scrollToBottom() {
         mLayoutManager.scrollToPositionWithOffset(mChatAdapter.getItemCount() - 1, 0);
     }
 
@@ -1236,11 +1244,13 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 
     public void onResume() {
         super.onResume();
+        mEkbEmoticonsKeyboard.onResume();
     }
 
     public void onPause() {
         super.onPause();
         mediaPlayer.stop();
         mediaPlayer.reset();
+        mEkbEmoticonsKeyboard.onPause();
     }
 }

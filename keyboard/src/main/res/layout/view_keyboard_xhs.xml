@@ -1,127 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@color/white"
+              android:background="#00000000"
               android:orientation="vertical">
 
-    <include layout="@layout/ic_spitview_horizontal"/>
 
     <RelativeLayout
+        android:id="@+id/rl_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/y16"
-        android:paddingTop="@dimen/y16">
-        <!-- 语音/文字切换-->
-        <ImageView
-            android:id="@+id/btn_otr_text"
-            android:layout_width="@dimen/x68"
-            android:layout_height="@dimen/y68"
-            android:layout_marginLeft="@dimen/x24"
-            android:src="@drawable/icon_encrypt_no"
-            android:layout_alignBottom="@+id/rl_input"
-            android:visibility="gone"
-            />
-        <!-- 语音/文字切换-->
-        <ImageView
-            android:id="@+id/btn_voice_or_text"
-            android:layout_width="@dimen/x68"
-            android:layout_height="@dimen/y68"
-            android:layout_toRightOf="@id/btn_otr_text"
-            android:layout_marginLeft="@dimen/x24"
-            android:layout_alignBottom="@+id/rl_input"
-            android:src="@drawable/btn_voice_or_text" />
-
-        <!--语音输入-->
-        <Button
-            android:id="@+id/btn_voice"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y68"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_toLeftOf="@+id/rl_multi_and_send"
-            android:layout_toRightOf="@+id/btn_voice_or_text"
-            android:background="@drawable/btn_voice"
-            android:focusableInTouchMode="true"
-            android:text="@string/long_click_record"
-            android:textColor="#727272"
-            android:visibility="gone"
-            />
+        android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/rl_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/y100"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x16"
+            android:layout_marginLeft="@dimen/x30"
             android:layout_toLeftOf="@+id/rl_multi_and_send"
-            android:layout_toRightOf="@+id/btn_voice_or_text"
-            android:background="@drawable/input_bg_gray"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/y10"
-            android:paddingTop="@dimen/y10">
+            android:background="@drawable/bg_main_shape"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:visibility="visible">
 
             <!--输入框-->
             <sj.keyboard.widget.EmoticonsEditText
                 android:id="@+id/et_chat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/btn_face"
+                android:layout_toLeftOf="@+id/btn_camera"
+                android:layout_toRightOf="@+id/btn_face"
                 android:background="@null"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
+                android:gravity="center_vertical"
+                android:imeOptions="actionSend"
                 android:lineSpacingExtra="@dimen/y8"
                 android:maxLines="4"
-                android:paddingLeft="@dimen/x16"
-                android:imeOptions="actionSend"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
                 android:textSize="@dimen/x32"/>
+
+            <!--apps 功能-->
+            <ImageView
+                android:id="@+id/btn_multimedia"
+                android:layout_width="@dimen/x58"
+                android:layout_height="@dimen/y58"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x20"
+                android:layout_toLeftOf="@+id/btn_camera"
+                android:src="@drawable/icon_add"/>
+
+            <!--拍照-->
+            <ImageView
+                android:id="@+id/btn_camera"
+                android:layout_width="@dimen/x58"
+                android:layout_height="@dimen/y58"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_camera"/>
 
             <!--表情-->
             <ImageView
                 android:id="@+id/btn_face"
-                android:layout_width="@dimen/x48"
-                android:layout_height="@dimen/y48"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/x20"
-                android:src="@drawable/icon_face_nomal"
-                android:layout_alignBottom="@+id/et_chat"
+                android:layout_width="@dimen/x58"
+                android:layout_height="@dimen/y58"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_smile"
                 />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_multi_and_send"
-            android:layout_width="@dimen/x116"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/x140"
+            android:layout_height="@dimen/y120"
             android:layout_alignParentRight="true"
             android:focusableInTouchMode="true"
-            android:layout_alignBottom="@+id/rl_input"
-            android:orientation="horizontal">
+            android:gravity="center_vertical"
+            android:visibility="visible">
 
-            <!--apps 功能-->
             <ImageView
-                android:id="@+id/btn_multimedia"
-                android:layout_width="@dimen/x68"
-                android:layout_height="@dimen/y68"
+                android:id="@+id/btn_voice_or_text"
+                android:layout_width="@dimen/x100"
+                android:layout_height="@dimen/x100"
                 android:layout_centerInParent="true"
-                android:src="@drawable/btn_multi_bg"/>
+                android:src="@drawable/iocn_voice"/>
 
             <!--发送-->
             <Button
                 android:id="@+id/btn_send"
                 android:layout_width="@dimen/x100"
-                android:layout_height="@dimen/y60"
+                android:layout_height="@dimen/x100"
                 android:layout_centerInParent="true"
-                android:background="@drawable/btn_send_bg_disable"
-                android:paddingLeft="@dimen/x20"
-                android:paddingRight="@dimen/x20"
-                android:text="@string/btn_text_send"
-                android:textColor="@color/btn_send_textcolor"
-                android:textSize="@dimen/x24"
+                android:background="@drawable/icon_send_blue"
                 android:visibility="gone"/>
         </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_recording"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y360"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/rl_wave"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/y10"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toLeftOf="@+id/rl_operation_recording"
+            android:background="@drawable/bg_main_shape">
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="@dimen/x90"
+                android:layout_height="@dimen/x90"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x10"
+                android:background="@drawable/icon_close_white"/>
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:text="00:00"
+                android:layout_toRightOf="@+id/tv_cancel"
+                android:textSize="@dimen/x24"/>
+
+            <jaygoo.widget.wlv.WaveLineView
+                android:id="@+id/view_wave"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/y10"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y10"
+                android:layout_toRightOf="@+id/tv_time"
+                app:wlvBackgroundColor="#00000000"
+                app:wlvLineColor="@android:color/black"
+                app:wlvMoveSpeed="-200"
+                app:wlvSensibility="10"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_operation_recording"
+            android:layout_width="@dimen/x120"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x30"
+            android:background="@drawable/bg_main_shape">
+
+            <TextView
+                android:id="@+id/tv_recording_send"
+                android:layout_width="@dimen/x110"
+                android:layout_height="@dimen/x110"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/y10"
+                android:background="@drawable/icon_send"/>
+
+            <TextView
+                android:id="@+id/tv_stop"
+                android:layout_width="@dimen/x110"
+                android:layout_height="@dimen/x110"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/y10"
+                android:layout_marginTop="@dimen/y10"
+                android:background="@drawable/icon_hold"/>
+
+            <TextView
+                android:id="@+id/tv_play"
+                android:layout_width="@dimen/x110"
+                android:layout_height="@dimen/x110"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/y10"
+                android:layout_marginTop="@dimen/y10"
+                android:background="@drawable/icon_play"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_pause"
+                android:layout_width="@dimen/x110"
+                android:layout_height="@dimen/x110"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/y10"
+                android:layout_marginTop="@dimen/y10"
+                android:background="@drawable/icon_pause"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
     <sj.keyboard.widget.FuncLayout

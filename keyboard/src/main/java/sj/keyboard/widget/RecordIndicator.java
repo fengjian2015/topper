@@ -2,13 +2,14 @@ package sj.keyboard.widget;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.keyboard.view.R;
+
+import sj.keyboard.utils.RecordUtil;
 
 /**
  * description:
@@ -19,6 +20,17 @@ import com.keyboard.view.R;
 public class RecordIndicator {
 
     private final CallBack mCallBack;
+    private TextView mTvCancel;
+    private TextView mTvRecordingSend;
+    private TextView mTvStop;
+    private TextView mTvPlay;
+    public RecordUtil mRecordUtil;
+
+    public void setRecordUtil(RecordUtil recordUtil) {
+        if (mRecordUtil == null) {
+            mRecordUtil = recordUtil;
+        }
+    }
 
     public enum RecordView {
         START_VIEW, CANCEL_VIEW, SHORT_VIEW
@@ -38,7 +50,7 @@ public class RecordIndicator {
      * 最短录音时长为1s
      */
     private int minRecordTime = 1000;
-    private Button recordButton;
+    private ImageView recordButton;
 
     public RecordIndicator(Context mContext, CallBack callBack) {
         this.mContext = mContext;
@@ -94,9 +106,57 @@ public class RecordIndicator {
         this.minRecordTime = minRecordTime;
     }
 
-    public void setRecordButton(Button recordButton) {
+    public void setRecordButton(ImageView recordButton, TextView tvCancel, TextView tvRecordingSend, TextView tvStop, TextView tvPlay) {
         this.recordButton = recordButton;
-        listenerVoiceBtn();
+        mTvCancel = tvCancel;
+        mTvRecordingSend = tvRecordingSend;
+        mTvStop = tvStop;
+        mTvPlay = tvPlay;
+//        listenerVoiceBtn();
+    }
+
+    private void listenerVoiceBtn() {
+        recordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        mTvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cancel_record = false;
+                cancelRecord(false);
+            }
+        });
+        mTvRecordingSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                start_record = false;
+                long intervalTime = onRecordListener.getRecordTime();
+                if (cancel_record) {
+                    cancelRecord(true);
+                } else if (intervalTime < minRecordTime || intervalTime > 100000) {
+                    recordTooShort();
+                } else {
+                    finishRecord();
+                }
+            }
+        });
+
+        mTvStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        mTvPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     //定义接口
@@ -104,7 +164,7 @@ public class RecordIndicator {
         void send();
     }
 
-    private void listenerVoiceBtn() {
+    /*private void listenerVoiceBtn() {
         recordButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -165,17 +225,17 @@ public class RecordIndicator {
                 return false;
             }
         });
-    }
+    }*/
 
     private DecibelThread decibelThread;
 
-    private void startRecord(boolean realStart) {
+    public void startRecord(boolean realStart) {
         showView(RecordView.START_VIEW);
         if (realStart) {
             cancel_record = false;
             start_record = true;
             recordButton.setBackgroundResource(R.drawable.btn_voice_press);
-            recordButton.setText(mContext.getString(R.string.btn_text_speak_over));
+//            recordButton.setText(mContext.getString(R.string.btn_text_speak_over));
             onRecordListener.recordStart();
             show();
             decibelThread = new DecibelThread();
@@ -183,7 +243,7 @@ public class RecordIndicator {
         }
     }
 
-    private void cancelRecord(boolean dismiss) {
+    public void cancelRecord(boolean dismiss) {
         if (decibelThread != null) {
             decibelThread.exit();
             decibelThread = null;
@@ -195,7 +255,7 @@ public class RecordIndicator {
         }
     }
 
-    private void finishRecord() {
+    public void finishRecord() {
         if (decibelThread != null) {
             decibelThread.exit();
             decibelThread = null;
@@ -204,13 +264,13 @@ public class RecordIndicator {
         dismissRecordIndicator(200);
     }
 
-    private void recordTooShort() {
+    public void recordTooShort() {
         showView(RecordView.SHORT_VIEW);
         onRecordListener.recordCancel();
         dismissRecordIndicator(600);
     }
 
-    private void dismissRecordIndicator(long time) {
+    public void dismissRecordIndicator(long time) {
         recordButton.setBackgroundResource(R.drawable.btn_voice_normal);
         recordButton.postDelayed(new Runnable() {
             @Override
