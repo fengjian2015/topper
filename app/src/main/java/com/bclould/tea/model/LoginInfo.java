@@ -65,6 +65,15 @@ public class LoginInfo {
         private int gesture;
         private int is_update;
         private String gesture_number;
+        private int country_id;
+
+        public int getCountry_id() {
+            return country_id;
+        }
+
+        public void setCountry_id(int country_id) {
+            this.country_id = country_id;
+        }
 
         public String getGesture_number() {
             return gesture_number;

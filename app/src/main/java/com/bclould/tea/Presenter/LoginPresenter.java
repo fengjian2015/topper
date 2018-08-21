@@ -57,6 +57,7 @@ public class LoginPresenter {
     public static final String STATE = "state";
     public static final String CURRENCY = "currency";
     public static final String IS_UPDATE = "is_update";
+    public static final String STATE_ID = "state_id";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
@@ -124,6 +125,7 @@ public class LoginPresenter {
                             MySharedPreferences.getInstance().setString(LOGINPW, password);
                             MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
                             MySharedPreferences.getInstance().setInteger(IS_UPDATE, baseInfo.getData().getIs_update());
+                            MySharedPreferences.getInstance().setInteger(STATE_ID, baseInfo.getData().getCountry_id());
                             if (baseInfo.getData().getFingerprint() == 1) {
                                 MySharedPreferences.getInstance().setBoolean(FINGERPRINT_PW_SELE, true);
                             } else {
@@ -342,13 +344,12 @@ public class LoginPresenter {
                     @Override
                     public void onNext(BaseInfo baseInfo) {
                         hideDialog();
-                        callBack3.send();
+                        callBack3.send(baseInfo.getData().getCountry());
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         hideDialog();
-                        callBack3.send();
                     }
 
                     @Override
@@ -406,7 +407,7 @@ public class LoginPresenter {
 
     //定义接口
     public interface CallBack3 {
-        void send();
+        void send(String currency);
     }
 
     //定义接口

@@ -2264,4 +2264,5 @@
     <string name="et_card_holder">输入持卡人姓名</string>
     <string name="toast_card_holder">持卡人不能为空</string>
     <string name="english">English</string>
+    <string name="self_dynamic_no_reward">不能打赏自己的动态</string>
 </resources>

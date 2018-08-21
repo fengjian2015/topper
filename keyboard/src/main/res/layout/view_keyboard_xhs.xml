@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/btn_camera"
+                android:layout_toLeftOf="@+id/btn_multimedia"
                 android:layout_toRightOf="@+id/btn_face"
                 android:background="@null"
                 android:focusable="false"
@@ -136,7 +136,7 @@
                 android:layout_toRightOf="@+id/tv_cancel"
                 android:textSize="@dimen/x24"/>
 
-            <jaygoo.widget.wlv.WaveLineView
+            <!--<jaygoo.widget.wlv.WaveLineView
                 android:id="@+id/view_wave"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -148,7 +148,27 @@
                 app:wlvBackgroundColor="#00000000"
                 app:wlvLineColor="@android:color/black"
                 app:wlvMoveSpeed="-200"
-                app:wlvSensibility="10"/>
+                app:wlvSensibility="10"/>-->
+
+            <com.carlos.voiceline.mylibrary.VoiceLineView
+                android:id="@+id/view_wave"
+                android:layout_width="match_parent"
+                android:layout_toRightOf="@+id/tv_time"
+                android:layout_marginBottom="@dimen/y10"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y10"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                app:maxVolume="6"
+                app:middleLine="@android:color/black"
+                app:middleLineHeight="@dimen/y2"
+                app:fineness="three"
+                app:rectSpace="@dimen/x3"
+                app:rectWidth="@dimen/x3"
+                app:sensibility="four"
+                app:viewMode="rect"
+                app:voiceLine="@android:color/black" />
 
         </RelativeLayout>
 

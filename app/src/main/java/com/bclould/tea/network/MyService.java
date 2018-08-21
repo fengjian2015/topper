@@ -313,12 +313,12 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("type") int type,
             @Field("coin_name") String coin_name,
-            @Field("country") String country,
+            @Field("country") int country,
             @Field("currency") String currency,
             @Field("price") double price,
             @Field("number") double number,
             @Field("deadline") int deadline,
-            @Field("pay_type") String pay_type,
+            @Field("pay_type") int pay_type,
             @Field("min_amount") double min_amount,
             @Field("max_amount") double max_amount,
             @Field("remark") String remark,
@@ -333,7 +333,7 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("type") int type,
             @Field("coin_name") String coin_name,
-            @Field("country") String country,
+            @Field("country") int country,
             @Field("page_id") int page_id,
             @Field("page_size") int page_size
     );

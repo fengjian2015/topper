@@ -74,6 +74,15 @@ public class BaseInfo {
         private String coordinate;
         private int fingerprint;
         private int gesture;
+        private String country;
+
+        public String getCountry() {
+            return country;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
 
         public String getCoordinate() {
             return coordinate;

@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.carlos.voiceline.mylibrary.VoiceLineView;
 import com.keyboard.view.R;
 
 import java.io.IOException;
@@ -28,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import jaygoo.widget.wlv.WaveLineView;
 import sj.keyboard.adpater.PageSetAdapter;
 import sj.keyboard.data.PageSetEntity;
 import sj.keyboard.utils.EmoticonsKeyboardUtils;
@@ -82,12 +82,13 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     private MediaPlayer mMediaPlayer;
     private OnRecordListener mOnRecordListener;
     private RecordUtil mRecordUtil;
-    private WaveLineView mViewWave;
+    private VoiceLineView mViewWave;
     private Timer mTimer;
     private TextView mTvTime;
     private TextView mTvPause;
     private ImageView mBtnCamera;
     private MenuGridListPopWindow.ListOnClick mListOnClick;
+    private DecibelThread mDecibelThread;
 
     public XhsEmoticonsKeyBoard(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -120,9 +121,9 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         mTvRecordingSend = ((TextView) findViewById(R.id.tv_recording_send));
         mTvStop = ((TextView) findViewById(R.id.tv_stop));
         mTvPlay = ((TextView) findViewById(R.id.tv_play));
+        mViewWave = ((VoiceLineView) findViewById(R.id.view_wave));
         mRlRecording = (RelativeLayout) findViewById(R.id.rl_recording);
         mRlText = (RelativeLayout) findViewById(R.id.rl_text);
-        mViewWave = (WaveLineView) findViewById(R.id.view_wave);
         mTvTime = (TextView) findViewById(R.id.tv_time);
         mTvPause = (TextView) findViewById(R.id.tv_pause);
         mBtnCamera = (ImageView) findViewById(R.id.btn_camera);
@@ -341,18 +342,59 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
             playRecord();
         } else if (i == R.id.tv_pause) {
             pauseRecord();
-        }else if (i == R.id.btn_camera) {
+        } else if (i == R.id.btn_camera) {
             mListOnClick.onclickitem(mContext.getString(R.string.shooting));
         }/*else if(i==R.id.btn_otr_text){
             onResultOTR.resultOTR();
         }*/
     }
 
+    private volatile boolean running = true;
+
+    private class DecibelThread extends Thread {
+
+        public void exit() {
+            running = false;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            while (running) {
+                if (mOnRecordListener == null || !running) {
+                    break;
+                }
+                mViewWave.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setRecordDecibel(mOnRecordListener.getRecordDecibel());
+                    }
+                });
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void setRecordDecibel(int decibelRank) {
+        if (mViewWave != null) {
+            if (decibelRank < 0 || decibelRank > 6) {
+                decibelRank = 0;
+            }
+            mViewWave.setVolume(decibelRank);
+        }
+    }
+
     private void cutKeyboard() {
         mTvTime.setText("00:00");
         showVoice();
         mOnRecordListener.recordStart();
-        mViewWave.startAnim();
+        mViewWave.run();
+        mDecibelThread = new DecibelThread();
+        mDecibelThread.start();
         timekeeping();
     }
 
@@ -360,7 +402,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         mOnRecordListener.recordCancel();
         showText();
         closeTimer(0);
-        mViewWave.clearDraw();
+        mDecibelThread.exit();
         mTvPause.setVisibility(GONE);
         mTvPlay.setVisibility(GONE);
         mTvStop.setVisibility(VISIBLE);
@@ -370,7 +412,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         mOnRecordListener.recordFinish();
         showText();
         closeTimer(1);
-        mViewWave.clearDraw();
+        mDecibelThread.exit();
         mTvPause.setVisibility(GONE);
         mTvPlay.setVisibility(GONE);
         mTvStop.setVisibility(VISIBLE);
@@ -406,8 +448,8 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     @SuppressLint("NewApi")
     private void stopRecord() {
         mRecordUtil.finish();
-        mViewWave.stopAnim();
         closeTimer(2);
+        mDecibelThread.exit();
         mTvStop.setVisibility(GONE);
         mTvPlay.setVisibility(VISIBLE);
         mFileName = mRecordUtil.getFileName();
@@ -496,15 +538,15 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     }
 
     public void onResume() {
-        mViewWave.onResume();
+//        mViewWave.onResume();
     }
 
     public void onPause() {
-        mViewWave.onPause();
+//        mViewWave.onPause();
     }
 
     public void onDestroy() {
-        mViewWave.release();
+//        mViewWave.release();
     }
 
     public interface OnResultOTR {

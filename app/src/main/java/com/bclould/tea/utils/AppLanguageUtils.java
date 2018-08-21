@@ -31,7 +31,7 @@ public class AppLanguageUtils {
         // app locale
         Locale locale = null;
         if (!newLanguage.isEmpty()) {
-            if (newLanguage.equals("zh")) {
+            if (newLanguage.equals("zh-cn")) {
                 locale = Locale.SIMPLIFIED_CHINESE;
             } else if (newLanguage.equals("zh-hk")) {
                 locale = Locale.TRADITIONAL_CHINESE;
@@ -101,7 +101,7 @@ public class AppLanguageUtils {
     private static Context updateResources(Context context, String language) {
         Resources resources = context.getResources();
         Locale locale = null;
-        if (language.equals("zh")) {
+        if (language.equals("zh-cn")) {
             locale = Locale.SIMPLIFIED_CHINESE;
         } else if (language.equals("zh-hk")) {
             locale = Locale.TRADITIONAL_CHINESE;

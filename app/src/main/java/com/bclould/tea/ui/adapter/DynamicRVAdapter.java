@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -31,6 +32,7 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -210,11 +212,15 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mTvReward.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, RewardActivity.class);
-                    intent.putExtra("name", mDataBean.getUser_name());
-                    intent.putExtra("url", mDataBean.getAvatar());
-                    intent.putExtra("dynamic_id", mDataBean.getId());
-                    mContext.startActivity(intent);
+                    if (mDataBean.getIs_self() == 1) {
+                        ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.self_dynamic_no_reward));
+                    }else {
+                        Intent intent = new Intent(mContext, RewardActivity.class);
+                        intent.putExtra("name", mDataBean.getUser_name());
+                        intent.putExtra("url", mDataBean.getAvatar());
+                        intent.putExtra("dynamic_id", mDataBean.getId());
+                        mContext.startActivity(intent);
+                    }
                 }
             });
             mTvZan.setOnClickListener(new View.OnClickListener() {
@@ -285,9 +291,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                         showDialog(dataBean.getId() + "");
                     }
                 });
-                mTvReward.setVisibility(View.GONE);
             } else {
-                mTvReward.setVisibility(View.VISIBLE);
                 mIvDelete.setVisibility(View.GONE);
             }
             if (!dataBean.getAvatar().isEmpty()) {
@@ -373,11 +377,15 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mTvReward.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, RewardActivity.class);
-                    intent.putExtra("name", mDataBean.getUser_name());
-                    intent.putExtra("url", mDataBean.getAvatar());
-                    intent.putExtra("dynamic_id", mDataBean.getId());
-                    mContext.startActivity(intent);
+                    if (mDataBean.getIs_self() == 1) {
+                        ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.self_dynamic_no_reward));
+                    }else {
+                        Intent intent = new Intent(mContext, RewardActivity.class);
+                        intent.putExtra("name", mDataBean.getUser_name());
+                        intent.putExtra("url", mDataBean.getAvatar());
+                        intent.putExtra("dynamic_id", mDataBean.getId());
+                        mContext.startActivity(intent);
+                    }
                 }
             });
             mRlVideo.setOnClickListener(new View.OnClickListener() {
@@ -461,9 +469,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                         showDialog(dataBean.getId() + "");
                     }
                 });
-                mTvReward.setVisibility(View.GONE);
             } else {
-                mTvReward.setVisibility(View.VISIBLE);
                 mIvDelete.setVisibility(View.GONE);
             }
             if (!dataBean.getAvatar().isEmpty()) {
@@ -584,11 +590,15 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mTvReward.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, RewardActivity.class);
-                    intent.putExtra("name", mDataBean.getUser_name());
-                    intent.putExtra("url", mDataBean.getAvatar());
-                    intent.putExtra("dynamic_id", mDataBean.getId());
-                    mContext.startActivity(intent);
+                    if (mDataBean.getIs_self() == 1) {
+                        ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.self_dynamic_no_reward));
+                    }else {
+                        Intent intent = new Intent(mContext, RewardActivity.class);
+                        intent.putExtra("name", mDataBean.getUser_name());
+                        intent.putExtra("url", mDataBean.getAvatar());
+                        intent.putExtra("dynamic_id", mDataBean.getId());
+                        mContext.startActivity(intent);
+                    }
                 }
             });
 
@@ -672,9 +682,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                         showDialog(dataBean.getId() + "");
                     }
                 });
-                mTvReward.setVisibility(View.GONE);
             } else {
-                mTvReward.setVisibility(View.VISIBLE);
                 mIvDelete.setVisibility(View.GONE);
             }
             if (dataBean.getReviewList().size() != 0) {
@@ -784,15 +792,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         GuessHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            mCvGuess.setOnClickListener(new View.OnClickListener() {
+            mTvReward.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mGuessPw != null) {
-                        showPWDialog(mGuessPw, mGuessId, mPeriod_aty);
-                    } else {
-                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
-                        intent.putExtra("bet_id", mGuessId);
-                        intent.putExtra("period_qty", mPeriod_aty);
+                    if (mDataBean.getIs_self() == 1) {
+                        ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.self_dynamic_no_reward));
+                    }else {
+                        Intent intent = new Intent(mContext, RewardActivity.class);
+                        intent.putExtra("name", mDataBean.getUser_name());
+                        intent.putExtra("url", mDataBean.getAvatar());
+                        intent.putExtra("dynamic_id", mDataBean.getId());
                         mContext.startActivity(intent);
                     }
                 }
@@ -875,9 +884,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                         showDialog(dataBean.getId() + "");
                     }
                 });
-                mTvReward.setVisibility(View.GONE);
             } else {
-                mTvReward.setVisibility(View.VISIBLE);
                 mIvDelete.setVisibility(View.GONE);
             }
             if (!dataBean.getAvatar().isEmpty()) {

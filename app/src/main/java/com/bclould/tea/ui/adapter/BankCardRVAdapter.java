@@ -153,7 +153,7 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
                             if (data.getStatus() == 1) {
                                 Toast.makeText(mActivity, mActivity.getString(R.string.unbinding_succeed), Toast.LENGTH_SHORT).show();
                                 mCardList.remove(position);
-                                notifyItemRemoved(position);
+                                notifyDataSetChanged();
                             } else {
                                 Toast.makeText(mActivity, data.getMessage(), Toast.LENGTH_SHORT).show();
                             }
