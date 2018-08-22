@@ -21,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.carlos.voiceline.mylibrary.VoiceLineView;
 import com.keyboard.view.R;
 
 import java.io.IOException;
@@ -41,6 +40,7 @@ import sj.keyboard.widget.EmoticonsIndicatorView;
 import sj.keyboard.widget.EmoticonsToolBarView;
 import sj.keyboard.widget.FuncLayout;
 import sj.keyboard.widget.RecordIndicator;
+import sj.keyboard.widget.VoiceLineView;
 
 public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClickListener, EmoticonsFuncView.OnEmoticonsPageViewListener,
         EmoticonsToolBarView.OnToolBarItemClickListener, EmoticonsEditText.OnBackKeyClickListener, FuncLayout.OnFuncChangeListener {
@@ -122,6 +122,8 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         mTvStop = ((TextView) findViewById(R.id.tv_stop));
         mTvPlay = ((TextView) findViewById(R.id.tv_play));
         mViewWave = ((VoiceLineView) findViewById(R.id.view_wave));
+
+
         mRlRecording = (RelativeLayout) findViewById(R.id.rl_recording);
         mRlText = (RelativeLayout) findViewById(R.id.rl_text);
         mTvTime = (TextView) findViewById(R.id.tv_time);
@@ -349,12 +351,15 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         }*/
     }
 
-    private volatile boolean running = true;
 
     private class DecibelThread extends Thread {
-
+        private volatile boolean running = true;
         public void exit() {
             running = false;
+        }
+
+        public void go() {
+            running = true;
         }
 
         @Override
@@ -392,8 +397,10 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         mTvTime.setText("00:00");
         showVoice();
         mOnRecordListener.recordStart();
-        mViewWave.run();
+        mViewWave.start();
+        mViewWave.go();
         mDecibelThread = new DecibelThread();
+        mDecibelThread.go();
         mDecibelThread.start();
         timekeeping();
     }
@@ -403,6 +410,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         showText();
         closeTimer(0);
         mDecibelThread.exit();
+        mViewWave.release();
         mTvPause.setVisibility(GONE);
         mTvPlay.setVisibility(GONE);
         mTvStop.setVisibility(VISIBLE);
@@ -413,6 +421,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         showText();
         closeTimer(1);
         mDecibelThread.exit();
+        mViewWave.release();
         mTvPause.setVisibility(GONE);
         mTvPlay.setVisibility(GONE);
         mTvStop.setVisibility(VISIBLE);
@@ -450,6 +459,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         mRecordUtil.finish();
         closeTimer(2);
         mDecibelThread.exit();
+        mViewWave.stop();
         mTvStop.setVisibility(GONE);
         mTvPlay.setVisibility(VISIBLE);
         mFileName = mRecordUtil.getFileName();
@@ -504,7 +514,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
 //            if(mContext.getString(R.string.start_otr).equals(mEtChat.getHint())){
 //                return;
 //            }
-//            mbtnOtrText.setImageResource(R.drawable.icon_encrypt_no);
+//            mbtnOtrText.setImageResour ce(R.drawable.icon_encrypt_no);
 //            mEtChat.setHint(R.string.intput_otr_no);
 //        }
     }

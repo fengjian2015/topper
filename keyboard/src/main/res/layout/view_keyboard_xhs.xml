@@ -150,7 +150,7 @@
                 app:wlvMoveSpeed="-200"
                 app:wlvSensibility="10"/>-->
 
-            <com.carlos.voiceline.mylibrary.VoiceLineView
+            <sj.keyboard.widget.VoiceLineView
                 android:id="@+id/view_wave"
                 android:layout_width="match_parent"
                 android:layout_toRightOf="@+id/tv_time"
@@ -162,13 +162,23 @@
                 android:background="@android:color/transparent"
                 app:maxVolume="6"
                 app:middleLine="@android:color/black"
-                app:middleLineHeight="@dimen/y2"
+                app:middleLineHeight="@dimen/y1"
                 app:fineness="three"
-                app:rectSpace="@dimen/x3"
-                app:rectWidth="@dimen/x3"
+                app:rectSpace="@dimen/x1"
+                app:rectWidth="@dimen/x1"
                 app:sensibility="four"
                 app:viewMode="rect"
                 app:voiceLine="@android:color/black" />
+
+            <!--<com.shuyu.waveview.AudioWaveView
+                android:id="@+id/view_wave"
+                android:layout_marginBottom="@dimen/y10"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y10"
+                android:layout_toRightOf="@+id/tv_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>-->
 
         </RelativeLayout>
 
