@@ -244,7 +244,7 @@ public class BankCardBindingActivity extends BaseActivity {
 
     private void showStateDialog() {
         mStateDialog = new Dialog(this, R.style.BottomDialog2);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom2, null);
         //获得dialog的window窗口
         Window window = mStateDialog.getWindow();
         window.getDecorView().setPadding(0, 0, 0, 0);

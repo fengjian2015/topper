@@ -188,7 +188,7 @@ public class LoginPresenter {
     private void sendVcode(String email) {
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .sendRegcode(email)
+                .sendRegcode(email, UtilTool.getLanguage(mContext))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {

@@ -640,7 +640,6 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mediaPlayer.release();
         mediaPlayer = null;
         EventBus.getDefault().unregister(this);
-        mEkbEmoticonsKeyboard.onDestroy();
         super.onDestroy();
 
     }
@@ -1244,7 +1243,6 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 
     public void onResume() {
         super.onResume();
-        mEkbEmoticonsKeyboard.onResume();
     }
 
     public void onPause() {

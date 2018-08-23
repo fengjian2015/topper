@@ -269,7 +269,7 @@ public class ChatTransferActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText(getString(R.string.selector_coin));
+        tvTitle.setText(getString(R.string.coins));
         if (MyApp.getInstance().mCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);

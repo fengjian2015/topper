@@ -58,7 +58,7 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_dialog_bottom_pay, parent, false);
             viewHolder = new ViewHolder2(view);
         } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_dialog_bottom, parent, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_dialog_bottom2, parent, false);
             viewHolder = new ViewHolder(view);
         }
         return viewHolder;
@@ -82,12 +82,8 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_coin_logo)
-        ImageView mTvCoinLogo;
         @Bind(R.id.tv_name)
         TextView mTvName;
-        @Bind(R.id.tv_remaining)
-        TextView mTvRemaining;
         private String mName;
 
         ViewHolder(View view) {

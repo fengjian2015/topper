@@ -83,7 +83,6 @@ public class RedPacketRecordActivity extends BaseActivity {
 
             }
         });
-
     }
 
     //初始化菜单
@@ -105,10 +104,7 @@ public class RedPacketRecordActivity extends BaseActivity {
 
                 }
             });
-
-
         }
-
     }
 
     //菜单选项选中处理

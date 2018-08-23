@@ -12,6 +12,7 @@ import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.activity.LoginActivity;
 import com.bclould.tea.ui.activity.ServiceAgreementActivity;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.UtilTool;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,7 +54,7 @@ public class RegisterPresenter {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .sendRegcode(email)
+                .sendRegcode(email, UtilTool.getLanguage(mContext))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {

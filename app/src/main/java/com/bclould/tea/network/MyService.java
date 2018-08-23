@@ -89,7 +89,8 @@ public interface MyService {
     @FormUrlEncoded
     @POST("api/sendRegcode")
     Observable<BaseInfo> sendRegcode(
-            @Field("email") String email
+            @Field("email") String email,
+            @Field("lang") String lang
     );
 
     //验证用户名和邮箱

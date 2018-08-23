@@ -445,12 +445,12 @@ public class OtcActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText(getString(R.string.selector_coin));
+        tvTitle.setText(getString(R.string.coins));
     }
 
     private void showStateDialog() {
         mStateDialog = new Dialog(this, R.style.BottomDialog2);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom2, null);
         //获得dialog的window窗口
         Window window = mStateDialog.getWindow();
         window.getDecorView().setPadding(0, 0, 0, 0);

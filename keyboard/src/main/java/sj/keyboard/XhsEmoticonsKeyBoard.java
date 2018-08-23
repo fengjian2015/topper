@@ -354,6 +354,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
 
     private class DecibelThread extends Thread {
         private volatile boolean running = true;
+
         public void exit() {
             running = false;
         }
@@ -411,6 +412,8 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         closeTimer(0);
         mDecibelThread.exit();
         mViewWave.release();
+        mMediaPlayer.stop();
+        mMediaPlayer.reset();
         mTvPause.setVisibility(GONE);
         mTvPlay.setVisibility(GONE);
         mTvStop.setVisibility(VISIBLE);
@@ -422,13 +425,15 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         closeTimer(1);
         mDecibelThread.exit();
         mViewWave.release();
+        mMediaPlayer.stop();
+        mMediaPlayer.reset();
         mTvPause.setVisibility(GONE);
         mTvPlay.setVisibility(GONE);
         mTvStop.setVisibility(VISIBLE);
     }
 
     private void pauseRecord() {
-        mMediaPlayer.stop();
+        mMediaPlayer.pause();
         mTvPause.setVisibility(GONE);
         mTvPlay.setVisibility(VISIBLE);
     }
@@ -547,17 +552,14 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         mListOnClick = listOnClick;
     }
 
-    public void onResume() {
-//        mViewWave.onResume();
-    }
 
     public void onPause() {
-//        mViewWave.onPause();
+        mViewWave.stop();
+        if (mDecibelThread != null) {
+            mDecibelThread.exit();
+        }
     }
 
-    public void onDestroy() {
-//        mViewWave.release();
-    }
 
     public interface OnResultOTR {
         void resultOTR();
