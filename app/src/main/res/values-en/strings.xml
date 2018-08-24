@@ -958,7 +958,7 @@
 
     <string name="sk_succeed">Received</string>
 
-    <string name="Year">year</string>
+    <string name="year">year</string>
 
     <string name="Month">month</string>
 
@@ -1101,7 +1101,7 @@
 
     <string name="putong_red">Ordinary Red Packet</string>
 
-    <string name="sum_send">Total Packets</string>
+    <string name="sum_send">Red envelope</string>
 
     <string name="receive_add_request">Receive Add Request</string>
 
@@ -1939,7 +1939,7 @@ Please reset encryption request</string>
 
     <string name="group_red_min_money">Single red packet cannot less than 0.01</string>
 
-    <string name="sum_rceive">Total Received</string>
+    <string name="sum_rceive">Received red envelope</string>
 
     <string name="receive_red">Received</string>
 

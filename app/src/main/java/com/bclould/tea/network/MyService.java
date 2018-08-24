@@ -41,10 +41,10 @@ import com.bclould.tea.model.PublicDetailsInfo;
 import com.bclould.tea.model.PublicInfo;
 import com.bclould.tea.model.QuestionInfo;
 import com.bclould.tea.model.ReceiptInfo;
-import com.bclould.tea.model.RedRecordInfo;
 import com.bclould.tea.model.RemarkListInfo;
 import com.bclould.tea.model.ReviewInfo;
 import com.bclould.tea.model.ReviewListInfo;
+import com.bclould.tea.model.RpRecordInfo;
 import com.bclould.tea.model.StateInfo;
 import com.bclould.tea.model.TransRecordInfo;
 import com.bclould.tea.model.TransferInfo;
@@ -294,9 +294,12 @@ public interface MyService {
     //红包记录
     @POST("api/redPacket/log")
     @FormUrlEncoded
-    Observable<RedRecordInfo> redPacketLog(
+    Observable<RpRecordInfo> redPacketLog(
             @Header("Authorization") String token,
-            @Field("type") String type
+            @Field("type") String type,
+            @Field("page_id") int page_id,
+            @Field("page_size") int page_size,
+            @Field("year") String year
     );
 
     //单个红包记录

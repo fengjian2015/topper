@@ -121,7 +121,7 @@ dependencies {
     implementation files('libs/TencentMapSearch_v1.1.7.1.3e04ee1.jar')
 
     //阿里雲
-    compile 'com.aliyun.dpa:oss-android-sdk:+'
+    compile 'com.aliyun.dpa:oss-android-sdk:2.5.0'
     compile 'com.android.support:appcompat-v7:26.1.0'
 
     //卡片

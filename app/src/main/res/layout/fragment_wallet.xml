@@ -22,16 +22,17 @@
             style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/x60"
             android:text="@string/treasure"/>
 
-        <TextView
-            android:layout_width="@dimen/x200"
-            android:layout_height="@dimen/y2"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/x30"
-            android:background="@color/btn_bg_color"/>
+        <ImageView
+            android:id="@+id/iv_bill"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_bill"/>
 
     </RelativeLayout>
 

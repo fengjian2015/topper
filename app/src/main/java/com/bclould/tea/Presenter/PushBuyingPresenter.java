@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.ModeOfPaymentInfo;
-import com.bclould.tea.model.RedRecordInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.activity.BankCardActivity;
 import com.bclould.tea.ui.activity.PayPasswordActivity;
@@ -185,17 +184,4 @@ public class PushBuyingPresenter {
                     }
                 });
     }
-
-
-    //定义接口
-    public interface CallBack {
-        void send(RedRecordInfo.DataBean data);
-    }
-
-    //定义接口
-    public interface CallBack2 {
-        void send(RedRecordInfo.DataBean data);
-    }
-
-
 }
