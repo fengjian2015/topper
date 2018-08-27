@@ -70,6 +70,7 @@ public class PersonageDynamicActivity extends BaseActivity {
     private int PULL_DOWN = 1;
     private int mPage_id = 0;
     private int mPageSize = 10;
+    private int mCount = 1;
     private DynamicRVAdapter mDynamicRVAdapter;
 
     @Override
@@ -115,7 +116,7 @@ public class PersonageDynamicActivity extends BaseActivity {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 if (isFinish)
-                initData(PULL_DOWN);
+                    initData(PULL_DOWN);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -135,10 +136,11 @@ public class PersonageDynamicActivity extends BaseActivity {
             mPage_id = 0;
         }
         isFinish = false;
-        mDynamicPresenter.taDynamicList(mPage_id, mPageSize, mUser, new DynamicPresenter.CallBack2() {
+        mDynamicPresenter.taDynamicList(mPage_id, mPageSize, mUser, mCount, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
                 if (ActivityUtil.isActivityOnTop(PersonageDynamicActivity.this)) {
+                    mCount++;
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
                             mRefreshLayout.finishRefresh();

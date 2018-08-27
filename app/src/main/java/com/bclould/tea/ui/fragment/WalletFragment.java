@@ -180,6 +180,8 @@ public class WalletFragment extends Fragment {
 
     @OnClick(R.id.iv_bill)
     public void onViewClicked() {
-        startActivity(new Intent(getActivity(), PayRecordActivity.class));
+        Intent intent = new Intent(getActivity(), PayRecordActivity.class);
+        intent.putExtra("type", "0");
+        startActivity(intent);
     }
 }
