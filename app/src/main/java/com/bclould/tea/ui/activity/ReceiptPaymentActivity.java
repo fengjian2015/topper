@@ -3,6 +3,7 @@ package com.bclould.tea.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -236,6 +237,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 mTvCoin.setText(coinName);
                 mTvCount.setText(count);
                 mTvSelectorWay.setText(getString(R.string.payment));
+                mTvSelectorWay.setTextColor(Color.rgb(73, 187, 100));
                 mTvHint.setText(getString(R.string.qr_coder_pay));
                 mRlBackgound.setBackgroundResource(R.drawable.bg_pay_shape);
             } else if (requestCode == MONEYIN) {
@@ -244,6 +246,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 mTvSet.setText(getString(R.string.gg_set));
                 mTvHint.setText(getString(R.string.receipt_payment_hint));
                 mTvSelectorWay.setText(getString(R.string.receipt));
+                mTvSelectorWay.setTextColor(Color.rgb(124, 161, 229));
                 mRlBackgound.setBackgroundResource(R.drawable.bg_get_shape);
                 String coinId = data.getStringExtra("coinId");
                 String coinName = data.getStringExtra("coinName");
@@ -273,6 +276,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 mTvSelectorWay.setText(receipt.getText());
+                mTvSelectorWay.setTextColor(Color.rgb(124, 161, 229));
                 mPopupWindow.dismiss();
                 moneyIn();
             }

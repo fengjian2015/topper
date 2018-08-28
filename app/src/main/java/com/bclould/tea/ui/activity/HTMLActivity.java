@@ -16,6 +16,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
@@ -43,6 +44,10 @@ public class HTMLActivity extends BaseActivity {
     WebView mWebView;
     @Bind(R.id.iv_finish)
     ImageView mIvFinish;
+    @Bind(R.id.rl_title)
+    RelativeLayout mRlTitle;
+    @Bind(R.id.xx)
+    TextView mXx;
     private String html5Url;
 
     @Override
@@ -79,7 +84,7 @@ public class HTMLActivity extends BaseActivity {
         }
         // 把图片加载放在最后来加载渲染
         mWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-        mWebView.addJavascriptInterface(new payview(),"callback");
+        mWebView.addJavascriptInterface(new payview(), "callback");
         // 支持多窗口
         mWebView.getSettings().setSupportMultipleWindows(true);
         // 开启 DOM storage API 功能
@@ -139,7 +144,7 @@ public class HTMLActivity extends BaseActivity {
     public final class payview {
         @JavascriptInterface
         public void showPay(final int status, final String message) {
-            UtilTool.Log("fengjian","彈出成功");
+            UtilTool.Log("fengjian", "彈出成功");
             HTMLActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -156,7 +161,7 @@ public class HTMLActivity extends BaseActivity {
                     mWebView.evaluateJavascript("javascript:payCallBack()", new ValueCallback<String>() {
                         @Override
                         public void onReceiveValue(String value) {
-                            UtilTool.Log("fengjian","回調成功" );
+                            UtilTool.Log("fengjian", "回調成功");
                         }
                     });
                 } catch (Exception e) {
@@ -167,7 +172,7 @@ public class HTMLActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark,R.id.iv_finish})
+    @OnClick({R.id.bark, R.id.iv_finish})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -179,7 +184,7 @@ public class HTMLActivity extends BaseActivity {
         }
     }
 
-    private void goBack(){
+    private void goBack() {
         if (mWebView.canGoBack()) {
             mIvFinish.setVisibility(View.VISIBLE);
             mWebView.goBack();

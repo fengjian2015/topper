@@ -2268,4 +2268,6 @@
     <string name="look_more_coin_red">查看更多币种红包</string>
     <string name="selector_time">选择时间</string>
     <string name="selector_type">选择类型</string>
+    <string name="look_update_log">查看更新日志</string>
+    <string name="version">版本</string>
 </resources>
