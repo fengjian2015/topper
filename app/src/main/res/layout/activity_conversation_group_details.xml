@@ -198,7 +198,6 @@
                         android:src="@mipmap/iocn_person_turn"/>
                 </RelativeLayout>
 
-
                 <RelativeLayout
                     android:id="@+id/rl_group_qr"
                     android:layout_width="match_parent"
@@ -422,6 +421,32 @@
                 android:paddingRight="@dimen/x30">
 
                 <RelativeLayout
+                    android:id="@+id/rl_change_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y100"
+                    android:visibility="gone"
+                    >
+
+                    <View
+                        style="@style/HorizontalBoundaryStyle"></View>
+
+                    <TextView
+                        android:id="@+id/tv17"
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/conversation_backgound"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/iocn_person_turn"/>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/rl_group_red"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -479,135 +504,110 @@
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_change_background"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y100"
+            <LinearLayout
+                android:id="@+id/ll_owner_selector"
                 android:visibility="gone"
-                >
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y30"
+                android:background="@drawable/bg_shallow_shape"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/x30"
+                android:paddingRight="@dimen/x30">
 
-                <View
-                    style="@style/HorizontalBoundaryStyle"></View>
 
-                <TextView
-                    android:id="@+id/tv17"
-                    style="@style/MainTextShallowStyle30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/x20"
-                    android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/conversation_backgound"/>
+                <RelativeLayout
+                    android:id="@+id/rl_allow_modify_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y100"
+                    android:visibility="gone">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/x30"
-                    android:src="@mipmap/iocn_person_turn"/>
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv12"
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/is_allow_modify_data"/>
 
+                    <ImageView
+                        android:id="@+id/is_allow_modify_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:paddingLeft="@dimen/x30"
+                        android:src="@drawable/set_disturb_seletor"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y100"
+                    android:visibility="gone"
+                    >
+
+                    <View
+                        style="@style/HorizontalBoundaryStyle"
+                        ></View>
+
+                    <TextView
+                        android:id="@+id/tv13"
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/group_chat_invitation_confirmation"/>
+
+                    <ImageView
+                        android:id="@+id/is_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:paddingLeft="@dimen/x30"
+                        android:src="@drawable/set_disturb_seletor"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_review_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y100"
+                    android:visibility="gone"
+                    >
+
+                    <View
+                        style="@style/HorizontalBoundaryStyle"
+                        ></View>
+
+                    <TextView
+                        android:id="@+id/tv14"
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/group_initation_list"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/iocn_person_turn"/>
+                </RelativeLayout>
+
+            </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_allow_modify_data"
+                android:id="@+id/rl_empty_talk"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
-                android:visibility="gone">
-
-                <View
-                    style="@style/HorizontalBoundaryStyle"
-                    ></View>
-
-                <TextView
-                    android:id="@+id/tv12"
-                    style="@style/MainTextShallowStyle30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/x20"
-                    android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/is_allow_modify_data"/>
-
-                <ImageView
-                    android:id="@+id/is_allow_modify_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:padding="@dimen/x25"
-                    android:src="@drawable/set_disturb_seletor"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_review"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y100"
-                android:visibility="gone"
-                >
-
-                <View
-                    style="@style/HorizontalBoundaryStyle"
-                    ></View>
-
-                <TextView
-                    android:id="@+id/tv13"
-                    style="@style/MainTextShallowStyle30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/x20"
-                    android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/group_chat_invitation_confirmation"/>
-
-                <ImageView
-                    android:id="@+id/is_review"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:padding="@dimen/x25"
-                    android:src="@drawable/set_disturb_seletor"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_review_list"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y100"
-                android:visibility="gone"
-                >
-
-                <View
-                    style="@style/HorizontalBoundaryStyle"
-                    ></View>
-
-                <TextView
-                    android:id="@+id/tv14"
-                    style="@style/MainTextShallowStyle30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/x20"
-                    android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/group_initation_list"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/x30"
-                    android:src="@mipmap/iocn_person_turn"/>
-            </RelativeLayout>
-
-            <RelativeLayout
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y30"
+                android:background="@drawable/bg_shallow_shape"
                 android:paddingLeft="@dimen/x30"
                 android:paddingRight="@dimen/x30"
-                android:background="@drawable/bg_shallow_shape"
-                android:id="@+id/rl_empty_talk"
-                android:layout_marginTop="@dimen/y30"
-                android:layout_marginRight="@dimen/x30"
-                android:layout_marginLeft="@dimen/x30"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y100"
                 >
 
                 <View

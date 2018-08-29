@@ -2284,4 +2284,9 @@ Please reset encryption request</string>
     <string name="toast_card_holder">cardholder can\'t be empty</string>
     <string name="english">English</string>
     <string name="self_dynamic_no_reward">Can\'t reward your own dynamics</string>
+    <string name="look_more_coin_red">View more currency red packets</string>
+    <string name="selector_time">select time </string>
+    <string name="selector_type">Select type </string>
+    <string name="look_update_log">View update log </string>
+    <string name="version">version</string>
 </resources>

@@ -314,20 +314,26 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
             mPersonalDetailsPresenter.getFriendList(new PersonalDetailsPresenter.CallBack2() {
                 @Override
                 public void send(List<AuatarListInfo.DataBean> data) {
-                    mRefreshLayout.finishRefresh();
-                    mMgr.deleteAllFriend();
-                    mMgr.addUserList(data);
-                    myHandler.sendEmptyMessage(0);
+                    if (ActivityUtil.isActivityOnTop(MyFriendActivity.this)) {
+                        mRefreshLayout.finishRefresh();
+                        mMgr.deleteAllFriend();
+                        mMgr.addUserList(data);
+                        myHandler.sendEmptyMessage(0);
+                    }
                 }
 
                 @Override
                 public void error() {
-                    mRefreshLayout.finishRefresh();
+                    if (ActivityUtil.isActivityOnTop(MyFriendActivity.this)) {
+                        mRefreshLayout.finishRefresh();
+                    }
                 }
 
                 @Override
                 public void finishRefresh() {
-                    mRefreshLayout.finishRefresh();
+                    if (ActivityUtil.isActivityOnTop(MyFriendActivity.this)) {
+                        mRefreshLayout.finishRefresh();
+                    }
                 }
             });
         } catch (Exception e) {
@@ -536,7 +542,7 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
                         @Override
                         public void send() {
                             mMgr.deleteConversation(roomId);
-                            mMgr.deleteMessage(roomId,0);
+                            mMgr.deleteMessage(roomId, 0);
                             mMgr.deleteUser(mUser);
                             EventBus.getDefault().post(new MessageEvent(EventBusUtil.delete_friend));
                         }

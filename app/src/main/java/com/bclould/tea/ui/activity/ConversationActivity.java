@@ -281,7 +281,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mEkbEmoticonsKeyboard.getEtChat().setOnTextContextMenuItem(new EmoticonsEditText.OnTextContextMenuItem() {
             @Override
             public void onCopyUri(Uri uri) {
-                final ImageDialog imageDialog=new ImageDialog(ConversationActivity.this);
+                final ImageDialog imageDialog = new ImageDialog(ConversationActivity.this);
                 imageDialog.setImage(uri);
                 imageDialog.setOnClickListener(new ImageDialog.OnClickListener() {
                     @Override
@@ -705,10 +705,10 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             changeMsgFile(event.getId(), event.getFilepath());
         } else if (msg.equals(EventBusUtil.withdrew_a_message)) {
             deleteMsg(event.getId());
-        }else if(msg.equals(getString(R.string.conversation_backgound))){
+        } else if (msg.equals(getString(R.string.conversation_backgound))) {
             setBackgound();
-        }else if(msg.equals(getString(R.string.automatic_download_complete))){
-            downloadMsg(event.getUrl(),event.getFilepath());
+        } else if (msg.equals(getString(R.string.automatic_download_complete))) {
+            downloadMsg(event.getUrl(), event.getFilepath());
         }
     }
 
@@ -716,10 +716,10 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         for (MessageInfo info : mMessageList) {
             if (info.getMessage().equals(file)) {
                 info.setStatus(1);
-                mMgr.updateMessageState(info.getId()+"",1);
-                if(!StringUtils.isEmpty(filepath)){
+                mMgr.updateMessageState(info.getId() + "", 1);
+                if (!StringUtils.isEmpty(filepath)) {
                     info.setMessage(filepath);
-                    mMgr.updateMessage(info.getId(),filepath);
+                    mMgr.updateMessage(info.getId(), filepath);
                 }
                 mChatAdapter.notifyItemChanged(mMessageList.indexOf(info));
                 return;
@@ -918,7 +918,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                     if (view != null) {
                         top = view.getTop();
                     }
-                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(roomId, mMessageList.get(0).getCreateTime(),0);
+                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(roomId, mMessageList.get(0).getCreateTime(), 0);
                     mMessageList.addAll(0, messageInfos);
                     currentPosition = mMessageList.size() - currentPosition;
                     mChatAdapter.notifyDataSetChanged();
@@ -933,12 +933,12 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                     List<MessageInfo> messageInfos1 = null;
                     if (isFist) {
                         MessageInfo messageInfo = (MessageInfo) bundle3.getSerializable("MessageInfo");
-                        messageInfos1 = mMgr.queryLoadMessage(roomId, messageInfo.getCreateTime(), isFist,0);
+                        messageInfos1 = mMgr.queryLoadMessage(roomId, messageInfo.getCreateTime(), isFist, 0);
                     } else {
                         if (mMessageList.size() == 0) {
-                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(0).getCreateTime(), isFist,0);
+                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(0).getCreateTime(), isFist, 0);
                         } else {
-                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(mMessageList.size() - 1).getCreateTime(), isFist,0);
+                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(mMessageList.size() - 1).getCreateTime(), isFist, 0);
                         }
                     }
                     if (messageInfos1.size() <= 0) {
@@ -958,7 +958,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     //初始化数据
     private void initData(String msgId, boolean isScroll) {
         if (StringUtils.isEmpty(msgId)) {
-            List<MessageInfo> messageInfos = mMgr.queryMessage(roomId,0);
+            List<MessageInfo> messageInfos = mMgr.queryMessage(roomId, 0);
             mMessageList.clear();
             mMessageList.addAll(messageInfos);
             mChatAdapter.notifyDataSetChanged();
@@ -1083,12 +1083,12 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 
     private void setBackgound() {
         String key = MySharedPreferences.getInstance().getString("backgroundu_file" + UtilTool.getTocoId());
-        String urls=MySharedPreferences.getInstance().getString("backgroundu_url"+UtilTool.getTocoId());
-        if (!StringUtils.isEmpty(key)||!StringUtils.isEmpty(urls)) {
-            File file = new File(Constants.BACKGOUND+key);
+        String urls = MySharedPreferences.getInstance().getString("backgroundu_url" + UtilTool.getTocoId());
+        if (!StringUtils.isEmpty(key) || !StringUtils.isEmpty(urls)) {
+            File file = new File(Constants.BACKGOUND + key);
             if (file.exists()) {
-                Glide.with(this).load(new File(Constants.BACKGOUND+key)).apply(requestOptions).into(mIvBackgound);
-            }else{
+                Glide.with(this).load(new File(Constants.BACKGOUND + key)).apply(requestOptions).into(mIvBackgound);
+            } else {
                 Glide.with(this).load(urls).apply(requestOptions).into(mIvBackgound);
             }
         }
