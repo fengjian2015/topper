@@ -115,7 +115,6 @@ public class LoginPresenter {
                                 }
                             }
                         } else if (baseInfo.getStatus() == 1) {
-                            UtilTool.Log("日志", baseInfo.getData().getName());
                             MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
                             MySharedPreferences.getInstance().setLong(TOKEN_TIME, System.currentTimeMillis());
                             MySharedPreferences.getInstance().setString(TOCOID, baseInfo.getData().getToco_id());
@@ -151,7 +150,6 @@ public class LoginPresenter {
                             intent.putExtra("whence", 1);
                             mContext.startActivity(intent);
                             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_the_interface)));
-
                         }
                     }
 

@@ -87,6 +87,8 @@ public class RetrofitUtil {
                 ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
             } else if (code == 504) {
                 ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.network_error));
+            }else {
+                ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
             }
             UtilTool.Log("攔截器", request.url() + "接口返回碼： " + code + "----接口返回消息： " + message);
             if (NetworkUtils.isNetworkAvailable(mContext)) {
