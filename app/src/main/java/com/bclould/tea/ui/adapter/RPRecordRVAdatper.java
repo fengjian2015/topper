@@ -124,22 +124,28 @@ public class RPRecordRVAdatper extends RecyclerView.Adapter {
                 if (logBean.getRp_type() == 1) {
                     if (logBean.getType() == 1) {
                         mTvType.setText(mContext.getString(R.string.individual));
-                    } else {
+                    } else if (logBean.getType() == 2) {
                         mTvType.setText(mContext.getString(R.string.group1));
+                    } else if (logBean.getType() == 3) {
+                        mTvType.setText(mContext.getString(R.string.hand));
                     }
-                } else {
+                } else if (logBean.getRp_type() == 2) {
                     mTvType.setText(mContext.getString(R.string.sao));
-                }
-            } else {
-                mTvType.setVisibility(View.GONE);
-                if (logBean.getRp_type() == 1) {
-                    if (logBean.getType() == 1 || logBean.getType() == 2) {
-                        mTvName.setText(mContext.getString(R.string.putong_red));
-                    } else {
-                        mTvName.setText(mContext.getString(R.string.lucky_red_packets));
-                    }
+                } else if (logBean.getRp_type() == 3) {
+                    mTvType.setText(mContext.getString(R.string.zhi));
                 } else {
-                    mTvName.setText(mContext.getString(R.string.qr_code_red_package));
+                    mTvType.setVisibility(View.GONE);
+                    if (logBean.getRp_type() == 1) {
+                        if (logBean.getType() == 1 || logBean.getType() == 2) {
+                            mTvName.setText(mContext.getString(R.string.putong_red));
+                        } else {
+                            mTvName.setText(mContext.getString(R.string.lucky_red_packets));
+                        }
+                    } else if (logBean.getRp_type() == 2) {
+                        mTvName.setText(mContext.getString(R.string.qr_code_red_package));
+                    } else if (logBean.getRp_type() == 3) {
+                        mTvName.setText(mContext.getString(R.string.alipay_red));
+                    }
                 }
             }
         }

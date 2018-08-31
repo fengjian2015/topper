@@ -17,10 +17,12 @@ import android.widget.TextView;
 
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.alipay.AlipayClient;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
+import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
@@ -44,6 +46,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tea.Presenter.LoginPresenter.ALIPAY_UUID;
 import static com.bclould.tea.Presenter.LoginPresenter.STATE;
 import static com.bclould.tea.ui.activity.SerchImageActivity.TYPE_PERSONAL;
 import static com.luck.picture.lib.config.PictureMimeType.ofImage;
@@ -76,10 +79,16 @@ public class PersonalDetailsActivity extends BaseActivity {
     TextView mTvEmail;
     @Bind(R.id.tv_id)
     TextView mTvId;
+    @Bind(R.id.tv_alipay)
+    TextView mTvAlipay;
+    @Bind(R.id.rl_alipay)
+    RelativeLayout mRlAlipay;
 
     private List<LocalMedia> selectList = new ArrayList<>();
     private DBManager mMgr;
     private PersonalDetailsPresenter mPersonalDetailsPresenter;
+    private PWDDialog pwdDialog;
+    private String mUserId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +107,8 @@ public class PersonalDetailsActivity extends BaseActivity {
     }
 
     //初始化界面
+    private boolean isAlipay = false;
+
     private void initInterface() {
         if (MySharedPreferences.getInstance().getSp().contains(STATE)) {
             mTvLocation.setText(MySharedPreferences.getInstance().getString(STATE));
@@ -109,6 +120,13 @@ public class PersonalDetailsActivity extends BaseActivity {
         mTvUsername.setText(UtilTool.getUser());
         mTvId.setText(UtilTool.getTocoId());
         mTvEmail.setText(UtilTool.getEmail());
+        if (MySharedPreferences.getInstance().getString(ALIPAY_UUID).isEmpty()) {
+            mTvAlipay.setText(getString(R.string.not_bound));
+            isAlipay = false;
+        } else {
+            mTvAlipay.setText(getString(R.string.is_binding));
+            isAlipay = true;
+        }
     }
 
     //拿到选择的图片
@@ -178,11 +196,18 @@ public class PersonalDetailsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.rl_touxiang, R.id.rl_qr_card})
+    @OnClick({R.id.bark, R.id.rl_touxiang, R.id.rl_qr_card, R.id.rl_alipay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.rl_alipay:
+                if (isAlipay) {
+                    showPWDialog();
+                } else {
+                    alipayAuth();
+                }
                 break;
             case R.id.rl_touxiang:
                 showDialog();
@@ -193,6 +218,46 @@ public class PersonalDetailsActivity extends BaseActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    private void alipayAuth() {
+        AlipayClient.getInstance().authV2(PersonalDetailsActivity.this, new PersonalDetailsPresenter.CallBack7() {
+            @Override
+            public void send(String userId) {
+                MySharedPreferences.getInstance().setString(ALIPAY_UUID, userId);
+                bindAlipay();
+            }
+        });
+    }
+
+    private void showPWDialog() {
+        pwdDialog = new PWDDialog(this);
+        pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
+            @Override
+            public void success(String password) {
+                unbindAlipay(password);
+            }
+        });
+        pwdDialog.showDialog(getString(R.string.verify_pay_pw), null, null, null, null);
+    }
+
+    private void bindAlipay() {
+        mPersonalDetailsPresenter.bindAlipay(MySharedPreferences.getInstance().getString(ALIPAY_UUID), new PersonalDetailsPresenter.CallBack6() {
+            @Override
+            public void send() {
+                mTvAlipay.setText(getString(R.string.is_binding));
+            }
+        });
+    }
+
+
+    private void unbindAlipay(String password) {
+        mPersonalDetailsPresenter.unbindAlipay(password, new PersonalDetailsPresenter.CallBack6() {
+            @Override
+            public void send() {
+                mTvAlipay.setText(getString(R.string.not_bound));
+            }
+        });
     }
 
     private void showDialog() {

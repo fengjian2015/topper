@@ -276,7 +276,7 @@ public class PersonalDetailsPresenter {
 
                     @Override
                     public void onNext(BaseInfo baseInfo) {
-                        if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
                         hideDialog();
                         if (baseInfo.getStatus() == 1) {
                             Toast.makeText(mContext, mContext.getString(R.string.delete_succeed), Toast.LENGTH_SHORT).show();
@@ -432,6 +432,74 @@ public class PersonalDetailsPresenter {
                 });
     }
 
+    public void bindAlipay(String uuid, final CallBack6 callBack6) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .bindAlipay(UtilTool.getToken(), uuid)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack6.send();
+                        }
+                        ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void unbindAlipay(String passwrod, final CallBack6 callBack6) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .unbindAlipay(UtilTool.getToken(), passwrod)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack6.send();
+                        }
+                        ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //定义接口
     public interface CallBack {
         void send();
@@ -458,5 +526,13 @@ public class PersonalDetailsPresenter {
 
     public interface CallBack5 {
         void send(NewFriendInfo listdata);
+    }
+
+    public interface CallBack6 {
+        void send();
+    }
+
+    public interface CallBack7 {
+        void send(String userId);
     }
 }

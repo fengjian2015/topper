@@ -58,6 +58,7 @@ public class LoginPresenter {
     public static final String CURRENCY = "currency";
     public static final String IS_UPDATE = "is_update";
     public static final String STATE_ID = "state_id";
+    public static final String ALIPAY_UUID = "alipay_uuid";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
@@ -125,6 +126,7 @@ public class LoginPresenter {
                             MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
                             MySharedPreferences.getInstance().setInteger(IS_UPDATE, baseInfo.getData().getIs_update());
                             MySharedPreferences.getInstance().setInteger(STATE_ID, baseInfo.getData().getCountry_id());
+                            MySharedPreferences.getInstance().setString(ALIPAY_UUID, baseInfo.getData().getAlipay_uuid());
                             if (baseInfo.getData().getFingerprint() == 1) {
                                 MySharedPreferences.getInstance().setBoolean(FINGERPRINT_PW_SELE, true);
                             } else {

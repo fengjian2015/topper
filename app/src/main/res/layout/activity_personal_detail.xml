@@ -209,4 +209,35 @@
     </RelativeLayout>
 
 
+    <RelativeLayout
+        android:id="@+id/rl_alipay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@drawable/bg_shallow_shape">
+
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/alipay"/>
+
+        <TextView
+            android:id="@+id/tv_alipay"
+            style="@style/SecondaryTextStyle28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x30"
+            android:hint="@string/not_bound"
+            android:textColorHint="@color/secondary_text_color"/>
+
+    </RelativeLayout>
+
+
 </LinearLayout>

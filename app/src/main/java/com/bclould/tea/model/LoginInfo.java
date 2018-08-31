@@ -66,6 +66,15 @@ public class LoginInfo {
         private int is_update;
         private String gesture_number;
         private int country_id;
+        private String alipay_uuid;
+
+        public String getAlipay_uuid() {
+            return alipay_uuid;
+        }
+
+        public void setAlipay_uuid(String alipay_uuid) {
+            this.alipay_uuid = alipay_uuid;
+        }
 
         public int getCountry_id() {
             return country_id;

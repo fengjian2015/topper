@@ -1468,4 +1468,18 @@ public interface MyService {
             @Field("email") String email,
             @Field("coordinate") String coordinate
     );
+
+    @POST("api/user/bind/alipay")
+    @FormUrlEncoded
+    Observable<BaseInfo> bindAlipay(
+            @Header("Authorization") String token,
+            @Field("uuid") String coordinate
+    );
+
+    @POST("api/user/unbind/alipay")
+    @FormUrlEncoded
+    Observable<BaseInfo> unbindAlipay(
+            @Header("Authorization") String token,
+            @Header("second_password") String second_password
+    );
 }

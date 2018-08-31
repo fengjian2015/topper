@@ -5,30 +5,36 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 import com.alipay.sdk.app.AuthTask;
 import com.alipay.sdk.app.PayTask;
+import com.bclould.tea.Presenter.PersonalDetailsPresenter;
+import com.bclould.tea.utils.UtilTool;
+
 import java.util.Map;
 
 /**
  * Created by GIjia on 2018/8/7.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class AlipayClient {
     private static AlipayClient mInstance;
     private Context mContext;
 
     /** 支付宝支付业务：入参app_id */
-    public static final String APPID = "2016090900468872";
+    public static final String APPID = "2018082361123333";
 
     /** 支付宝账户登录授权业务：入参pid值 */
-    public static final String PID = "";
+    public static final String PID = "2088231381032191";
     /** 支付宝账户登录授权业务：入参target_id值 */
-    public static final String TARGET_ID = "";
+    public static final String TARGET_ID = UtilTool.createtFileName();
 
     /** 商户私钥，pkcs8格式 */
     /** 如下私钥，RSA2_PRIVATE 或者 RSA_PRIVATE 只需要填入一个 */
@@ -36,11 +42,12 @@ public class AlipayClient {
     /** RSA2_PRIVATE 可以保证商户交易在更加安全的环境下进行，建议使用 RSA2_PRIVATE */
     /** 获取 RSA2_PRIVATE，建议使用支付宝提供的公私钥生成工具生成， */
     /** 工具地址：https://doc.open.alipay.com/docs/doc.htm?treeId=291&articleId=106097&docType=1 */
-    public static final String RSA2_PRIVATE = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCC0n6qMSERLPcRjR30jJZSPYW/czsgRkT/+NxX8BGH6MN7mq5qwmwv96b4suAFLVIwqHg1w0k6JNe6acfuowDnVL9VmaddwEShy59bQv9xKfRhuTHmfGcSEwGQHuHBojMUzVVTzbC0DC3e0fTah7GG6uS1pUCl/GK0PesYqLC13JlZdpWYO0jFvo9PlTU6rOC5QMw5k4JGiRREc3jXQKCXblZPJpI8UmO/5A6JMzM4F/PgWeVecpWeph4br1vTu4NsrJnjSMCGhF++sNZlLzDTO+124g2yOg25gdKTLMBOXpurNPpdCPwcQ2bkiScSeIsYW0j8CDpdnhawAh6eTdpXAgMBAAECggEAC0IiNHNV7Sx5dsE2Or1+kkVJJVi9VeG2PnEkRU0btR6K9DAzomxo8xfU/sImFUv5LsbQ0Y+k1aQmDJzd3+OXSFE6xhsbFC5fuazUYf46DXsW1PIjITrDhAKut8BwnUFgNAIXvcaN1nDV4b8f206iMII2fItkLOSzed96Q/0AeCYMZPCUt7BWR5HEsaj/T9bm7NFMbGcit5YUoyyZwZTFOXWoo6bSp1EMf5DdAtRVzJZAyGQgpk31PAU+gSN42kY0wg71nMbzkbHPJUyHAoLBo1Yz/Gron0hRdxoPqxKtTKtHwyPlafbEIdkxHi4SrX39KOS+KJ8Xqmgi1sfbMjHWAQKBgQC/RccRJxPRSl0Jo/57jYtilqXjjJF3ZeCamn24Id4XyuPpjAa0i68EFiAgoeDpfhJEhHgTCoFP1OiX8hftKnU4xBnPA3/AJCSlG42hP9+xbMV3ZmrpBvwkk/ffa2MkkDXxGhp1fcyT4VAe9hS0sqh8FB1UcNqKDtLgw/Le97LFdwKBgQCvF9E2W90ehYvQUUbLbmRc7CB7HiPaRwWbA5g0/VmCtM6Yo+unTm11bCeUaIgAVZ3zr+c4nhUPl+FbwDJk9ZKXQ9H9ipuYgKHHYw/EQkevDjtNo5RTxm7l56X3R6K80QPKOuDB+TDfq0aqAKXK0FmPnKqSQfPwgxeXSZ9RWcJKIQKBgBegJ9GPkRwV4l4RepqKRkA8OWtc7o7f75lJIeQ/kq4/ql0rpZxhcJHBpeBB/oT4xIrgDfDUKFrTApPaHGh4CRik6EcwuHPkQv5948WaHShONinkZao46aYe/MwE+K8IfRE11zTSABX4C6x3WuFi+/qvhVvrwKKy6AtJSNOPpu5LAoGAIfT2iBpMyeyQbvg0SKPCJxtMOVRhE6YOej+6NxyjTWwPXR79Rtc49zrgejHDnnz8QxRsPVi7MOj9tbOSkm3l3hwzD37gKjVYKrkVh7Rq/pI+AhKlY5HqVAAW+dwUvZWzrHa6vCO9zMME01eIz8qUc/uoQPE1hAGIg7itgzNrMMECgYBk3glVyb4fO4X8J4J2DtBXWv75tKo5oimZCP+qSTGVmCtIPbHLrNo0+kuWw88SsMtjGgECVfmiu4vXNC5LASN4JNJ2QibD89YdGv6LzhRLee73pXzdAguwLVBvMDvnJyipw5vZYjWBTcDrP8sP8yfVtthMJUDo2Gzrd5GpYSz7cg==";
+    public static final String RSA2_PRIVATE = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCTJk2kdVww8Pbq6hu+orxKIpUPvoDsB+x1G0D2xh/gSQVqiobyiUMTOBghl44RHra3qKK3yuuJ/iCTN1cHSH9gnfROGsDN3HTTGjd6ZsrqO/MZzfjVJEptnhamyFi3GWjpnKbu5MpvbFcT1QTvbEVyjFhKxzFM1R+WLtHLct9dz18qrHKYBvrPN/HJi6NxhMtgikaWzB4t8WWkgkOr4+wk08Y8Zd9vTtJCpd+by7baQFQfOQa7eBqnfVVVYR70b7bIMshjUFq0hoPEpLnjcMmY5HDtmlktY5KFncbjCvFUjmToDHgHJ3wpazP6zRHGsnmy+TPzNQwEi0jaaYmU/9bpAgMBAAECggEAWWcqQUN00d91heDbHoYtNDWyrzAlkEJ4LeZzH/vcHh7/hW3I887ly+WG89Hq5QfuJ8PzqQtG9D5MeGVlIO2xRnhxmIq0nd7Vs/T3xAx0OMBXwVPdXVKBTfyA8rBDBmwPy+/7lKW5QN1oQopoRzdXMnOGqVhA4deTK2Ii4SNYBtwtoZ0mAlKwlj97fwkoj7E/b1EOSifYbjkPfMA4zYDHbvLmm5JlEbBkiKvUqYN6Umgg7vmHNfkJa8RmOxCNZbL0YJRGlcHXyDW7f56hbbt9Pu67PIclIUCDP4x0ahsS7eV9xC0vrfevMWiFHsK+wmQKnRQwrvxkxM6D7M9e6jQPAQKBgQDG2CzUaUTUVmOxFk0Av8s7cC2uPN2+QRimaXBGWA5fsH9yEbIiDGQSVqOF8U2SX39ePYhZt1WTNzGIbq3ZwbGZaNGZtw+24Dzn/baTyb1zI+0ArdUCshB108D6EDn/h76ExyXwRXfG1LH4kHzz00nqIAvEamE4PTcUvvOOQJvn2QKBgQC9cjPbplM9ZIZr/c6ThAbmIDfIo9qU6iZPtcsxiOdnMTSzH7OetJkBuZNmA62uc7ed2F1gk1amAtHm2mPAFdjpT71OV9i1JjmdSSJ56OjSpEKiSUvqygirxV7qYbC6MZGNcAaPz7tgWtvh4tl2N5eKE36YzX9wPv6p/5aRJZeNkQKBgQCrOaeQ2X0to56A9YUlagKlkjmj2kHP/NovIohN6rGl8KQuI9LSwvzBVd3GDz4PFzDkg/QP3XFRLav3oecOpl46jio/RYXAomOQGcfIh2Yd6gfCF+5fPdoyvD9mleZ7hfam+55NwmQb0TfXpQQUKhNyClpXros9FGmD8dJk4nneMQKBgB/lTGnc1QLvG9quvssDXY39OqcjPzf3PEALYYyTejJbjH3kBn/f9CrgLbrtP56xiOageQg7hkkpDGILvuOmSgDuFfdMvwWwy955Y76WwixEz5s3L/r1zQPulQ5tKC4RDmp7w/8OgIO2iHK9mNNYhMEQiy3620vwrzu79oO1ipChAoGBALrR3FM1fLvfsBV8L14MR5UrC5pIffSSwIy5oFk0kUq7URzHD0VXPkpZsf58afvz900wzIjqD/SeXNFxxZcKXAX3kyQDNuxDi9QriLe3XPBCeCusqVdcpMuijo5yhQELyHj9q8Utj68H58pEIRrelHKk/ue1To76iEzGsEpvkreL";
     public static final String RSA_PRIVATE = "";
 
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
+    private PersonalDetailsPresenter.CallBack7 mCallBack7;
 
     public static AlipayClient getInstance(){
         if(mInstance == null){
@@ -148,10 +155,11 @@ public class AlipayClient {
                         Toast.makeText(mContext,
                                 "授权成功\n" + String.format("authCode:%s", authResult.getAuthCode()), Toast.LENGTH_SHORT)
                                 .show();
+                        mCallBack7.send(authResult.getUserId());
                     } else {
                         // 其他状态值则为授权失败
                         Toast.makeText(mContext,
-                                "授权失败" + String.format("authCode:%s", authResult.getAuthCode()), Toast.LENGTH_SHORT).show();
+                                "授权失败" + String.format("authCode:%s", authResult.toString()), Toast.LENGTH_SHORT).show();
 
                     }
                     break;
@@ -164,21 +172,21 @@ public class AlipayClient {
 
     /**
      * 支付宝账户授权业务
-     *
-     * @param v
+     *  @param
+     * @param callBack7
      */
-    public void authV2(final Activity activity) {
-//        if (TextUtils.isEmpty(PID) || TextUtils.isEmpty(APPID)
-//                || (TextUtils.isEmpty(RSA2_PRIVATE) && TextUtils.isEmpty(RSA_PRIVATE))
-//                || TextUtils.isEmpty(TARGET_ID)) {
-//            new AlertDialog.Builder(activity).setTitle("警告").setMessage("需要配置PARTNER |APP_ID| RSA_PRIVATE| TARGET_ID")
-//                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialoginterface, int i) {
-//                        }
-//                    }).show();
-//            return;
-//        }
-
+    public void authV2(final Activity activity, PersonalDetailsPresenter.CallBack7 callBack7) {
+        if (TextUtils.isEmpty(PID) || TextUtils.isEmpty(APPID)
+                || (TextUtils.isEmpty(RSA2_PRIVATE) && TextUtils.isEmpty(RSA_PRIVATE))
+                || TextUtils.isEmpty(TARGET_ID)) {
+            new AlertDialog.Builder(activity).setTitle("警告").setMessage("需要配置PARTNER |APP_ID| RSA_PRIVATE| TARGET_ID")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialoginterface, int i) {
+                        }
+                    }).show();
+            return;
+        }
+        mCallBack7 = callBack7;
         /**
          * 这里只是为了方便直接向商户展示支付宝的整个支付流程；所以Demo中加签过程直接放在客户端完成；
          * 真实App里，privateKey等数据严禁放在客户端，加签过程务必要放在服务端完成；
