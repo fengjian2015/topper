@@ -16,7 +16,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.keyboard.view.R;
+
 import java.util.ArrayList;
+
 import sj.keyboard.XhsEmoticonsKeyBoard;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.MyGridView;
@@ -28,9 +30,10 @@ import static com.keyboard.view.R.style.BottomDialog;
  */
 public class MenuGridListPopWindow extends Dialog {
 
-    public interface ListOnClick{
+    public interface ListOnClick {
         /**
          * 0是最底下的取消按钮选项，1-n是从上往下的各个选项
+         *
          * @param position
          */
         public void onclickitem(String name);
@@ -49,12 +52,12 @@ public class MenuGridListPopWindow extends Dialog {
     private String roomType;
     private boolean isBurnReading;
 
-    public MenuGridListPopWindow(Context context, EmoticonsEditText etChat, String roomType,boolean isBurnReading) {
+    public MenuGridListPopWindow(Context context, EmoticonsEditText etChat, String roomType, boolean isBurnReading) {
         super(context, R.style.BottomDialog2);
         View view = View.inflate(context, R.layout.menugridlist_popwindow, null);
         this.context = context;
-        this.roomType=roomType;
-        this.isBurnReading=isBurnReading;
+        this.roomType = roomType;
+        this.isBurnReading = isBurnReading;
         gv_menu = (MyGridView) view.findViewById(R.id.gv_menu);
         setList();
         gv_menu.setAdapter(new MyMenuAdapter());
@@ -97,26 +100,27 @@ public class MenuGridListPopWindow extends Dialog {
     }
 
     private void setList() {
-        if(isBurnReading){
+        if (isBurnReading) {
             mAppBeanList.add(new AppInfo(R.drawable.icon_tail_photo, context.getString(R.string.image)));
             mAppBeanList.add(new AppInfo(R.drawable.icon_tail_camera, context.getString(R.string.shooting)));
-            mAppBeanList.add(new AppInfo(R.drawable.icon_collect,context.getString(R.string.collect)));
-            mAppBeanList.add(new AppInfo(R.drawable.icon_chat_card,context.getString(R.string.business_card)));
-        }else{
+            mAppBeanList.add(new AppInfo(R.drawable.icon_collect, context.getString(R.string.collect)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_chat_card, context.getString(R.string.business_card)));
+        } else {
             mAppBeanList.add(new AppInfo(R.drawable.icon_tail_photo, context.getString(R.string.image)));
             mAppBeanList.add(new AppInfo(R.drawable.icon_tail_camera, context.getString(R.string.shooting)));
-            if(!XhsEmoticonsKeyBoard.ROOM_TYPE_MULTI.equals(roomType)) {
+            if (!XhsEmoticonsKeyBoard.ROOM_TYPE_MULTI.equals(roomType)) {
                 mAppBeanList.add(new AppInfo(R.drawable.icon_tail_transfer, context.getString(R.string.transfer)));
             }
             mAppBeanList.add(new AppInfo(R.drawable.icon_tail_red_envelope, context.getString(R.string.red_package)));
             mAppBeanList.add(new AppInfo(R.drawable.icon_tail_position, context.getString(R.string.location)));
-            mAppBeanList.add(new AppInfo(R.drawable.icon_tail_file,context.getString(R.string.file)));
-            mAppBeanList.add(new AppInfo(R.drawable.icon_collect,context.getString(R.string.collect)));
-            mAppBeanList.add(new AppInfo(R.drawable.icon_chat_card,context.getString(R.string.business_card)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_chat_redpacket_ali, context.getString(R.string.alipay_red_package)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_tail_file, context.getString(R.string.file)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_collect, context.getString(R.string.collect)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_chat_card, context.getString(R.string.business_card)));
         }
     }
 
-    public void showAtLocation(){
+    public void showAtLocation() {
         show();
     }
 
@@ -144,11 +148,11 @@ public class MenuGridListPopWindow extends Dialog {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             View view = View.inflate(context, R.layout.item_app, null);
-            TextView textView= (TextView) view.findViewById(R.id.tv_name);
-            ImageView imageView= (ImageView) view.findViewById(R.id.iv_icon);
+            TextView textView = (TextView) view.findViewById(R.id.tv_name);
+            ImageView imageView = (ImageView) view.findViewById(R.id.iv_icon);
             textView.setText(mAppBeanList.get(position).getFuncName());
             imageView.setImageResource(mAppBeanList.get(position).getIcon());
-            if (color!=0){
+            if (color != 0) {
                 textView.setTextColor(color);
             }
             view.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +168,7 @@ public class MenuGridListPopWindow extends Dialog {
         }
     }
 
-    public void setListOnClick(ListOnClick listOnClick){
+    public void setListOnClick(ListOnClick listOnClick) {
         this.listOnClick = listOnClick;
     }
 

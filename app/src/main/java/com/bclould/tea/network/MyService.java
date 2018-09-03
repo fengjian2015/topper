@@ -1460,8 +1460,8 @@ public interface MyService {
     @POST("chat/del/chat_bg")
     Observable<BaseInfo> deleteBackgound(
             @Header("Authorization") String token
-    );//重置聊天背景
-
+    );
+    //重置聊天背景
     @POST("api/image/coordinate")
     @FormUrlEncoded
     Observable<BaseInfo> coordinate(
@@ -1469,6 +1469,7 @@ public interface MyService {
             @Field("coordinate") String coordinate
     );
 
+    //支付宝绑定
     @POST("api/user/bind/alipay")
     @FormUrlEncoded
     Observable<BaseInfo> bindAlipay(
@@ -1476,10 +1477,19 @@ public interface MyService {
             @Field("uuid") String coordinate
     );
 
+    //支付宝解绑
     @POST("api/user/unbind/alipay")
     @FormUrlEncoded
     Observable<BaseInfo> unbindAlipay(
             @Header("Authorization") String token,
-            @Header("second_password") String second_password
+            @Field("second_password") String second_password
+    );
+
+    //支付宝订单
+    @POST("chat/alipay/generate/order")
+    @FormUrlEncoded
+    Observable<BaseInfo> alipayOrder(
+            @Header("Authorization") String token,
+            @Field("second_password") String second_password
     );
 }

@@ -1,6 +1,11 @@
 package com.bclould.tea.alipay;
 
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
+import com.bclould.tea.utils.UtilTool;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -13,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class OrderInfoUtil2_0 {
 	
 	/**
@@ -27,10 +33,10 @@ public class OrderInfoUtil2_0 {
 		Map<String, String> keyValues = new HashMap<String, String>();
 
 		// 商户签约拿到的app_id，如：2013081700024223
-		keyValues.put("app_id", "2013081700024223");
+		keyValues.put("app_id", app_id);
 
 		// 商户签约拿到的pid，如：2088102123816631
-		keyValues.put("pid", "2088102123816631");
+		keyValues.put("pid", pid);
 
 		// 服务接口名称， 固定值
 		keyValues.put("apiname", "com.alipay.account.auth");
@@ -48,7 +54,7 @@ public class OrderInfoUtil2_0 {
 		keyValues.put("scope", "kuaijie");
 
 		// 商户唯一标识，如：kkkkk091125
-		keyValues.put("target_id", "kkkkk091125");
+		keyValues.put("target_id", target_id);
 
 		// 授权类型， 固定值
 		keyValues.put("auth_type", "AUTHACCOUNT");

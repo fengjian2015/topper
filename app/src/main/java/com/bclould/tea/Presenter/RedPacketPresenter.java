@@ -73,7 +73,7 @@ public class RedPacketPresenter {
                     @Override
                     public void onNext(BaseInfo baseInfo) {
                         if (baseInfo.getStatus() == 1) {
-                            callBack.send(baseInfo.getData().getId());
+                            callBack.send(baseInfo.getData().getId(), baseInfo.getData().getResponse());
                             Toast.makeText(mContext, mContext.getString(R.string.sent), Toast.LENGTH_SHORT).show();
                         } else if (baseInfo.getType() == 6) {
                             if (mContext instanceof SendRedPacketActivity) {
@@ -235,7 +235,7 @@ public class RedPacketPresenter {
 
     //定义接口
     public interface CallBack {
-        void send(int id);
+        void send(int id, String response);
     }
 
     //定义接口

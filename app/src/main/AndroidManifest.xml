@@ -1242,7 +1242,20 @@
             android:exported="false"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
-        <activity android:name=".ui.activity.SendRedAlipaylActivity"/>
+        <activity
+            android:name=".ui.activity.SendRedGroupAlipaylActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+
+        <activity
+            android:name=".ui.activity.SendRedAlipaylActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 </manifest>

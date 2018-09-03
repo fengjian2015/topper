@@ -88,6 +88,7 @@ import java.util.regex.Pattern;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
+import static com.bclould.tea.Presenter.LoginPresenter.ALIPAY_UUID;
 import static com.bclould.tea.Presenter.LoginPresenter.EMAIL;
 import static com.bclould.tea.Presenter.LoginPresenter.LOGINPW;
 import static com.bclould.tea.Presenter.LoginPresenter.MYUSERNAME;
@@ -767,7 +768,7 @@ public class UtilTool {
     }
 
     public static String getToken() {
-        UtilTool.Log("fengjiantoken","bearer" + MySharedPreferences.getInstance().getString(TOKEN));
+        UtilTool.Log("fengjiantoken", "bearer" + MySharedPreferences.getInstance().getString(TOKEN));
         return "bearer" + MySharedPreferences.getInstance().getString(TOKEN);
 
     }
@@ -1635,4 +1636,9 @@ public class UtilTool {
         }
         return "";
     }
+
+    public static String getUUID() {
+        return MySharedPreferences.getInstance().getString(ALIPAY_UUID);
+    }
+
 }
