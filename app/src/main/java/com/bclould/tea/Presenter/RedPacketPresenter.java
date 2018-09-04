@@ -74,7 +74,9 @@ public class RedPacketPresenter {
                     public void onNext(BaseInfo baseInfo) {
                         if (baseInfo.getStatus() == 1) {
                             callBack.send(baseInfo.getData().getId(), baseInfo.getData().getResponse());
-                            Toast.makeText(mContext, mContext.getString(R.string.sent), Toast.LENGTH_SHORT).show();
+                            if (mContext instanceof SendRedGroupActivity || mContext instanceof SendQRCodeRedActivity ||mContext instanceof SendRedPacketActivity) {
+                                Toast.makeText(mContext, mContext.getString(R.string.sent), Toast.LENGTH_SHORT).show();
+                            }
                         } else if (baseInfo.getType() == 6) {
                             if (mContext instanceof SendRedPacketActivity) {
                                 SendRedPacketActivity activity = (SendRedPacketActivity) mContext;

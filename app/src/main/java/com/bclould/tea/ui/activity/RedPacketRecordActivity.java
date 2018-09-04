@@ -208,6 +208,8 @@ public class RedPacketRecordActivity extends BaseActivity {
                             } else {
                                 mDataList.clear();
                                 mTopList.clear();
+                                mRpCoinsRVAdatper.notifyDataSetChanged();
+                                mRpRecordRVAdatper.notifyDataSetChanged();
                             }
                             if (data.getTop().getCoin_number().size() > 3) {
                                 mTvLookAll.setVisibility(View.VISIBLE);

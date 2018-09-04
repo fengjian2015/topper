@@ -1177,6 +1177,11 @@
     <string name="selector_type">選擇類型</string>
     <string name="look_update_log">查看更新日誌</string>
     <string name="version">版本</string>
-    <string name="alipay_red_bind_hint">请先绑定支付宝</string>
-    <string name="send_red_packet_hint2">未领取的红包，将于48小时后退款</string>
+    <string name="hand">手</string>
+    <string name="alipay_red">支付寶紅包</string>
+    <string name="zhi">支</string>
+    <string name="alipay_red_bind_hint">請先綁定支付寶</string>
+    <string name="send_red_packet_hint2">未領取的紅包，將於48小時後退款</string>
+    <string name="group_red">群紅包</string>
+    <string name="red_no">已抢完</string>
 </resources>

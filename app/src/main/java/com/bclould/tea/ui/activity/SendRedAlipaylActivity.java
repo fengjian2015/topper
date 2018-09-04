@@ -16,8 +16,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.Presenter.RedPacketPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.alipay.AlipayClient;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
@@ -88,7 +90,7 @@ public class SendRedAlipaylActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mTvAllmoney.setText(mEtCount.getText().toString());
+                mTvAllmoney.setText(mEtCount.getText().toString() + "CNY");
             }
 
             @Override
@@ -169,8 +171,13 @@ public class SendRedAlipaylActivity extends BaseActivity {
         mRedPacketPresenter.sendRedPacket(mRoomId, type, "CNY", mRemark, 3, redCount, redSum, mCount, password, new RedPacketPresenter.CallBack() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-            public void send(int id, String response) {
-                setData(id);
+            public void send(final int id, String response) {
+                AlipayClient.getInstance().payV2(SendRedAlipaylActivity.this, response, new PersonalDetailsPresenter.CallBack7() {
+                    @Override
+                    public void send(String userId) {
+                        setData(id);
+                    }
+                });
             }
         });
     }
@@ -212,11 +219,11 @@ public class SendRedAlipaylActivity extends BaseActivity {
             Toast.makeText(this, getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtCount);
             return false;
-        } else if (Integer.parseInt(mEtCount.getText().toString()) > 200) {
+        } else if (Double.parseDouble(mEtCount.getText().toString()) > 200) {
             Toast.makeText(this, getString(R.string.group_red_max_money), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtCount);
             return false;
-        } else if (Integer.parseInt(mEtCount.getText().toString()) < 0.01) {
+        } else if (Double.parseDouble(mEtCount.getText().toString()) < 0.01) {
             Toast.makeText(this, getString(R.string.group_red_min_money), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtCount);
             return false;

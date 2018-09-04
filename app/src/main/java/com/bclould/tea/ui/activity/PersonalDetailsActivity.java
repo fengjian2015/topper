@@ -224,8 +224,8 @@ public class PersonalDetailsActivity extends BaseActivity {
         AlipayClient.getInstance().authV2(PersonalDetailsActivity.this, new PersonalDetailsPresenter.CallBack7() {
             @Override
             public void send(String userId) {
-                bindAlipay();
                 mUserId = userId;
+                bindAlipay();
             }
         });
     }

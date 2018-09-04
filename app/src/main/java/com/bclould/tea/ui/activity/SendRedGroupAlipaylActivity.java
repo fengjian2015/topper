@@ -21,7 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alipay.sdk.app.EnvUtils;
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.Presenter.RedPacketPresenter;
 import com.bclould.tea.R;
@@ -85,7 +84,6 @@ public class SendRedGroupAlipaylActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
         getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket5));
         setContentView(R.layout.activity_send_red_alipay_group);
         ButterKnife.bind(this);
