@@ -750,12 +750,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         } else {
                             mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket2));
                             mTvExamine.setText(mContext.getString(R.string.look_red_packet));
-                            mCvRedpacket.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    showDialog(messageInfo,false,false,null);
-                                }
-                            });
+                            showDialog(messageInfo,false,false,null);
                         }
                     } else {
                         mGrabRedPresenter.grabRedPacket(true, messageInfo.getRedId(), new GrabRedPresenter.CallBack() {
