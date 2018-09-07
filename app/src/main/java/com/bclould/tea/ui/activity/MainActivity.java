@@ -640,10 +640,10 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             exitBy2Click();      //调用双击退出函数
         }
+        finish();
         return false;
     }
 
