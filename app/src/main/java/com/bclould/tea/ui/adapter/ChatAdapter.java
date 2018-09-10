@@ -1491,7 +1491,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     return false;
                 }
             });
-
         }
     }
     private void setLoading( MessageInfo messageInfo, final LodingCircleView loadingPr, ImageView mIvVideoPlay) {

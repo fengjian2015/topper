@@ -203,7 +203,7 @@ public class StartGuessActivity extends BaseActivity {
 
     private void showBottomDialog(int type, List<String> list) {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom2, null);
         //获得dialog的window窗口
         Window window = mBottomDialog.getWindow();
         window.getDecorView().setPadding(0, 0, 0, 0);
@@ -266,7 +266,7 @@ public class StartGuessActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText(getString(R.string.selector_coin));
+        tvTitle.setText(getString(R.string.coins));
     }
 
     public void hideDialog(String name, int sign) {

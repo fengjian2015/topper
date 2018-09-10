@@ -132,7 +132,7 @@ public class SystemSetActivity extends BaseActivity {
         String language = MySharedPreferences.getInstance().getString(getString(R.string.language_pref_key));
         if (language.equals("")) {
             mTvLanguageHint.setText(getString(R.string.follow_the_system));
-        } else if (language.equals("zh")) {
+        } else if (language.equals("zh-cn")) {
             mTvLanguageHint.setText(getString(R.string.simplified_chinese));
         } else if (language.equals("zh-hk")) {
             mTvLanguageHint.setText(getString(R.string.chinese_traditional));

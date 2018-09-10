@@ -1171,4 +1171,10 @@
     <string name="et_card_holder">輸入持卡人姓名</string>
     <string name="toast_card_holder">持卡人不能為空</string>
     <string name="english">English</string>
+    <string name="self_dynamic_no_reward">不能打賞自己的動態</string>
+    <string name="look_more_coin_red">查看更多幣种红包</string>
+    <string name="selector_time">選擇時間</string>
+    <string name="selector_type">選擇類型</string>
+    <string name="look_update_log">查看更新日誌</string>
+    <string name="version">版本</string>
 </resources>

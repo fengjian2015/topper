@@ -1,48 +1,5 @@
 -- Merging decision tree log ---
 manifest
-<<<<<<< HEAD
-ADDED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:1:1-11:12
-INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:1:1-11:12
-INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:1:1-11:12
-INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:1:1-11:12
-INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:1:1-11:12
-INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:1:1-11:12
-INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:1:1-11:12
-	package
-		ADDED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:2:5-37
-		INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-		INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-	android:versionName
-		ADDED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:4:5-32
-		INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-		INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-	xmlns:android
-		ADDED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:1:11-69
-	android:versionCode
-		ADDED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:3:5-30
-		INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-		INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-uses-permission#android.permission.INTERNET
-ADDED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:6:5-66
-	android:name
-		ADDED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:6:22-64
-application
-ADDED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml:8:5-9:19
-uses-sdk
-INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-	android:targetSdkVersion
-		INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-		ADDED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-		INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-	android:minSdkVersion
-		INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-		ADDED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-		INJECTED from F:\tocotalk_android\AndroidAsync\AndroidManifest.xml
-=======
 ADDED from D:\BiYun\tocotalk_android\AndroidAsync\AndroidManifest.xml:1:1-11:12
 INJECTED from D:\BiYun\tocotalk_android\AndroidAsync\AndroidManifest.xml:1:1-11:12
 INJECTED from D:\BiYun\tocotalk_android\AndroidAsync\AndroidManifest.xml:1:1-11:12
@@ -84,4 +41,3 @@ INJECTED from D:\BiYun\tocotalk_android\AndroidAsync\AndroidManifest.xml
 		INJECTED from D:\BiYun\tocotalk_android\AndroidAsync\AndroidManifest.xml
 		ADDED from D:\BiYun\tocotalk_android\AndroidAsync\AndroidManifest.xml
 		INJECTED from D:\BiYun\tocotalk_android\AndroidAsync\AndroidManifest.xml
->>>>>>> e04532d5823fe760048317432473677a15f1cf8e

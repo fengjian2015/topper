@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+                  android:background="@color/main_text_color"
+              android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/MainTextDeepStyle36"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:gravity="center"/>
+
+    <TextView
+        style="@style/HorizontalDeepBoundaryStyle"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y500">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y500">
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/btn_add_coin"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y80"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_register_shape"
+            android:text="充币"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HorizontalDeepBoundaryStyle"/>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        style="@style/ShortBtnStyle"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/y20"
+        android:layout_marginTop="@dimen/y20"
+        android:text="@string/cancel"/>
+
+
+</LinearLayout>

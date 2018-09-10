@@ -17,12 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.Presenter.FindPasswordPresenter;
+import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,6 +57,7 @@ public class FindPasswordActivity extends SwipeActivity {
     @Bind(R.id.btn_login)
     Button mBtnLogin;
     private FindPasswordPresenter mFindPasswordPresenter;
+    private RegisterPresenter mRegisterPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +66,7 @@ public class FindPasswordActivity extends SwipeActivity {
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         mFindPasswordPresenter = new FindPasswordPresenter(this);
+        mRegisterPresenter = new RegisterPresenter(this);
     }
 
     @Override
@@ -154,7 +160,6 @@ public class FindPasswordActivity extends SwipeActivity {
                 if (mEtEmail.getText().toString().isEmpty()) {
                     Toast.makeText(this, getResources().getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
                     AnimatorTool.getInstance().editTextAnimator(mEtEmail);
-                    sendVcode();
                 } else if (!mEtEmail.getText().toString().contains("@")) {
                     Toast.makeText(this, getResources().getString(R.string.toast_email_format), Toast.LENGTH_SHORT).show();
                     AnimatorTool.getInstance().editTextAnimator(mEtEmail);
@@ -174,8 +179,49 @@ public class FindPasswordActivity extends SwipeActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
+    }
+
+    private int mRecLen = 60;
+    Timer mTimer = new Timer();
+
     private void sendVcode() {
-        mFindPasswordPresenter.sendRegcode(mEtEmail.getText().toString());
+        mRegisterPresenter.sendRegcode(mEtEmail.getText().toString(), new RegisterPresenter.CallBack() {
+            @Override
+            public void send() {
+                mRecLen = 60;
+                mTimer = new Timer();
+                mTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+
+                        runOnUiThread(new Runnable() {      // UI thread
+                            @Override
+                            public void run() {
+                                mRecLen--;
+                                mTvSend.setText(mRecLen + "s" + getString(R.string.back_send));
+                                if (mRecLen <= 0) {
+                                    if (mTimer != null) {
+                                        mTimer.cancel();
+                                        mTimer = null;
+                                    }
+                                    mTvSend.setEnabled(true);
+                                    mTvSend.setText(getString(R.string.send));
+                                } else {
+                                    mTvSend.setEnabled(false);
+                                }
+                            }
+                        });
+                    }
+                }, 1000, 1000);
+            }
+        });
     }
 
     private void submit() {

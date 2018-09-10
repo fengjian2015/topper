@@ -195,6 +195,7 @@
                 <com.gjiazhe.wavesidebar.WaveSideBar
                     android:id="@+id/side_bar"
                     style="@style/SecondaryTextStyle24"
+                    app:sidebar_text_color="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"

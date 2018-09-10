@@ -1,4 +1,4 @@
-package com.bclould.tea.utils;
+package sj.keyboard.utils;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 /**
  * description:
@@ -51,7 +52,7 @@ public class RecordUtil {
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        outPutFileName = outPutFileName + File.separator + UtilTool.createtFileName() + ".amr";
+        outPutFileName = outPutFileName + File.separator + createtFileName() + ".amr";
 //        outPutFileName = "/sdcard/" + UtilTool.createtFileName() + ".amr";
         try {
             recorder = new MediaRecorder();
@@ -69,6 +70,13 @@ public class RecordUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static synchronized String createtFileName() {
+        java.util.Date dt = new java.util.Date(System.currentTimeMillis());
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String fileName = fmt.format(dt);
+        return fileName;
     }
 
     public int getRecordDecibel() {

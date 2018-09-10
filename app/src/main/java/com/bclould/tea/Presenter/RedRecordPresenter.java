@@ -1,11 +1,12 @@
 package com.bclould.tea.Presenter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.GrabRedInfo;
-import com.bclould.tea.model.RedRecordInfo;
+import com.bclould.tea.model.RpRecordInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.UtilTool;
@@ -19,6 +20,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/1/18.
  */
 
+@SuppressLint("NewApi")
 public class RedRecordPresenter {
 
     private final Context mContext;
@@ -44,24 +46,23 @@ public class RedRecordPresenter {
         }
     }
 
-    public void log(String type, final CallBack callBack) {
+    public void log(String type, int page_id, int pageSize, String year, final CallBack callBack) {
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .redPacketLog(UtilTool.getToken(), type)
+                .redPacketLog(UtilTool.getToken(), type, page_id, pageSize, year)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                .subscribe(new Observer<RedRecordInfo>() {
+                .subscribe(new Observer<RpRecordInfo>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(RedRecordInfo baseInfo) {
-                        if (baseInfo.getStatus() == 1)
-                            callBack.send(baseInfo.getData());
-//                            hideDialog();
-//                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    public void onNext(RpRecordInfo rpRecordInfo) {
+                        if (rpRecordInfo.getStatus() == 1)
+                            callBack.send(rpRecordInfo.getData());
+                        callBack.finishRefresh();
                     }
 
                     @Override
@@ -94,8 +95,8 @@ public class RedRecordPresenter {
                     public void onNext(GrabRedInfo baseInfo) {
                         callBack.send(baseInfo);
                         hideDialog();
-                        if(baseInfo.getStatus() == 2)
-                        Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                        if (baseInfo.getStatus() == 2)
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -112,9 +113,12 @@ public class RedRecordPresenter {
 
     //定义接口
     public interface CallBack {
-        void send(RedRecordInfo.DataBean data);
 
         void error();
+
+        void finishRefresh();
+
+        void send(RpRecordInfo.DataBean data);
     }
 
     //定义接口

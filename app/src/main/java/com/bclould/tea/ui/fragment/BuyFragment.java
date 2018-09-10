@@ -37,6 +37,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 import static com.bclould.tea.Presenter.LoginPresenter.STATE;
+import static com.bclould.tea.Presenter.LoginPresenter.STATE_ID;
 
 /**
  * Created by GA on 2017/9/20.
@@ -59,7 +60,6 @@ public class BuyFragment extends Fragment {
     LinearLayout mLlError;
     private View mView;
     private String mCoinName = "TPC";
-    private String mState;
     private List<DealListInfo.DataBean> mDataList = new ArrayList<>();
     private BuySellRVAdapter mBuySellRVAdapter;
     private BuySellPresenter mBuySellPresenter;
@@ -67,6 +67,7 @@ public class BuyFragment extends Fragment {
     private int PULL_DOWN = 1;
     private int mPage_id = 0;
     private int mPageSize = 10;
+    private int mState_id;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,17 +76,13 @@ public class BuyFragment extends Fragment {
         if (MyApp.getInstance().mOtcCoinList.size() != 0) {
             mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
         }
-        if (MySharedPreferences.getInstance().getSp().contains(STATE)) {
-            mState = MySharedPreferences.getInstance().getString(STATE);
-        } else {
-            mState = getString(R.string.china_mainland);
-        }
+        mState_id = MySharedPreferences.getInstance().getInteger(STATE_ID);
         ButterKnife.bind(this, mView);
         mBuySellPresenter = new BuySellPresenter(getContext());
         initRecyclerView();
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        initData(mCoinName, mState, PULL_DOWN);
+        initData(PULL_DOWN);
         bindBankStatus();
         initListener();
         return mView;
@@ -100,17 +97,17 @@ public class BuyFragment extends Fragment {
         String msg = event.getMsg();
         if (event.getCoinName() != null) {
             mCoinName = event.getCoinName();
-        } else if (event.getState() != null) {
-            mState = event.getState();
+        }if (event.getNumber() != 0) {
+            mState_id = event.getNumber();
         }
         if (msg.equals(getString(R.string.coin_switchover))) {
-            initData(mCoinName, mState, PULL_DOWN);
+            initData(PULL_DOWN);
         } else if (msg.equals(getString(R.string.publish_deal))) {
-            initData(mCoinName, mState, PULL_DOWN);
+            initData(PULL_DOWN);
         } else if (msg.equals(getString(R.string.state_switchover))) {
-            initData(mCoinName, mState, PULL_DOWN);
+            initData( PULL_DOWN);
         } else if (msg.equals(getString(R.string.sold_out_sell))) {
-            initData(mCoinName, mState, PULL_DOWN);
+            initData(PULL_DOWN);
         }
     }
 
@@ -128,14 +125,14 @@ public class BuyFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                initData(mCoinName, mState, PULL_DOWN);
+                initData(PULL_DOWN);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 if (isFinish) {
-                    initData(mCoinName, mState, PULL_UP);
+                    initData(PULL_UP);
                 }
             }
         });
@@ -148,14 +145,14 @@ public class BuyFragment extends Fragment {
     }
 
 
-    private void initData(String coinName, String state, final int type) {
+    private void initData(final int type) {
         if (type == PULL_DOWN) {
             mPage_id = 0;
         }
         isFinish = false;
-        mBuySellPresenter.getDealList(mPage_id, mPageSize, 1, coinName, state, new BuySellPresenter.CallBack() {
+        mBuySellPresenter.getDealList(mPage_id, mPageSize, 1, mCoinName, mState_id, new BuySellPresenter.CallBack() {
             @Override
-            public void send(List<DealListInfo.DataBean> dataBean, String coin) {
+            public void send(List<DealListInfo.DataBean> dataBean) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {

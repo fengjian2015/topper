@@ -24,6 +24,7 @@ import com.bclould.tea.ui.activity.CoinExchangeActivity;
 import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.NewsManagerActivity;
 import com.bclould.tea.ui.activity.OtcActivity;
+import com.bclould.tea.ui.activity.PayRecordActivity;
 import com.bclould.tea.ui.adapter.WalletPVAdapter;
 import com.bclould.tea.utils.ShadowTransformer;
 import com.bclould.tea.utils.StatusBarCompat;
@@ -66,6 +67,8 @@ public class WalletFragment extends Fragment {
     TextView mTv;
     @Bind(R.id.rl_my_ad)
     RelativeLayout mRlMyAd;
+    @Bind(R.id.iv_bill)
+    ImageView mIvBill;
     private WalletPVAdapter mWalletPVAdapter;
     private ShadowTransformer mCardShadowTransformer;
 
@@ -173,5 +176,12 @@ public class WalletFragment extends Fragment {
                 }
                 break;
         }
+    }
+
+    @OnClick(R.id.iv_bill)
+    public void onViewClicked() {
+        Intent intent = new Intent(getActivity(), PayRecordActivity.class);
+        intent.putExtra("type", "0");
+        startActivity(intent);
     }
 }

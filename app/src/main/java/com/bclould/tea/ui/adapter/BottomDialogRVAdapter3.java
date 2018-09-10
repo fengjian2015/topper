@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
@@ -38,7 +37,7 @@ public class BottomDialogRVAdapter3 extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_dialog_bottom, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_dialog_bottom2, parent, false);
         return new ViewHolder(view);
     }
 
@@ -56,8 +55,6 @@ public class BottomDialogRVAdapter3 extends RecyclerView.Adapter {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_coin_logo)
-        ImageView mTvCoinLogo;
         @Bind(R.id.tv_name)
         TextView mTvName;
         private StateInfo.DataBean mDataBean;

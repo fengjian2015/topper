@@ -27,6 +27,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tea.Presenter.LoginPresenter.STATE;
+
 /**
  * Created by GA on 2018/7/20.
  */
@@ -79,7 +81,7 @@ public class SelectorLanguageActivity extends BaseActivity {
             mCbSimplified.setChecked(false);
             mCbTraditional.setChecked(false);
             mCbEnglish.setChecked(false);
-        } else if ("zh".equals(mLanguageKind)) {
+        } else if ("zh-cn".equals(mLanguageKind)) {
             mCbSystem.setChecked(false);
             mCbSimplified.setChecked(true);
             mCbTraditional.setChecked(false);
@@ -115,7 +117,7 @@ public class SelectorLanguageActivity extends BaseActivity {
                 mCbEnglish.setChecked(false);
                 break;
             case R.id.rl_simplified_chinese:
-                mLanguageKind = "zh";
+                mLanguageKind = "zh-cn";
                 mCbSystem.setChecked(false);
                 mCbSimplified.setChecked(true);
                 mCbTraditional.setChecked(false);
@@ -148,7 +150,10 @@ public class SelectorLanguageActivity extends BaseActivity {
         }
         new LoginPresenter(this).postLanguage(language, new LoginPresenter.CallBack3() {
             @Override
-            public void send() {
+            public void send(String currency) {
+                if (!currency.isEmpty()) {
+                    MySharedPreferences.getInstance().setString(STATE, currency);
+                }
                 MySharedPreferences.getInstance().setString(getString(R.string.language_pref_key), mLanguageKind);
             }
         });

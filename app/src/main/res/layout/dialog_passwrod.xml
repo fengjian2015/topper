@@ -12,6 +12,7 @@
         android:layout_marginLeft="@dimen/x60"
         android:layout_marginRight="@dimen/x60"
         android:layout_marginTop="@dimen/y100"
+        app:cardBackgroundColor="@color/main_text_color"
         app:cardCornerRadius="@dimen/x20">
 
         <LinearLayout

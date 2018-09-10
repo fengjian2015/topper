@@ -27,6 +27,7 @@
         <TextView
             android:id="@+id/tv_selector_way"
             style="@style/BlueTextStyle28"
+            android:textColor="#7CA1E5"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
@@ -47,101 +48,89 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tv_hint"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/y30"
-            android:layout_marginTop="@dimen/y30"
-            android:text="@string/receipt_payment_hint"/>
+        android:visibility="visible">
 
         <RelativeLayout
-            android:layout_width="@dimen/x650"
+            android:id="@+id/rl_backgound"
+            android:layout_width="@dimen/x690"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/bg_shallow_shape"
+            android:layout_marginTop="@dimen/y30"
+            android:background="@drawable/bg_get_shape"
             android:paddingLeft="@dimen/x50"
             android:paddingRight="@dimen/x50"
             android:paddingTop="@dimen/y30">
 
-            <RelativeLayout
-                android:id="@+id/rl_data"
+            <TextView
+                android:id="@+id/tv_hint"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/y30"
+                android:layout_marginTop="@dimen/y30"
+                android:text="@string/receipt_payment_hint"/>
+
+            <ImageView
+                android:id="@+id/iv_qr"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x550"
+                android:layout_below="@+id/tv_hint"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/y20"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_qr"
                 android:layout_marginBottom="@dimen/y20"
                 android:visibility="gone">
 
-                <TextView
-                    style="@style/MainTextShallowStyle30"
+                <RelativeLayout
+                    android:id="@+id/rl_coin_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/coins"/>
+                    android:layout_centerHorizontal="true">
 
-                <TextView
-                    android:id="@+id/tv_coin"
-                    style="@style/MainTextShallowStyle30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="TPC"
-                    android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tv_coin"
+                        style="@style/MainTextShallowStyle36"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TPC"
+                        android:textStyle="bold"/>
 
-                <TextView
-                    android:id="@+id/tv2"
-                    style="@style/MainTextShallowStyle30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_coin"
-                    android:layout_marginTop="@dimen/y5"
-                    android:text="@string/count"/>
+                    <TextView
+                        android:id="@+id/tv_count"
+                        style="@style/MainTextShallowStyle36"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/tv_coin"
+                        android:layout_marginLeft="@dimen/x10"
+                        android:layout_toRightOf="@+id/tv_coin"
+                        android:text="100.00"
+                        android:textSize="@dimen/x60"
+                        android:textStyle="bold"/>
+                </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/tv_count"
-                    style="@style/MainTextShallowStyle30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/tv_coin"
-                    android:layout_marginTop="@dimen/y5"
-                    android:text="100.00"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/tv3"
-                    style="@style/MainTextShallowStyle30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_count"
-                    android:layout_marginTop="@dimen/y5"
-                    android:text="@string/remark"/>
 
                 <TextView
                     android:id="@+id/tv_remark"
                     style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/tv_count"
-                    android:layout_marginTop="@dimen/y5"/>
+                    android:layout_below="@+id/rl_coin_count"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/y10"/>
 
             </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/iv_qr"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/x550"
-                android:layout_below="@+id/rl_data"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/y20"/>
-
             <TextView
                 android:id="@+id/xx"
-                style="@style/HorizontalBoundaryStyle"
-                android:layout_below="@+id/iv_qr"/>
+                style="@style/HorizontalDeepBoundaryStyle"
+                android:layout_below="@+id/rl_data"
+                android:background="@color/white"/>
 
             <TextView
                 android:id="@+id/tv_set"

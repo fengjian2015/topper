@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.alipay.sdk.app.EnvUtils;
 import com.bclould.tea.R;
-import com.bclould.tea.alipay.AlipayClient;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -74,7 +73,12 @@ public class SendRedAlipaylActivity extends BaseActivity {
                 break;
             case R.id.btn_send:
 //                AlipayClient.getInstance().payV2(SendRedAlipaylActivity.this);
-                AlipayClient.getInstance().authV2(SendRedAlipaylActivity.this);
+               /* AlipayClient.getInstance().authV2(SendRedAlipaylActivity.this, new PersonalDetailsPresenter.CallBack6() {
+                    @Override
+                    public void send() {
+                        mTvAlipay.setText(getString(R.string.not_bound));
+                    }
+                });*/
                 break;
         }
     }

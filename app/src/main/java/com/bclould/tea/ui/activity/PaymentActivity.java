@@ -452,7 +452,7 @@ public class PaymentActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText(getString(R.string.selector_coin));
+        tvTitle.setText(getString(R.string.coins));
     }
 
     public void hideDialog(String name, int id, String logo) {

@@ -247,7 +247,7 @@ public class SendQRCodeRedActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText(getString(R.string.selector_coin));
+        tvTitle.setText(getString(R.string.coins));
         if (MyApp.getInstance().mRedCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);

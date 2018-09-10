@@ -59,6 +59,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.bclould.tea.Presenter.LoginPresenter.STATE;
+import static com.bclould.tea.Presenter.LoginPresenter.STATE_ID;
 import static com.bclould.tea.R.style.BottomDialog;
 
 
@@ -108,12 +109,12 @@ public class OtcActivity extends BaseActivity {
     @Bind(R.id.ll_bottom)
     LinearLayout mLlBottom;
     private Dialog mBottomDialog;
-    private int mId;
-    private String mName_zh;
+    private String mState;
     private String mCoinName = "";
     private Dialog mStateDialog;
     private String mServiceCharge;
     private String mServiceCharge2;
+    private int mState_id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,23 +125,12 @@ public class OtcActivity extends BaseActivity {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        mType = "2";
-        if (MySharedPreferences.getInstance().getSp().contains(STATE)) {
-            mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
-        } else {
-            mTvState.setText(getString(R.string.china_mainland));
-        }
-        mFiltrateList.add(getString(R.string.all));
-        mFiltrateList.add(getString(R.string.canceled_canc));
-        mFiltrateList.add(getString(R.string.underway));
-        mFiltrateList.add(getString(R.string.off_the_stocks));
-        mFiltrateList.add(getString(R.string.exception));
         init();
     }
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase,MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -160,6 +150,20 @@ public class OtcActivity extends BaseActivity {
     }
 
     private void init() {
+        mType = "2";
+        if (MySharedPreferences.getInstance().getSp().contains(STATE)) {
+            mState = MySharedPreferences.getInstance().getString(STATE);
+            mTvState.setText(mState);
+        } else {
+            mState = getString(R.string.china_mainland);
+            mTvState.setText(mState);
+        }
+        mState_id = MySharedPreferences.getInstance().getInteger(STATE_ID);
+        mFiltrateList.add(getString(R.string.all));
+        mFiltrateList.add(getString(R.string.canceled_canc));
+        mFiltrateList.add(getString(R.string.underway));
+        mFiltrateList.add(getString(R.string.off_the_stocks));
+        mFiltrateList.add(getString(R.string.exception));
         initData();
         mMap.put(getString(R.string.filtrate), 0);
         boolean aBoolean = MySharedPreferences.getInstance().getBoolean(Constants.OTC_DISCLAIMER);
@@ -441,12 +445,12 @@ public class OtcActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText(getString(R.string.selector_coin));
+        tvTitle.setText(getString(R.string.coins));
     }
 
     private void showStateDialog() {
         mStateDialog = new Dialog(this, R.style.BottomDialog2);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom2, null);
         //获得dialog的window窗口
         Window window = mStateDialog.getWindow();
         window.getDecorView().setPadding(0, 0, 0, 0);
@@ -502,11 +506,12 @@ public class OtcActivity extends BaseActivity {
 
     public void hideDialog2(int id, String name) {
         mStateDialog.dismiss();
-        mId = id;
-        mName_zh = name;
-        mTvState.setText(name);
+        mState_id = id;
+        mState = name;
+        mTvState.setText(mState);
         MessageEvent messageEvent = new MessageEvent(getString(R.string.state_switchover));
-        messageEvent.setState(name);
+        messageEvent.setState(mState);
+        messageEvent.setNumber(mState_id);
         EventBus.getDefault().post(messageEvent);
     }
 

@@ -154,8 +154,10 @@ public class DynamicPresenter {
                 });
     }
 
-    public void taDynamicList(int page, int pageSize, String user, final CallBack2 callBack2) {
-        showDialog();
+    public void taDynamicList(int page, int pageSize, String user, int count, final CallBack2 callBack2) {
+        if (count == 1) {
+            showDialog();
+        }
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .taDynamicList(UtilTool.getToken(), page, pageSize, user)
