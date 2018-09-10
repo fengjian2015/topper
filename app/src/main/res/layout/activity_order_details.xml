@@ -56,6 +56,7 @@
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_marginRight="@dimen/x20"
                 android:layout_marginTop="@dimen/y20"
+                app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/boundary_color"
                 app:cardCornerRadius="@dimen/x15">
 
@@ -571,6 +572,7 @@
                 android:layout_marginBottom="@dimen/y20"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_marginRight="@dimen/x20"
+                app:cardElevation="0dp"
                 android:layout_marginTop="@dimen/y20"
                 app:cardBackgroundColor="@color/boundary_color"
                 app:cardCornerRadius="@dimen/x15">

@@ -558,26 +558,15 @@ public class MainActivity extends BaseActivity {
 
     //初始化底部菜单栏
     private void initBottomMenu() {
-
         for (int i = 0; i < mMainBottomMenu.getChildCount(); i++) {
-
             final View childAt = mMainBottomMenu.getChildAt(i);
-
             childAt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int index = mMainBottomMenu.indexOfChild(childAt);
-//                    if (!WsConnection.getInstance().getOutConnection()) {
-
                     changeFragment(index);
-
                     setSelector(index);
                     converstonTop(index);
-                    /*} else {
-                        if (index != 0) {
-                            startActivity(new Intent(MainActivity.this, InitialActivity.class));
-                        }
-                    }*/
                 }
             });
         }
@@ -596,18 +585,12 @@ public class MainActivity extends BaseActivity {
     @SuppressLint("RestrictedApi")
     private void changeFragment(int index) {
         if (mSupportFragmentManager == null) {
-
             mSupportFragmentManager = getSupportFragmentManager();
         }
-
         FragmentTransaction ft = mSupportFragmentManager.beginTransaction();
-
         FragmentFactory fragmentFactory = FragmentFactory.getInstanes();
-
         Fragment LastFragment = fragmentFactory.createMainFragment(lastIndex);
-
         Fragment fragment = fragmentFactory.createMainFragment(index);
-
         if (mSupportFragmentManager.getFragments() == null) {
             if (!fragment.isAdded() && null == mSupportFragmentManager.findFragmentByTag(index + "")) {
                 ft.add(R.id.main_fl, fragment, index + "");
@@ -619,16 +602,13 @@ public class MainActivity extends BaseActivity {
         }
         if (ft != null) {
             ft.hide(LastFragment);
-
             ft.show(fragment);
-
             ft.commitAllowingStateLoss();
             if (mSupportFragmentManager != null)
                 mSupportFragmentManager.executePendingTransactions();
         }
         lastIndex = index;
     }
-
 
 //     当activity销毁时不保存其内部的view的状态
 
@@ -660,10 +640,10 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             exitBy2Click();      //调用双击退出函数
         }
+        finish();
         return false;
     }
 

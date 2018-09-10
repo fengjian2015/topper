@@ -2273,4 +2273,8 @@
     <string name="hand">手</string>
     <string name="alipay_red">支付宝红包</string>
     <string name="zhi">支</string>
+    <string name="alipay_red_bind_hint">请先绑定支付宝</string>
+    <string name="send_red_packet_hint2">未领取的红包，将于48小时后退款</string>
+    <string name="group_red">群红包</string>
+    <string name="red_no">已抢完</string>
 </resources>

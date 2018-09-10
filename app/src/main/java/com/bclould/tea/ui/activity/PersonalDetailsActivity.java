@@ -120,7 +120,7 @@ public class PersonalDetailsActivity extends BaseActivity {
         mTvUsername.setText(UtilTool.getUser());
         mTvId.setText(UtilTool.getTocoId());
         mTvEmail.setText(UtilTool.getEmail());
-        if (MySharedPreferences.getInstance().getString(ALIPAY_UUID).isEmpty()) {
+        if (UtilTool.getUUID().isEmpty()) {
             mTvAlipay.setText(getString(R.string.not_bound));
             isAlipay = false;
         } else {
@@ -224,7 +224,7 @@ public class PersonalDetailsActivity extends BaseActivity {
         AlipayClient.getInstance().authV2(PersonalDetailsActivity.this, new PersonalDetailsPresenter.CallBack7() {
             @Override
             public void send(String userId) {
-                MySharedPreferences.getInstance().setString(ALIPAY_UUID, userId);
+                mUserId = userId;
                 bindAlipay();
             }
         });
@@ -242,10 +242,12 @@ public class PersonalDetailsActivity extends BaseActivity {
     }
 
     private void bindAlipay() {
-        mPersonalDetailsPresenter.bindAlipay(MySharedPreferences.getInstance().getString(ALIPAY_UUID), new PersonalDetailsPresenter.CallBack6() {
+        mPersonalDetailsPresenter.bindAlipay(mUserId, new PersonalDetailsPresenter.CallBack6() {
             @Override
             public void send() {
                 mTvAlipay.setText(getString(R.string.is_binding));
+                MySharedPreferences.getInstance().setString(ALIPAY_UUID, mUserId);
+                isAlipay = true;
             }
         });
     }
@@ -256,6 +258,8 @@ public class PersonalDetailsActivity extends BaseActivity {
             @Override
             public void send() {
                 mTvAlipay.setText(getString(R.string.not_bound));
+                MySharedPreferences.getInstance().setString(ALIPAY_UUID, "");
+                isAlipay = false;
             }
         });
     }

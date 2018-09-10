@@ -274,7 +274,7 @@ public class SendQRCodeRedActivity extends BaseActivity {
         double single = money / count;
         mRedPacketPresenter.sendRedPacket("code", 2, coin, getString(R.string.congratulation), 2, count, single, money, password, new RedPacketPresenter.CallBack() {
             @Override
-            public void send(int id) {
+            public void send(int id, String response) {
                 String code = UtilTool.base64PetToJson(SendQRCodeRedActivity.this, Constants.REDPACKAGE, "redID", id + "", getString(R.string.red_package));
                 Intent intent = new Intent(SendQRCodeRedActivity.this, QRCodeRedActivity.class);
                 intent.putExtra("code", code);

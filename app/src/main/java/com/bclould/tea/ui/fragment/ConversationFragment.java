@@ -270,7 +270,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                 } else {
                     startActivity(new Intent(getActivity(), InitialActivity.class));
                 }
-//                startActivity(new Intent(getActivity(), SendRedAlipaylActivity.class));
+//                startActivity(new Intent(getActivity(), SendRedGroupAlipaylActivity.class));
 //                startActivity(new Intent(getActivity(), ConversationBurnListActivity.class));
                 break;
             case R.id.iv_more:

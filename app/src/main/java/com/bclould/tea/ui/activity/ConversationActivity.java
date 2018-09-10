@@ -254,6 +254,16 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 Intent intent = new Intent(ConversationActivity.this, SelectFriendGetActivity.class);
                 intent.putExtra("roomId", roomId);
                 startActivity(intent);
+            }else if (getString(R.string.alipay_red_package).equals(name)) {
+                if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
+                    Intent intent = new Intent(ConversationActivity.this, SendRedGroupAlipaylActivity.class);
+                    intent.putExtra("roomId", roomId);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(ConversationActivity.this, SendRedAlipaylActivity.class);
+                    intent.putExtra("roomId", roomId);
+                    startActivity(intent);
+                }
             }
         }
     };

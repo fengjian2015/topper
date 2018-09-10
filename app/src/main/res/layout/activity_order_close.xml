@@ -61,6 +61,7 @@
             android:layout_marginLeft="@dimen/x30"
             android:layout_marginRight="@dimen/x20"
             android:layout_marginTop="@dimen/y20"
+            app:cardElevation="0dp"
             app:cardBackgroundColor="@color/boundary_color"
             app:cardCornerRadius="@dimen/x15">
 

@@ -28,4 +28,5 @@
         <string name="shooting">拍摄</string>
         <string name="collect">收藏</string>
         <string name="business_card">名片</string>
+    <string name="alipay_red_package">支付宝红包</string>
 </resources>

@@ -311,7 +311,7 @@ public class SendRedGroupActivity extends BaseActivity {
         new RedPacketPresenter(this).sendRedPacket(roomId, type, mCoin, mRemark, 1, redCount, singleMoney, mCount, password, new RedPacketPresenter.CallBack() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-            public void send(int id) {
+            public void send(int id, String response) {
                 setData(id);
             }
         });

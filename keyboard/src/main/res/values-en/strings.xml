@@ -23,9 +23,10 @@
             <string name="video">video</string>
             <string name="file">file </string>
             <string name="transfer">transfer </string>
-            <string name="red_package"> red envelope </string>
+            <string name="red_package">red envelope</string>
             <string name="location">location</string>
             <string name="shooting">shooting</string>
             <string name="collect">collection </string>
             <string name="business_card">business card </string>
-</resources>
+    <string name="alipay_red_package">alipay red envelope</string>
+    </resources>

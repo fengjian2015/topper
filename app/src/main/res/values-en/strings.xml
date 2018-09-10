@@ -2288,5 +2288,12 @@ Please reset encryption request</string>
     <string name="selector_time">select time </string>
     <string name="selector_type">Select type </string>
     <string name="look_update_log">View update log </string>
-    <string name="version">version</string>
+    <string name="version">Version</string>
+    <string name="hand">Hand</string>
+    <string name="alipay_red"> Alipay red envelope </string>
+    <string name="zhi">Alipay</string>
+    <string name="alipay_red_bind_hint">Please bind Alipay first</string>
+    <string name="send_red_packet_hint2">Unreceived red envelope will be refunded after 48 hours</string>
+    <string name="group_red">group red package</string>
+    <string name="red_no">已抢完</string>
 </resources>
