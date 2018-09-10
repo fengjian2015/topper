@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
     <!--android:background="@mipmap/collect_popupwindow_bg"-->
     <LinearLayout
         android:id="@+id/quit_popupwindows_bg"
@@ -13,30 +13,35 @@
         android:orientation="vertical"
         >
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         >
+
         <TextView
             android:id="@+id/text1"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y12"
             android:layout_alignParentBottom="true"
             />
+
         <android.support.v7.widget.CardView
             android:id="@+id/card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x20"
             android:layout_above="@+id/text1"
+            android:layout_marginLeft="@dimen/x20"
             android:layout_marginRight="@dimen/x20"
-            app:cardCornerRadius="@dimen/x15"
             android:background="@drawable/bt_nobgd"
+            app:cardCornerRadius="@dimen/x15"
             >
+
             <RelativeLayout
                 android:id="@+id/rl_card"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100">
+
                 <Button
                     android:id="@+id/button_common3"
                     android:layout_width="match_parent"
@@ -55,7 +60,7 @@
             android:layout_height="@dimen/y12"
             android:layout_above="@id/card"/>
 
-        <sj.keyboard.widget.MyGridView
+        <!--<sj.keyboard.widget.MyGridView
             android:id="@+id/gv_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,7 +73,44 @@
             android:listSelector="@android:color/transparent"
             android:background="@drawable/item_app"
             android:numColumns="4"
-            />
+            />-->
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x420"
+            android:layout_above="@id/jiange"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:background="@drawable/item_app"
+            android:paddingBottom="@dimen/y20"
+            android:paddingTop="@dimen/y20">
+        </android.support.v4.view.ViewPager>
+
+        <LinearLayout
+            android:id="@+id/ll_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/jiange"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/y20"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="@dimen/x10"
+                android:layout_height="@dimen/x10"
+                android:background="@drawable/bg_grey_oval"/>
+
+            <TextView
+                android:id="@+id/tv2"
+                android:layout_width="@dimen/x10"
+                android:layout_height="@dimen/x10"
+                android:layout_marginLeft="@dimen/x20"
+                android:background="@drawable/bg_grey_oval"/>
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

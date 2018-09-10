@@ -2,6 +2,7 @@ package sj.keyboard.utils;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +10,17 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.keyboard.view.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import sj.keyboard.XhsEmoticonsKeyBoard;
+import sj.keyboard.adpater.MenuVPAdapter;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.MyGridView;
 
@@ -30,11 +31,16 @@ import static com.keyboard.view.R.style.BottomDialog;
  */
 public class MenuGridListPopWindow extends Dialog {
 
+    private final ViewPager mViewPager;
+    private final LinearLayout mLlIndicator;
+    private final TextView mTv1;
+    private final TextView mTv2;
+
     public interface ListOnClick {
         /**
          * 0是最底下的取消按钮选项，1-n是从上往下的各个选项
          *
-         * @param position
+         * @param name
          */
         public void onclickitem(String name);
     }
@@ -51,6 +57,7 @@ public class MenuGridListPopWindow extends Dialog {
     private int color = 0;
     private String roomType;
     private boolean isBurnReading;
+    private List<View> mViews = new ArrayList<>();
 
     public MenuGridListPopWindow(Context context, EmoticonsEditText etChat, String roomType, boolean isBurnReading) {
         super(context, R.style.BottomDialog2);
@@ -58,12 +65,13 @@ public class MenuGridListPopWindow extends Dialog {
         this.context = context;
         this.roomType = roomType;
         this.isBurnReading = isBurnReading;
-        gv_menu = (MyGridView) view.findViewById(R.id.gv_menu);
         setList();
-        gv_menu.setAdapter(new MyMenuAdapter());
         button_common3 = (Button) view.findViewById(R.id.button_common3);
+        mLlIndicator = (LinearLayout) view.findViewById(R.id.ll_indicator);
         quit_popupwindows_bg = (LinearLayout) view.findViewById(R.id.quit_popupwindows_bg);
-
+        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        mTv1 = (TextView) view.findViewById(R.id.tv1);
+        mTv2 = (TextView) view.findViewById(R.id.tv2);
         button_common3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +91,48 @@ public class MenuGridListPopWindow extends Dialog {
                 }
             }
         });
+        if (!XhsEmoticonsKeyBoard.ROOM_TYPE_MULTI.equals(roomType)) {
+            mLlIndicator.setVisibility(View.VISIBLE);
+            MyGridView myGridView = new MyGridView(context);
+            myGridView.setNumColumns(4);
+            MyGridView myGridView2 = new MyGridView(context);
+            myGridView2.setNumColumns(4);
+            myGridView.setAdapter(new MyMenuAdapter(mAppBeanList.subList(0, 8)));
+            myGridView2.setAdapter(new MyMenuAdapter(mAppBeanList.subList(8, mAppBeanList.size())));
+            mViews.add(myGridView);
+            mViews.add(myGridView2);
+            mViewPager.setAdapter(new MenuVPAdapter(mViews));
+            mTv1.setBackgroundResource(R.drawable.bg_green_oval);
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (position == 0) {
+                        mTv1.setBackgroundResource(R.drawable.bg_green_oval);
+                        mTv2.setBackgroundResource(R.drawable.bg_grey_oval);
+                    } else {
+                        mTv2.setBackgroundResource(R.drawable.bg_green_oval);
+                        mTv1.setBackgroundResource(R.drawable.bg_grey_oval);
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+        } else {
+            mLlIndicator.setVisibility(View.GONE);
+            MyGridView myGridView = new MyGridView(context);
+            myGridView.setNumColumns(4);
+            myGridView.setAdapter(new MyMenuAdapter(mAppBeanList));
+            mViews.add(myGridView);
+            mViewPager.setAdapter(new MenuVPAdapter(mViews));
+        }
         //获得dialog的window窗口
         Window window = getWindow();
         window.getDecorView().setPadding(0, 0, 0, 0);
@@ -129,6 +178,12 @@ public class MenuGridListPopWindow extends Dialog {
     }
 
     private class MyMenuAdapter extends BaseAdapter {
+
+        private final List<AppInfo> mAppBeanList;
+
+        public MyMenuAdapter(List<AppInfo> appInfos) {
+            mAppBeanList = appInfos;
+        }
 
         @Override
         public int getCount() {
