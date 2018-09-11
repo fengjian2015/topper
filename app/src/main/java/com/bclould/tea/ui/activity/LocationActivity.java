@@ -9,25 +9,39 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.model.LocationInfo;
 import com.bclould.tea.ui.adapter.LocationListAdapter;
 import com.bclould.tea.ui.widget.AppTitle;
 import com.bclould.tea.ui.widget.CenterIcon;
+import com.bclould.tea.ui.widget.CenterIcon1;
+import com.bclould.tea.ui.widget.ScreenListPopWindow;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.LoadingProgressUtil;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
 import com.jude.easyrecyclerview.EasyRecyclerView;
@@ -56,7 +70,12 @@ import org.xutils.common.util.LogUtil;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.util.ArrayList;
+import java.util.List;
 import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by wushange on 2016/07/13.
@@ -70,8 +89,17 @@ public class LocationActivity extends AppCompatActivity implements
     LinearLayout ll_sel_location;
     @ViewInject(R.id.mapview)
     private MapView mapView;
+
     @ViewInject(R.id.poi_list)
     private EasyRecyclerView mRecyclerView;
+
+    @ViewInject(R.id.et_search)
+
+    private EditText mEtSearch;
+
+    @ViewInject(R.id.rl_data)
+    private RelativeLayout rl_data;
+
     LocationListAdapter mAdapter;
     private Marker mLocationMarker;
     private Marker mCenterMarker;
@@ -81,17 +109,22 @@ public class LocationActivity extends AppCompatActivity implements
     private boolean isFirstEnter = true;//第一次进入动画效果移动到定位点
     private boolean isActiveMove = false;//是不是主动拖动屏幕
     TencentSearch tencentSearch = new TencentSearch(this);
-    private CenterIcon centerIcon = null;
+    private CenterIcon1 centerIcon = null;
     private int oldClick = 0;//記錄上次點擊點
     private String mUser;
     private Context context;
+    private LocationInfo locationInfo;
+    private List<LocationInfo.DataBean> mList=new ArrayList<>();
+    private LoadingProgressUtil mLoadingProgressUtil;
+    private ScreenListPopWindow screenListPopWindow;
+    private String title;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.appThemeColor));
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//            getWindow().setStatusBarColor(getResources().getColor(R.color.appThemeColor));
+//        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_location_main_view);
         x.Ext.init(this.getApplication());
@@ -160,6 +193,22 @@ public class LocationActivity extends AppCompatActivity implements
         } else {
             right = getString(R.string.confirm);
         }
+        mLoadingProgressUtil=new LoadingProgressUtil(this);
+        mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    // TODO: 2018/8/21 发送报文请求
+                    if(StringUtils.isEmpty(mEtSearch.getText().toString())){
+                        ToastShow.showToast2(LocationActivity.this,getString(R.string.pleass_input_location));
+                        return false;
+                    }
+                    okHttp_synchronousGet(mEtSearch.getText().toString());
+                }
+                return false;
+            }
+        });
+
         appTitle.setCenterTitle(getString(R.string.location)).setLeftButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,7 +248,7 @@ public class LocationActivity extends AppCompatActivity implements
 
     private void initMap() {
         // 初始化屏幕中心
-        centerIcon = new CenterIcon(this, mapView);
+        centerIcon = new CenterIcon1(this, mapView);
         getWindow().addContentView(
                 centerIcon,
                 new ViewGroup.LayoutParams(
@@ -236,6 +285,68 @@ public class LocationActivity extends AppCompatActivity implements
         });
     }
 
+    private void okHttp_synchronousGet(final String keyword) {
+        mLoadingProgressUtil.showDialog();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String url = "https://apis.map.qq.com/ws/place/v1/suggestion/?region="+title+"&keyword="+keyword+"&key=VKMBZ-GAMWJ-UA5FV-KAXJS-IEHET-QABI7";
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder().url(url).build();
+                    Response response = client.newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        locationInfo= JSON.parseObject(response.body().string(), LocationInfo.class);
+                        mHandler.sendEmptyMessage(1);
+                    } else {
+                    }
+                    mLoadingProgressUtil.hideDialog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    Handler mHandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    UtilTool.hideSoftInputFromWindow(mapView,LocationActivity.this);
+                    if(locationInfo!=null&&locationInfo.getData()!=null&&locationInfo.getStatus()==0){
+                        if(locationInfo.getData().size()==0){
+                            ToastShow.showToast2(LocationActivity.this,getString(R.string.address_not_found));
+                            return;
+                        }
+                        mList.clear();
+                        mList.addAll(locationInfo.getData());
+                        showPop();
+                    }else{
+                        ToastShow.showToast2(LocationActivity.this,locationInfo.getMessage());
+                    }
+                    break;
+            }
+        }
+    };
+
+    private void showPop(){
+        if(screenListPopWindow!=null){
+            screenListPopWindow.dismiss();
+        }else {
+            screenListPopWindow=new ScreenListPopWindow(this,mList);
+        }
+        screenListPopWindow.setListOnClick(new ScreenListPopWindow.ListOnClick() {
+            @Override
+            public void onclickitem(int position) {
+                Location location = new Location((float) mList.get(position).getLocation().getLat(), (float) mList.get(position).getLocation().getLng());
+                searchPoi(location);
+                LatLng latLngLocation = new LatLng( mList.get(position).getLocation().getLat(),  mList.get(position).getLocation().getLng());
+                tencentMap.animateTo(latLngLocation);
+            }
+        });
+        screenListPopWindow.showAsDropDown(rl_data,0,2);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -271,6 +382,8 @@ public class LocationActivity extends AppCompatActivity implements
                         tencentMap.addMarker(new MarkerOptions().
                                 position(latLngLocation).
                                 icon(BitmapDescriptorFactory.fromResource(R.mipmap.a5z)));
+                title= tencentLocation.getAddress().substring(tencentLocation.getAddress().indexOf("省") + 1, tencentLocation.getAddress().indexOf("市"));
+
             } else {
                 mLocationMarker.setPosition(latLngLocation);
             }

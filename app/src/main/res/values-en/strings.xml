@@ -2296,4 +2296,7 @@ Please reset encryption request</string>
     <string name="send_red_packet_hint2">Unreceived red envelope will be refunded after 48 hours</string>
     <string name="group_red">group red package</string>
     <string name="red_no">已抢完</string>
+    <string name="search_the_location">search address </string>
+    <string name="pleass_input_location">Please enter the address </string>
+    <string name="address_not_found">The address was not found </string>
 </resources>
