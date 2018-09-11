@@ -33,6 +33,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -131,6 +132,12 @@ public class UtilTool {
         fs.close();
         return outStream.toByteArray();
     }
+
+    public static int dip2px(Context context, float dpvalue) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpvalue * scale + 0.5f);
+    }
+
 
     public static File getVideoCacheDir(Context context) {
         return new File(context.getExternalCacheDir(), "video-cache");
@@ -1639,6 +1646,13 @@ public class UtilTool {
 
     public static String getUUID() {
         return MySharedPreferences.getInstance().getString(ALIPAY_UUID);
+    }
+
+    public static void hideSoftInputFromWindow(View view, Context context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
 }

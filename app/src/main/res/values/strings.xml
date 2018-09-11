@@ -2277,4 +2277,7 @@
     <string name="send_red_packet_hint2">未领取的红包，将于48小时后退款</string>
     <string name="group_red">群红包</string>
     <string name="red_no">已抢完</string>
+    <string name="search_the_location">搜索地址</string>
+    <string name="pleass_input_location">请输入地址</string>
+    <string name="address_not_found">未搜索到该地址</string>
 </resources>
