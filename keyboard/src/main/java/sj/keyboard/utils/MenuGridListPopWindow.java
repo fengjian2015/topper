@@ -91,7 +91,7 @@ public class MenuGridListPopWindow extends Dialog {
                 }
             }
         });
-        if (!XhsEmoticonsKeyBoard.ROOM_TYPE_MULTI.equals(roomType)) {
+        if (mAppBeanList.size() > 8) {
             mLlIndicator.setVisibility(View.VISIBLE);
             MyGridView myGridView = new MyGridView(context);
             myGridView.setNumColumns(4);

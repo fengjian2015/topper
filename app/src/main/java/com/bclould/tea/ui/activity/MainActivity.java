@@ -382,7 +382,6 @@ public class MainActivity extends BaseActivity {
                         getMessageTop();
                     }
                 }.sendEmptyMessageDelayed(0, 5 * 1000);
-
             }
 
             @Override
