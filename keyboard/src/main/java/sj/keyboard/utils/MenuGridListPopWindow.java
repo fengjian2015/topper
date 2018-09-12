@@ -148,6 +148,10 @@ public class MenuGridListPopWindow extends Dialog {
 
     }
 
+    public void setSelecotr() {
+        mViewPager.setCurrentItem(0);
+    }
+
     private void setList() {
         if (isBurnReading) {
             mAppBeanList.add(new AppInfo(R.drawable.icon_tail_photo, context.getString(R.string.image)));

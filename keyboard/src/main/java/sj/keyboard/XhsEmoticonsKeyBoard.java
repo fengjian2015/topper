@@ -234,6 +234,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
 
     private void show() {
         menu.showAtLocation();
+        menu.setSelecotr();
     }
 
     public void reset() {
