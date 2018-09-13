@@ -389,11 +389,24 @@ public class SocketListener {
     public void messageFeedback(Map<Object, Object> content, boolean isPlayHint, String roomType) {
         try {
             int isBurnReading = UtilTool.parseInt(content.get("isBurnReading") + "");
-            Map<Object, Object> messageMap = objectMapper.readValue((byte[]) content.get("message"), new TypeReference<Map<String, Object>>() {
-            });
+            Map<Object, Object> messageMap = objectMapper.readValue((byte[]) content.get("message"), new TypeReference<Map<String, Object>>() {});
             String from;
             String sendFrom;
             boolean isMe = false;
+            String message = (String) messageMap.get("body");
+            boolean crypt = (boolean) content.get("crypt");
+            String msgId = (String) content.get("id");
+            long createTime = UtilTool.stringToLong(content.get("time") + "");
+            String otr;
+            int msgType;
+            String time = UtilTool.createChatTime();
+            int status = 0;
+            int type = 0;
+            File file = null;
+            String friend;//會話列表名字
+            String redpacket;//會話列表顯示的內容
+            String chatMessage;//廣播內容
+            //處理消息發送者接受者
             if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
                 from = content.get("group_id") + "";
                 sendFrom = (String) content.get("toco_id");
@@ -411,14 +424,11 @@ public class SocketListener {
                 sendFrom = from;
             }
             //處理多終端登錄，自己消息同步問題
-            String message = (String) messageMap.get("body");
-            boolean crypt = (boolean) content.get("crypt");
-            String msgId = (String) content.get("id");
             if (StringUtils.isEmpty(msgId)) {
                 msgId = UtilTool.createMsgId(UtilTool.getTocoId());
             }
-            long createTime = UtilTool.stringToLong(content.get("time") + "");
-            String otr = OTRCrypt(from, message, crypt);
+            //加密消息判斷
+            otr = OTRCrypt(from, message, crypt);
             if (StringUtils.isEmpty(otr)) return;
             //默認文本類型
             MessageInfo messageInfo = new MessageInfo();
@@ -434,9 +444,7 @@ public class SocketListener {
                     messageInfo = JSONObject.parseObject(message, MessageInfo.class);
                 }
             }
-            int msgType;
-            String time = UtilTool.createChatTime();
-            String friend;
+            //會話列表名字設置
             if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
                 friend = mdbRoomManage.findRoomName(from);
             } else {
@@ -449,10 +457,8 @@ public class SocketListener {
                     friend = from;
                 }
             }
-            int status = 0;
-            int type = 0;
-            String redpacket = messageInfo.getMessage();
-            File file = null;
+            //會話列表內容設置
+            redpacket = messageInfo.getMessage();
             //根據消息類型處理對應的消息
             switch ((int) content.get(TYPE)) {
                 case WsContans.MSG_AUDIO:
@@ -463,7 +469,6 @@ public class SocketListener {
                     } else {
                         msgType = FROM_VOICE_MSG;
                     }
-                    goChat(from, context.getString(R.string.voice), roomType);
                     String fileName = UtilTool.createtFileName() + ".amr";
                     String path = context.getFilesDir().getAbsolutePath() + File.separator + "RecordRemDir";
                     file = saveFile((byte[]) messageMap.get("attachment"), fileName, path);
@@ -471,6 +476,7 @@ public class SocketListener {
                         messageInfo.setVoice(file.getAbsolutePath());
                         messageInfo.setVoiceTime(UtilTool.getFileDuration(file.getAbsolutePath(), context) + "");
                     }
+                    chatMessage=context.getString(R.string.voice);
                     break;
                 case WsContans.MSG_IMAGE:
                     //圖片
@@ -489,7 +495,7 @@ public class SocketListener {
                         msgType = FROM_IMG_MSG;
                     }
                     messageInfo.setVoice(downFileCompress(url1));
-                    goChat(from, context.getString(R.string.image), roomType);
+                    chatMessage=context.getString(R.string.image);
                     break;
                 case WsContans.MSG_VIDEO:
                     //視頻
@@ -508,7 +514,7 @@ public class SocketListener {
                         msgType = FROM_VIDEO_MSG;
                     }
                     messageInfo.setVoice(url + VIDEO_THUMBNAIL);
-                    goChat(from, context.getString(R.string.video), roomType);
+                    chatMessage=context.getString(R.string.video);
                     break;
                 case WsContans.MSG_FILE:
                     //文件
@@ -521,7 +527,7 @@ public class SocketListener {
                         msgType = FROM_FILE_MSG;
                     }
                     redpacket = "[" + context.getString(R.string.file) + "]";
-                    goChat(from, context.getString(R.string.file), roomType);
+                    chatMessage=context.getString(R.string.file);
                     break;
                 case WsContans.MSG_LOCATION:
                     //定位
@@ -538,7 +544,7 @@ public class SocketListener {
                         messageInfo.setVoice(file.getAbsolutePath());
                     }
                     messageInfo.setMessage(messageInfo.getTitle());
-                    goChat(from, context.getString(R.string.location), roomType);
+                    chatMessage=context.getString(R.string.location);
                     break;
 
                 case WsContans.MSG_SHARE_GUESS:
@@ -549,7 +555,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_GUESS_MSG;
                     }
-                    goChat(from, context.getString(R.string.share_guess), roomType);
+                    chatMessage=context.getString(R.string.share_guess);
                     break;
                 case WsContans.MSG_SHARE_LINK:
                     //鏈接分享
@@ -559,7 +565,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_LINK_MSG;
                     }
-                    goChat(from, context.getString(R.string.share), roomType);
+                    chatMessage=context.getString(R.string.share);
                     break;
                 case WsContans.MSG_CARD:
                     //個人名片
@@ -569,7 +575,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_CARD_MSG;
                     }
-                    goChat(from, context.getString(R.string.person_business_card), roomType);
+                    chatMessage=context.getString(R.string.person_business_card);
                     break;
                 case WsContans.MSG_REDBAG:
                     //紅包
@@ -579,7 +585,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_RED_MSG;
                     }
-                    goChat(from, messageInfo.getRemark(), roomType);
+                    chatMessage=messageInfo.getRemark();
                     break;
                 case WsContans.MSG_TRANSFER:
                     //轉賬
@@ -589,7 +595,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_TRANSFER_MSG;
                     }
-                    goChat(from, messageInfo.getRemark(), roomType);
+                    chatMessage=messageInfo.getRemark();
                     break;
                 case WsContans.MSG_INTIVE:
                     //群聊邀请
@@ -599,7 +605,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_INVITE_MSG;
                     }
-                    goChat(from, context.getString(R.string.group_intive), roomType);
+                    chatMessage=context.getString(R.string.group_intive);
                     break;
                 case WsContans.MSG_WITHDRAW:
                     //撤回消息
@@ -611,11 +617,10 @@ public class SocketListener {
                     } else {
                         msgType = FROM_WITHDRAW_MSG;
                     }
-                    goChat(from, redpacket, roomType);
-
                     MessageEvent messageEvent = new MessageEvent(EventBusUtil.withdrew_a_message);
                     messageEvent.setId(messageInfo.getBetId());
                     EventBus.getDefault().post(messageEvent);
+                    chatMessage=redpacket;
                     break;
                 case WsContans.MSG_TEXT:
                     if (isMe) {
@@ -623,7 +628,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_TEXT_MSG;
                     }
-                    goChat(from, messageInfo.getMessage(), roomType);
+                    chatMessage=messageInfo.getMessage();
                     break;
                 case WsContans.MSG_HTML:
                     //純鏈接分享
@@ -633,11 +638,12 @@ public class SocketListener {
                     } else {
                         msgType = FROM_HTML_MSG;
                     }
-                    goChat(from, redpacket, roomType);
+                    chatMessage=redpacket;
                     break;
                 default:
                     return;
             }
+            goChat(from, chatMessage, roomType);
             //添加数据库from
             //添加数据库from
             if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
