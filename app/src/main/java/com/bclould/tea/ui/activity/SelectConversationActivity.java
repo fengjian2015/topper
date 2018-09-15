@@ -156,7 +156,6 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
 
     @Override
     protected void onNewIntent(Intent intent) {
-        UtilTool.Log("fengjian", "重新走一波");
         super.onNewIntent(intent);
     }
 
