@@ -1,21 +1,16 @@
 package com.bclould.tea.Presenter;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
-import com.bclould.tea.model.GitHubInfo;
+import com.bclould.tea.model.VersionInfo;
 import com.bclould.tea.model.UpdateLogInfo;
-import com.bclould.tea.network.DownLoadApk;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.activity.VersionsUpdateActivity;
-import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
@@ -98,28 +93,32 @@ public class UpdateLogPresenter {
 
     //检测版本更新
     public void checkVersion(final CallBack2 callBack2) {
-       if(mContext instanceof VersionsUpdateActivity){
-           showDialog();
-       }
+        if (mContext instanceof VersionsUpdateActivity) {
+            showDialog();
+        }
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .checkVersion(Constants.VERSION_UPDATE_URL)//githua获取版本更新
+                .checkVersion(UtilTool.getToken(), 1)//githua获取版本更新
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                .subscribe(new Observer<GitHubInfo>() {
+                .subscribe(new Observer<VersionInfo>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(GitHubInfo baseInfo) {
+                    public void onNext(VersionInfo versionInfo) {
                         hideDialog();
-                        MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, Constants.DOWNLOAD_APK_URL);
-                        MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, baseInfo.getName());
-                        MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, baseInfo.getBody());
-                        MySharedPreferences.getInstance().setString(Constants.APK_VERSIONS_TAG, baseInfo.getTag_name());
-                        callBack2.send(1);
+                        if (versionInfo.getStatus() == 1) {
+                            MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, versionInfo.getData().getDownload_url());
+                            MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, versionInfo.getData().getName());
+                            MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, versionInfo.getData().getContent());
+                            MySharedPreferences.getInstance().setString(Constants.APK_VERSIONS_TAG, versionInfo.getData().getVersion());
+                            callBack2.send(1);
+                        } else {
+                            callBack2.error();
+                        }
                     }
 
                     @Override
@@ -240,6 +239,7 @@ public class UpdateLogPresenter {
     //定义接口
     public interface CallBack2 {
         void send(int type);
+
         void error();
     }
 }

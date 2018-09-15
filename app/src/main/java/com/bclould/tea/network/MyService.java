@@ -11,7 +11,6 @@ import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.model.DealListInfo;
 import com.bclould.tea.model.DynamicListInfo;
 import com.bclould.tea.model.ExchangeOrderInfo;
-import com.bclould.tea.model.GitHubInfo;
 import com.bclould.tea.model.GonggaoListInfo;
 import com.bclould.tea.model.GoogleInfo;
 import com.bclould.tea.model.GrabRedInfo;
@@ -52,6 +51,7 @@ import com.bclould.tea.model.TransferListInfo;
 import com.bclould.tea.model.UnclaimedRedInfo;
 import com.bclould.tea.model.UpdateLogInfo;
 import com.bclould.tea.model.UserDataInfo;
+import com.bclould.tea.model.VersionInfo;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -61,6 +61,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Url;
 
 /**
@@ -437,9 +438,10 @@ public interface MyService {
     );
 
     //下载apk
-    @GET
-    Observable<GitHubInfo> checkVersion(
-            @Url String url
+    @GET("chat/latest/version/{type}")
+    Observable<VersionInfo> checkVersion(
+            @Header("Authorization") String token,
+            @Path("type") int type
     );
 
     //币种列表
