@@ -131,7 +131,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
 //            return;
 //        }
 //
-//        if (shareType.contains(IMAGE_TYPE)) {
+//        if (shareType.contains(IMAGE_TY PE)) {
 //            Glide.with(this).load(uri).listener(new RequestListener<Drawable>() {
 //                @Override
 //                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
