@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -295,6 +296,7 @@ public class BuySellActivity extends BaseActivity {
 
     };
 
+    @SuppressLint("SetTextI18n")
     private void initInterface() {
         Bundle bundle = getIntent().getExtras();
         mType = bundle.getBoolean("type", false);
