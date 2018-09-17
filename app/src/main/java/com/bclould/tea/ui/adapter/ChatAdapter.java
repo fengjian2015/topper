@@ -73,6 +73,7 @@ import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 import com.bclould.tea.xmpp.RoomManage;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;

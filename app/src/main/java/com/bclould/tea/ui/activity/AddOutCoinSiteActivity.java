@@ -23,6 +23,7 @@ import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -85,6 +86,8 @@ public class AddOutCoinSiteActivity extends BaseActivity {
                 break;
             case R.id.iv_sao_ma:
                 //跳转扫描二维码页面
+                if (!AuthorizationUserTools.isCameraCanUse(this))
+                    return;
                 Intent intent = new Intent(this, ScanQRCodeActivity.class);
                 intent.putExtra("code", QRCODE);
                 startActivityForResult(intent, QRCODE);

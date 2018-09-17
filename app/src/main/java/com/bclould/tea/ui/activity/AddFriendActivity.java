@@ -31,6 +31,7 @@ import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,6 +145,8 @@ public class AddFriendActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_qr_code:
+                if (!AuthorizationUserTools.isCameraCanUse(this))
+                    return;
                 Intent intent = new Intent(this, ScanQRCodeActivity.class);
                 intent.putExtra("code", 1);
                 startActivity(intent);

@@ -1187,4 +1187,13 @@
     <string name="search_the_location">搜索地址</string>
     <string name="pleass_input_location">請輸入地址</string>
     <string name="address_not_found">​​未搜索到該地址</string>
+    <string name="camera_permission_info">攝像頭異常，請檢查TopperChat是否具有訪問攝像頭的權限，或者重啟設備後重試</string>
+    <string name="application_storage_space">應用存儲空間</string>
+    <string name="accessibility">權限申請</string>
+    <string name="not_obtainable">由於TopperChat法獲得</string>
+    <string name="open_access_path">權限，不能正常運行，請開啟權限在使用TopperChat\n設置路徑：設置->應用->TopperChat->權限</string>
+    <string name="not_obtainable1">當前TopperChat沒有</string>
+    <string name="open_access_path1">權限，請到當前設備管理應用或設置中開啟\n設置路徑：設置->應用->TopperChat->權限</string>
+    <string name="applied_position">應用位置</string>
+    <string name="application_recording">應用程序錄音</string>
 </resources>
