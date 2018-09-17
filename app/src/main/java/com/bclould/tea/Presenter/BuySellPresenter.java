@@ -109,10 +109,11 @@ public class BuySellPresenter {
                     @Override
                     public void onSubscribe(Disposable d) {
 
-                        
+
                     }
 
                     @Override
+
                     public void onNext(OrderListInfo baseInfo) {
                         hideDialog();
                         if (baseInfo.getStatus() == 1)

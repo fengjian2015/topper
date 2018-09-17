@@ -60,6 +60,7 @@ import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 import com.bclould.tea.xmpp.MessageManageListener;
 import com.bclould.tea.xmpp.Room;
 import com.bclould.tea.xmpp.RoomManage;
@@ -778,13 +779,16 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 
     //打開拍攝
     private void openShooting() {
+        if (!AuthorizationUserTools.isCameraCanUse(this))
+            return;
         Intent intent = new Intent(this, CameraActivity.class);
         startActivityForResult(intent, CODE_TAKE_PHOTO_SHOOTING);
     }
 
     //选择图片
     private void selectorImages() {
-
+        if (!AuthorizationUserTools.externalStorage(this,true))
+            return;
         // 进入相册 以下是例子：不需要的api可以不写
         PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofAll())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
@@ -898,6 +902,8 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 
     //调用文件选择软件来选择文件
     private void showFileChooser() {
+        if (!AuthorizationUserTools.externalStorage(this,true))
+            return;
 //        new LFilePicker()
 //                .withActivity(ConversationActivity.this)
 //                .withRequestCode(FILE_SELECT_CODE)

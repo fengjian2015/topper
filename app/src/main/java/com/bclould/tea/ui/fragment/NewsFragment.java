@@ -39,6 +39,7 @@ import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -367,6 +368,8 @@ public class NewsFragment extends Fragment implements OnBannerListener {
                     switch (index) {
                         case 0:
                             if (!WsConnection.getInstance().getOutConnection()) {
+                                if (!AuthorizationUserTools.isCameraCanUse(getActivity()))
+                                    return;
                                 Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
                                 intent.putExtra("code", QRCODE);
                                 startActivityForResult(intent, 0);

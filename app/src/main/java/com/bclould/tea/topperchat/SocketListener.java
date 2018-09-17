@@ -763,8 +763,8 @@ public class SocketListener {
             while ((nRead = in.read(b)) != -1) {
                 fos.write(b, 0, nRead);
             }
-            fos.flush();
             fos.close();
+            fos.flush();
             in.close();
         }
 

@@ -26,6 +26,7 @@ import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -143,6 +144,8 @@ public class OutCoinActivity extends BaseActivity {
                 initData();
                 break;
             case R.id.iv_qr_code:
+                if (!AuthorizationUserTools.isCameraCanUse(this))
+                    return;
                 Intent intent = new Intent(this, ScanQRCodeActivity.class);
                 intent.putExtra("code", SCANOUTSITE);
                 startActivityForResult(intent, SCANOUTSITE);

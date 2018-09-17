@@ -54,6 +54,7 @@ import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 import com.gjiazhe.wavesidebar.WaveSideBar;
 import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -448,6 +449,8 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
 
                     switch (index) {
                         case 0:
+                            if (!AuthorizationUserTools.isCameraCanUse(getActivity()))
+                                return;
                             Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
                             intent.putExtra("code", QRCODE);
                             startActivityForResult(intent, 0);
