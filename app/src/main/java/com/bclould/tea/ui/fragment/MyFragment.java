@@ -206,6 +206,8 @@ public class MyFragment extends Fragment {
                     startActivity(new Intent(getActivity(), InitialActivity.class));
                 }
                 break;
+
+
         }
     }
 }
