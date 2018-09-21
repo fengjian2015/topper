@@ -1,101 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_marginBottom="@dimen/y20"
-    android:layout_marginLeft="@dimen/x50"
-    android:layout_marginRight="@dimen/x50"
-    android:layout_marginTop="@dimen/y20"
-    app:cardBackgroundColor="@color/boundary_color"
-    app:cardCornerRadius="@dimen/x15">
+    android:orientation="vertical"
+    android:padding="@dimen/x20">
 
-    <LinearLayout
-        android:id="@+id/ll_auth_status_msg"
+    <include
+        android:id="@+id/chat_createtime"
+        layout="@layout/item_chat_time" />
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/x20">
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/y20"
+        android:layout_marginLeft="@dimen/x50"
+        android:layout_marginRight="@dimen/x50"
+        app:cardBackgroundColor="@color/boundary_color"
+        app:cardCornerRadius="@dimen/x15">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_auth_status_msg"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="實名認證"
-            style="@style/MainTextShallowStyle32"/>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y20">
+            android:orientation="vertical"
+            android:padding="@dimen/x20">
 
             <TextView
-                android:id="@+id/tv_status_hint"
+                style="@style/MainTextShallowStyle32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/auth_status"
-                style="@style/MainTextShallowStyle32"/>
+                android:text="實名認證" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20">
+
+                <TextView
+                    android:id="@+id/tv_status_hint"
+                    style="@style/MainTextShallowStyle32"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/auth_status" />
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/tv_status_hint"
+                    android:text="認證失敗，請重新認證" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20">
+
+                <TextView
+                    android:id="@+id/tv_time_hint"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/auth_time" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/tv_time_hint"
+                    android:text="2018-04-20 19:20:00" />
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_status"
+                style="@style/HorizontalBoundaryStyle"
+                android:layout_marginTop="@dimen/y20" />
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/tv_status_hint"
-                android:text="認證失敗，請重新認證"
-                style="@style/MainTextShallowStyle30"/>
+                android:layout_height="wrap_content">
 
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y20">
-
-            <TextView
-                android:id="@+id/tv_time_hint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/auth_time"
-                style="@style/MainTextShallowStyle30"/>
-
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/tv_time_hint"
-                android:text="2018-04-20 19:20:00"
-                style="@style/MainTextShallowStyle30"/>
-
-        </RelativeLayout>
-
-        <TextView
-            style="@style/HorizontalBoundaryStyle"
-            android:layout_marginTop="@dimen/y20"/>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/x20"
-                android:text="@string/look_details"
-                style="@style/MainTextShallowStyle30"/>
+                <TextView
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/x20"
+                    android:text="@string/look_details" />
 
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/x20"
-                android:src="@mipmap/iocn_person_turn"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/x20"
+                    android:src="@mipmap/iocn_person_turn" />
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-    </LinearLayout>
+        </LinearLayout>
 
-</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bclould.tea.R;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
@@ -19,8 +20,12 @@ import com.bclould.tea.ui.activity.OrderDetailsActivity;
 import com.bclould.tea.ui.activity.PayDetailsActivity;
 import com.bclould.tea.ui.activity.RealNameC1Activity;
 import com.bclould.tea.ui.activity.RedPacketActivity;
+import com.bclould.tea.utils.ChatTimeUtil;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
+
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -38,6 +43,7 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
     public static final int ADMINISTRATOR_IN_OUT_COIN_MSG = 19;//管理員提幣消息
     public static final int ADMINISTRATOR_IN_COIN_MSG = 29;//管理員充幣消息
     public static final int ADMINISTRATOR_EXCEPTIONAL_MSG = 30;//打賞
+    public static final int ADMINISTRATOR_SERVICE_TEXT_MSG = 31;//文本消息
 
     private final Context mContext;
     private final List<MessageInfo> mMessageList;
@@ -51,7 +57,7 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
         RecyclerView.ViewHolder holder = null;
-       if (viewType == ADMINISTRATOR_OTC_ORDER_MSG) {
+        if (viewType == ADMINISTRATOR_OTC_ORDER_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_otc_order, parent, false);
             holder = new OtcOrderStatusHolder(view);
         } else if (viewType == ADMINISTRATOR_RED_PACKET_EXPIRED_MSG) {
@@ -69,12 +75,15 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         } else if (viewType == ADMINISTRATOR_IN_OUT_COIN_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_inout_coin, parent, false);
             holder = new InoutCoinInformHolder(view);
-        }else if(viewType==ADMINISTRATOR_IN_COIN_MSG){
+        } else if (viewType == ADMINISTRATOR_IN_COIN_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_in_coin, parent, false);
             holder = new InCoinInformHolder(view);
-        }else if(viewType==ADMINISTRATOR_EXCEPTIONAL_MSG){
+        } else if (viewType == ADMINISTRATOR_EXCEPTIONAL_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_exceptional, parent, false);
             holder = new ExceptionalHolder(view);
+        } else if (viewType == ADMINISTRATOR_SERVICE_TEXT_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_service_text, parent, false);
+            holder = new ServiceTextHolder(view);
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_text, parent, false);
             holder = new TextChatHolder(view);
@@ -112,12 +121,16 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
                 inoutCoinInformHolder.setData(mMessageList.get(position));
                 break;
             case ADMINISTRATOR_IN_COIN_MSG:
-                InCoinInformHolder inCoinInformHolder= (InCoinInformHolder) holder;
+                InCoinInformHolder inCoinInformHolder = (InCoinInformHolder) holder;
                 inCoinInformHolder.setData(mMessageList.get(position));
                 break;
             case ADMINISTRATOR_EXCEPTIONAL_MSG:
-                ExceptionalHolder exceptionalHolder= (ExceptionalHolder) holder;
+                ExceptionalHolder exceptionalHolder = (ExceptionalHolder) holder;
                 exceptionalHolder.setData(mMessageList.get(position));
+                break;
+            case ADMINISTRATOR_SERVICE_TEXT_MSG:
+                ServiceTextHolder serviceTextHolder = (ServiceTextHolder) holder;
+                serviceTextHolder.setData(mMessageList.get(position));
                 break;
             default:
                 TextChatHolder textChatHolder = (TextChatHolder) holder;
@@ -132,6 +145,16 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
             return mMessageList.size();
         }
         return 0;
+    }
+
+    private void setCreatetime(View view, String currentShowTime) {
+        TextView createtime = (TextView) view.findViewById(R.id.chat_createtime);
+        if (StringUtils.isEmpty(currentShowTime)) {
+            createtime.setVisibility(View.GONE);
+        } else {
+            createtime.setText(ChatTimeUtil.createChatShowTime(currentShowTime));
+            createtime.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -158,6 +181,8 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         TextView mTvTime;
         @Bind(R.id.ll_order_msg)
         LinearLayout mLlOrderMsg;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
 
         OtcOrderStatusHolder(View view) {
             super(view);
@@ -165,6 +190,7 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             mTvCoin.setText(messageInfo.getCoin());
             mTvOrderNumber.setText(messageInfo.getCount());
             mTvTime.setText(messageInfo.getTime());
@@ -224,6 +250,8 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         TextView mTvTime;
         @Bind(R.id.ll_red_expried_msg)
         LinearLayout mLlRedExpriedMsg;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
 
         RedExpiredHolder(View view) {
             super(view);
@@ -231,6 +259,7 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             mTvCoin.setText(messageInfo.getCoin());
             mTvCount.setText(messageInfo.getCount());
             mTvTime.setText(messageInfo.getTime());
@@ -269,6 +298,8 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         TextView mTvTime;
         @Bind(R.id.ll_auth_status_msg)
         LinearLayout mLlAuthStatusMsg;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
 
         AuthStatusHolder(View view) {
             super(view);
@@ -276,6 +307,7 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             mTvTime.setText(messageInfo.getTime());
             if (messageInfo.getStatus() == 3) {
                 mTvStatus.setText(mContext.getString(R.string.auth_succeed));
@@ -310,6 +342,8 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         TextView mTvTime;
         @Bind(R.id.ll_red_expried_msg)
         LinearLayout mLlRedExpriedMsg;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
 
         ReceiptPayHolder(View view) {
             super(view);
@@ -317,6 +351,7 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             mTvCoin.setText(messageInfo.getCoin());
             mTvCount.setText(messageInfo.getCount());
             mTvWho.setText(messageInfo.getRemark());
@@ -362,6 +397,8 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         TextView mTvTime;
         @Bind(R.id.ll_red_expried_msg)
         LinearLayout mLlRedExpriedMsg;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
 
         TransferInformHolder(View view) {
             super(view);
@@ -369,6 +406,7 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             mTvCoin.setText(messageInfo.getCoin());
             mTvCount.setText(messageInfo.getCount());
             mTvWho.setText(messageInfo.getRemark());
@@ -410,6 +448,8 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         TextView mTvTime;
         @Bind(R.id.ll_red_expried_msg)
         LinearLayout mLlRedExpriedMsg;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
 
         InoutCoinInformHolder(View view) {
             super(view);
@@ -417,6 +457,7 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             mTvCoin.setText(messageInfo.getCoin());
             mTvCount.setText(messageInfo.getCount());
             mTvTime.setText(messageInfo.getTime());
@@ -448,6 +489,8 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         TextView mTvTime;
         @Bind(R.id.ll_red_expried_msg)
         LinearLayout mLlRedExpriedMsg;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
 
         InCoinInformHolder(View view) {
             super(view);
@@ -455,6 +498,7 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             mTvCoin.setText(messageInfo.getCoin());
             mTvCount.setText(messageInfo.getCount());
             mTvTime.setText(messageInfo.getTime());
@@ -483,6 +527,8 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         TextView mTvTime;
         @Bind(R.id.ll_red_expried_msg)
         LinearLayout mLlRedExpriedMsg;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
 
         ExceptionalHolder(View view) {
             super(view);
@@ -490,6 +536,7 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             mTvCoin.setText(messageInfo.getCoin());
             mTvCount.setText(messageInfo.getCount());
             mTvTime.setText(messageInfo.getTime());
@@ -511,13 +558,47 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    class TextChatHolder extends RecyclerView.ViewHolder {
+    //系统文本消息
+    class ServiceTextHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_title)
+        TextView mTvTitle;
+        @Bind(R.id.tv_content)
+        TextView mTvContent;
+        @Bind(R.id.ll_red_expried_msg)
+        LinearLayout mLlRedExpriedMsg;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
 
-        public TextChatHolder(View itemView) {
-            super(itemView);
+        ServiceTextHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
+            mTvTitle.setText(messageInfo.getTitle());
+            mTvContent.setText(messageInfo.getContent());
+
+            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }
+    }
+
+    class TextChatHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
+
+        public TextChatHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
         }
 
         public void setData(MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
 
         }
     }

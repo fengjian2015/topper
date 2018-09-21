@@ -1862,6 +1862,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
 
+
         FromLinkHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

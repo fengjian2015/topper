@@ -98,6 +98,7 @@ import static com.bclould.tea.topperchat.WsContans.BC_QUIT_GROUP;
 import static com.bclould.tea.topperchat.WsContans.BC_RED_GET;
 import static com.bclould.tea.topperchat.WsContans.BC_RED_PACKET_EXPIRED;
 import static com.bclould.tea.topperchat.WsContans.BC_REFRESH_GROUP;
+import static com.bclould.tea.topperchat.WsContans.BC_SERVICE_TEXT;
 import static com.bclould.tea.topperchat.WsContans.BC_TRANSFER_GROUP_BROAD;
 import static com.bclould.tea.topperchat.WsContans.BC_TRANSFER_INFORM;
 import static com.bclould.tea.topperchat.WsContans.BC_UPDATE_GROUP_LOGO;
@@ -152,6 +153,7 @@ import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_IN_OUT_
 import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_OTC_ORDER_MSG;
 import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_RECEIPT_PAY_MSG;
 import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_RED_PACKET_EXPIRED_MSG;
+import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_SERVICE_TEXT_MSG;
 import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_TRANSFER_MSG;
 import static com.bclould.tea.ui.fragment.FriendListFragment.NEWFRIEND;
 import static com.bclould.tea.utils.MySharedPreferences.SETTING;
@@ -819,7 +821,7 @@ public class SocketListener {
     }
 
     /**
-     * 友盟處理廣播消息
+     * 信鸽處理廣播消息
      *
      * @param binary
      */
@@ -876,6 +878,10 @@ public class SocketListener {
                     //打賞
                     enjoyPlaying(messageMap);
                     break;
+                case BC_SERVICE_TEXT:
+                    //系统文本消息
+                    serviceText(messageMap);
+                    break;
             }
 
         } catch (Exception e) {
@@ -897,7 +903,6 @@ public class SocketListener {
             Intent intent = packageManager.getLaunchIntentForPackage("com.bclould.tea");
             goActivity(intent, Constants.ADMINISTRATOR_NAME, messageMap.get("text") + "");
         }
-
     }
 
     private void kickOut(Map<Object, Object> messageMap) {
@@ -926,6 +931,28 @@ public class SocketListener {
                 EventBus.getDefault().post(messageEvent);
             }
         });
+    }
+
+    /**
+     * 系统文本消息
+     *
+     * @param messageMap
+     */
+    private void serviceText(Map<Object, Object> messageMap) {
+        PackageManager packageManager = context.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage("com.bclould.tea");
+        goActivity(intent, messageMap.get("title")+"", messageMap.get("content")+"");
+
+        MessageInfo messageInfo = new MessageInfo();
+        messageInfo.setSend(Constants.ADMINISTRATOR_NAME);
+        messageInfo.setUsername(Constants.ADMINISTRATOR_NAME);
+        messageInfo.setMsgType(ADMINISTRATOR_SERVICE_TEXT_MSG);
+        messageInfo.setConverstaion(messageMap.get("content")+"");
+
+        messageInfo.setTitle(messageMap.get("title")+"");
+        messageInfo.setContent(messageMap.get("content")+"");
+        messageInfo.setTime((String) messageMap.get("created_at"));
+        addMessage(messageInfo);
     }
 
     /**
@@ -1337,7 +1364,7 @@ public class SocketListener {
             friend = mgr.findUserName(from);
         }
         if (StringUtils.isEmpty(friend)) {
-            friend = mdbRoomManage.findRoomName(friend);
+            friend = mdbRoomManage.findRoomName(from);
         }
         if (StringUtils.isEmpty(friend)) {
             friend = from;
