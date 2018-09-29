@@ -177,13 +177,11 @@ public class PWDDialog {
                 Editable ea = mEtPassword.getText();
                 mEtPassword.setSelection(ea.length());
             } else {
-
                 if (position == 9) {      //点击退格键
                     String amount = mEtPassword.getText().toString().trim();
                     if (!amount.contains(".")) {
                         amount = amount + valueList.get(position).get("name");
                         mEtPassword.setText(amount);
-
                         Editable ea = mEtPassword.getText();
                         mEtPassword.setSelection(ea.length());
                     }
