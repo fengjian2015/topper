@@ -1,121 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_marginBottom="@dimen/y20"
-    android:layout_marginLeft="@dimen/x50"
-    android:layout_marginRight="@dimen/x50"
-    android:layout_marginTop="@dimen/y20"
-    app:cardBackgroundColor="@color/boundary_color"
-    app:cardCornerRadius="@dimen/x15">
+    android:orientation="vertical"
+    android:padding="@dimen/x20">
 
-    <LinearLayout
-        android:id="@+id/ll_red_expried_msg"
+    <include
+        android:id="@+id/chat_createtime"
+        layout="@layout/item_chat_time" />
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/x20">
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/y20"
+        android:layout_marginLeft="@dimen/x50"
+        android:layout_marginRight="@dimen/x50"
+        app:cardBackgroundColor="@color/boundary_color"
+        app:cardCornerRadius="@dimen/x15">
 
-        <TextView
-            android:id="@+id/tv_type_msg"
-            style="@style/MainTextShallowStyle32"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_red_expried_msg"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/exceptional_spending"/>
-
-        <TextView
-            style="@style/SecondaryTextStyle28"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/y30"
-            android:text="@string/exceptional_coin_coins"/>
-
-        <TextView
-            android:id="@+id/tv_coin"
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/y20"
-            android:text="BTC"
-            android:textSize="@dimen/x45"
-            android:textStyle="bold"/>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y20">
+            android:orientation="vertical"
+            android:padding="@dimen/x20">
 
             <TextView
-                android:id="@+id/tv_status_hint"
-                style="@style/MainTextShallowStyle30"
+                android:id="@+id/tv_type_msg"
+                style="@style/MainTextShallowStyle32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/exceptional_coin_count"/>
+                android:text="@string/exceptional_spending" />
 
             <TextView
-                android:id="@+id/tv_count"
-                style="@style/MainTextShallowStyle30"
+                style="@style/SecondaryTextStyle28"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/tv_status_hint"
-                android:text="0.01"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y20">
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/y30"
+                android:text="@string/exceptional_coin_coins" />
 
             <TextView
-                android:id="@+id/tv_time_hint"
-                style="@style/MainTextShallowStyle30"
+                android:id="@+id/tv_coin"
+                style="@style/MainTextShallowStyle36"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/exceptional_coin_time"/>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/y20"
+                android:text="BTC"
+                android:textSize="@dimen/x45"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20">
+
+                <TextView
+                    android:id="@+id/tv_status_hint"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exceptional_coin_count" />
+
+                <TextView
+                    android:id="@+id/tv_count"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/tv_status_hint"
+                    android:text="0.01" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20">
+
+                <TextView
+                    android:id="@+id/tv_time_hint"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exceptional_coin_time" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/tv_time_hint"
+                    android:text="2018-04-17 19:20:30" />
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_time"
-                style="@style/MainTextShallowStyle30"
+                style="@style/HorizontalBoundaryStyle"
+                android:layout_marginTop="@dimen/y20" />
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/tv_time_hint"
-                android:text="2018-04-17 19:20:30"/>
+                android:layout_height="wrap_content">
 
-        </RelativeLayout>
-
-        <TextView
-            style="@style/HorizontalBoundaryStyle"
-            android:layout_marginTop="@dimen/y20"/>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/MainTextShallowStyle30"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/x20"
-                android:text="@string/look_details"/>
+                <TextView
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/x20"
+                    android:text="@string/look_details" />
 
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/x20"
-                android:src="@mipmap/iocn_person_turn"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/x20"
+                    android:src="@mipmap/iocn_person_turn" />
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-    </LinearLayout>
+        </LinearLayout>
 
-</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

@@ -77,6 +77,7 @@ public class ConfirmCancelDialog extends Dialog {
                 }
             }
         });
+
         mBtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
