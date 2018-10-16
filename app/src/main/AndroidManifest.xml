@@ -1201,8 +1201,9 @@
             android:name=".ui.activity.AuthenticationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/Transparent"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+
+        android:theme="@style/Transparent"
+        android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ui.activity.DeblockingFingerprintActivity"
             android:launchMode="singleTop"
