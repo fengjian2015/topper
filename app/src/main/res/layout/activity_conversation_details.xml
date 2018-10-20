@@ -33,10 +33,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y160"
         android:paddingBottom="@dimen/y30"
-        android:paddingLeft="@dimen/x20"
+        android:paddingLeft="@dimen/x30"
         android:paddingRight="@dimen/x30"
-        android:paddingTop="@dimen/y30"
-        >
+        android:paddingTop="@dimen/y30">
 
         <ImageView
             android:id="@+id/image_head"
@@ -57,18 +56,22 @@
             style="@style/MainTextShallowStyle32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"/>
 
         <TextView
             android:id="@+id/tv_otr_state"
+            style="@style/MainTextShallowStyle32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:textColor="@color/image_overlay_true"
-            style="@style/MainTextShallowStyle32"
             android:visibility="gone"/>
     </RelativeLayout>
+
+
+    <View style="@style/HorizontalBoundaryStyle"></View>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -143,8 +146,10 @@
         android:id="@+id/rl_looking_chat"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
-        >
+        android:background="@drawable/bg_shallow_shape">
 
         <TextView
             android:id="@+id/tv3"
@@ -166,10 +171,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/rl_change_background"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
+        android:visibility="gone"
         >
 
         <View
@@ -198,63 +203,75 @@
     <View
         style="@style/HorizontalBoundaryStyle"></View>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        >
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y30"
+        android:background="@drawable/bg_shallow_shape"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv4"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv_inform"
-            android:text="@string/top_chat"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            >
 
-        <ImageView
-            android:id="@+id/on_off_top"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:padding="@dimen/x25"
-            android:src="@drawable/set_disturb_seletor"/>
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv4"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_inform"
+                android:text="@string/top_chat"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100">
+            <ImageView
+                android:id="@+id/on_off_top"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/x25"
+                android:src="@drawable/set_disturb_seletor"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100">
 
 
-        <View
-            style="@style/HorizontalBoundaryStyle"></View>
-        >>>>>>> liaolinan
+            <View
+                style="@style/HorizontalBoundaryStyle"></View>
 
-        <TextView
-            android:id="@+id/tv5"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv_inform"
-            android:text="@string/message_free"/>
+            <TextView
+                android:id="@+id/tv5"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_inform"
+                android:text="@string/message_free"/>
 
-        <ImageView
-            android:id="@+id/on_off_message_free"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:padding="@dimen/x25"
-            android:src="@drawable/set_disturb_seletor"/>
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/on_off_message_free"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/x25"
+                android:src="@drawable/set_disturb_seletor"/>
+        </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_empty_talk"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
-        >
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y30"
+        android:background="@drawable/bg_shallow_shape">
 
         <View
             style="@style/HorizontalBoundaryStyle"></View>

@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +19,9 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.FingerprintUtil;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
 import butterknife.Bind;
@@ -178,6 +181,11 @@ public class DeblockingFingerprintActivity extends BaseActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @OnClick(R.id.tv_cancel)

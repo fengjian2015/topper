@@ -21,6 +21,7 @@ import com.bclould.tea.ui.adapter.DynamicRVAdapter;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -69,6 +70,7 @@ public class PersonageDynamicActivity extends BaseActivity {
     private int PULL_DOWN = 1;
     private int mPage_id = 0;
     private int mPageSize = 10;
+    private int mCount = 1;
     private DynamicRVAdapter mDynamicRVAdapter;
 
     @Override
@@ -87,7 +89,7 @@ public class PersonageDynamicActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     //接受通知
@@ -114,7 +116,7 @@ public class PersonageDynamicActivity extends BaseActivity {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 if (isFinish)
-                initData(PULL_DOWN);
+                    initData(PULL_DOWN);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -134,10 +136,11 @@ public class PersonageDynamicActivity extends BaseActivity {
             mPage_id = 0;
         }
         isFinish = false;
-        mDynamicPresenter.taDynamicList(mPage_id, mPageSize, mUser, new DynamicPresenter.CallBack2() {
+        mDynamicPresenter.taDynamicList(mPage_id, mPageSize, mUser, mCount, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
                 if (ActivityUtil.isActivityOnTop(PersonageDynamicActivity.this)) {
+                    mCount++;
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
                             mRefreshLayout.finishRefresh();

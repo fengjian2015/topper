@@ -11,7 +11,6 @@ import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.model.DealListInfo;
 import com.bclould.tea.model.DynamicListInfo;
 import com.bclould.tea.model.ExchangeOrderInfo;
-import com.bclould.tea.model.GitHubInfo;
 import com.bclould.tea.model.GonggaoListInfo;
 import com.bclould.tea.model.GoogleInfo;
 import com.bclould.tea.model.GrabRedInfo;
@@ -41,10 +40,10 @@ import com.bclould.tea.model.PublicDetailsInfo;
 import com.bclould.tea.model.PublicInfo;
 import com.bclould.tea.model.QuestionInfo;
 import com.bclould.tea.model.ReceiptInfo;
-import com.bclould.tea.model.RedRecordInfo;
 import com.bclould.tea.model.RemarkListInfo;
 import com.bclould.tea.model.ReviewInfo;
 import com.bclould.tea.model.ReviewListInfo;
+import com.bclould.tea.model.RpRecordInfo;
 import com.bclould.tea.model.StateInfo;
 import com.bclould.tea.model.TransRecordInfo;
 import com.bclould.tea.model.TransferInfo;
@@ -52,6 +51,7 @@ import com.bclould.tea.model.TransferListInfo;
 import com.bclould.tea.model.UnclaimedRedInfo;
 import com.bclould.tea.model.UpdateLogInfo;
 import com.bclould.tea.model.UserDataInfo;
+import com.bclould.tea.model.VersionInfo;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -61,6 +61,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Url;
 
 /**
@@ -89,7 +90,8 @@ public interface MyService {
     @FormUrlEncoded
     @POST("api/sendRegcode")
     Observable<BaseInfo> sendRegcode(
-            @Field("email") String email
+            @Field("email") String email,
+            @Field("lang") String lang
     );
 
     //验证用户名和邮箱
@@ -293,9 +295,12 @@ public interface MyService {
     //红包记录
     @POST("api/redPacket/log")
     @FormUrlEncoded
-    Observable<RedRecordInfo> redPacketLog(
+    Observable<RpRecordInfo> redPacketLog(
             @Header("Authorization") String token,
-            @Field("type") String type
+            @Field("type") String type,
+            @Field("page_id") int page_id,
+            @Field("page_size") int page_size,
+            @Field("year") String year
     );
 
     //单个红包记录
@@ -313,12 +318,12 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("type") int type,
             @Field("coin_name") String coin_name,
-            @Field("country") String country,
+            @Field("country") int country,
             @Field("currency") String currency,
             @Field("price") double price,
             @Field("number") double number,
             @Field("deadline") int deadline,
-            @Field("pay_type") String pay_type,
+            @Field("pay_type") int pay_type,
             @Field("min_amount") double min_amount,
             @Field("max_amount") double max_amount,
             @Field("remark") String remark,
@@ -333,7 +338,7 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("type") int type,
             @Field("coin_name") String coin_name,
-            @Field("country") String country,
+            @Field("country") int country,
             @Field("page_id") int page_id,
             @Field("page_size") int page_size
     );
@@ -433,9 +438,10 @@ public interface MyService {
     );
 
     //下载apk
-    @GET
-    Observable<GitHubInfo> checkVersion(
-            @Url String url
+    @GET("chat/latest/version/{type}")
+    Observable<VersionInfo> checkVersion(
+            @Header("Authorization") String token,
+            @Path("type") int type
     );
 
     //币种列表
@@ -1456,12 +1462,36 @@ public interface MyService {
     @POST("chat/del/chat_bg")
     Observable<BaseInfo> deleteBackgound(
             @Header("Authorization") String token
-    );//重置聊天背景
-
+    );
+    //重置聊天背景
     @POST("api/image/coordinate")
     @FormUrlEncoded
     Observable<BaseInfo> coordinate(
             @Field("email") String email,
             @Field("coordinate") String coordinate
+    );
+
+    //支付宝绑定
+    @POST("api/user/bind/alipay")
+    @FormUrlEncoded
+    Observable<BaseInfo> bindAlipay(
+            @Header("Authorization") String token,
+            @Field("uuid") String coordinate
+    );
+
+    //支付宝解绑
+    @POST("api/user/unbind/alipay")
+    @FormUrlEncoded
+    Observable<BaseInfo> unbindAlipay(
+            @Header("Authorization") String token,
+            @Field("second_password") String second_password
+    );
+
+    //支付宝订单
+    @POST("chat/alipay/generate/order")
+    @FormUrlEncoded
+    Observable<BaseInfo> alipayOrder(
+            @Header("Authorization") String token,
+            @Field("second_password") String second_password
     );
 }

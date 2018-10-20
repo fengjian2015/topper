@@ -124,6 +124,7 @@
         <item name="android:layout_width">@dimen/x690</item>
         <item name="android:layout_height">@dimen/y96</item>
         <item name="android:textSize">@dimen/x36</item>
+        <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/main_text_color</item>
         <item name="android:background">@drawable/bg_blue_shape</item>
     </style>
@@ -133,6 +134,7 @@
         <item name="android:layout_width">@dimen/x560</item>
         <item name="android:layout_height">@dimen/y96</item>
         <item name="android:textSize">@dimen/x36</item>
+        <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/main_text_color</item>
         <item name="android:background">@drawable/bg_blue_shape</item>
     </style>

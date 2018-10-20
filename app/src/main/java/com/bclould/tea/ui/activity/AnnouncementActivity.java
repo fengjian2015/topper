@@ -22,7 +22,6 @@ import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
-import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.bclould.tea.Presenter.GroupPresenter;
@@ -32,8 +31,10 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
@@ -46,8 +47,6 @@ import com.luck.picture.lib.entity.LocalMedia;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.File;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +92,11 @@ public class AnnouncementActivity extends BaseActivity {
     private void initGetIntent() {
         roomId = getIntent().getStringExtra("roomId");
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void initView() {

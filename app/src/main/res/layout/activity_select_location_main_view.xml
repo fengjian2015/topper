@@ -8,6 +8,30 @@
               android:orientation="vertical">
 
     <include layout="@layout/include_app_title"/>
+    <RelativeLayout
+        android:id="@+id/rl_data"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        >
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y60"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/bg_yzcode_shape"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:hint="@string/search_the_location"
+            android:imeOptions="actionSearch"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            style="@style/SecondaryTextStyle24"
+            />
+    </RelativeLayout>
 
     <com.tencent.tencentmap.mapsdk.map.MapView
         android:id="@+id/mapview"

@@ -12,6 +12,8 @@ import com.bclould.tea.base.MyApp;
 
 import java.util.Locale;
 
+import static com.bclould.tea.Presenter.LoginPresenter.STATE;
+
 /**
  * Created by GA on 2017/11/10.
  */
@@ -28,8 +30,11 @@ public class LocaleChangeReceiver extends BroadcastReceiver {
                 UtilTool.Log("語言", "监听到系统语言切换===" + language);
                 new LoginPresenter(context).postLanguage(language, new LoginPresenter.CallBack3() {
                     @Override
-                    public void send() {
+                    public void send(String currency) {
                         MyApp.getInstance().RestartApp();
+                        if (!currency.isEmpty()) {
+                            MySharedPreferences.getInstance().setString(STATE, currency);
+                        }
                     }
                 });
             }

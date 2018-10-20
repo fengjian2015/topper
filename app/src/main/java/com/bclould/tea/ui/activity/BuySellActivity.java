@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -27,6 +28,7 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -102,7 +104,7 @@ public class BuySellActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void setListener() {
@@ -294,6 +296,7 @@ public class BuySellActivity extends BaseActivity {
 
     };
 
+    @SuppressLint("SetTextI18n")
     private void initInterface() {
         Bundle bundle = getIntent().getExtras();
         mType = bundle.getBoolean("type", false);

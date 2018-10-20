@@ -35,6 +35,7 @@ import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -120,7 +121,7 @@ public class RealNameC1Activity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @Override
@@ -215,7 +216,7 @@ public class RealNameC1Activity extends BaseActivity {
 
     private void showStateDialog() {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom2, null);
         //获得dialog的window窗口
         Window window = mBottomDialog.getWindow();
         window.getDecorView().setPadding(0, 0, 0, 0);

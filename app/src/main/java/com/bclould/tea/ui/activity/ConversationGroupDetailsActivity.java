@@ -12,16 +12,11 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.sdk.android.oss.ClientException;
-import com.alibaba.sdk.android.oss.OSSClient;
-import com.alibaba.sdk.android.oss.ServiceException;
-import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
-import com.alibaba.sdk.android.oss.model.PutObjectRequest;
-import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
@@ -32,7 +27,6 @@ import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.RoomMemberInfo;
-import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.ui.adapter.GroupDetailsMemberAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
@@ -105,6 +99,72 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     ImageView mIsReview;
     @Bind(R.id.rl_review_list)
     RelativeLayout mRlReviewList;
+    @Bind(R.id.iv6)
+    ImageView mIv6;
+    @Bind(R.id.rl_go_memberlist)
+    RelativeLayout mRlGoMemberlist;
+    @Bind(R.id.tv11)
+    TextView mTv11;
+    @Bind(R.id.iv3)
+    ImageView mIv3;
+    @Bind(R.id.rl_group_image)
+    RelativeLayout mRlGroupImage;
+    @Bind(R.id.tv2)
+    TextView mTv2;
+    @Bind(R.id.rl_group_name)
+    RelativeLayout mRlGroupName;
+    @Bind(R.id.tv9)
+    TextView mTv9;
+    @Bind(R.id.tv3)
+    TextView mTv3;
+    @Bind(R.id.rl_group_qr)
+    RelativeLayout mRlGroupQr;
+    @Bind(R.id.tv4)
+    TextView mTv4;
+    @Bind(R.id.tv7)
+    TextView mTv7;
+    @Bind(R.id.iv_1)
+    ImageView mIv1;
+    @Bind(R.id.rl_announcement)
+    RelativeLayout mRlAnnouncement;
+    @Bind(R.id.tv10)
+    TextView mTv10;
+    @Bind(R.id.rl_looking_chat)
+    RelativeLayout mRlLookingChat;
+    @Bind(R.id.tv8)
+    TextView mTv8;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.rl_member_name)
+    RelativeLayout mRlMemberName;
+    @Bind(R.id.tv5)
+    TextView mTv5;
+    @Bind(R.id.tv17)
+    TextView mTv17;
+    @Bind(R.id.rl_change_background)
+    RelativeLayout mRlChangeBackground;
+    @Bind(R.id.tv15)
+    TextView mTv15;
+    @Bind(R.id.rl_group_red)
+    RelativeLayout mRlGroupRed;
+    @Bind(R.id.tv16)
+    TextView mTv16;
+    @Bind(R.id.rl_redpacket_record)
+    RelativeLayout mRlRedpacketRecord;
+    @Bind(R.id.tv12)
+    TextView mTv12;
+    @Bind(R.id.tv13)
+    TextView mTv13;
+    @Bind(R.id.tv14)
+    TextView mTv14;
+    @Bind(R.id.ll_owner_selector)
+    LinearLayout mLlOwnerSelector;
+    @Bind(R.id.tv6)
+    TextView mTv6;
+    @Bind(R.id.rl_empty_talk)
+    RelativeLayout mRlEmptyTalk;
+    @Bind(R.id.btn_brak)
+    Button mBtnBrak;
 
     private GroupDetailsMemberAdapter mAdapter;
     private List<RoomMemberInfo> mList = new ArrayList<>();
@@ -128,7 +188,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @Override
@@ -179,6 +239,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     private void setIsReview() {
         if (isOwner()) {
             mRlReview.setVisibility(View.VISIBLE);
+            mLlOwnerSelector.setVisibility(View.VISIBLE);
             mRlReviewList.setVisibility(View.VISIBLE);
             if (mDBRoomManage.findRoomisReview(roomId) == 1) {
                 mIsReview.setSelected(true);
@@ -187,6 +248,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             }
         } else {
             mRlReview.setVisibility(View.GONE);
+            mLlOwnerSelector.setVisibility(View.GONE);
             mRlReviewList.setVisibility(View.GONE);
         }
     }
@@ -194,12 +256,14 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     private void setAllowModify() {
         if (isOwner()) {
             mRlAllowModifyData.setVisibility(View.VISIBLE);
+            mLlOwnerSelector.setVisibility(View.VISIBLE);
             if (mDBRoomManage.findRoomAllowModify(roomId) == 1) {
                 mIsAllowModifyData.setSelected(true);
             } else {
                 mIsAllowModifyData.setSelected(false);
             }
         } else {
+            mLlOwnerSelector.setVisibility(View.GONE);
             mRlAllowModifyData.setVisibility(View.GONE);
         }
     }
@@ -311,7 +375,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr, R.id.rl_group_name, R.id.rl_member_name, R.id.rl_group_management, R.id.rl_looking_chat
-            , R.id.rl_group_image, R.id.rl_go_memberlist, R.id.rl_announcement, R.id.is_allow_modify_data, R.id.is_review,R.id.rl_review_list,R.id.rl_group_red,R.id.rl_redpacket_record})
+            , R.id.rl_group_image, R.id.rl_go_memberlist, R.id.rl_announcement, R.id.is_allow_modify_data, R.id.is_review, R.id.rl_review_list, R.id.rl_group_red, R.id.rl_redpacket_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -384,20 +448,20 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     private void goUnclaimedRed() {
-        Intent intent=new Intent(this,UnclaimedRedActivity.class);
-        intent.putExtra("roomId",roomId);
+        Intent intent = new Intent(this, UnclaimedRedActivity.class);
+        intent.putExtra("roomId", roomId);
         startActivity(intent);
     }
 
-    private void goGroupQR(){
-        Intent intent=new Intent(this,QRGroupActivity.class);
-        intent.putExtra("roomId",roomId);
+    private void goGroupQR() {
+        Intent intent = new Intent(this, QRGroupActivity.class);
+        intent.putExtra("roomId", roomId);
         startActivity(intent);
     }
 
     private void goReviewList() {
-        Intent intent=new Intent(this,ReviewListActivity.class);
-        intent.putExtra("roomId",roomId);
+        Intent intent = new Intent(this, ReviewListActivity.class);
+        intent.putExtra("roomId", roomId);
         startActivity(intent);
     }
 
@@ -451,7 +515,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
 
     private void goAnnouncement() {
         Intent intent = new Intent(ConversationGroupDetailsActivity.this, AnnouncementActivity.class);
-        intent.putExtra("roomId",roomId);
+        intent.putExtra("roomId", roomId);
         startActivity(intent);
 //        if (!isOwner()) {
 //            ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_announcement));
@@ -489,7 +553,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                         break;
                     case 1:
                         menu.dismiss();
-                        goImage(PictureConfig.CHOOSE_REQUEST,true);
+                        goImage(PictureConfig.CHOOSE_REQUEST, true);
                         break;
                     case 2:
                         menu.dismiss();
@@ -505,8 +569,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
 
-
-    private void goImage(int code,boolean enableCrop) {
+    private void goImage(int code, boolean enableCrop) {
         PictureSelector.create(this)
                 .openGallery(ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
 //                        .theme(R.style.picture_white_style)
@@ -567,7 +630,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
 
     private void goRecord() {
         Intent intent = new Intent(this, ConversationRecordFindActivity.class);
-        intent.putExtra("roomId",roomId);
+        intent.putExtra("roomId", roomId);
         intent.putExtra("user", roomId);
         intent.putExtra("name", roomName);
         startActivity(intent);
@@ -664,17 +727,17 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         final int status;
         final String istop = mMgr.findConversationIstop(roomId);
         if (StringUtils.isEmpty(istop)) {
-            status=1;
+            status = 1;
         } else if ("true".equals(istop)) {
-            status=0;
+            status = 0;
         } else {
-            status=1;
+            status = 1;
         }
-        new GroupPresenter(this).setTopMessage(roomId, status,true, new CallBack() {
+        new GroupPresenter(this).setTopMessage(roomId, status, true, new CallBack() {
             @Override
             public void send() {
-                if(status==1){
-                    if(!mMgr.findConversation(roomId)){
+                if (status == 1) {
+                    if (!mMgr.findConversation(roomId)) {
                         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         Date curDate = new Date(System.currentTimeMillis());
                         String time = formatter.format(curDate);
@@ -687,12 +750,12 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                         info.setCreateTime(UtilTool.createChatCreatTime());
                         info.setChatType(RoomManage.ROOM_TYPE_MULTI);
                         mMgr.addConversation(info);
-                    }else{
+                    } else {
                         mMgr.updateConversationIstop(roomId, "true");
                     }
                     mOnOffTop.setSelected(true);
 
-                }else{
+                } else {
                     mOnOffTop.setSelected(false);
                     mMgr.updateConversationIstop(roomId, "false");
                 }
@@ -717,7 +780,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    mMgr.deleteMessage(roomId,0);
+                    mMgr.deleteMessage(roomId, 0);
                     mMgr.updateConversationMessage(roomId, "");
                     Toast.makeText(ConversationGroupDetailsActivity.this, getString(R.string.empty_success), Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post(new MessageEvent(EventBusUtil.msg_database_update));

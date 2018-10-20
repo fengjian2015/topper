@@ -37,6 +37,7 @@ import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.xmpp.RoomManage;
 import com.bumptech.glide.Glide;
 
@@ -109,7 +110,7 @@ public class SendRedPacketActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void initData() {
@@ -175,9 +176,15 @@ public class SendRedPacketActivity extends BaseActivity {
                 if (mEtCount.getText().toString().isEmpty()) {
                     Toast.makeText(this, getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
                     AnimatorTool.getInstance().editTextAnimator(mEtCount);
-                }else  if (getString(R.string.please_choose).equals(mTvCurrency.getText().toString())){
+                } else if (getString(R.string.please_choose).equals(mTvCurrency.getText().toString())) {
                     Toast.makeText(this, getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
                     return;
+                } else if (Integer.parseInt(mEtCount.getText().toString()) > 200) {
+                    Toast.makeText(this, getString(R.string.group_red_max_money), Toast.LENGTH_SHORT).show();
+                    AnimatorTool.getInstance().editTextAnimator(mEtCount);
+                }else if (Integer.parseInt(mEtCount.getText().toString()) < 0.01) {
+                    Toast.makeText(this, getString(R.string.group_red_min_money), Toast.LENGTH_SHORT).show();
+                    AnimatorTool.getInstance().editTextAnimator(mEtCount);
                 } else {
                     showPWDialog();
                 }
@@ -186,7 +193,7 @@ public class SendRedPacketActivity extends BaseActivity {
     }
 
     private void showPWDialog() {
-        pwdDialog=new PWDDialog(this);
+        pwdDialog = new PWDDialog(this);
         pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
             @Override
             public void success(String password) {
@@ -195,7 +202,7 @@ public class SendRedPacketActivity extends BaseActivity {
         });
         String coins = mTvCurrency.getText().toString();
         String count = mEtCount.getText().toString();
-        pwdDialog.showDialog(count,coins,coins + getString(R.string.red_package),logo,null);
+        pwdDialog.showDialog(count, coins, coins + getString(R.string.red_package), logo, null);
     }
 
 
@@ -234,7 +241,7 @@ public class SendRedPacketActivity extends BaseActivity {
         mRedPacketPresenter.sendRedPacket(mUser, type, mCoin, mRemark, 1, redCount, redSum, mCount, password, new RedPacketPresenter.CallBack() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-            public void send(int id) {
+            public void send(int id, String response) {
                 setData(id);
             }
         });
@@ -274,7 +281,7 @@ public class SendRedPacketActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText(getString(R.string.selector_coin));
+        tvTitle.setText(getString(R.string.coins));
         if (MyApp.getInstance().mRedCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
@@ -289,11 +296,12 @@ public class SendRedPacketActivity extends BaseActivity {
 
     public void hideDialog(String name, String logo) {
         mBottomDialog.dismiss();
-        this.logo=logo;
+        this.logo = logo;
         mTvCurrency.setText(name);
         mTvCoin.setText(name);
         Glide.with(this).load(logo).into(mImageLogo);
     }
+
     public void setData(int id) {
         RoomManage.getInstance().addSingleMessageManage(mUser, mMgr.findConversationName(mUser)).sendRed(mRemark, mCoin, mCount, id);
         finish();

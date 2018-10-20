@@ -1,29 +1,22 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.InputFilter;
 import android.text.Spannable;
-import android.text.Spanned;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
@@ -53,7 +47,6 @@ import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
-import com.bclould.tea.utils.RecordUtil;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.MessageManageListener;
@@ -80,12 +73,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 
 import butterknife.Bind;
@@ -103,6 +93,7 @@ import sj.keyboard.interfaces.EmoticonFilter;
 import sj.keyboard.interfaces.PageViewInstantiateListener;
 import sj.keyboard.utils.EmoticonsKeyboardUtils;
 import sj.keyboard.utils.MenuGridListPopWindow;
+import sj.keyboard.utils.RecordUtil;
 import sj.keyboard.widget.EmoticonPageView;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.FuncLayout;
@@ -178,9 +169,29 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
+
+    MenuGridListPopWindow.ListOnClick mListOnClick = new MenuGridListPopWindow.ListOnClick() {
+        @Override
+        public void onclickitem(String name) {
+            if (getString(R.string.image).equals(name)) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.open_photo_album)));
+            }else if (getString(R.string.shooting).equals(name)) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.open_shooting)));
+            } else if (getString(R.string.collect).equals(name)) {
+                Intent intent = new Intent(ConversationBurnActivity.this, CollectActivity.class);
+                intent.putExtra("type", 1);
+                intent.putExtra("roomId", roomId);
+                startActivity(intent);
+            } else if (getString(R.string.business_card).equals(name)) {
+                Intent intent = new Intent(ConversationBurnActivity.this, SelectFriendGetActivity.class);
+                intent.putExtra("roomId", roomId);
+                startActivity(intent);
+            }
+        }
+    };
 
     //初始化表情盘
     private void initEmoticonsKeyboard() {
@@ -190,25 +201,8 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
         SimpleAppsGridView simpleAppsGridView = new SimpleAppsGridView(this);
         simpleAppsGridView.setData(roomId, roomType);
 
-        mEkbEmoticonsKeyboard.setListMenu(this).setListOnClick(new MenuGridListPopWindow.ListOnClick() {
-            @Override
-            public void onclickitem(String name) {
-                if (getString(R.string.image).equals(name)) {
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.open_photo_album)));
-                }else if (getString(R.string.shooting).equals(name)) {
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.open_shooting)));
-                } else if (getString(R.string.collect).equals(name)) {
-                    Intent intent = new Intent(ConversationBurnActivity.this, CollectActivity.class);
-                    intent.putExtra("type", 1);
-                    intent.putExtra("roomId", roomId);
-                    startActivity(intent);
-                } else if (getString(R.string.business_card).equals(name)) {
-                    Intent intent = new Intent(ConversationBurnActivity.this, SelectFriendGetActivity.class);
-                    intent.putExtra("roomId", roomId);
-                    startActivity(intent);
-                }
-            }
-        });
+        mEkbEmoticonsKeyboard.setListMenu(ConversationBurnActivity.this).setListOnClick(mListOnClick);
+        mEkbEmoticonsKeyboard.setListOnClick(mListOnClick);
         mEkbEmoticonsKeyboard.addFuncView(simpleAppsGridView);
         mEkbEmoticonsKeyboard.addOnFuncKeyBoardListener(this);
         mEkbEmoticonsKeyboard.getEtChat().setText(MySharedPreferences.getInstance().getString(UtilTool.getTocoId() + roomId));
@@ -371,7 +365,7 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
             }
         });
 
-        //实例化录音管理类
+       /* //实例化录音管理类
         recordIndicator = new RecordIndicator(this, new RecordIndicator.CallBack() {
             @Override
             public void send() {
@@ -379,12 +373,14 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
             }
         });
         //给功能盘添加录音监听
-        mEkbEmoticonsKeyboard.setRecordIndicator(recordIndicator);
+        mEkbEmoticonsKeyboard.setRecordIndicator(recordIndicator);*/
+        mEkbEmoticonsKeyboard.setMediaPlayer(mediaPlayer);
         try {
-            recordIndicator.setOnRecordListener(new RecordIndicator.OnRecordListener() {
+            mEkbEmoticonsKeyboard.setOnRecordListener(new XhsEmoticonsKeyBoard.OnRecordListener() {
                 @Override
                 public void recordStart() {
                     startRecord();//开始录音
+                    scrollToBottom();
                 }
 
                 @Override
@@ -438,6 +434,7 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
     private void startRecord() {
         if (null == recordUtil) {
             recordUtil = new RecordUtil(this);
+            mEkbEmoticonsKeyboard.setRecordUtil(recordUtil);
         }
         recordUtil.start();
         mChatAdapter.stopVoicePlay();
@@ -974,5 +971,6 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
         super.onPause();
         mediaPlayer.stop();
         mediaPlayer.reset();
+        mEkbEmoticonsKeyboard.onPause();
     }
 }

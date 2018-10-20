@@ -84,6 +84,7 @@ public class WsContans {
     public static final int BC_REFRESH_GROUP=41;//刷新房間成員
     public static final int BC_KICK_OUT_GROUP=42;//踢人
 
+    public static final int BC_SERVICE_TEXT=100;//系统文本消息
 
 
 

@@ -1098,7 +1098,7 @@
         
     <string name="putong_red">普通红包</string>
         
-    <string name="sum_send">共发出</string>
+    <string name="sum_send">发出的红包</string>
         
     <string name="receive_add_request">收到添加请求</string>
         
@@ -1934,7 +1934,7 @@
         
     <string name="group_red_min_money">单个红包不能低于0.01</string>
         
-    <string name="sum_rceive">共收到</string>
+    <string name="sum_rceive">收到的红包</string>
         
     <string name="receive_red">收到红包</string>
         
@@ -2204,7 +2204,7 @@
     <string name="language">语言</string>
     <string name="follow_the_system">跟随系统</string>
     <string name="simplified_chinese">简体中文</string>
-    <string name="chinese_traditional">繁体中文</string>
+    <string name="chinese_traditional">繁體中文</string>
     <string name="send_red_envelope">发红包</string>
     <string name="person1">人</string>
     <string name="members_of_the_group">本群成员共</string>
@@ -2263,4 +2263,30 @@
     <string name="discern">识别中</string>
     <string name="et_card_holder">输入持卡人姓名</string>
     <string name="toast_card_holder">持卡人不能为空</string>
+    <string name="english">English</string>
+    <string name="self_dynamic_no_reward">不能打赏自己的动态</string>
+    <string name="look_more_coin_red">查看更多币种红包</string>
+    <string name="selector_time">选择时间</string>
+    <string name="selector_type">选择类型</string>
+    <string name="look_update_log">查看更新日志</string>
+    <string name="version">版本</string>
+    <string name="hand">手</string>
+    <string name="alipay_red">支付宝红包</string>
+    <string name="zhi">支</string>
+    <string name="alipay_red_bind_hint">请先绑定支付宝</string>
+    <string name="send_red_packet_hint2">未领取的红包，将于48小时后退款</string>
+    <string name="group_red">群红包</string>
+    <string name="red_no">已抢完</string>
+    <string name="search_the_location">搜索地址</string>
+    <string name="pleass_input_location">请输入地址</string>
+    <string name="address_not_found">未搜索到该地址</string>
+    <string name="camera_permission_info">摄像头异常，请检查TopperChat是否具有访问摄像头的权限，或者重启设备后重试</string>
+    <string name="application_storage_space">应用存储空间</string>
+    <string name="accessibility">权限申请</string>
+    <string name="not_obtainable">由于TopperChat法获得</string>
+    <string name="open_access_path">权限，不能正常运行，请开启权限在使用TopperChat\n设置路径：设置->应用->TopperChat->权限</string>
+    <string name="not_obtainable1">当前TopperChat没有</string>
+    <string name="open_access_path1">权限，请到当前设备管理应用或设置中开启\n设置路径：设置->应用->TopperChat->权限</string>
+    <string name="applied_position">应用位置</string>
+    <string name="application_recording">应用程序录音</string>
 </resources>

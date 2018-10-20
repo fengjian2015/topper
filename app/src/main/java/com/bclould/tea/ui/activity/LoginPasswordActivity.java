@@ -20,6 +20,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.MySharedPreferences;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,7 +57,7 @@ public class LoginPasswordActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     //提交修改的密码

@@ -113,9 +113,6 @@ public class MyFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.xg_touxaing))) {
-            /*Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext());
-            if (bitmap != null)
-                mIvTouxiang.setImageBitmap(bitmap);*/
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext(), mIvTouxiang);
         } else if (msg.equals(getString(R.string.check_new_version))) {
             init();
@@ -209,6 +206,8 @@ public class MyFragment extends Fragment {
                     startActivity(new Intent(getActivity(), InitialActivity.class));
                 }
                 break;
+
+
         }
     }
 }

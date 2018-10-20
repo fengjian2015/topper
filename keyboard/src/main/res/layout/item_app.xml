@@ -11,6 +11,7 @@
         <ImageView
             android:layout_centerHorizontal="true"
             android:id="@+id/iv_icon"
+            android:src="@drawable/icon_tail_photo"
             android:layout_width="@dimen/x100"
             android:layout_height="@dimen/x100"/>
 

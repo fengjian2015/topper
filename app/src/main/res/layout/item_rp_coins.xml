@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/y5"
+    android:paddingRight="@dimen/y5">
+
+    <TextView
+        android:id="@+id/tv_coin"
+        style="@style/MainTextDeepStyle36"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TPC"/>
+
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv_coin"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_toRightOf="@+id/tv_coin"
+        android:text="300"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x60"/>
+
+</RelativeLayout>

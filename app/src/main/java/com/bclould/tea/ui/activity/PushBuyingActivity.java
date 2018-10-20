@@ -51,6 +51,7 @@ import butterknife.OnClick;
 
 import static com.bclould.tea.Presenter.LoginPresenter.CURRENCY;
 import static com.bclould.tea.Presenter.LoginPresenter.STATE;
+import static com.bclould.tea.Presenter.LoginPresenter.STATE_ID;
 import static com.bclould.tea.R.style.BottomDialog;
 
 /**
@@ -186,6 +187,8 @@ public class PushBuyingActivity extends BaseActivity {
     private String mServiceCharge2 = "";
     private PWDDialog pwdDialog;
     private String logo;
+    private String mState;
+    private int mState_id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -208,7 +211,7 @@ public class PushBuyingActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void setData() {
@@ -240,10 +243,10 @@ public class PushBuyingActivity extends BaseActivity {
         mCoinName = getIntent().getStringExtra("coinName");
         mServiceCharge = getIntent().getStringExtra("serviceCharge");
         mServiceCharge2 = getIntent().getStringExtra("serviceCharge2");
+        mState = MySharedPreferences.getInstance().getString(STATE);
+        mState_id = MySharedPreferences.getInstance().getInteger(STATE_ID);
         mTvCurrency.setText(mCoinName);
-        if (MySharedPreferences.getInstance().getSp().contains(STATE)) {
-            mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
-        }
+        mTvState.setText(mState);
         mTvUnits.setText(MySharedPreferences.getInstance().getString(CURRENCY));
         mTvUnits2.setText(MySharedPreferences.getInstance().getString(CURRENCY));
         mTvUnits3.setText(MySharedPreferences.getInstance().getString(CURRENCY));
@@ -478,7 +481,6 @@ public class PushBuyingActivity extends BaseActivity {
 
     private void pushing(String password) {
         String coin = mTvCurrency.getText().toString();
-        String state = mTvState.getText().toString();
         String payment = mTvPayment.getText().toString();
         String paymentTime = mTvPaymentTime.getText().toString();
         String price = mEtPrice.getText().toString();
@@ -496,14 +498,14 @@ public class PushBuyingActivity extends BaseActivity {
         } else {
             mType = 2;
         }
-        mPushBuyingPresenter.pushing(mType, coin, state, price, count, paymentTime, payment, minLimit, maxLimit, remark, password, phoneNumber);
+        mPushBuyingPresenter.pushing(mType, coin, mState_id, price, count, paymentTime, payment, minLimit, maxLimit, remark, password, phoneNumber);
     }
 
     private Map<String, Integer> mMap = new HashMap<>();
 
     private void showDialog(Map<String, Boolean> modeOfPayment, List<String> list, final int sign, String title) {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom2, null);
         //获得dialog的window窗口
         Window window = mBottomDialog.getWindow();
         window.getDecorView().setPadding(0, 0, 0, 0);

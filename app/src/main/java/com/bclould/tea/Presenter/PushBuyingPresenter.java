@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.ModeOfPaymentInfo;
-import com.bclould.tea.model.RedRecordInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.activity.BankCardActivity;
 import com.bclould.tea.ui.activity.PayPasswordActivity;
@@ -61,7 +60,7 @@ public class PushBuyingPresenter {
         }
     }
 
-    public void pushing(int type, String coin, String state, String price, String count, String paymentTime, String payment, String minLimit, String maxLimit, String remark, String password, String phoneNumber) {
+    public void pushing(int type, String coin, int state_id, String price, String count, String paymentTime, String payment, String minLimit, String maxLimit, String remark, String password, String phoneNumber) {
         double priced = Double.parseDouble(price);
         double countd = Double.parseDouble(count);
         double mind = Double.parseDouble(minLimit);
@@ -71,7 +70,7 @@ public class PushBuyingPresenter {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .publishDeal(UtilTool.getToken(), type, coin, state, MySharedPreferences.getInstance().getString(CURRENCY), priced, countd, time, payment, mind, maxd, remark, password, phoneNumber)
+                .publishDeal(UtilTool.getToken(), type, coin, state_id, MySharedPreferences.getInstance().getString(CURRENCY), priced, countd, time, 1, mind, maxd, remark, password, phoneNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {
@@ -185,17 +184,4 @@ public class PushBuyingPresenter {
                     }
                 });
     }
-
-
-    //定义接口
-    public interface CallBack {
-        void send(RedRecordInfo.DataBean data);
-    }
-
-    //定义接口
-    public interface CallBack2 {
-        void send(RedRecordInfo.DataBean data);
-    }
-
-
 }

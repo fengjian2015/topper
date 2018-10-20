@@ -74,4 +74,7 @@ public class Constants {
     public static final String ENGLISH = "en";
     // 繁体中文
     public static final String TRADITIONAL_CHINESE = "zh-hant";
+    public static final String COUNTRY = "country";
+    public static final String OFFICIAL_WEBSITE = "www.topperchat.com";
+    public static final String CUSTOMER_SERVICE_EMAIL = "topperchat@outlook.com";
 }

@@ -39,6 +39,7 @@ import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
@@ -108,7 +109,7 @@ public class SendQRCodeRedActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void initData() {
@@ -246,7 +247,7 @@ public class SendQRCodeRedActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText(getString(R.string.selector_coin));
+        tvTitle.setText(getString(R.string.coins));
         if (MyApp.getInstance().mRedCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
@@ -273,7 +274,7 @@ public class SendQRCodeRedActivity extends BaseActivity {
         double single = money / count;
         mRedPacketPresenter.sendRedPacket("code", 2, coin, getString(R.string.congratulation), 2, count, single, money, password, new RedPacketPresenter.CallBack() {
             @Override
-            public void send(int id) {
+            public void send(int id, String response) {
                 String code = UtilTool.base64PetToJson(SendQRCodeRedActivity.this, Constants.REDPACKAGE, "redID", id + "", getString(R.string.red_package));
                 Intent intent = new Intent(SendQRCodeRedActivity.this, QRCodeRedActivity.class);
                 intent.putExtra("code", code);

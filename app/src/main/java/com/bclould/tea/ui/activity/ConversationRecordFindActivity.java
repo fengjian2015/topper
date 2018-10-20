@@ -25,6 +25,7 @@ import com.bclould.tea.ui.adapter.MessageRecordSelectAdapter;
 import com.bclould.tea.ui.adapter.MessageRecordViedoAdapter;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.FullyGridLayoutManager;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -100,7 +101,7 @@ public class ConversationRecordFindActivity extends BaseActivity implements Mess
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void init() {

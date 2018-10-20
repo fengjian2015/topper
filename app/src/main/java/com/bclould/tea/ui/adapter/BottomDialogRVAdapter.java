@@ -8,12 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.ui.activity.PushBuyingActivity;
+import com.bclould.tea.ui.activity.RedPacketRecordActivity;
 import com.bclould.tea.ui.activity.StartGuessActivity;
 
 import java.util.List;
@@ -44,10 +44,10 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
         mModeOfPayment = modeOfPayment;
     }
 
-    public BottomDialogRVAdapter(Context context, List<String> timeList, int sign) {
+    public BottomDialogRVAdapter(Context context, List<String> timeList, int type) {
         mContext = context;
         mArr = timeList;
-        mSign = sign;
+        mSign = type;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_dialog_bottom_pay, parent, false);
             viewHolder = new ViewHolder2(view);
         } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_dialog_bottom, parent, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_dialog_bottom2, parent, false);
             viewHolder = new ViewHolder(view);
         }
         return viewHolder;
@@ -82,12 +82,8 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_coin_logo)
-        ImageView mTvCoinLogo;
         @Bind(R.id.tv_name)
         TextView mTvName;
-        @Bind(R.id.tv_remaining)
-        TextView mTvRemaining;
         private String mName;
 
         ViewHolder(View view) {
@@ -102,6 +98,9 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
                         activity.hideDialog(mName, mSign);
                     } else if (mContext instanceof StartGuessActivity) {
                         StartGuessActivity activity = (StartGuessActivity) mContext;
+                        activity.hideDialog(mName, mSign);
+                    }else if (mContext instanceof RedPacketRecordActivity) {
+                        RedPacketRecordActivity activity = (RedPacketRecordActivity) mContext;
                         activity.hideDialog(mName, mSign);
                     }
 

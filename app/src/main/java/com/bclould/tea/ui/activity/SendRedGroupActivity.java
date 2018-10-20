@@ -42,6 +42,7 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
 import com.bumptech.glide.Glide;
@@ -114,7 +115,7 @@ public class SendRedGroupActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void setOnClick() {
@@ -310,7 +311,7 @@ public class SendRedGroupActivity extends BaseActivity {
         new RedPacketPresenter(this).sendRedPacket(roomId, type, mCoin, mRemark, 1, redCount, singleMoney, mCount, password, new RedPacketPresenter.CallBack() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-            public void send(int id) {
+            public void send(int id, String response) {
                 setData(id);
             }
         });
@@ -355,7 +356,7 @@ public class SendRedGroupActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText(getString(R.string.selector_coin));
+        tvTitle.setText(getString(R.string.coins));
         if (MyApp.getInstance().mRedCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);

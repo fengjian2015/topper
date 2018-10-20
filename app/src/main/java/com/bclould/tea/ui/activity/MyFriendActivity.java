@@ -1,5 +1,7 @@
 package com.bclould.tea.ui.activity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -36,12 +38,14 @@ import com.bclould.tea.ui.fragment.FriendListFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 import com.gjiazhe.wavesidebar.WaveSideBar;
 import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -111,6 +115,7 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
 
     private TreeMap<String, Boolean> mFromMap = new TreeMap<>();
     private List<UserInfo> mUsers = new ArrayList<>();
+    @SuppressLint("HandlerLeak")
     Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -167,6 +172,11 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
         updateData();
         getPhoneSize();
         showNumber();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     //获取屏幕高度
@@ -307,20 +317,26 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
             mPersonalDetailsPresenter.getFriendList(new PersonalDetailsPresenter.CallBack2() {
                 @Override
                 public void send(List<AuatarListInfo.DataBean> data) {
-                    mRefreshLayout.finishRefresh();
-                    mMgr.deleteAllFriend();
-                    mMgr.addUserList(data);
-                    myHandler.sendEmptyMessage(0);
+                    if (ActivityUtil.isActivityOnTop(MyFriendActivity.this)) {
+                        mRefreshLayout.finishRefresh();
+                        mMgr.deleteAllFriend();
+                        mMgr.addUserList(data);
+                        myHandler.sendEmptyMessage(0);
+                    }
                 }
 
                 @Override
                 public void error() {
-                    mRefreshLayout.finishRefresh();
+                    if (ActivityUtil.isActivityOnTop(MyFriendActivity.this)) {
+                        mRefreshLayout.finishRefresh();
+                    }
                 }
 
                 @Override
                 public void finishRefresh() {
-                    mRefreshLayout.finishRefresh();
+                    if (ActivityUtil.isActivityOnTop(MyFriendActivity.this)) {
+                        mRefreshLayout.finishRefresh();
+                    }
                 }
             });
         } catch (Exception e) {
@@ -425,6 +441,8 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
 
                     switch (index) {
                         case 0:
+                            if (!AuthorizationUserTools.isCameraCanUse(MyFriendActivity.this))
+                                return;
                             Intent intent = new Intent(MyFriendActivity.this, ScanQRCodeActivity.class);
                             intent.putExtra("code", QRCODE);
                             startActivityForResult(intent, 0);
@@ -529,7 +547,7 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
                         @Override
                         public void send() {
                             mMgr.deleteConversation(roomId);
-                            mMgr.deleteMessage(roomId,0);
+                            mMgr.deleteMessage(roomId, 0);
                             mMgr.deleteUser(mUser);
                             EventBus.getDefault().post(new MessageEvent(EventBusUtil.delete_friend));
                         }

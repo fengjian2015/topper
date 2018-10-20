@@ -128,7 +128,7 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
             mId = data.getId();
             mServiceCharge = data.getOut_exchange();
             mTvName.setText(mName);
-            mTvRemaining.setText(mContext.getString(R.string.remaining) + " : " + data.getCoin_over());
+            mTvRemaining.setText(data.getCoin_over());
             Glide.with(mContext).load(data.getLogo()).into(mTvCoinLogo);
         }
     }

@@ -151,12 +151,11 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-        UtilTool.Log("fengjian", "重新走一波");
         super.onNewIntent(intent);
     }
 

@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -17,7 +18,9 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.model.PublicDetailsInfo;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,8 +33,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.bclould.tea.ui.activity.SerchImageActivity.TYPE_BACKGROUND;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PublicDetailsActivity extends BaseActivity {
@@ -69,6 +70,11 @@ public class PublicDetailsActivity extends BaseActivity {
         UtilTool.setCircleImg(this,publicDetailsInfo.getData().getLogo(),mIvHead);
         mTvName.setText(publicDetailsInfo.getData().getName());
         mTvDesc.setText(publicDetailsInfo.getData().getDesc());
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void init() {

@@ -73,6 +73,7 @@ import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 import com.bclould.tea.xmpp.RoomManage;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -750,12 +751,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         } else {
                             mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket2));
                             mTvExamine.setText(mContext.getString(R.string.look_red_packet));
-                            mCvRedpacket.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    showDialog(messageInfo,false,false,null);
-                                }
-                            });
+                            showDialog(messageInfo,false,false,null);
                         }
                     } else {
                         mGrabRedPresenter.grabRedPacket(true, messageInfo.getRedId(), new GrabRedPresenter.CallBack() {
@@ -1491,7 +1487,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     return false;
                 }
             });
-
         }
     }
     private void setLoading( MessageInfo messageInfo, final LodingCircleView loadingPr, ImageView mIvVideoPlay) {
@@ -1866,6 +1861,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         RelativeLayout rlLink;
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
+
 
         FromLinkHolder(View view) {
             super(view);

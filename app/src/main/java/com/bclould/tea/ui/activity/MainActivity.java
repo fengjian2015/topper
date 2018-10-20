@@ -149,7 +149,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void initRelogin() {
@@ -176,8 +176,8 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.setAction(IMCoreService.ACTION_START_IMSERVICE);
                 sendBroadcast(intent);
-            }else {
-                if(IMUtils.compareServiceTime()){
+            } else {
+                if (IMUtils.compareServiceTime()) {
                     stopService(new Intent(this, IMService.class));
                     Intent intent = new Intent();
                     intent.setAction(IMCoreService.ACTION_START_IMSERVICE);
@@ -372,7 +372,7 @@ public class MainActivity extends BaseActivity {
 
 
     private void getGroup() {
-        UtilTool.Log("token",UtilTool.getToken());
+        UtilTool.Log("token", UtilTool.getToken());
         new GroupPresenter(this).getGroup(mDBRoomMember, mDBRoomManage, mMgr, false, new GroupPresenter.CallBack1() {
             @Override
             public void send(GroupInfo baseInfo) {
@@ -382,7 +382,6 @@ public class MainActivity extends BaseActivity {
                         getMessageTop();
                     }
                 }.sendEmptyMessageDelayed(0, 5 * 1000);
-
             }
 
             @Override
@@ -396,7 +395,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getMyImage() {
-        UtilTool.Log("token",UtilTool.getToken());
+        UtilTool.Log("token", UtilTool.getToken());
         if (!mMgr.findUser(UtilTool.getTocoId())) {
             IndividualDetailsPresenter personalDetailsPresenter = new IndividualDetailsPresenter(this);
             personalDetailsPresenter.getIndividual(UtilTool.getTocoId(), false, new IndividualDetailsPresenter.CallBack() {
@@ -424,7 +423,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getMessageTop() {
-        UtilTool.Log("token",UtilTool.getToken());
+        UtilTool.Log("token", UtilTool.getToken());
         new GroupPresenter(this).getTopMessage(new GroupPresenter.CallBack5() {
             @Override
             public void send(MessageTopInfo baseInfo) {
@@ -459,6 +458,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getChatBackGround() {
+        UtilTool.Log("token", UtilTool.getToken());
         UtilTool.Log("fengjiantoken",UtilTool.getToken());
         new GroupPresenter(this).getBackgound(new GroupPresenter.CallBack2() {
             @Override
@@ -552,30 +552,20 @@ public class MainActivity extends BaseActivity {
             mSupportFragmentManager.beginTransaction().remove(map.get(i));
             mSupportFragmentManager.beginTransaction().hide(map.get(i));
         }
+        unregisterReceiver(mReceiver);
     }
 
     //初始化底部菜单栏
     private void initBottomMenu() {
-
         for (int i = 0; i < mMainBottomMenu.getChildCount(); i++) {
-
             final View childAt = mMainBottomMenu.getChildAt(i);
-
             childAt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int index = mMainBottomMenu.indexOfChild(childAt);
-//                    if (!WsConnection.getInstance().getOutConnection()) {
-
-                        changeFragment(index);
-
-                        setSelector(index);
-                        converstonTop(index);
-                    /*} else {
-                        if (index != 0) {
-                            startActivity(new Intent(MainActivity.this, InitialActivity.class));
-                        }
-                    }*/
+                    changeFragment(index);
+                    setSelector(index);
+                    converstonTop(index);
                 }
             });
         }
@@ -594,18 +584,12 @@ public class MainActivity extends BaseActivity {
     @SuppressLint("RestrictedApi")
     private void changeFragment(int index) {
         if (mSupportFragmentManager == null) {
-
             mSupportFragmentManager = getSupportFragmentManager();
         }
-
         FragmentTransaction ft = mSupportFragmentManager.beginTransaction();
-
         FragmentFactory fragmentFactory = FragmentFactory.getInstanes();
-
         Fragment LastFragment = fragmentFactory.createMainFragment(lastIndex);
-
         Fragment fragment = fragmentFactory.createMainFragment(index);
-
         if (mSupportFragmentManager.getFragments() == null) {
             if (!fragment.isAdded() && null == mSupportFragmentManager.findFragmentByTag(index + "")) {
                 ft.add(R.id.main_fl, fragment, index + "");
@@ -617,16 +601,13 @@ public class MainActivity extends BaseActivity {
         }
         if (ft != null) {
             ft.hide(LastFragment);
-
             ft.show(fragment);
-
             ft.commitAllowingStateLoss();
             if (mSupportFragmentManager != null)
                 mSupportFragmentManager.executePendingTransactions();
         }
         lastIndex = index;
     }
-
 
 //     当activity销毁时不保存其内部的view的状态
 
@@ -658,10 +639,10 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             exitBy2Click();      //调用双击退出函数
         }
+        finish();
         return false;
     }
 

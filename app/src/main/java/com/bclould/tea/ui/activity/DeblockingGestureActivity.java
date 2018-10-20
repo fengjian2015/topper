@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.GestureLockViewGroup;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
@@ -56,6 +58,11 @@ public class DeblockingGestureActivity extends BaseActivity {
         }
         mGestureView.setAnswer(arr);
         mGestureView.setOnGestureLockViewListener(mOnGestureLockViewListener);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     GestureLockViewGroup.OnGestureLockViewListener mOnGestureLockViewListener = new GestureLockViewGroup.OnGestureLockViewListener() {

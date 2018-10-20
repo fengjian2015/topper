@@ -3,15 +3,19 @@ package com.bclould.tea.ui.widget;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.Gravity;
 import android.widget.ImageView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.utils.ActivityUtil;
 
 /**
  * Created by GA on 2017/11/15.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class LoadingProgressDialog extends Dialog {
     private Context context = null;
     private static LoadingProgressDialog sLoadingProgressDialog = null;
@@ -23,6 +27,7 @@ public class LoadingProgressDialog extends Dialog {
 
     public LoadingProgressDialog(Context context, int theme) {
         super(context, theme);
+        this.context = context;
     }
 
     public static LoadingProgressDialog createDialog(Context context) {
@@ -70,5 +75,16 @@ public class LoadingProgressDialog extends Dialog {
         }
 */
         return sLoadingProgressDialog;
+    }
+
+    public void showDialog(){
+        if(!ActivityUtil.isActivityOnTop(context))return;
+        show();
+    }
+
+
+    public void hideDialog(){
+        if(!ActivityUtil.isActivityOnTop(context))return;
+        dismiss();
     }
 }

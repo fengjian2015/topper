@@ -25,6 +25,7 @@ import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.List;
+import java.util.Observable;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -61,10 +62,10 @@ public class BuySellPresenter {
         }
     }
 
-    public void getDealList(int page, int pageSize, int type, String coinName, final String state, final CallBack callBack) {
+    public void getDealList(int page, int pageSize, int type, String coinName, final int state_id, final CallBack callBack) {
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .getDealList(UtilTool.getToken(), type, coinName, state, page, pageSize)
+                .getDealList(UtilTool.getToken(), type, coinName, state_id, page, pageSize)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<DealListInfo>() {
@@ -77,7 +78,7 @@ public class BuySellPresenter {
                     public void onNext(DealListInfo baseInfo) {
                         hideDialog();
                         if (baseInfo.getStatus() == 1) {
-                            callBack.send(baseInfo.getData(), state);
+                            callBack.send(baseInfo.getData());
                         }else {
                             callBack.finishRefresh();
                         }
@@ -108,9 +109,11 @@ public class BuySellPresenter {
                     @Override
                     public void onSubscribe(Disposable d) {
 
+
                     }
 
                     @Override
+
                     public void onNext(OrderListInfo baseInfo) {
                         hideDialog();
                         if (baseInfo.getStatus() == 1)
@@ -413,7 +416,7 @@ public class BuySellPresenter {
 
     //定义接口
     public interface CallBack {
-        void send(List<DealListInfo.DataBean> dataBean, String coin);
+        void send(List<DealListInfo.DataBean> dataBean);
 
         void error();
         void finishRefresh();

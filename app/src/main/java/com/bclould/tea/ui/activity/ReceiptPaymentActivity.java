@@ -3,6 +3,7 @@ package com.bclould.tea.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -53,28 +55,28 @@ public class ReceiptPaymentActivity extends BaseActivity {
     TextView mXx2;
     @Bind(R.id.tv_hint)
     TextView mTvHint;
+    @Bind(R.id.iv_qr)
+    ImageView mIvQr;
     @Bind(R.id.tv_coin)
     TextView mTvCoin;
-    @Bind(R.id.tv2)
-    TextView mTv2;
     @Bind(R.id.tv_count)
     TextView mTvCount;
+    @Bind(R.id.rl_coin_count)
+    RelativeLayout mRlCoinCount;
     @Bind(R.id.tv_remark)
     TextView mTvRemark;
     @Bind(R.id.rl_data)
     RelativeLayout mRlData;
-    @Bind(R.id.iv_qr)
-    ImageView mIvQr;
     @Bind(R.id.xx)
     TextView mXx;
     @Bind(R.id.tv_set)
     TextView mTvSet;
+    @Bind(R.id.rl_backgound)
+    RelativeLayout mRlBackgound;
     @Bind(R.id.tv)
     TextView mTv;
     @Bind(R.id.rl_receipt_payment_record)
     RelativeLayout mRlReceiptPaymentRecord;
-    @Bind(R.id.tv3)
-    TextView mTv3;
     @Bind(R.id.ll_data)
     LinearLayout mLlData;
     @Bind(R.id.iv2)
@@ -103,7 +105,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
 
     private void initIntent() {
         String action = getIntent().getAction();
-        if (action!= null &&action.equals("android.intent.action.receiving") && WsConnection.getInstance().getOutConnection()) {
+        if (action != null && action.equals("android.intent.action.receiving") && WsConnection.getInstance().getOutConnection()) {
             finish();
             startActivity(new Intent(this, InitialActivity.class));
         }
@@ -111,7 +113,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void moneyIn() {
@@ -121,6 +123,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
         mXx.setVisibility(View.VISIBLE);
         mTvSet.setVisibility(View.VISIBLE);
         mTvHint.setText(getString(R.string.scan_qr_code_pay_hint));
+        mRlBackgound.setBackgroundResource(R.drawable.bg_get_shape);
         mReceiptPaymentPresenter.generateReceiptQrCode("", "", "", new ReceiptPaymentPresenter.CallBack() {
             @Override
             public void send(BaseInfo.DataBean data) {
@@ -225,21 +228,26 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 String count = data.getStringExtra("count");
                 Glide.with(this).load(url).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(mIvQr);
                 hideDialog();
-                if (remark == null) {
-                    mTv3.setVisibility(View.GONE);
+                if (remark.isEmpty()) {
                     mTvRemark.setVisibility(View.GONE);
                 } else {
-                    mTvRemark.setText(remark);
+                    mTvRemark.setVisibility(View.VISIBLE);
+                    mTvRemark.setText(getString(R.string.remark) + "：" + remark);
                 }
                 mTvCoin.setText(coinName);
                 mTvCount.setText(count);
                 mTvSelectorWay.setText(getString(R.string.payment));
+                mTvSelectorWay.setTextColor(Color.rgb(73, 187, 100));
                 mTvHint.setText(getString(R.string.qr_coder_pay));
+                mRlBackgound.setBackgroundResource(R.drawable.bg_pay_shape);
             } else if (requestCode == MONEYIN) {
                 mType = false;
                 mRlData.setVisibility(View.VISIBLE);
                 mTvSet.setText(getString(R.string.gg_set));
-                mTvSelectorWay.setText(getString(R.string.payment));
+                mTvHint.setText(getString(R.string.receipt_payment_hint));
+                mTvSelectorWay.setText(getString(R.string.receipt));
+                mTvSelectorWay.setTextColor(Color.rgb(124, 161, 229));
+                mRlBackgound.setBackgroundResource(R.drawable.bg_get_shape);
                 String coinId = data.getStringExtra("coinId");
                 String coinName = data.getStringExtra("coinName");
                 String count = data.getStringExtra("count");
@@ -252,11 +260,11 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 Bitmap bitmap = UtilTool.createQRImage(base64PetToJson);
                 Glide.with(ReceiptPaymentActivity.this).load(bitmap).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(mIvQr);
                 hideDialog();
-                if (remark == null) {
-                    mTv3.setVisibility(View.GONE);
+                if (remark.isEmpty()) {
                     mTvRemark.setVisibility(View.GONE);
                 } else {
-                    mTvRemark.setText(remark);
+                    mTvRemark.setVisibility(View.VISIBLE);
+                    mTvRemark.setText(getString(R.string.remark) + "：" + remark);
                 }
             }
         }
@@ -268,6 +276,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 mTvSelectorWay.setText(receipt.getText());
+                mTvSelectorWay.setTextColor(Color.rgb(124, 161, 229));
                 mPopupWindow.dismiss();
                 moneyIn();
             }

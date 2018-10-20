@@ -23,6 +23,7 @@ import com.bclould.tea.model.OutCoinSiteInfo;
 import com.bclould.tea.ui.adapter.OutCoinSiteRVAdapter;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -85,7 +86,7 @@ public class OutCoinSiteActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     //初始化界面

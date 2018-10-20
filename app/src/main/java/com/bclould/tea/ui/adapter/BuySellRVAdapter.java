@@ -158,7 +158,7 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
             } else {
                 UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
             }
-            mTvPayWay.setText(dataBean.getPay_type());
+                mTvPayWay.setText(dataBean.getPay_type());
             mTvPrice.setText(dataBean.getPrice() + " " + dataBean.getCurrency());
             mTvUsername.setText(dataBean.getUsername());
             mTvTradeCount.setText(mContext.getString(R.string.deal) + " " + dataBean.getCount_trans_number());

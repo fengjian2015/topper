@@ -2,33 +2,27 @@ package com.bclould.tea.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bclould.tea.Presenter.UpdateLogPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.bclould.tea.Presenter.LoginPresenter.IS_UPDATE;
 
 /**
  * Created by GA on 2017/9/22.
@@ -41,71 +35,63 @@ public class GuanYuMeActivity extends BaseActivity {
     ImageView mBark;
     @Bind(R.id.tv_version)
     TextView mTvVersion;
-    @Bind(R.id.tv)
-    TextView mTv;
-    @Bind(R.id.tv_new_update)
-    TextView mTvNewUpdate;
-    @Bind(R.id.rl_check_update)
-    RelativeLayout mRlCheckUpdate;
-    @Bind(R.id.rl_update_log)
-    RelativeLayout mRlUpdateLog;
-    private UpdateLogPresenter mUpdateLogPresenter;
+    @Bind(R.id.tv_url)
+    TextView mTvUrl;
+    @Bind(R.id.tv3)
+    TextView mTv3;
+    @Bind(R.id.btn_check_update)
+    Button mBtnCheckUpdate;
+    @Bind(R.id.tv_log)
+    TextView mTvLog;
+    @Bind(R.id.tv_email)
+    TextView mTvEmail;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guanyu_me);
         ButterKnife.bind(this);
-        if (!EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().register(this);
-        if (UtilTool.compareVersion(this)) {
-            mTvNewUpdate.setVisibility(View.VISIBLE);
-        } else {
-            mTvNewUpdate.setVisibility(View.GONE);
-        }
-        if (MySharedPreferences.getInstance().getInteger(IS_UPDATE) == 1) {
-            mRlCheckUpdate.setVisibility(View.VISIBLE);
-        } else {
-            mRlCheckUpdate.setVisibility(View.GONE);
-        }
-        mUpdateLogPresenter = new UpdateLogPresenter(this);
-        String versionCode = UtilTool.getVersionCode(this);
-        mTvVersion.setText(getString(R.string.app_name) + " v" + versionCode);
+        init();
         MyApp.getInstance().addActivity(this);
+    }
+
+    private void init() {
+        String versionCode = UtilTool.getVersionCode(this);
+        mTvVersion.setText(getString(R.string.version) + " v " + versionCode);
+        mTvUrl.setText(getString(R.string.guanwang) + " " + Constants.OFFICIAL_WEBSITE);
+        mTvUrl.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
+        mTvLog.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
+        mTvEmail.setText(Constants.CUSTOMER_SERVICE_EMAIL);
     }
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
-        String msg = event.getMsg();
-        if (msg.equals(getString(R.string.check_new_version))) {
-            mRlCheckUpdate.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @OnClick({R.id.bark, R.id.rl_check_update, R.id.rl_update_log})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.bark:
-                finish();
-                break;
-            case R.id.rl_update_log:
-                startActivity(new Intent(this, UpdateLogActivity.class));
-                break;
-            case R.id.rl_check_update:
-                startActivity(new Intent(GuanYuMeActivity.this, VersionsUpdateActivity.class));
-                break;
-        }
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-        EventBus.getDefault().unregister(this);
+    }
+
+    @OnClick({R.id.bark, R.id.tv_url, R.id.btn_check_update, R.id.tv_log})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bark:
+                finish();
+                break;
+            case R.id.tv_url:
+                Intent intent = new Intent(this, HTMLActivity.class);
+                intent.putExtra("html5Url", Constants.OFFICIAL_WEBSITE);
+                startActivity(intent);
+                break;
+            case R.id.btn_check_update:
+                startActivity(new Intent(GuanYuMeActivity.this, VersionsUpdateActivity.class));
+                break;
+            case R.id.tv_log:
+                startActivity(new Intent(this, UpdateLogActivity.class));
+                break;
+        }
     }
 }

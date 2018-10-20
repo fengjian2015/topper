@@ -57,6 +57,8 @@ public class LoginPresenter {
     public static final String STATE = "state";
     public static final String CURRENCY = "currency";
     public static final String IS_UPDATE = "is_update";
+    public static final String STATE_ID = "state_id";
+    public static final String ALIPAY_UUID = "alipay_uuid";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
@@ -114,7 +116,6 @@ public class LoginPresenter {
                                 }
                             }
                         } else if (baseInfo.getStatus() == 1) {
-                            UtilTool.Log("日志", baseInfo.getData().getName());
                             MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
                             MySharedPreferences.getInstance().setLong(TOKEN_TIME, System.currentTimeMillis());
                             MySharedPreferences.getInstance().setString(TOCOID, baseInfo.getData().getToco_id());
@@ -124,6 +125,8 @@ public class LoginPresenter {
                             MySharedPreferences.getInstance().setString(LOGINPW, password);
                             MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
                             MySharedPreferences.getInstance().setInteger(IS_UPDATE, baseInfo.getData().getIs_update());
+                            MySharedPreferences.getInstance().setInteger(STATE_ID, baseInfo.getData().getCountry_id());
+                            MySharedPreferences.getInstance().setString(ALIPAY_UUID, baseInfo.getData().getAlipay_uuid());
                             if (baseInfo.getData().getFingerprint() == 1) {
                                 MySharedPreferences.getInstance().setBoolean(FINGERPRINT_PW_SELE, true);
                             } else {
@@ -149,7 +152,6 @@ public class LoginPresenter {
                             intent.putExtra("whence", 1);
                             mContext.startActivity(intent);
                             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_the_interface)));
-
                         }
                     }
 
@@ -186,7 +188,7 @@ public class LoginPresenter {
     private void sendVcode(String email) {
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .sendRegcode(email)
+                .sendRegcode(email, UtilTool.getLanguage(mContext))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {
@@ -342,13 +344,12 @@ public class LoginPresenter {
                     @Override
                     public void onNext(BaseInfo baseInfo) {
                         hideDialog();
-                        callBack3.send();
+                        callBack3.send(baseInfo.getData().getCountry());
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         hideDialog();
-                        callBack3.send();
                     }
 
                     @Override
@@ -406,7 +407,7 @@ public class LoginPresenter {
 
     //定义接口
     public interface CallBack3 {
-        void send();
+        void send(String currency);
     }
 
     //定义接口

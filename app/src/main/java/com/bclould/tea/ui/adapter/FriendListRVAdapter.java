@@ -1,32 +1,23 @@
 package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
-import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.UserInfo;
-import com.bclould.tea.ui.activity.ConversationActivity;
-import com.bclould.tea.ui.activity.RemarkActivity;
-import com.bclould.tea.ui.activity.SelectConversationActivity;
-import com.bclould.tea.ui.widget.MenuListPopWindow;
-import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -41,6 +32,7 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
     private final List<UserInfo> mUsers;
     private final DBManager mMgr;
     private OnclickListener mOnclickListener;
+
     public FriendListRVAdapter(Context context, List<UserInfo> users, DBManager mgr) {
         mContext = context;
         mUsers = users;
@@ -91,7 +83,8 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
         UserInfo mUserInfo;
         private String mUser;
         private String mName;
-        private  int position;
+        private int position;
+
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -99,7 +92,7 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mOnclickListener!=null){
+                    if (mOnclickListener != null) {
                         mOnclickListener.onclick(position);
                     }
                 }
@@ -107,7 +100,7 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    if(mOnclickListener!=null){
+                    if (mOnclickListener != null) {
                         mOnclickListener.onLongClick(position);
                     }
                     return false;
@@ -116,10 +109,10 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(UserInfo userInfo, int position) {
-            this.position=position;
+            this.position = position;
             mUserInfo = userInfo;
             mUser = userInfo.getUser();
-            mName= userInfo.getUserName();
+            mName = userInfo.getUserName();
             String remark = userInfo.getRemark();
             //根据position获取首字母作为目录catalog
             String catalog = userInfo.getFirstLetter();
@@ -141,12 +134,13 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void setOnClickListener(OnclickListener onClickListener){
-        this.mOnclickListener=onClickListener;
+    public void setOnClickListener(OnclickListener onClickListener) {
+        this.mOnclickListener = onClickListener;
     }
 
-    public interface OnclickListener{
+    public interface OnclickListener {
         void onclick(int position);
+
         void onLongClick(int position);
     }
 }

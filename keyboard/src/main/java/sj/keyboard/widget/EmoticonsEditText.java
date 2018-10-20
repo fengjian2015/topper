@@ -86,7 +86,7 @@ public class EmoticonsEditText extends android.support.v7.widget.AppCompatEditTe
                 Uri uri= clip.getPrimaryClip().getItemAt(0).getUri();
                 if(uri!=null){
                     // TODO: 2018/8/9 處理文件發送操作
-
+                    mOnTextContextMenuItem.onCopyUri(uri);
                     return true;
                 }else{
                     return super.onTextContextMenuItem(id);
@@ -137,9 +137,13 @@ public class EmoticonsEditText extends android.support.v7.widget.AppCompatEditTe
         onSizeChangedListener = i;
     }
 
-//    OnTextContextMenuItem
-    public void setOnTextContextMenuItem(){
+    OnTextContextMenuItem mOnTextContextMenuItem;
 
+    public interface OnTextContextMenuItem{
+        void onCopyUri(Uri uri);
+    }
+    public void setOnTextContextMenuItem(OnTextContextMenuItem item){
+        mOnTextContextMenuItem=item;
     }
 
 }

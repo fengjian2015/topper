@@ -20,7 +20,7 @@
         android:id="@+id/xx"
         style="@style/HorizontalBoundaryStyle"
         android:layout_above="@+id/main_bottom_menu"/>
-
+    
     <LinearLayout
         android:id="@+id/main_bottom_menu"
         android:layout_width="match_parent"
