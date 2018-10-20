@@ -67,6 +67,15 @@ public class LoginInfo {
         private String gesture_number;
         private int country_id;
         private String alipay_uuid;
+        private boolean bind_ftc;
+
+        public boolean isBind_ftc() {
+            return bind_ftc;
+        }
+
+        public void setBind_ftc(boolean bind_ftc) {
+            this.bind_ftc = bind_ftc;
+        }
 
         public String getAlipay_uuid() {
             return alipay_uuid;

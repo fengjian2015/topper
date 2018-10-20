@@ -21,7 +21,9 @@ import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.LoginSetActivity;
 import com.bclould.tea.ui.activity.MainActivity;
+import com.bclould.tea.ui.activity.PayPwSelectorActivity;
 import com.bclould.tea.ui.activity.SelectorLanguageActivity;
+import com.bclould.tea.ui.activity.SetGesturePWActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.MessageEvent;
@@ -59,6 +61,7 @@ public class LoginPresenter {
     public static final String IS_UPDATE = "is_update";
     public static final String STATE_ID = "state_id";
     public static final String ALIPAY_UUID = "alipay_uuid";
+    public static final String BIND_FTC="bind_ftc";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
@@ -116,6 +119,7 @@ public class LoginPresenter {
                                 }
                             }
                         } else if (baseInfo.getStatus() == 1) {
+                            MySharedPreferences.getInstance().setBoolean(BIND_FTC,baseInfo.getData().isBind_ftc());
                             MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
                             MySharedPreferences.getInstance().setLong(TOKEN_TIME, System.currentTimeMillis());
                             MySharedPreferences.getInstance().setString(TOCOID, baseInfo.getData().getToco_id());
@@ -128,15 +132,15 @@ public class LoginPresenter {
                             MySharedPreferences.getInstance().setInteger(STATE_ID, baseInfo.getData().getCountry_id());
                             MySharedPreferences.getInstance().setString(ALIPAY_UUID, baseInfo.getData().getAlipay_uuid());
                             if (baseInfo.getData().getFingerprint() == 1) {
-                                MySharedPreferences.getInstance().setBoolean(FINGERPRINT_PW_SELE, true);
+                                MySharedPreferences.getInstance().setBoolean(PayPwSelectorActivity.FINGERPRINT_PW_SELE, true);
                             } else {
-                                MySharedPreferences.getInstance().setBoolean(FINGERPRINT_PW_SELE, false);
+                                MySharedPreferences.getInstance().setBoolean(PayPwSelectorActivity.FINGERPRINT_PW_SELE, false);
                             }
                             if (baseInfo.getData().getGesture() == 1) {
-                                MySharedPreferences.getInstance().setBoolean(GESTURE_PW_SELE, true);
-                                MySharedPreferences.getInstance().setString(GESTURE_ANSWER, baseInfo.getData().getGesture_number());
+                                MySharedPreferences.getInstance().setBoolean(PayPwSelectorActivity.GESTURE_PW_SELE, true);
+                                MySharedPreferences.getInstance().setString(SetGesturePWActivity.GESTURE_ANSWER, baseInfo.getData().getGesture_number());
                             } else {
-                                MySharedPreferences.getInstance().setBoolean(GESTURE_PW_SELE, false);
+                                MySharedPreferences.getInstance().setBoolean(PayPwSelectorActivity.GESTURE_PW_SELE, false);
                             }
                             if (!baseInfo.getData().getCountry().isEmpty()) {
                                 MySharedPreferences.getInstance().setString(STATE, baseInfo.getData().getCountry());

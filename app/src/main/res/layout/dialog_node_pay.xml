@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/x600"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_shape"
+    android:paddingBottom="@dimen/y80"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="@dimen/x144"
+        android:layout_height="@dimen/y144"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y80"
+        android:src="@mipmap/icon_node_dui"/>
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/x30"
+        android:gravity="center"
+        android:paddingRight="@dimen/y30"
+        style="@style/MainTextDeepStyle36"
+        android:text="升级失败"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/y30"/>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/x30"
+        android:gravity="center"
+        android:paddingRight="@dimen/y30"
+        style="@style/MainTextDeepStyle30"
+        android:visibility="gone"
+        android:text="团队未到达50个共识节点"
+        android:layout_marginTop="@dimen/y30"
+        />
+</LinearLayout>

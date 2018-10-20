@@ -16,15 +16,20 @@ import android.widget.TextView;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.ui.activity.AccountBindingActivity;
 import com.bclould.tea.ui.activity.CollectActivity;
 import com.bclould.tea.ui.activity.DynamicActivity;
 import com.bclould.tea.ui.activity.GuanYuMeActivity;
 import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.LoginActivity;
+import com.bclould.tea.ui.activity.MyBindingActivity;
+import com.bclould.tea.ui.activity.MyTeamActivity;
+import com.bclould.tea.ui.activity.NodeActivity;
 import com.bclould.tea.ui.activity.PersonalDetailsActivity;
 import com.bclould.tea.ui.activity.SystemSetActivity;
 import com.bclould.tea.ui.activity.UserSafetyActivity;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,6 +41,8 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.bclould.tea.Presenter.LoginPresenter.BIND_FTC;
 
 /**
  * Created by GA on 2017/9/19.
@@ -158,7 +165,7 @@ public class MyFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.rl_dynamic, R.id.rl_collect, R.id.rl_already_login, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we, R.id.rl_no_login})
+    @OnClick({R.id.rl_dynamic, R.id.rl_collect, R.id.rl_already_login, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we, R.id.rl_no_login,R.id.rl_my_team,R.id.rl_participation_profit,R.id.rl_account_binding})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_already_login:
@@ -206,7 +213,40 @@ public class MyFragment extends Fragment {
                     startActivity(new Intent(getActivity(), InitialActivity.class));
                 }
                 break;
+            case R.id.rl_my_team:
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    if(MySharedPreferences.getInstance().getBoolean(BIND_FTC)){
+                        startActivity(new Intent(getActivity(), MyTeamActivity.class));
+                    }else{
+                        startActivity(new Intent(getActivity(), AccountBindingActivity.class));
+                    }
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
+                break;
+            case R.id.rl_participation_profit:
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    if(MySharedPreferences.getInstance().getBoolean(BIND_FTC)){
+                        startActivity(new Intent(getActivity(), NodeActivity.class));
+                    }else{
+                        startActivity(new Intent(getActivity(), AccountBindingActivity.class));
+                    }
 
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
+                break;
+            case R.id.rl_account_binding:
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    if(MySharedPreferences.getInstance().getBoolean(BIND_FTC)){
+                        startActivity(new Intent(getActivity(), MyBindingActivity.class));
+                    }else{
+                        startActivity(new Intent(getActivity(), AccountBindingActivity.class));
+                    }
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
+                break;
 
         }
     }

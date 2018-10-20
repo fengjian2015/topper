@@ -1,5 +1,7 @@
 package com.bclould.tea.utils;
 
+import com.bclould.tea.model.NodeInfo;
+
 /**
  * Created by GA on 2017/11/22.
  */
@@ -24,6 +26,15 @@ public class MessageEvent {
     private String filepath;
     private String roomId;
     private String url;
+    private NodeInfo mNodeInfo;
+
+    public NodeInfo getNodeInfo() {
+        return mNodeInfo;
+    }
+
+    public void setNodeInfo(NodeInfo nodeInfo) {
+        mNodeInfo = nodeInfo;
+    }
 
     public String getUrl() {
         return url;
