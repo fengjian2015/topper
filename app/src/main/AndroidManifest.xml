@@ -60,6 +60,10 @@
             android:name="TencentMapSDK"
             android:value="VKMBZ-GAMWJ-UA5FV-KAXJS-IEHET-QABI7" />
 
+        <!--友盟统计-->
+        <meta-data android:value="5bcd3a26b465f57c2c0001ae" android:name="UMENG_APPKEY"/>
+        <meta-data android:value="wangluo" android:name="UMENG_CHANNEL"/>
+
         <provider
             android:name=".utils.MyFileProvider"
             android:authorities="com.bclould.tea.provider"

@@ -35,6 +35,7 @@ import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.FingerprintUtil;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -109,6 +110,7 @@ public class BaseActivity extends SwipeActivity {
     @Override
     public void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         if (!isActive) {
             //app 从后台唤醒，进入前台
             isActive = true;
@@ -127,6 +129,7 @@ public class BaseActivity extends SwipeActivity {
     @Override
     public void onPause() {
         super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override
