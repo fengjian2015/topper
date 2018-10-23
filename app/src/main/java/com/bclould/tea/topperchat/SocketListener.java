@@ -303,6 +303,7 @@ public class SocketListener {
 
         MessageEvent messageEvent = new MessageEvent(EventBusUtil.change_msg_state);
         messageEvent.setId(id);
+        messageEvent.setSendStatus(1);
         mgr.updateMessageStatus(id, 1);
         mgr.deleteSingleMsgId(id);
         EventBus.getDefault().post(messageEvent);

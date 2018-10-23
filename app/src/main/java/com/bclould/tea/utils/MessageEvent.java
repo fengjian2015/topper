@@ -27,6 +27,15 @@ public class MessageEvent {
     private String roomId;
     private String url;
     private NodeInfo mNodeInfo;
+    private int sendStatus;
+
+    public int getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(int sendStatus) {
+        this.sendStatus = sendStatus;
+    }
 
     public NodeInfo getNodeInfo() {
         return mNodeInfo;
