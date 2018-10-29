@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/app_bg_color"
+    >
+    <RelativeLayout
+        style="@style/TopNavigationBarStyle">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/account_binding"
+            style="@style/MainTextShallowStyle36"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HorizontalBoundaryStyle"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_register"
+        android:layout_marginTop="@dimen/y50"
+        android:orientation="vertical"
+        android:paddingRight="@dimen/x30"
+        android:paddingLeft="@dimen/x30"
+        android:paddingTop="@dimen/y100">
+
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:hint="@string/username"
+            android:lines="1"
+            android:maxLength="28"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/x20"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorHint="@color/ashen"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/x32"
+            android:theme="@style/MyEditText"/>
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:layout_marginTop="@dimen/y66"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:lines="1"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/x20"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorHint="@color/ashen"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/x32"
+            android:theme="@style/MyEditText"/>
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            style="@style/BlueTextStyle36"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y66"
+            android:background="@drawable/bg_blue_shape3"
+            android:text="@string/binding"
+            android:textColor="@color/white"
+            android:textSize="@dimen/x35"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MainTextShallowStyle36"
+            android:text="@string/bind_FTC_account"
+            android:layout_marginTop="@dimen/y30"
+            android:visibility="gone"
+            />
+        <TextView
+            android:id="@+id/tv_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/SecondaryTextStyle30"
+            android:layout_marginTop="@dimen/y30"/>
+    </LinearLayout>
+</LinearLayout>

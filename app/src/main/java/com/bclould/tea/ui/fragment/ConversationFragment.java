@@ -229,6 +229,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         });
     }
 
+
     @Override
     public void onStateChange(int serviceState) {
         if (serviceState == -1 || mTvTitle == null) return;

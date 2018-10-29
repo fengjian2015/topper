@@ -5,6 +5,7 @@ import com.bclould.tea.model.AuatarListInfo;
 import com.bclould.tea.model.BankCardInfo;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.BetInfo;
+import com.bclould.tea.model.BindingInfo;
 import com.bclould.tea.model.CardListInfo;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.CollectInfo;
@@ -19,6 +20,7 @@ import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.GroupMemberInfo;
 import com.bclould.tea.model.GuessInfo;
 import com.bclould.tea.model.GuessListInfo;
+import com.bclould.tea.model.HistoryInfo;
 import com.bclould.tea.model.InOutInfo;
 import com.bclould.tea.model.IndividualInfo;
 import com.bclould.tea.model.LikeInfo;
@@ -28,8 +30,10 @@ import com.bclould.tea.model.MessageTopInfo;
 import com.bclould.tea.model.ModeOfPaymentInfo;
 import com.bclould.tea.model.MyAdListInfo;
 import com.bclould.tea.model.MyAssetsInfo;
+import com.bclould.tea.model.MyTeamInfo;
 import com.bclould.tea.model.NewFriendInfo;
 import com.bclould.tea.model.NewsListInfo;
+import com.bclould.tea.model.NodeInfo;
 import com.bclould.tea.model.OSSInfo;
 import com.bclould.tea.model.OrderInfo;
 import com.bclould.tea.model.OrderInfo2;
@@ -50,6 +54,7 @@ import com.bclould.tea.model.TransferInfo;
 import com.bclould.tea.model.TransferListInfo;
 import com.bclould.tea.model.UnclaimedRedInfo;
 import com.bclould.tea.model.UpdateLogInfo;
+import com.bclould.tea.model.UpgradeInfo;
 import com.bclould.tea.model.UserDataInfo;
 import com.bclould.tea.model.VersionInfo;
 
@@ -62,6 +67,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 /**
@@ -1493,5 +1499,67 @@ public interface MyService {
     Observable<BaseInfo> alipayOrder(
             @Header("Authorization") String token,
             @Field("second_password") String second_password
+    );
+    //绑定分销账号
+    @POST("team/bind")
+    @FormUrlEncoded
+    Observable<BaseInfo> bingTeam(
+            @Header("Authorization") String token,
+            @Field("nameOrEmail") String nameOrEmail,
+            @Field("password") String password
+    );
+
+    //绑定账号说明
+    @POST("team/bind/desc")
+    Observable<BaseInfo> bingDesc(
+            @Header("Authorization") String token
+    );
+
+    //账号信息
+    @POST("team/bind/info")
+    Observable<BindingInfo> infoFTC(
+            @Header("Authorization") String token
+    );
+
+    //我的团队
+    @POST("team/my/team")
+    @FormUrlEncoded
+    Observable<MyTeamInfo> myTeam(
+            @Header("Authorization") String token,
+            @Field("user_id") int user_id,
+            @Field("page") int page
+    );
+
+    //我的团队
+    @POST("team/node/dividend")
+    @FormUrlEncoded
+    Observable<NodeInfo> nodelist(
+            @Header("Authorization") String token,
+            @Field("type") int type,
+            @Field("page") int page
+    );
+
+    //升级节点数据
+    @POST("team/node/buy")
+    Observable<UpgradeInfo> nodeBuy(
+            @Header("Authorization") String token
+    );
+
+    //升级购买
+    @POST("team/node/buy/action")
+    @FormUrlEncoded
+    Observable<BaseInfo> nodeBuyAction(
+            @Header("Authorization") String token,
+            @Field("second_password") String second_password,
+            @Field("number") String number,
+            @Field("type") int type
+    );
+
+    //购买记录
+    @POST("team/node/buy/history")
+    @FormUrlEncoded
+    Observable<HistoryInfo> historyFtc(
+            @Header("Authorization") String token,
+            @Field("page") int page
     );
 }

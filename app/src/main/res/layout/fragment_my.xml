@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/app_bg_color"
-                android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg_color"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -236,7 +236,104 @@
 
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/rl_my_team"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y110"
+                    android:paddingBottom="@dimen/y20"
+                    android:paddingTop="@dimen/y20"
+                    android:visibility="gone">
 
+                    <ImageView
+                        android:id="@+id/iv6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:src="@mipmap/my_team"/>
+
+                    <TextView
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:layout_toRightOf="@+id/iv6"
+                        android:text="@string/my_team"/>
+
+                    <ImageView
+                        android:layout_width="@dimen/x15"
+                        android:layout_height="@dimen/x25"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x25"
+                        android:src="@mipmap/iocn_person_turninto"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_participation_profit"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y110"
+                    android:paddingBottom="@dimen/y20"
+                    android:paddingTop="@dimen/y20"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/iv7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:src="@mipmap/iocn_participation_profit"/>
+
+                    <TextView
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:layout_toRightOf="@+id/iv7"
+                        android:text="@string/participation_profit"/>
+
+                    <ImageView
+                        android:layout_width="@dimen/x15"
+                        android:layout_height="@dimen/x25"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x25"
+                        android:src="@mipmap/iocn_person_turninto"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_account_binding"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y110"
+                    android:paddingBottom="@dimen/y20"
+                    android:paddingTop="@dimen/y20">
+
+                    <ImageView
+                        android:id="@+id/iv8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:src="@mipmap/iocn_account_binding"/>
+
+                    <TextView
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:layout_toRightOf="@+id/iv8"
+                        android:text="@string/account_binding"/>
+
+                    <ImageView
+                        android:layout_width="@dimen/x15"
+                        android:layout_height="@dimen/x25"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x25"
+                        android:src="@mipmap/iocn_person_turninto"/>
+                </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/rl_system_set"
                     android:layout_width="match_parent"

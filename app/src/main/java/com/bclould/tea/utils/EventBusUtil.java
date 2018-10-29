@@ -21,5 +21,7 @@ public class EventBusUtil {
     public static final String delete_friend="删除好友";
     public static final String quit_group="退出群聊";
     public static final String refresh_msg_number="刷新消息总数";
+    public static final String refresh_node_activity="刷新分红界面";
+    public static final String refresh_upgrade="刷新升级界面";
 }
 

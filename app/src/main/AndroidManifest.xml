@@ -60,6 +60,10 @@
             android:name="TencentMapSDK"
             android:value="VKMBZ-GAMWJ-UA5FV-KAXJS-IEHET-QABI7" />
 
+        <!--友盟统计-->
+        <meta-data android:value="5bcd3a26b465f57c2c0001ae" android:name="UMENG_APPKEY"/>
+        <meta-data android:value="wangluo" android:name="UMENG_CHANNEL"/>
+
         <provider
             android:name=".utils.MyFileProvider"
             android:authorities="com.bclould.tea.provider"
@@ -1203,10 +1207,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
-=======
-            android:theme="@style/Transparent"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
->>>>>>> 41d21d3390c601f16393a482b56bb0cf42170d18
         <activity
             android:name=".ui.activity.DeblockingFingerprintActivity"
             android:launchMode="singleTop"
@@ -1253,6 +1253,42 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ui.activity.SendRedAlipaylActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.MyTeamActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.NodeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.UpgradeNodeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.AccountBindingActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.MyBindingActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.HistoryActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"

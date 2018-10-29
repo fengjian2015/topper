@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -33,6 +34,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +63,8 @@ import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.utils.permissions.AuthorizationUserTools;
+import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
+import com.bclould.tea.xmpp.IConnectStateChangeListener;
 import com.bclould.tea.xmpp.MessageManageListener;
 import com.bclould.tea.xmpp.Room;
 import com.bclould.tea.xmpp.RoomManage;
@@ -120,7 +124,8 @@ import sj.keyboard.widget.RecordIndicator;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ConversationActivity extends BaseActivity implements FuncLayout.OnFuncKeyBoardListener, XhsEmoticonsKeyBoard.OnResultOTR, MessageManageListener, TextView.OnEditorActionListener {
+public class ConversationActivity extends BaseActivity implements FuncLayout.OnFuncKeyBoardListener, XhsEmoticonsKeyBoard.OnResultOTR, MessageManageListener, TextView.OnEditorActionListener
+                        ,IConnectStateChangeListener {
 
     private static final int CODE_TAKE_PHOTO_SHOOTING = 100;
     private static final int FILE_SELECT_CODE = 2;
@@ -145,6 +150,8 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     XhsEmoticonsKeyBoard mEkbEmoticonsKeyboard;
     @Bind(R.id.iv_backgound)
     ImageView mIvBackgound;
+    @Bind(R.id.title_progress)
+    ProgressBar mTitleProgress;
 
     private String roomId;//房間id
     private String mName;
@@ -191,7 +198,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         }
         audioModeManger.register(this);
         setOnClick();
-
+        initTitleProgress();
     }
 
     @Override
@@ -255,12 +262,12 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 Intent intent = new Intent(ConversationActivity.this, SelectFriendGetActivity.class);
                 intent.putExtra("roomId", roomId);
                 startActivity(intent);
-            }else if (getString(R.string.alipay_red_package).equals(name)) {
+            } else if (getString(R.string.alipay_red_package).equals(name)) {
                 if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
                     Intent intent = new Intent(ConversationActivity.this, SendRedGroupAlipaylActivity.class);
                     intent.putExtra("roomId", roomId);
                     startActivity(intent);
-                }else {
+                } else {
                     Intent intent = new Intent(ConversationActivity.this, SendRedAlipaylActivity.class);
                     intent.putExtra("roomId", roomId);
                     startActivity(intent);
@@ -292,7 +299,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mEkbEmoticonsKeyboard.getEtChat().setOnTextContextMenuItem(new EmoticonsEditText.OnTextContextMenuItem() {
             @Override
             public void onCopyUri(Uri uri) {
-                final ImageDialog imageDialog=new ImageDialog(ConversationActivity.this);
+                final ImageDialog imageDialog = new ImageDialog(ConversationActivity.this);
                 imageDialog.setImage(uri);
                 imageDialog.setOnClickListener(new ImageDialog.OnClickListener() {
                     @Override
@@ -651,6 +658,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mediaPlayer.release();
         mediaPlayer = null;
         EventBus.getDefault().unregister(this);
+        ConnectStateChangeListenerManager.get().unregisterStateChangeListener(this);
         super.onDestroy();
 
     }
@@ -690,7 +698,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             mEkbEmoticonsKeyboard.startOTR();
             UtilTool.Log("fengjian---", "开启加密");
         } else if (msg.equals(EventBusUtil.change_msg_state)) {
-            changeMsgState(event.getId());
+            changeMsgState(event.getId(),event.getSendStatus());
             UtilTool.Log("fengjian---", "改變消息狀態");
         } else if (msg.equals(EventBusUtil.quit_group)) {
             if (roomId.equals(event.getId())) {
@@ -716,10 +724,10 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             changeMsgFile(event.getId(), event.getFilepath());
         } else if (msg.equals(EventBusUtil.withdrew_a_message)) {
             deleteMsg(event.getId());
-        }else if(msg.equals(getString(R.string.conversation_backgound))){
+        } else if (msg.equals(getString(R.string.conversation_backgound))) {
             setBackgound();
-        }else if(msg.equals(getString(R.string.automatic_download_complete))){
-            downloadMsg(event.getUrl(),event.getFilepath());
+        } else if (msg.equals(getString(R.string.automatic_download_complete))) {
+            downloadMsg(event.getUrl(), event.getFilepath());
         }
     }
 
@@ -727,10 +735,10 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         for (MessageInfo info : mMessageList) {
             if (info.getMessage().equals(file)) {
                 info.setStatus(1);
-                mMgr.updateMessageState(info.getId()+"",1);
-                if(!StringUtils.isEmpty(filepath)){
+                mMgr.updateMessageState(info.getId() + "", 1);
+                if (!StringUtils.isEmpty(filepath)) {
                     info.setMessage(filepath);
-                    mMgr.updateMessage(info.getId(),filepath);
+                    mMgr.updateMessage(info.getId(), filepath);
                 }
                 mChatAdapter.notifyItemChanged(mMessageList.indexOf(info));
                 return;
@@ -767,10 +775,14 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         }
     }
 
-    private void changeMsgState(String id) {
+    private void changeMsgState(String id, int sendStatus) {
         for (int i = 0; i < mMessageList.size(); i++) {
             if (id.equals(mMessageList.get(i).getMsgId())) {
-                mMessageList.get(i).setSendStatus(1);
+                if(sendStatus==0) {
+                    mMessageList.get(i).setSendStatus(1);
+                }else{
+                    mMessageList.get(i).setSendStatus(sendStatus);
+                }
                 mChatAdapter.notifyItemChanged(i);
                 break;
             }
@@ -787,7 +799,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 
     //选择图片
     private void selectorImages() {
-        if (!AuthorizationUserTools.externalStorage(this,true))
+        if (!AuthorizationUserTools.externalStorage(this, true))
             return;
         // 进入相册 以下是例子：不需要的api可以不写
         PictureSelector.create(this)
@@ -902,7 +914,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 
     //调用文件选择软件来选择文件
     private void showFileChooser() {
-        if (!AuthorizationUserTools.externalStorage(this,true))
+        if (!AuthorizationUserTools.externalStorage(this, true))
             return;
 //        new LFilePicker()
 //                .withActivity(ConversationActivity.this)
@@ -934,7 +946,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                     if (view != null) {
                         top = view.getTop();
                     }
-                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(roomId, mMessageList.get(0).getCreateTime(),0);
+                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(roomId, mMessageList.get(0).getCreateTime(), 0);
                     mMessageList.addAll(0, messageInfos);
                     currentPosition = mMessageList.size() - currentPosition;
                     mChatAdapter.notifyDataSetChanged();
@@ -949,12 +961,12 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                     List<MessageInfo> messageInfos1 = null;
                     if (isFist) {
                         MessageInfo messageInfo = (MessageInfo) bundle3.getSerializable("MessageInfo");
-                        messageInfos1 = mMgr.queryLoadMessage(roomId, messageInfo.getCreateTime(), isFist,0);
+                        messageInfos1 = mMgr.queryLoadMessage(roomId, messageInfo.getCreateTime(), isFist, 0);
                     } else {
                         if (mMessageList.size() == 0) {
-                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(0).getCreateTime(), isFist,0);
+                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(0).getCreateTime(), isFist, 0);
                         } else {
-                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(mMessageList.size() - 1).getCreateTime(), isFist,0);
+                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(mMessageList.size() - 1).getCreateTime(), isFist, 0);
                         }
                     }
                     if (messageInfos1.size() <= 0) {
@@ -974,7 +986,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     //初始化数据
     private void initData(String msgId, boolean isScroll) {
         if (StringUtils.isEmpty(msgId)) {
-            List<MessageInfo> messageInfos = mMgr.queryMessage(roomId,0);
+            List<MessageInfo> messageInfos = mMgr.queryMessage(roomId, 0);
             mMessageList.clear();
             mMessageList.addAll(messageInfos);
             mChatAdapter.notifyDataSetChanged();
@@ -1099,12 +1111,12 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 
     private void setBackgound() {
         String key = MySharedPreferences.getInstance().getString("backgroundu_file" + UtilTool.getTocoId());
-        String urls=MySharedPreferences.getInstance().getString("backgroundu_url"+UtilTool.getTocoId());
-        if (!StringUtils.isEmpty(key)||!StringUtils.isEmpty(urls)) {
-            File file = new File(Constants.BACKGOUND+key);
+        String urls = MySharedPreferences.getInstance().getString("backgroundu_url" + UtilTool.getTocoId());
+        if (!StringUtils.isEmpty(key) || !StringUtils.isEmpty(urls)) {
+            File file = new File(Constants.BACKGOUND + key);
             if (file.exists()) {
-                Glide.with(this).load(new File(Constants.BACKGOUND+key)).apply(requestOptions).into(mIvBackgound);
-            }else{
+                Glide.with(this).load(new File(Constants.BACKGOUND + key)).apply(requestOptions).into(mIvBackgound);
+            } else {
                 Glide.with(this).load(urls).apply(requestOptions).into(mIvBackgound);
             }
         }
@@ -1151,6 +1163,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             startActivity(intent);
         }
     }
+
 
     @Override
     public void OnFuncPop(int i) {
@@ -1266,5 +1279,38 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mediaPlayer.stop();
         mediaPlayer.reset();
         mEkbEmoticonsKeyboard.onPause();
+    }
+
+    @Override
+    public void onStateChange(int serviceState) {
+        if (serviceState == -1 || mTitleProgress == null) return;
+        onChangeChatState(serviceState);
+    }
+
+    private void initTitleProgress(){
+        if(ConnectStateChangeListenerManager.get().getCurrentState()==ConnectStateChangeListenerManager.CONNECTED||
+                ConnectStateChangeListenerManager.get().getCurrentState()==ConnectStateChangeListenerManager.RECEIVING){
+            mTitleProgress.setVisibility(View.GONE);
+        }else{
+            mTitleProgress.setVisibility(View.VISIBLE);
+        }
+        ConnectStateChangeListenerManager.get().registerStateChangeListener(this);
+    }
+
+    private void onChangeChatState(final int serviceState) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
+                    mTitleProgress.setVisibility(View.GONE);
+                } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
+                    mTitleProgress.setVisibility(View.VISIBLE);
+                } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
+                    mTitleProgress.setVisibility(View.VISIBLE);
+                } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
+                    mTitleProgress.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 }

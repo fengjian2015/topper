@@ -18,7 +18,15 @@
         <RelativeLayout
             android:id="@+id/rl_title"
             style="@style/TopNavigationBarStyle">
-
+            <ProgressBar
+                android:id="@+id/title_progress"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/title_name"
+                android:visibility="gone"/>
             <ImageView
                 android:id="@+id/bark"
                 android:layout_width="wrap_content"
