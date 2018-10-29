@@ -326,8 +326,10 @@ public class NewsDetailsActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mWebView.removeAllViews();
-        mWebView.destroy();
+        if(mWebView!=null){
+            mWebView.removeAllViews();
+            mWebView.destroy();
+        }
     }
 
     @Override

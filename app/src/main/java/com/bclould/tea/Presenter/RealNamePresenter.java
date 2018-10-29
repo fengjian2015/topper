@@ -67,7 +67,6 @@ public class RealNamePresenter {
                         hideDialog();
                         if (baseInfo.getStatus() == 1) {
                             callBack.send(baseInfo.getStatus());
-                            Toast.makeText(mContext, mContext.getString(R.string.submit_succeed), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
