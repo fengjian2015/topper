@@ -241,6 +241,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    isFinish = true;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
                     } else {
@@ -254,6 +255,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
 
             @Override
             public void finishRefresh() {
+                isFinish = true;
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
                 } else {

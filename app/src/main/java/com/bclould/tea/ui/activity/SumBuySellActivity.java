@@ -163,6 +163,7 @@ public class SumBuySellActivity extends BaseActivity {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(SumBuySellActivity.this)) {
+                    isFinish = true;
                     if (type == PULL_UP) {
                         mRefreshLayout.finishLoadMore();
                     } else {
@@ -176,6 +177,7 @@ public class SumBuySellActivity extends BaseActivity {
 
             @Override
             public void finishRefresh() {
+                isFinish = true;
                 if (type == PULL_UP) {
                     mRefreshLayout.finishLoadMore();
                 } else {

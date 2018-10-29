@@ -179,6 +179,7 @@ public class MyStartActivity extends BaseActivity {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(MyStartActivity.this)) {
+                    isFinish = true;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
                     } else {
@@ -195,6 +196,7 @@ public class MyStartActivity extends BaseActivity {
 
             @Override
             public void finishRefresh() {
+                isFinish = true;
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
                 } else {

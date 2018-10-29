@@ -179,6 +179,7 @@ public class MyJoinActivity extends BaseActivity {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(MyJoinActivity.this)) {
+                    isFinish = true;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
                     } else {
@@ -194,6 +195,7 @@ public class MyJoinActivity extends BaseActivity {
 
             @Override
             public void finishRefresh() {
+                isFinish = true;
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
                 } else {

@@ -326,7 +326,6 @@ public class RealNameC1Activity extends BaseActivity {
                 Intent intent = new Intent(RealNameC1Activity.this, UpIdCardActivity.class);
                 intent.putExtra("type", mType);
                 startActivity(intent);
-                finish();
             }
         });
 

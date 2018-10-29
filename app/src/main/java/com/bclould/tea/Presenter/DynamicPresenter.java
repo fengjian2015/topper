@@ -132,6 +132,7 @@ public class DynamicPresenter {
                     public void onError(Throwable e) {
                         hideDialog();
                         if (mCount == 1) {
+                            mCount++;
                             SharedPreferences sp = MySharedPreferences.getInstance().getSp();
                             if (sp.contains(DYNAMIC_JSON)) {
                                 Gson gson = new Gson();

@@ -145,11 +145,14 @@ public class BankCardActivity extends BaseActivity {
     boolean isDelete = false;
 
     //点击事件的处理
-    @OnClick({R.id.bark, R.id.add_bank_card, R.id.tv_delete})
+    @OnClick({R.id.bark, R.id.add_bank_card, R.id.tv_delete, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
             case R.id.add_bank_card:
                 showPWDialog();
@@ -174,14 +177,14 @@ public class BankCardActivity extends BaseActivity {
     }
 
     private void showPWDialog() {
-        pwdDialog=new PWDDialog(this);
+        pwdDialog = new PWDDialog(this);
         pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
             @Override
             public void success(String password) {
                 check(password);
             }
         });
-        pwdDialog.showDialog(getString(R.string.verify_pay_pw),null,null,null,null);
+        pwdDialog.showDialog(getString(R.string.verify_pay_pw), null, null, null, null);
     }
 
     private void check(String password) {

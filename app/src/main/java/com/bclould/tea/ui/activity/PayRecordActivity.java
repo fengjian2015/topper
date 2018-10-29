@@ -194,6 +194,7 @@ public class PayRecordActivity extends BaseActivity {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(PayRecordActivity.this)) {
+                    isFinish = true;
                     if (type == PULL_DOWN) {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.GONE);
@@ -204,6 +205,7 @@ public class PayRecordActivity extends BaseActivity {
 
             @Override
             public void finishRefresh() {
+                isFinish = true;
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
                 } else {

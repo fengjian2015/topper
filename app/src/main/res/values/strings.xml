@@ -2349,4 +2349,5 @@
     <string name="starting">起投</string>
     <string name="month1">个月</string>
     <string name="insufficient_balance_available">可用余额不足</string>
+    <string name="up_hu_zhao">上传护照</string>
 </resources>

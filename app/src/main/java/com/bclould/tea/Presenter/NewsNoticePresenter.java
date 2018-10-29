@@ -96,6 +96,7 @@ public class NewsNoticePresenter {
                     public void onError(Throwable e) {
                         hideDialog();
                         if (mCount == 1) {
+                            mCount++;
                             SharedPreferences sp = MySharedPreferences.getInstance().getSp();
                             if (sp.contains(NEWS_JSON)) {
                                 Gson gson = new Gson();

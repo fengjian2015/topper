@@ -2368,4 +2368,5 @@ Please reset encryption request</string>
     <string name="starting">starting </string>
     <string name="month1">month </string>
     <string name="insufficient_balance_available">Insufficient balance available</string>
+    <string name="up_hu_zhao">Upload passport</string>
 </resources>
