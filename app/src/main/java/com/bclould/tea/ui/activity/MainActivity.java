@@ -459,7 +459,7 @@ public class MainActivity extends BaseActivity {
 
     private void getChatBackGround() {
         UtilTool.Log("token", UtilTool.getToken());
-        UtilTool.Log("fengjiantoken",UtilTool.getToken());
+        UtilTool.Log("fengjiantoken", UtilTool.getToken());
         new GroupPresenter(this).getBackgound(new GroupPresenter.CallBack2() {
             @Override
             public void send(String url) {
@@ -523,7 +523,17 @@ public class MainActivity extends BaseActivity {
     }
 
     public void getStateList() {
-        mCoinPresenter.getState();
+        mCoinPresenter.getState(new CoinPresenter.CallBack4() {
+            @Override
+            public void send() {
+
+            }
+
+            @Override
+            public void error() {
+
+            }
+        });
     }
 
     //检测版本更新

@@ -30,6 +30,7 @@ import com.baidu.ocr.sdk.model.AccessToken;
 import com.baidu.ocr.sdk.model.BankCardParams;
 import com.baidu.ocr.sdk.model.BankCardResult;
 import com.bclould.tea.Presenter.BankCardPresenter;
+import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.Presenter.RealNamePresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
@@ -83,6 +84,7 @@ public class BankCardBindingActivity extends BaseActivity {
     private Dialog mStateDialog;
     private int mStateId;
     private LoadingProgressDialog mProgressDialog;
+    private BottomDialogRVAdapter3 mBottomDialogRVAdapter3;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -258,10 +260,14 @@ public class BankCardBindingActivity extends BaseActivity {
         window.setWindowAnimations(BottomDialog);
         mStateDialog.setContentView(contentView);
         mStateDialog.show();
-        RecyclerView recyclerView = (RecyclerView) mStateDialog.findViewById(R.id.recycler_view);
+        final RecyclerView recyclerView = (RecyclerView) mStateDialog.findViewById(R.id.recycler_view);
         TextView tvTitle = (TextView) mStateDialog.findViewById(R.id.tv_title);
-        Button addCoin = (Button) mStateDialog.findViewById(R.id.btn_add_coin);
+        final Button addCoin = (Button) mStateDialog.findViewById(R.id.btn_add_coin);
+        final ImageView ivLoad = (ImageView) mStateDialog.findViewById(R.id.iv_load);
         Button cancel = (Button) mStateDialog.findViewById(R.id.btn_cancel);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mBottomDialogRVAdapter3 = new BottomDialogRVAdapter3(this, MyApp.getInstance().mStateList);
+        recyclerView.setAdapter(mBottomDialogRVAdapter3);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -271,19 +277,34 @@ public class BankCardBindingActivity extends BaseActivity {
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(BankCardBindingActivity.this, MyAssetsActivity.class));
-                mStateDialog.dismiss();
+                ivLoad.setVisibility(View.VISIBLE);
+                addCoin.setVisibility(View.GONE);
+                new CoinPresenter(BankCardBindingActivity.this).getState(new CoinPresenter.CallBack4() {
+                    @Override
+                    public void send() {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        ivLoad.setVisibility(View.GONE);
+                        addCoin.setVisibility(View.GONE);
+                        mBottomDialogRVAdapter3.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void error() {
+                        ivLoad.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.GONE);
+                        addCoin.setVisibility(View.VISIBLE);
+                    }
+                });
             }
         });
         tvTitle.setText(getString(R.string.selecotr_state));
         if (MyApp.getInstance().mStateList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new BottomDialogRVAdapter3(this, MyApp.getInstance().mStateList));
         } else {
             recyclerView.setVisibility(View.GONE);
             addCoin.setVisibility(View.VISIBLE);
+            addCoin.setText(getString(R.string.refresh));
         }
     }
 

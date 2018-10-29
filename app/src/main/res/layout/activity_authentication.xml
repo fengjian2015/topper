@@ -7,7 +7,15 @@
                 android:background="@color/app_bg_color"
                 tools:context="com.bclould.tea.ui.activity.AuthenticationActivity">
 
+    <View
+        android:id="@+id/status_bar_fix"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#00000000"
+        />
+
     <RelativeLayout
+        android:layout_below="@+id/status_bar_fix"
         android:id="@+id/rl_title"
         style="@style/TopNavigationBarStyle">
 

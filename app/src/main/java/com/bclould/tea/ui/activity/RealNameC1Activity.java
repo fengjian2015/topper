@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.Presenter.RealNamePresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
@@ -105,6 +106,7 @@ public class RealNameC1Activity extends BaseActivity {
     private Dialog mBottomDialog;
     private int mId;
     private String mName_zh;
+    private BottomDialogRVAdapter3 mBottomDialogRVAdapter3;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -230,25 +232,51 @@ public class RealNameC1Activity extends BaseActivity {
         window.setWindowAnimations(BottomDialog);
         mBottomDialog.setContentView(contentView);
         mBottomDialog.show();
-        RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
+        final RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
-        Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
+        final ImageView ivLoad = (ImageView) mBottomDialog.findViewById(R.id.iv_load);
+        final Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
         Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mBottomDialogRVAdapter3 = new BottomDialogRVAdapter3(this, MyApp.getInstance().mStateList);
+        recyclerView.setAdapter(mBottomDialogRVAdapter3);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mBottomDialog.dismiss();
             }
         });
+        addCoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ivLoad.setVisibility(View.VISIBLE);
+                addCoin.setVisibility(View.GONE);
+                new CoinPresenter(RealNameC1Activity.this).getState(new CoinPresenter.CallBack4() {
+                    @Override
+                    public void send() {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        ivLoad.setVisibility(View.GONE);
+                        addCoin.setVisibility(View.GONE);
+                        mBottomDialogRVAdapter3.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void error() {
+                        ivLoad.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.GONE);
+                        addCoin.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        });
         tvTitle.setText(getString(R.string.selecotr_state));
         if (MyApp.getInstance().mStateList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new BottomDialogRVAdapter3(this, MyApp.getInstance().mStateList));
         } else {
             recyclerView.setVisibility(View.GONE);
             addCoin.setVisibility(View.VISIBLE);
+            addCoin.setText(getString(R.string.refresh));
         }
     }
 

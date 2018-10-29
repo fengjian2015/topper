@@ -370,6 +370,11 @@ public class CoinExchangeActivity extends BaseActivity {
                     initListData(mCoin.get(0));
                 }
             }
+
+            @Override
+            public void error() {
+
+            }
         });
     }
 

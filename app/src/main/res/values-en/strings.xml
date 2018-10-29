@@ -2295,7 +2295,7 @@ Please reset encryption request</string>
     <string name="alipay_red_bind_hint">Please bind Alipay first</string>
     <string name="send_red_packet_hint2">Unreceived red envelope will be refunded after 48 hours</string>
     <string name="group_red">group red package</string>
-    <string name="red_no">已抢完</string>
+    <string name="red_no">No red envelope</string>
     <string name="search_the_location">search address </string>
     <string name="pleass_input_location">Please enter the address </string>
     <string name="address_not_found">The address was not found </string>
@@ -2308,4 +2308,5 @@ Please reset encryption request</string>
     <string name="open_access_path1">permissions. Please go to the current device management application or settings to open the setting path: Settings -> Application -> TopperChat -> Permissions</string>
     <string name="applied_position">application location </string>
     <string name="application_recording"> application recording </string>
+
 </resources>

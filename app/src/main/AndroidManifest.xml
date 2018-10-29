@@ -1201,7 +1201,6 @@
             android:name=".ui.activity.AuthenticationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-<<<<<<< HEAD
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 =======

@@ -31,7 +31,7 @@ public class FragmentFactory {
         if (fragmentFactory == null) {
             synchronized (FragmentFactory.class) {
                 if (fragmentFactory == null) {
-                    return new FragmentFactory();
+                    fragmentFactory =  new FragmentFactory();
                 }
             }
         }
