@@ -134,11 +134,16 @@ public class SwipeActivity extends AppCompatActivity {
 
         @Override
         protected boolean drawChild(@NonNull Canvas canvas, @NonNull View child, long drawingTime) {
-            boolean result = super.drawChild(canvas, child, drawingTime);
-            final int shadowWidth = leftShadow.getIntrinsicWidth();
-            int left = (int) (getContentX()) - shadowWidth;
-            leftShadow.setBounds(left, child.getTop(), left + shadowWidth, child.getBottom());
-            leftShadow.draw(canvas);
+            boolean result = false;
+            try {
+                result = super.drawChild(canvas, child, drawingTime);
+                final int shadowWidth = leftShadow.getIntrinsicWidth();
+                int left = (int) (getContentX()) - shadowWidth;
+                leftShadow.setBounds(left, child.getTop(), left + shadowWidth, child.getBottom());
+                leftShadow.draw(canvas);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             return result;
         }
 

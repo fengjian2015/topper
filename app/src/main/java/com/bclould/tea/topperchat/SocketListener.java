@@ -1328,8 +1328,8 @@ public class SocketListener {
                 UtilTool.Log("fengjian", "恭喜，对方同意添加好友！");
                 UserInfo userInfo = new UserInfo();
                 userInfo.setUser(from);
-                userInfo.setUserName(" ");
-                userInfo.setRemark(" ");
+                userInfo.setUserName(from);
+                userInfo.setRemark("");
                 mgr.addUser(userInfo);
                 EventBus.getDefault().post(new MessageEvent(EventBusUtil.new_friend));
                 context.sendBroadcast(intent);
