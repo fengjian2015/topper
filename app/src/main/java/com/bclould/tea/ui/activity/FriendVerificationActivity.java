@@ -12,7 +12,9 @@ import com.bclould.tea.Presenter.IndividualDetailsPresenter;
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.IndividualInfo;
+import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
@@ -37,12 +39,14 @@ public class FriendVerificationActivity extends BaseActivity {
     private String avatar;
     private String country;
     private IndividualDetailsPresenter mPresenter;
+    private DBManager mDBManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_verification);
         ButterKnife.bind(this);
+        mDBManager=new DBManager(this);
         initIntent();
         initView();
         initData();
@@ -88,6 +92,12 @@ public class FriendVerificationActivity extends BaseActivity {
                 @Override
                 public void send() {
                     EventBus.getDefault().post(new MessageEvent(EventBusUtil.new_friend));
+                    UserInfo userInfo=new UserInfo();
+                    userInfo.setUser(userId);
+                    userInfo.setUserName(name);
+                    userInfo.setRemark(name);
+                    userInfo.setPath(avatar);
+                    mDBManager.addUser(userInfo);
                     finish();
                 }
             });

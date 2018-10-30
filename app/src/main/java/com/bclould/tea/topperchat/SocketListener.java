@@ -1276,7 +1276,10 @@ public class SocketListener {
             }
         } else if (type == BC_FRIEND_COMMIT) {
             String from = (String) messageMap.get("toco_id");
-            String toName=(String)messageMap.get("to_name");
+            String toName=(String)messageMap.get("user_name");
+            if(StringUtils.isEmpty(toName)){
+                toName="";
+            }
             //確認請求
             String response;
             if ("1".equals(messageMap.get("status") + "")) {

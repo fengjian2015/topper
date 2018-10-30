@@ -12,7 +12,7 @@ import android.support.annotation.RequiresApi;
 public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOPPERCHAT";
     public static final int BET_ARR_COUNT = 4;
-    private static final boolean isDebug = true;
+    private static final boolean isDebug = false;
 //    public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";
     public static final String BASE_URL = isDebug ? "http://www.bclould.com:8140/" : "https://api.cnblocklink.com/";
     public static final String NEW_BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://www.cnblocklink.com/";
