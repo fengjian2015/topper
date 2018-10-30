@@ -197,6 +197,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
             @Override
             public void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if(mRefreshLayout==null)return;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
                     } else {
