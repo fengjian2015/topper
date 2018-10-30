@@ -20,6 +20,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.AddRequestInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
+import com.bclould.tea.ui.activity.FriendVerificationActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
@@ -94,11 +95,11 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (mMgr.findUser(mAddRequestInfo.getUser())) {
+                        if (mMgr.findUser(mAddRequestInfo.getToUser())) {
                         Intent intent = new Intent(mContext, ConversationActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("name", mAddRequestInfo.getUserName());
-                        bundle.putString("user", mAddRequestInfo.getUser());
+                        bundle.putString("user", mAddRequestInfo.getToUser());
                         intent.putExtras(bundle);
                         mContext.startActivity(intent);
                         }else {
@@ -116,21 +117,11 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
             mBtnConsent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    try {
-                        new PersonalDetailsPresenter(mContext).confirmAddFriend(mAddRequestInfo.getUser(), 1, new PersonalDetailsPresenter.CallBack() {
-                            @Override
-                            public void send() {
-                                mMgr.updateRequest(mAddRequestInfo.getId(), 1);
-                                EventBus.getDefault().post(new MessageEvent(EventBusUtil.new_friend));
-                                mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                                mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
-                                mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
-                                mBtnConsent.setEnabled(false);
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    Intent intent=new Intent(mContext, FriendVerificationActivity.class);
+                    intent.putExtra("user",mAddRequestInfo.getToUser());
+                    intent.putExtra("name",mAddRequestInfo.getUserName());
+                    intent.putExtra("avatar",mAddRequestInfo.getUrl());
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -154,7 +145,7 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
                 }else{
                     mBtnConsent.setEnabled(true);
                     mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-                    mBtnConsent.setText(mContext.getString(R.string.consent));
+                    mBtnConsent.setText(mContext.getString(R.string.view));
                     mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.white));
                 }
             }else if(addRequestInfo.getType() == 2){

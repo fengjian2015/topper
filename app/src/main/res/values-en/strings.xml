@@ -2369,4 +2369,8 @@ Please reset encryption request</string>
     <string name="month1">month </string>
     <string name="insufficient_balance_available">Insufficient balance available</string>
     <string name="up_hu_zhao">Upload passport</string>
+    <string name="join_group_chat">Join group chat</string>
+    <string name="we_already_friends_come_chat_together">We are already friends, come and chat together! </string>
+    <string name="approved">by verifying</string>
+    <string name="view">View</string>
 </resources>

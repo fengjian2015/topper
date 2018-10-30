@@ -1257,4 +1257,8 @@
     <string name="month1">個月</string>
     <string name="insufficient_balance_available">可用餘額不足</string>
     <string name="up_hu_zhao">上傳護照</string>
+    <string name="join_group_chat">加入群聊</string>
+    <string name="we_already_friends_come_chat_together">我們已經是好友啦，一起來聊天吧！ </string>
+    <string name="approved">通過驗證</string>
+    <string name="view">查看</string>
 </resources>

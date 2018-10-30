@@ -12,22 +12,13 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.NotificationCompat;
-import android.util.Base64;
-import android.widget.Toast;
-import android.widget.VideoView;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.sdk.android.oss.OSSClient;
-import com.alibaba.sdk.android.oss.model.GetObjectRequest;
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBConversationBurnManage;
 import com.bclould.tea.history.DBManager;
@@ -36,12 +27,10 @@ import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.RoomManageInfo;
-import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.ui.activity.ConversationActivity;
-import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.activity.OrderCloseActivity;
 import com.bclould.tea.ui.activity.OrderDetailsActivity;
@@ -52,16 +41,13 @@ import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MyLifecycleHandler;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
-import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.RoomManage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -75,7 +61,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.bclould.tea.Presenter.LoginPresenter.CURRENCY;
 import static com.bclould.tea.Presenter.LoginPresenter.STATE;
@@ -695,21 +680,11 @@ public class SocketListener {
                 }
                 mgr.updateConversation(friend, from, number, mgr.findLastMessageConversation(from, isBurnReading), mgr.findLastMessageConversationTime(from, isBurnReading), createTime, atme);
             } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
                 if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
-                    info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+                    mgr.addConversation(addConversationInfo(time,friend,true,from,redpacket,UtilTool.createChatCreatTime(),"false",atme));
                 } else {
-                    info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                    mgr.addConversation(addConversationInfo(time,friend,false,from,redpacket,UtilTool.createChatCreatTime(),"false",atme));
                 }
-                info.setFriend(friend);
-                info.setChatType(roomType);
-                info.setUser(from);
-                info.setNumber(1);
-                info.setMessage(redpacket);
-                info.setAtme(atme);
-                info.setCreateTime(UtilTool.createChatCreatTime());
-                mgr.addConversation(info);
             }
         } else {
             int number = mDBConversationBurnManage.queryNumber(from);
@@ -719,20 +694,11 @@ public class SocketListener {
                 }
                 mDBConversationBurnManage.updateConversation(friend, from, number, mgr.findLastMessageConversation(from, isBurnReading), createTime);
             } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
                 if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
-                    info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+                    mDBConversationBurnManage.addConversation(addConversationInfo(time,friend,true,from,redpacket,UtilTool.createChatCreatTime(),"false",null));
                 } else {
-                    info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                    mDBConversationBurnManage.addConversation(addConversationInfo(time,friend,false,from,redpacket,UtilTool.createChatCreatTime(),"false",null));
                 }
-                info.setFriend(friend);
-                info.setChatType(roomType);
-                info.setUser(from);
-                info.setNumber(1);
-                info.setMessage(redpacket);
-                info.setCreateTime(UtilTool.createChatCreatTime());
-                mDBConversationBurnManage.addConversation(info);
             }
         }
 
@@ -988,18 +954,10 @@ public class SocketListener {
     }
 
     private void createConversation(String group_id, String roomName) {
-        ConversationInfo info = new ConversationInfo();
-        info.setChatType(RoomManage.ROOM_TYPE_MULTI);
-        info.setIstop("false");
-        info.setFriend(roomName);
-        info.setUser(group_id);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date curDate = new Date(System.currentTimeMillis());
         String time = formatter.format(curDate);
-        info.setTime(time);
-        info.setMessage("加入群聊");
-        info.setCreateTime(UtilTool.createChatCreatTime());
-        mgr.addConversation(info);
+        mgr.addConversation(addConversationInfo(time,roomName,true,group_id,context.getString(R.string.join_group_chat),UtilTool.createChatCreatTime(),"false",null));
 
         RoomManageInfo roomManageInfo = new RoomManageInfo();
         roomManageInfo.setRoomName(roomName);
@@ -1318,6 +1276,7 @@ public class SocketListener {
             }
         } else if (type == BC_FRIEND_COMMIT) {
             String from = (String) messageMap.get("toco_id");
+            String toName=(String)messageMap.get("to_name");
             //確認請求
             String response;
             if ("1".equals(messageMap.get("status") + "")) {
@@ -1328,11 +1287,12 @@ public class SocketListener {
                 UtilTool.Log("fengjian", "恭喜，对方同意添加好友！");
                 UserInfo userInfo = new UserInfo();
                 userInfo.setUser(from);
-                userInfo.setUserName(from);
-                userInfo.setRemark("");
+                userInfo.setUserName(toName);
+                userInfo.setRemark(toName);
                 mgr.addUser(userInfo);
                 EventBus.getDefault().post(new MessageEvent(EventBusUtil.new_friend));
                 context.sendBroadcast(intent);
+                RoomManage.getInstance().addSingleMessageManage(from,toName).sendMessage(context.getString(R.string.we_already_friends_come_chat_together));
             } else if ("2".equals(messageMap.get("status") + "")) {
                 //发送广播传递response字符串
                 response = context.getString(R.string.ta_reject_add_friend);
@@ -1379,15 +1339,7 @@ public class SocketListener {
         if (mgr.findConversation(from)) {
             mgr.updateConversation(friend, from, number + 1, redpacket, time, messageInfo.getCreateTime(), null);
         } else {
-            ConversationInfo info = new ConversationInfo();
-            info.setTime(time);
-            info.setFriend(friend);
-            info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-            info.setUser(from);
-            info.setNumber(1);
-            info.setMessage(redpacket);
-            info.setCreateTime(messageInfo.getCreateTime());
-            mgr.addConversation(info);
+            mgr.addConversation(addConversationInfo(time,friend,false,from,redpacket,messageInfo.getCreateTime(),"false",null));
         }
         EventBus.getDefault().post(new MessageEvent(EventBusUtil.msg_database_update));
         EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
@@ -1476,5 +1428,23 @@ public class SocketListener {
             }
         }
         return false;
+    }
+
+    private ConversationInfo addConversationInfo(String time,String friend,boolean isMulit,String user,String message,long createTime,String isTop,String atme){
+        ConversationInfo info = new ConversationInfo();
+        info.setTime(time);
+        info.setFriend(friend);
+        if(isMulit){
+            info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+        }else {
+            info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+        }
+        info.setUser(user);
+        info.setNumber(1);
+        info.setMessage(message);
+        info.setCreateTime(createTime);
+        info.setIstop(isTop);
+        info.setAtme(atme);
+        return info;
     }
 }

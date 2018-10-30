@@ -10,6 +10,15 @@ public class AddRequestInfo {
     private int id;
     private String userName;
     private String url;
+    private String toUser;
+
+    public String getToUser() {
+        return toUser;
+    }
+
+    public void setToUser(String toUser) {
+        this.toUser = toUser;
+    }
 
     public String getUrl() {
         return url;

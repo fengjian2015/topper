@@ -36,10 +36,9 @@
         <LinearLayout
             android:id="@+id/ll_data"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/y40"
-            android:visibility="gone">
+            android:paddingBottom="@dimen/y40">
 
             <RelativeLayout
                 android:id="@+id/rl_qr"
@@ -56,7 +55,7 @@
                     android:layout_width="@dimen/x120"
                     android:layout_height="@dimen/x120"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/x30"/>
+                    android:layout_marginLeft="@dimen/x30" />
 
                 <TextView
                     android:id="@+id/tv_name"
@@ -65,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
-                    android:layout_toRightOf="@+id/iv_head"/>
+                    android:layout_toRightOf="@+id/iv_head" />
 
                 <ImageView
                     android:id="@+id/image_qr"
@@ -74,8 +73,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/x25"
-                    android:src="@mipmap/qr_code"
-                    />
+                    android:src="@mipmap/qr_code" />
 
             </RelativeLayout>
 
@@ -96,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x30"
-                    android:text="@string/personal_dynamic"/>
+                    android:text="@string/personal_dynamic" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -109,26 +107,22 @@
                     <ImageView
                         android:id="@+id/image1"
                         android:layout_width="@dimen/x110"
-                        android:layout_height="@dimen/y110"
-                        />
+                        android:layout_height="@dimen/y110" />
 
                     <ImageView
                         android:id="@+id/image2"
                         android:layout_width="@dimen/x110"
-                        android:layout_height="@dimen/y110"
-                        />
+                        android:layout_height="@dimen/y110" />
 
                     <ImageView
                         android:id="@+id/image3"
                         android:layout_width="@dimen/x110"
-                        android:layout_height="@dimen/y110"
-                        />
+                        android:layout_height="@dimen/y110" />
 
                     <ImageView
                         android:id="@+id/image4"
                         android:layout_width="@dimen/x110"
-                        android:layout_height="@dimen/y110"
-                        />
+                        android:layout_height="@dimen/y110" />
                 </LinearLayout>
 
                 <ImageView
@@ -137,7 +131,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/x25"
-                    android:src="@mipmap/iocn_person_turninto"/>
+                    android:src="@mipmap/iocn_person_turninto" />
 
 
             </RelativeLayout>
@@ -158,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x30"
-                    android:text="@string/no_look_ta_dy"/>
+                    android:text="@string/no_look_ta_dy" />
 
                 <ImageView
                     android:id="@+id/on_off_dy"
@@ -167,7 +161,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:padding="@dimen/x25"
-                    android:src="@drawable/set_disturb_seletor"/>
+                    android:src="@drawable/set_disturb_seletor" />
 
             </RelativeLayout>
 
@@ -187,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x30"
-                    android:text="@string/no_look_ta_dy2"/>
+                    android:text="@string/no_look_ta_dy2" />
 
                 <ImageView
                     android:id="@+id/on_off_dy2"
@@ -196,7 +190,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:padding="@dimen/x25"
-                    android:src="@drawable/set_disturb_seletor"/>
+                    android:src="@drawable/set_disturb_seletor" />
 
             </RelativeLayout>
 
@@ -216,7 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x30"
-                    android:text="@string/region"/>
+                    android:text="@string/region" />
 
                 <TextView
                     android:id="@+id/tv_region"
@@ -225,7 +219,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/x25"/>
+                    android:layout_marginRight="@dimen/x25" />
 
             </RelativeLayout>
 
@@ -245,7 +239,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x30"
-                    android:text="@string/remark"/>
+                    android:text="@string/remark" />
 
                 <TextView
                     android:id="@+id/tv_remark"
@@ -254,7 +248,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/x25"/>
+                    android:layout_marginRight="@dimen/x25" />
 
             </RelativeLayout>
 
@@ -274,7 +268,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x30"
-                    android:text="@string/business_card"/>
+                    android:text="@string/business_card" />
 
                 <TextView
                     android:id="@+id/tv5"
@@ -284,7 +278,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/x25"
-                    android:text="@string/share"/>
+                    android:text="@string/share" />
 
             </RelativeLayout>
 
@@ -295,7 +289,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/y64"
-                android:text="@string/send_message"/>
+                android:text="@string/send_message" />
 
             <Button
                 android:id="@+id/btn_brak"
@@ -304,7 +298,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/y30"
-                android:text="@string/delete"/>
+                android:text="@string/delete" />
 
         </LinearLayout>
     </ScrollView>

@@ -100,6 +100,9 @@ public class HTMLActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                if (mProgressBar==null){
+                    return;
+                }
                 mProgressBar.setVisibility(View.GONE);
                 if (mWebView.canGoBack()) {
                     mIvFinish.setVisibility(View.VISIBLE);
@@ -115,11 +118,17 @@ public class HTMLActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                if (mProgressBar==null){
+                    return;
+                }
                 mProgressBar.setVisibility(View.VISIBLE);
             }
         });
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
+                if (mProgressBar==null){
+                    return;
+                }
                 mProgressBar.setMax(100);
                 mProgressBar.setProgress(progress);
             }

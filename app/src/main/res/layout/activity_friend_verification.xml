@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/app_bg_color"
+    tools:context="com.bclould.tea.ui.activity.FriendVerificationActivity">
+    <RelativeLayout
+       android:layout_width="wrap_content"
+        android:layout_height="@dimen/y450"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y450"
+            android:background="@mipmap/icon_me_bg"/>
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y100"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            style="@style/MainTextShallowStyle36"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y100"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:text="@string/new_friend"/>
+        <ImageView
+            android:id="@+id/iv_touxiang"
+            android:layout_width="@dimen/x120"
+            android:layout_height="@dimen/x120"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            android:src="@mipmap/img_nfriend_headshot1"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/y30"
+            />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/x120"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/y30"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:layout_marginLeft="@dimen/y20"
+            style="@style/MainTextShallowStyle30"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_cache"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y20"
+        >
+
+        <TextView
+            android:id="@+id/tv2"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/region" />
+
+        <TextView
+            android:id="@+id/tv_region"
+            style="@style/SecondaryTextStyle28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_dynamic"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y100"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y20"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv1"
+            style="@style/MainTextShallowStyle32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/personal_dynamic" />
+
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/iocn_person_turninto" />
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_send"
+        style="@style/ShortBtnStyle"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y64"
+        android:text="@string/approved" />
+</LinearLayout>
