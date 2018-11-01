@@ -37,6 +37,7 @@ public class DatabaseManager {
     public SQLiteDatabase openWritableDatabase(boolean isWritableOrReadable) {
         synchronized (DatabaseManager.class) {
             mWritableOpenCounter.incrementAndGet();
+            handler.removeMessages(1);
             try {
                 if(isWritableOrReadable) {
                     mWritableDatabase = mDatabaseHelper.getWritableDatabase();

@@ -138,9 +138,9 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_conversation_list, container, false);
+        ButterKnife.bind(this, view);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        ButterKnife.bind(this, view);
         mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));
         mgr = new DBManager(getActivity());
         mDBRoomMember = new DBRoomMember(getActivity());
@@ -232,7 +232,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     @Override
     public void onStateChange(int serviceState) {
-        if (serviceState == -1 || mTvTitle == null) return;
+        if (serviceState == -1 || mTvTitle == null||mTitleProgress==null) return;
         onChangeChatState(serviceState);
         if (imState == serviceState) {
             return;

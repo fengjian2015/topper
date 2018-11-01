@@ -135,7 +135,7 @@ public class HTMLActivity extends BaseActivity {
 
             @Override
             public void onReceivedTitle(WebView view, String title) {
-                if (!StringUtils.isEmpty(title)) {
+                if (!StringUtils.isEmpty(title)&&tvTitle!=null) {
 //                    if (!(Tools.checkHttp(title) || Tools.checkLinkedExe(title))) {
                     tvTitle.setText(title);
 //                    }

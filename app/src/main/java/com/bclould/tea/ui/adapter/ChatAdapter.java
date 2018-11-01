@@ -1051,6 +1051,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     mediaPlayer.reset();
                     anim.selectDrawable(0);
                     anim.stop();
+                    if(position>=mMessageList.size())return;
                     mMessageList.get(position).setVoiceStatus(1);
                     notifyItemChanged(position);
                     for (int i = position; i < mMessageList.size(); i++) {
