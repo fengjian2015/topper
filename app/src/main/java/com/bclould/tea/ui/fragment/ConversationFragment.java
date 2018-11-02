@@ -209,24 +209,28 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     }
 
     private void onChangeChatState(final int serviceState) {
-        ((Activity) getContext()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
-                    mTitleProgress.setVisibility(View.GONE);
-                    mTvTitle.setText(getString(R.string.talk));
-                } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
-                    mTitleProgress.setVisibility(View.VISIBLE);
-                    mTvTitle.setText(getString(R.string.in_link));
-                } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
-                    mTitleProgress.setVisibility(View.GONE);
-                    mTvTitle.setText(getString(R.string.talk) + getString(R.string.not_link));
-                } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
-                    mTitleProgress.setVisibility(View.GONE);
-                    mTvTitle.setText(getString(R.string.talk));
+        try {
+            ((Activity) getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
+                        mTitleProgress.setVisibility(View.GONE);
+                        mTvTitle.setText(getString(R.string.talk));
+                    } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
+                        mTitleProgress.setVisibility(View.VISIBLE);
+                        mTvTitle.setText(getString(R.string.in_link));
+                    } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
+                        mTitleProgress.setVisibility(View.GONE);
+                        mTvTitle.setText(getString(R.string.talk) + getString(R.string.not_link));
+                    } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
+                        mTitleProgress.setVisibility(View.GONE);
+                        mTvTitle.setText(getString(R.string.talk));
+                    }
                 }
-            }
-        });
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

@@ -207,6 +207,7 @@ public class OtcActivity extends BaseActivity {
                     if (ActivityUtil.isActivityOnTop(OtcActivity.this)) {
                         mLlError.setVisibility(View.GONE);
                         UtilTool.Log(getString(R.string.coins), data.size() + "");
+                        if(data.size()==0)return;
                         if (MyApp.getInstance().mOtcCoinList.size() == 0) {
                             MyApp.getInstance().mOtcCoinList.addAll(data);
                             mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();

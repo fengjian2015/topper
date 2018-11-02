@@ -1013,6 +1013,9 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(mEkbEmoticonsKeyboard==null){
+                    return false;
+                }
                 FuncLayout funcView = mEkbEmoticonsKeyboard.getFuncView();
                 if (funcView.isShown()) {
                     funcView.hideAllFuncView();
