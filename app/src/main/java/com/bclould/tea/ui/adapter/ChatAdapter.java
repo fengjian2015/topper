@@ -1187,7 +1187,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             mTvVoiceTime.setText(messageInfo.getVoiceTime() + "''");
-            int wide = Integer.parseInt(messageInfo.getVoiceTime()) * 2;
+            int wide = UtilTool.parseInt(messageInfo.getVoiceTime()) * 2;
             String blank = " ";
             for (int i = 0; i < wide; i++) {
                 blank += " ";

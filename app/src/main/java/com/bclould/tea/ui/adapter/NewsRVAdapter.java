@@ -175,6 +175,7 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
                     .centerCrop()
                     .placeholder(R.mipmap.ic_empty_photo)
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
+            if(mContext==null)return;
             Glide.with(mContext).load(listBean.getIndex_pic()).apply(requestOptions).into(mIvImage);
         }
     }
