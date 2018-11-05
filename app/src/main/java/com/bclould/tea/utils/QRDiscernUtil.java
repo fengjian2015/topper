@@ -261,6 +261,7 @@ public class QRDiscernUtil {
     }
 
     public void goActivity(String result) {
+        UtilTool.Log("fengjian","扫码结果："+result);
         if (result != null && !result.isEmpty()) {
             if (result.contains(Constants.BUSINESSCARD)) {
                 String base64 = result.substring(Constants.BUSINESSCARD.length(), result.length());

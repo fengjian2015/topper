@@ -171,6 +171,7 @@ public class NewsDetailsActivity extends BaseActivity {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
+                if(mLlLoadError==null)return;
                 mLlLoadError.setVisibility(View.VISIBLE);
                 mRlWebView.setVisibility(View.GONE);
                 mLoadError = true;

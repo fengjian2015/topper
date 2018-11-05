@@ -209,10 +209,10 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     }
 
     private void onChangeChatState(final int serviceState) {
-        try {
-            ((Activity) getContext()).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
                     if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
                         mTitleProgress.setVisibility(View.GONE);
                         mTvTitle.setText(getString(R.string.talk));
@@ -226,17 +226,18 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                         mTitleProgress.setVisibility(View.GONE);
                         mTvTitle.setText(getString(R.string.talk));
                     }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-            });
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+            }
+        });
+
     }
 
 
     @Override
     public void onStateChange(int serviceState) {
-        if (serviceState == -1 || mTvTitle == null||mTitleProgress==null) return;
+        if (serviceState == -1 || mTvTitle == null || mTitleProgress == null) return;
         onChangeChatState(serviceState);
         if (imState == serviceState) {
             return;
@@ -465,8 +466,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
         ConnectStateChangeListenerManager.get().unregisterStateChangeListener(this);
+        EventBus.getDefault().unregister(this);
     }
 
     private void initData() {
