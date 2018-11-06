@@ -24,6 +24,17 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/purchase_history"/>
+        <TextView
+            android:id="@+id/tv_filtrate"
+            style="@style/BlueTextStyle28"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingRight="@dimen/x20"
+            android:visibility="gone"
+            android:text="@string/filtrate"/>
     </RelativeLayout>
     <TextView
         style="@style/HorizontalBoundaryStyle"/>

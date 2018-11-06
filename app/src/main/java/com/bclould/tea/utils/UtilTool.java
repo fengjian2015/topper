@@ -1670,6 +1670,17 @@ public class UtilTool {
         }
         return result;
     }
+    public static String expectedReturn(double money,int day,double rate){
+        if(day==0){
+            day=1;
+        }
+        double expected=money*rate*day/365;
+        return changeMoney(expected);
+    }
 
+    public static String changeMoney(double money) {
+        DecimalFormat df = new DecimalFormat("#####0.00");
+        return df.format(money);
+    }
 
 }

@@ -49,7 +49,7 @@ public class SubscribeCoinPresenter {
 
     private void hideDialog() {
         if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
+            mProgressDialog.hideDialog();
             mProgressDialog = null;
         }
     }

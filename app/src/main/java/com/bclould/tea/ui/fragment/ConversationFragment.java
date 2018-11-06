@@ -177,6 +177,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            if(getActivity()==null)return;
             switch (msg.what) {
                 case 0:
                     initRecyclerView();
@@ -263,7 +264,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
         if (getActivity() != null)
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
-
         mHeightPixels = mDm.heightPixels;
     }
 

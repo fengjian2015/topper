@@ -277,6 +277,7 @@ public class GuessDetailsActivity extends BaseActivity {
                             seconds = second + "";
                         }
                     }
+                    if(mTvDay==null)return;
                     mTvDay.setText(days);
                     mTvHr.setText(hrs);
                     mTvMinute.setText(minutes);
