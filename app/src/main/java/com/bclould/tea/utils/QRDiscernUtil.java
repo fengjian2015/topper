@@ -74,6 +74,7 @@ public class QRDiscernUtil {
                 @Override
                 public void run() {
                     Bitmap obmp = BitmapFactory.decodeFile(getImgPathFromCache(url));
+                    if(obmp==null)return;
                     int width = obmp.getWidth();
                     int height = obmp.getHeight();
                     int[] data = new int[width * height];

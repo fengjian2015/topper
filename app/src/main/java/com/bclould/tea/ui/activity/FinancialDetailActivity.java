@@ -77,6 +77,7 @@ public class FinancialDetailActivity extends BaseActivity {
     private int lock_day;
     private int product_id;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +117,8 @@ public class FinancialDetailActivity extends BaseActivity {
         int coin_id = getIntent().getIntExtra("coin_id", 0);
         String income_rate = getIntent().getStringExtra("income_rate");
         double rate_value = getIntent().getDoubleExtra("rate_value", 0);
+        mTvTitle.setText(getIntent().getStringExtra("title"));
+
         mDataBean.setId(coin_id);
         mDataBean.setCoin_over(UtilTool.parseDouble(coinOver));
         mDataBean.setName(coinName);
@@ -193,7 +196,7 @@ public class FinancialDetailActivity extends BaseActivity {
                 payHttp(password, number);
             }
         });
-        pwdDialog.showDialog(UtilTool.removeZero(number + ""), mDataBean.getName(), getString(R.string.transfer_assets), null, null);
+        pwdDialog.showDialog(UtilTool.removeZero(number + ""), mDataBean.getName(), getString(R.string.buy), null, null);
     }
 
     private void payHttp(String password, String number) {

@@ -156,7 +156,7 @@
             android:id="@+id/rl_financial_management"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y130"
-            android:visibility="gone">
+            >
 
             <ImageView
                 android:id="@+id/iv6"

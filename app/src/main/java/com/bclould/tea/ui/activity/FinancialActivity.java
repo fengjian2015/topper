@@ -385,6 +385,7 @@ public class FinancialActivity extends BaseActivity {
                 intent.putExtra("product_id", baseInfo.getData().getProduct_lists().get(position).getId());
                 intent.putExtra("rate_value", baseInfo.getData().getProduct_lists().get(position).getRate_value());
                 intent.putExtra("coin_id", mDataBean.getId());
+                intent.putExtra("title",baseInfo.getData().getProduct_lists().get(position).getTitle());
                 startActivity(intent);
             }
         });

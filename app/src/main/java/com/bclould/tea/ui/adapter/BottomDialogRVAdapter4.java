@@ -14,6 +14,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.ui.activity.ChatTransferActivity;
 import com.bclould.tea.ui.activity.CoinExchangeActivity;
+import com.bclould.tea.ui.activity.FinancialActivity;
 import com.bclould.tea.ui.activity.OtcActivity;
 import com.bclould.tea.ui.activity.PaymentActivity;
 import com.bclould.tea.ui.activity.PushBuyingActivity;
@@ -115,6 +116,9 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                     }else if(mContext instanceof SendRedGroupActivity){
                         SendRedGroupActivity activity = (SendRedGroupActivity) mContext;
                         activity.hideDialog(mName,mLogo);
+                    }else if(mContext instanceof FinancialActivity){
+                        FinancialActivity activity = (FinancialActivity) mContext;
+                        activity.hideDialog(mData);
                     }
                 }
             });
