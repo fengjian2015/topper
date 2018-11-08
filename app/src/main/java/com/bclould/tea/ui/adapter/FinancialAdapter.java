@@ -84,7 +84,7 @@ public class FinancialAdapter extends RecyclerView.Adapter {
             this.position = position;
             mTvIncome.setText(hashMap.getIncome_rate());
             mTvTime.setText(hashMap.getTitle());
-            mTvStart.setText(hashMap.getSave_min_number()+"");
+            mTvStart.setText(hashMap.getSave_min_number_desc());
         }
 
     }

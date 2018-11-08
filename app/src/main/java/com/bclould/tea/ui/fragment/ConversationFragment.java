@@ -177,7 +177,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(getActivity()==null)return;
+            if(getActivity()==null&&!isAdded())return;
             switch (msg.what) {
                 case 0:
                     initRecyclerView();

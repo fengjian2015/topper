@@ -109,6 +109,15 @@ public class FinancialInfo {
             private int lock_day;
             private double rate_value;
             private String income_rate_value;
+            private String save_min_number_desc;
+
+            public String getSave_min_number_desc() {
+                return save_min_number_desc;
+            }
+
+            public void setSave_min_number_desc(String save_min_number_desc) {
+                this.save_min_number_desc = save_min_number_desc;
+            }
 
             public double getRate_value() {
                 return rate_value;

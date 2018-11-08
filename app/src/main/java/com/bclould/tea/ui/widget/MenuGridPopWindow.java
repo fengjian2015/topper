@@ -108,11 +108,11 @@ public class MenuGridPopWindow extends Dialog {
             mTextview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dismiss();
+                    mTextview.setSelected(true);
                     if (listOnClick != null) {
-                        mTextview.setSelected(true);
                         listOnClick.onclickitem(position);
                     }
+                   dismiss();
                 }
             });
             return view;
