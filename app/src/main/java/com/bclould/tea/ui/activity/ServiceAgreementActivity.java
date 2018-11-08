@@ -44,6 +44,7 @@ public class ServiceAgreementActivity extends LoginBaseActivity {
     private String mEmail;
     private String mVcode;
     private String mPassword;
+    private String referrer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class ServiceAgreementActivity extends LoginBaseActivity {
 
     private void initIntent() {
         Intent intent = getIntent();
+        referrer=intent.getStringExtra("referrer");
         mUser = intent.getStringExtra("username");
         mEmail = intent.getStringExtra("email");
         mVcode = intent.getStringExtra("vcode");
@@ -75,6 +77,6 @@ public class ServiceAgreementActivity extends LoginBaseActivity {
     @OnClick(R.id.tv_consent)
     public void onViewClicked() {
         RegisterPresenter registerPresenter = new RegisterPresenter(this);
-        registerPresenter.register(mUser, mEmail, mPassword, mVcode);
+        registerPresenter.register(mUser, mEmail, mPassword, mVcode,referrer);
     }
 }

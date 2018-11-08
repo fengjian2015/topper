@@ -1262,4 +1262,6 @@
     <string name="approved">通過驗證</string>
     <string name="view">查看</string>
     <string name="expected">預計收益</string>
+    <string name="please_enter_referrer_name">請輸入推薦人名字</string>
+    <string name="recommendation_code">推薦碼</string>
 </resources>

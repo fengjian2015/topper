@@ -196,8 +196,9 @@ public class PersonalDetailsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.rl_touxiang, R.id.rl_qr_card, R.id.rl_alipay})
+    @OnClick({R.id.bark, R.id.rl_touxiang, R.id.rl_qr_card, R.id.rl_alipay,R.id.rl_referrer})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.bark:
                 finish();
@@ -213,8 +214,14 @@ public class PersonalDetailsActivity extends BaseActivity {
                 showDialog();
                 break;
             case R.id.rl_qr_card:
-                Intent intent = new Intent(this, QRCodeActivity.class);
+                intent = new Intent(this, QRCodeActivity.class);
                 intent.putExtra("user", UtilTool.getTocoId());
+                startActivity(intent);
+                break;
+            case R.id.rl_referrer:
+                intent = new Intent(this, QRCodeActivity.class);
+                intent.putExtra("user", UtilTool.getUser());
+                intent.putExtra("type",1);
                 startActivity(intent);
                 break;
         }

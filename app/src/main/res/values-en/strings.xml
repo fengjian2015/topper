@@ -2374,4 +2374,6 @@ Please reset encryption request</string>
     <string name="approved">by verifying</string>
     <string name="view">View</string>
     <string name="expected">expected revenue</string>
+    <string name="please_enter_referrer_name">Please enter the referrer\'s name</string>
+    <string name="recommendation_code">Recommended code </string>
 </resources>
