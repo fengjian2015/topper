@@ -276,7 +276,7 @@ public class GuessDetailsActivity extends BaseActivity {
                             seconds = second + "";
                         }
                     }
-                    if(mTvDay==null)return;
+                    if (mTvDay == null) return;
                     mTvDay.setText(days);
                     mTvHr.setText(hrs);
                     mTvMinute.setText(minutes);
@@ -672,19 +672,19 @@ public class GuessDetailsActivity extends BaseActivity {
         int count = 0;
         if (mLlArray5.getVisibility() == View.VISIBLE) {
             count = 5;
-            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3 + "," + mRandomArr4 + "," + mRandomArr5;
+            getEditRandom(count);
         } else if (mLlArray4.getVisibility() == View.VISIBLE) {
             count = 4;
-            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3 + "," + mRandomArr4;
+            getEditRandom(count);
         } else if (mLlArray3.getVisibility() == View.VISIBLE) {
             count = 3;
-            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3;
+            getEditRandom(count);
         } else if (mLlArray2.getVisibility() == View.VISIBLE) {
             count = 2;
-            mRandomSumArr = mRandomArr + "," + mRandomArr2;
+            getEditRandom(count);
         } else if (mLlArray.getVisibility() == View.VISIBLE) {
             count = 1;
-            mRandomSumArr = mRandomArr;
+            getEditRandom(count);
         }
 
         pwdDialog = new PWDDialog(this);
@@ -696,6 +696,81 @@ public class GuessDetailsActivity extends BaseActivity {
             }
         });
         pwdDialog.showDialog(UtilTool.doubleMultiply(count, Double.parseDouble(mSingle_coin)), mTvCoin.getText().toString(), getString(R.string.bet) + mTvCoin.getText().toString() + getString(R.string.guess), null, null);
+    }
+
+    private void getEditRandom(int count) {
+        switch (count) {
+            case 1:
+                mRandomSumArr = mEtArray.getText().toString() + ":" +
+                        mEtArray2.getText().toString() + ":" +
+                        mEtArray3.getText().toString() + ":" +
+                        mEtArray4.getText().toString();
+                break;
+            case 2:
+                mRandomSumArr = mEtArray.getText().toString() + ":" +
+                        mEtArray2.getText().toString() + ":" +
+                        mEtArray3.getText().toString() + ":" +
+                        mEtArray4.getText().toString() + "," +
+                        mEt2Array.getText().toString() + ":" +
+                        mEt2Array2.getText().toString() + ":" +
+                        mEt2Array3.getText().toString() + ":" +
+                        mEt2Array4.getText().toString();
+                break;
+            case 3:
+                mRandomSumArr = mEtArray.getText().toString() + ":" +
+                        mEtArray2.getText().toString() + ":" +
+                        mEtArray3.getText().toString() + ":" +
+                        mEtArray4.getText().toString() + "," +
+                        mEt2Array.getText().toString() + ":" +
+                        mEt2Array2.getText().toString() + ":" +
+                        mEt2Array3.getText().toString() + ":" +
+                        mEt2Array4.getText().toString() + "," +
+                        mEt3Array.getText().toString() + ":" +
+                        mEt3Array2.getText().toString() + ":" +
+                        mEt3Array3.getText().toString() + ":" +
+                        mEt3Array4.getText().toString();
+                break;
+            case 4:
+                mRandomSumArr = mEtArray.getText().toString() + ":" +
+                        mEtArray2.getText().toString() + ":" +
+                        mEtArray3.getText().toString() + ":" +
+                        mEtArray4.getText().toString() + "," +
+                        mEt2Array.getText().toString() + ":" +
+                        mEt2Array2.getText().toString() + ":" +
+                        mEt2Array3.getText().toString() + ":" +
+                        mEt2Array4.getText().toString() + "," +
+                        mEt3Array.getText().toString() + ":" +
+                        mEt3Array2.getText().toString() + ":" +
+                        mEt3Array3.getText().toString() + ":" +
+                        mEt3Array4.getText().toString() + "," +
+                        mEt4Array.getText().toString() + ":" +
+                        mEt4Array2.getText().toString() + ":" +
+                        mEt4Array3.getText().toString() + ":" +
+                        mEt4Array4.getText().toString();
+                break;
+            case 5:
+                mRandomSumArr = mEtArray.getText().toString() + ":" +
+                        mEtArray2.getText().toString() + ":" +
+                        mEtArray3.getText().toString() + ":" +
+                        mEtArray4.getText().toString() + "," +
+                        mEt2Array.getText().toString() + ":" +
+                        mEt2Array2.getText().toString() + ":" +
+                        mEt2Array3.getText().toString() + ":" +
+                        mEt2Array4.getText().toString() + "," +
+                        mEt3Array.getText().toString() + ":" +
+                        mEt3Array2.getText().toString() + ":" +
+                        mEt3Array3.getText().toString() + ":" +
+                        mEt3Array4.getText().toString() + "," +
+                        mEt4Array.getText().toString() + ":" +
+                        mEt4Array2.getText().toString() + ":" +
+                        mEt4Array3.getText().toString() + ":" +
+                        mEt4Array4.getText().toString() + "," +
+                        mEt5Array.getText().toString() + ":" +
+                        mEt5Array2.getText().toString() + ":" +
+                        mEt5Array3.getText().toString() + ":" +
+                        mEt5Array4.getText().toString();
+                break;
+        }
     }
 
     @OnClick({R.id.ll_error, R.id.iv_share, R.id.ll_hash, R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
@@ -1038,101 +1113,113 @@ public class GuessDetailsActivity extends BaseActivity {
             if (mEtArray.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEtArray);
+                return false;
             } else if (mEtArray2.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEtArray2);
+                return false;
             } else if (mEtArray3.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEtArray3);
+                return false;
             } else if (mEtArray4.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEtArray4);
-            } else {
-                return true;
+                return false;
             }
         }
         if (mLlArray2.getVisibility() == View.VISIBLE) {
             if (mEt2Array.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt2Array);
+                return false;
             } else if (mEt2Array2.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
-                AnimatorTool.getInstance().editTextAnimator(mEtArray2);
+                AnimatorTool.getInstance().editTextAnimator(mEt2Array2);
+                return false;
             } else if (mEt2Array3.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt2Array3);
+                return false;
             } else if (mEt2Array4.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt2Array4);
-            } else {
-                return true;
+                return false;
             }
+        } else {
+            return true;
         }
         if (mLlArray3.getVisibility() == View.VISIBLE) {
             if (mEt3Array.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt3Array);
+                return false;
             } else if (mEt3Array2.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt3Array2);
+                return false;
             } else if (mEt3Array3.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt3Array3);
+                return false;
             } else if (mEt3Array4.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt3Array4);
-            } else {
-                return true;
+                return false;
             }
+        } else {
+            return true;
         }
         if (mLlArray4.getVisibility() == View.VISIBLE) {
             if (mEt4Array.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt4Array);
+                return false;
             } else if (mEt4Array2.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt4Array2);
+                return false;
             } else if (mEt4Array3.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt4Array3);
+                return false;
             } else if (mEt4Array4.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt4Array4);
-            } else {
-                return true;
+                return false;
             }
+        } else {
+            return true;
         }
         if (mLlArray5.getVisibility() == View.VISIBLE) {
             if (mEt5Array.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt5Array);
+                return false;
             } else if (mEt5Array2.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt5Array2);
+                return false;
             } else if (mEt5Array3.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt5Array3);
+                return false;
             } else if (mEt5Array4.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt5Array4);
+                return false;
             } else {
                 return true;
             }
+        } else {
+            return true;
         }
-        return false;
     }
 
     private void getRandom(int status) {
         String[] randomArr = UtilTool.getRandomArr(Constants.BET_ARR_COUNT);
         switch (status) {
             case 1:
-                for (int i = 0; i < randomArr.length; i++) {
-                    if (i != 0) {
-                        mRandomArr = mRandomArr + ":" + randomArr[i];
-                    } else {
-                        mRandomArr = randomArr[i];
-                    }
-                }
                 mEtArray.setText(randomArr[0]);
                 mEtArray2.setText(randomArr[1]);
                 mEtArray3.setText(randomArr[2]);
@@ -1140,13 +1227,6 @@ public class GuessDetailsActivity extends BaseActivity {
                 mEtArray4.setSelection(1);
                 break;
             case 2:
-                for (int i = 0; i < randomArr.length; i++) {
-                    if (i != 0) {
-                        mRandomArr2 = mRandomArr2 + ":" + randomArr[i];
-                    } else {
-                        mRandomArr2 = randomArr[i];
-                    }
-                }
                 mEt2Array.setText(randomArr[0]);
                 mEt2Array2.setText(randomArr[1]);
                 mEt2Array3.setText(randomArr[2]);
@@ -1154,13 +1234,6 @@ public class GuessDetailsActivity extends BaseActivity {
                 mEt2Array4.setSelection(1);
                 break;
             case 3:
-                for (int i = 0; i < randomArr.length; i++) {
-                    if (i != 0) {
-                        mRandomArr3 = mRandomArr3 + ":" + randomArr[i];
-                    } else {
-                        mRandomArr3 = randomArr[i];
-                    }
-                }
                 mEt3Array.setText(randomArr[0]);
                 mEt3Array2.setText(randomArr[1]);
                 mEt3Array3.setText(randomArr[2]);
@@ -1168,13 +1241,6 @@ public class GuessDetailsActivity extends BaseActivity {
                 mEt3Array4.setSelection(1);
                 break;
             case 4:
-                for (int i = 0; i < randomArr.length; i++) {
-                    if (i != 0) {
-                        mRandomArr4 = mRandomArr4 + ":" + randomArr[i];
-                    } else {
-                        mRandomArr4 = randomArr[i];
-                    }
-                }
                 mEt4Array.setText(randomArr[0]);
                 mEt4Array2.setText(randomArr[1]);
                 mEt4Array3.setText(randomArr[2]);
@@ -1182,13 +1248,6 @@ public class GuessDetailsActivity extends BaseActivity {
                 mEt4Array4.setSelection(1);
                 break;
             case 5:
-                for (int i = 0; i < randomArr.length; i++) {
-                    if (i != 0) {
-                        mRandomArr5 = mRandomArr5 + ":" + randomArr[i];
-                    } else {
-                        mRandomArr5 = randomArr[i];
-                    }
-                }
                 mEt5Array.setText(randomArr[0]);
                 mEt5Array2.setText(randomArr[1]);
                 mEt5Array3.setText(randomArr[2]);

@@ -1341,7 +1341,7 @@
 
     <string name="guess">guess</string>
 
-    <string name="toast_array">Array cannot be Empty</string>
+    <string name="toast_array">Please enter the full guess number</string>
 
     <string name="bet_array">Bet Array</string>
 

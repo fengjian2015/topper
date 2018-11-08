@@ -1338,7 +1338,7 @@
         
     <string name="guess">竞猜</string>
         
-    <string name="toast_array">数组不能为空</string>
+    <string name="toast_array">请输入完整的竞猜数字</string>
         
     <string name="bet_array">投注数组</string>
         

@@ -672,7 +672,7 @@
     <string name="no3">No.3</string>
     <string name="no4">No.4</string>
     <string name="guess">競猜</string>
-    <string name="toast_array">數組不能為空</string>
+    <string name="toast_array">請輸入完整的競猜數字</string>
     <string name="bet_array">投注數組</string>
     <string name="contact_opposite">聯繫對方</string>
     <string name="opposite_email">對方電郵</string>
