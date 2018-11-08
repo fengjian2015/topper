@@ -1150,7 +1150,7 @@ public class UtilTool {
         return deadline;
     }
 
-    private static String[] mRandomArrs = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    //    private static String[] mRandomArrs = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
     private static int[] mRandomArr = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
     public static String[] getRandomArr(int betArrCount) {
@@ -1163,14 +1163,14 @@ public class UtilTool {
 
     public static String getRandom(int index) {
         String random = "";
-        for (int i = 0; i < 2; i++) {
-            if (index <= 2) {
-                int randomArrIndex = (int) (Math.random() * mRandomArr.length);
-                random = random + mRandomArr[randomArrIndex];
-            } else {
+        for (int i = 0; i < 1; i++) {
+//            if (index <= 2) {
+            int randomArrIndex = (int) (Math.random() * mRandomArr.length);
+            random = random + mRandomArr[randomArrIndex];
+            /*} else {
                 int randomArrsIndex = (int) (Math.random() * mRandomArrs.length);
                 random = random + mRandomArrs[randomArrsIndex];
-            }
+            }*/
         }
         return random;
     }
@@ -1654,8 +1654,10 @@ public class UtilTool {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
     /**
      * 获取状态栏高度
+     *
      * @param context
      * @return
      */

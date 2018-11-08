@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,6 +93,12 @@ public class StartGuessActivity extends BaseActivity {
     RelativeLayout mRlSelectorDeadline;
     @Bind(R.id.btn_confirm)
     Button mBtnConfirm;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
 
     private Dialog mBottomDialog;
     private int mId;
@@ -103,6 +110,7 @@ public class StartGuessActivity extends BaseActivity {
         setContentView(R.layout.activity_start_guess);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        mEtSingleInsertCount.setKeyListener(null);
         setData();
         initData();
     }
@@ -119,19 +127,24 @@ public class StartGuessActivity extends BaseActivity {
             coinPresenter.coinLists("bet", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
+                    mLlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
                     UtilTool.Log(getString(R.string.coins), data.size() + "");
                     MyApp.getInstance().mBetCoinList.addAll(data);
                 }
 
                 @Override
                 public void error() {
-
+                    mLlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             });
         }
     }
 
     private void setData() {
+        mTimeList.add(getString(R.string.time_bar2));
+        mTimeList.add(getString(R.string.time_bar4));
         mTimeList.add(getString(R.string.time_deadline));
         mTimeList.add(getString(R.string.time_deadline2));
         mTimeList.add(getString(R.string.time_deadline3));
@@ -140,7 +153,7 @@ public class StartGuessActivity extends BaseActivity {
         mTypeList.add(getString(R.string.start_guess_type2));
     }
 
-    @OnClick({R.id.bark, R.id.rl_selector_coin, R.id.rl_selector_deadline, R.id.btn_confirm, R.id.rl_guess_type})
+    @OnClick({R.id.bark, R.id.rl_selector_coin, R.id.rl_selector_deadline, R.id.btn_confirm, R.id.rl_guess_type, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -159,6 +172,9 @@ public class StartGuessActivity extends BaseActivity {
                 if (checkEdit()) {
                     showPWDialog();
                 }
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
         }
     }
@@ -302,7 +318,12 @@ public class StartGuessActivity extends BaseActivity {
         String singleCount = mEtSingleInsertCount.getText().toString();
         String command = mEtCommand.getText().toString();
         String deadline = mTvDeadline.getText().toString();
-        String timeMinute = Integer.parseInt(deadline.substring(0, deadline.lastIndexOf(getString(R.string.hr)))) * 60 + "";
+        String timeMinute;
+        if (deadline.contains(getString(R.string.fen))) {
+            timeMinute = Integer.parseInt(deadline.substring(0, 2)) + "";
+        } else {
+            timeMinute = Integer.parseInt(deadline.substring(0, 2)) * 60 + "";
+        }
         UtilTool.Log("時間", timeMinute);
         BlockchainGuessPresenter blockchainGuessPresenter = new BlockchainGuessPresenter(this);
         blockchainGuessPresenter.pushingGuess(mId, title, count, timeMinute, count, password, singleCount, command, new BlockchainGuessPresenter.CallBack2() {
@@ -319,7 +340,7 @@ public class StartGuessActivity extends BaseActivity {
         mBottomDialog.dismiss();
         mTvCoin.setText(data.getName());
         mId = data.getId();
-        mEtSingleInsertCount.setHint(data.getSingle_coin());
+        mEtSingleInsertCount.setText(data.getSingle_coin());
         mTvHint.setText(getString(R.string.start_guess_service_hint) + Double.parseDouble(data.getBet_fee()) * 100 + "%" + getString(R.string.sxf));
     }
 }

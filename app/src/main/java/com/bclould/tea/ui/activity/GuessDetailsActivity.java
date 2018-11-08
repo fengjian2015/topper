@@ -229,8 +229,7 @@ public class GuessDetailsActivity extends BaseActivity {
     private int mBet_id;
     private int mPeriod_qty;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
-    private int
-            mCountdown = 0;
+    private int mCountdown = 0;
     private double mPrize_pool_number;
     private GuessBetRVAdapter mGuessBetRVAdapter;
     Timer mTimer = new Timer();
@@ -322,6 +321,15 @@ public class GuessDetailsActivity extends BaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mTimer != null && mTask != null) {
+            mTask.cancel();
+            mTimer.cancel();
+        }
+    }
+
+    @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
@@ -386,7 +394,9 @@ public class GuessDetailsActivity extends BaseActivity {
                         mLlAlready.setVisibility(View.GONE);
                         mCountdown = data.getCountdown();
                         UtilTool.Log("倒計時", data.getCountdown() + "");
-                        mTimer.schedule(mTask, 1000, 1000);
+                        if (mCountdown != 0) {
+                            mTimer.schedule(mTask, 1000, 1000);
+                        }
                         if (data.getStatus() == 2) {
                             mLlGuessCount.setVisibility(View.GONE);
                             mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
@@ -1126,7 +1136,7 @@ public class GuessDetailsActivity extends BaseActivity {
                 mEtArray2.setText(randomArr[1]);
                 mEtArray3.setText(randomArr[2]);
                 mEtArray4.setText(randomArr[3]);
-                mEtArray4.setSelection(2);
+                mEtArray4.setSelection(1);
                 break;
             case 2:
                 for (int i = 0; i < randomArr.length; i++) {
@@ -1140,7 +1150,7 @@ public class GuessDetailsActivity extends BaseActivity {
                 mEt2Array2.setText(randomArr[1]);
                 mEt2Array3.setText(randomArr[2]);
                 mEt2Array4.setText(randomArr[3]);
-                mEt2Array4.setSelection(2);
+                mEt2Array4.setSelection(1);
                 break;
             case 3:
                 for (int i = 0; i < randomArr.length; i++) {
@@ -1154,7 +1164,7 @@ public class GuessDetailsActivity extends BaseActivity {
                 mEt3Array2.setText(randomArr[1]);
                 mEt3Array3.setText(randomArr[2]);
                 mEt3Array4.setText(randomArr[3]);
-                mEt3Array4.setSelection(2);
+                mEt3Array4.setSelection(1);
                 break;
             case 4:
                 for (int i = 0; i < randomArr.length; i++) {
@@ -1168,7 +1178,7 @@ public class GuessDetailsActivity extends BaseActivity {
                 mEt4Array2.setText(randomArr[1]);
                 mEt4Array3.setText(randomArr[2]);
                 mEt4Array4.setText(randomArr[3]);
-                mEt4Array4.setSelection(2);
+                mEt4Array4.setSelection(1);
                 break;
             case 5:
                 for (int i = 0; i < randomArr.length; i++) {
@@ -1182,7 +1192,7 @@ public class GuessDetailsActivity extends BaseActivity {
                 mEt5Array2.setText(randomArr[1]);
                 mEt5Array3.setText(randomArr[2]);
                 mEt5Array4.setText(randomArr[3]);
-                mEt5Array4.setSelection(2);
+                mEt5Array4.setSelection(1);
                 break;
         }
     }

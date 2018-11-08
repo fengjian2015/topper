@@ -203,37 +203,35 @@ public class NewsFragment extends Fragment implements OnBannerListener {
                         mRefreshLayout.finishLoadMore();
                     }
                     isFinish = true;
-                    if (lists != null || top != null) {
-                        if (lists.size() != 0 || mNewsList.size() != 0 || top.size() != 0 || mTopList.size() != 0) {
-                            mRecyclerView.setVisibility(View.VISIBLE);
-                            mLlNoData.setVisibility(View.GONE);
-                            mLlError.setVisibility(View.GONE);
-                            if (type == PULL_UP) {
-                                mNewsList.addAll(lists);
-                                if (mNewsList.size() != 0)
-                                    mPage_id = mNewsList.get(mNewsList.size() - 1).getId();
-                                mNewsRVAdapter.notifyDataSetChanged();
-                            } else {
-                                mNewsList.clear();
-                                mTopList.clear();
-                                mNewsList.addAll(lists);
-                                mTopList.addAll(top);
-                                if (mNewsList.size() != 0)
-                                    mPage_id = mNewsList.get(mNewsList.size() - 1).getId();
-                                mNewsRVAdapter.notifyDataSetChanged();
-                                List<String> imgList = new ArrayList<>();
-                                List<String> titleList = new ArrayList<>();
-                                for (NewsListInfo.TopBean info : top) {
-                                    imgList.add(info.getIndex_pic());
-                                    titleList.add(info.getTitle());
-                                }
-                                initBanner(imgList, titleList);
-                            }
+                    if (lists != null && top != null && lists.size() != 0 && top.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.GONE);
+                        if (type == PULL_UP) {
+                            mNewsList.addAll(lists);
+                            if (mNewsList.size() != 0)
+                                mPage_id = mNewsList.get(mNewsList.size() - 1).getId();
+                            mNewsRVAdapter.notifyDataSetChanged();
                         } else {
-                            mRecyclerView.setVisibility(View.GONE);
-                            mLlNoData.setVisibility(View.VISIBLE);
-                            mLlError.setVisibility(View.GONE);
+                            mNewsList.clear();
+                            mTopList.clear();
+                            mNewsList.addAll(lists);
+                            mTopList.addAll(top);
+                            if (mNewsList.size() != 0)
+                                mPage_id = mNewsList.get(mNewsList.size() - 1).getId();
+                            mNewsRVAdapter.notifyDataSetChanged();
+                            List<String> imgList = new ArrayList<>();
+                            List<String> titleList = new ArrayList<>();
+                            for (NewsListInfo.TopBean info : top) {
+                                imgList.add(info.getIndex_pic());
+                                titleList.add(info.getTitle());
+                            }
+                            initBanner(imgList, titleList);
                         }
+                    } else {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     }
                 }
             }
