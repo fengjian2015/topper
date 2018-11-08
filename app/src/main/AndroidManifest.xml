@@ -60,9 +60,13 @@
             android:name="TencentMapSDK"
             android:value="VKMBZ-GAMWJ-UA5FV-KAXJS-IEHET-QABI7" />
 
-        <!--友盟统计-->
-        <meta-data android:value="5bcd3a26b465f57c2c0001ae" android:name="UMENG_APPKEY"/>
-        <meta-data android:value="wangluo" android:name="UMENG_CHANNEL"/>
+        <!-- 友盟统计 -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5bcd3a26b465f57c2c0001ae" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="wangluo" />
 
         <provider
             android:name=".utils.MyFileProvider"
@@ -1206,7 +1210,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ui.activity.DeblockingFingerprintActivity"
             android:launchMode="singleTop"
@@ -1289,6 +1293,34 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ui.activity.HistoryActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.activity.FriendVerificationActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <activity
+            android:name=".ui.activity.FinancialActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.FinancialDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.activity.TransferRecordActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.activity.FinancialHistoryActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"

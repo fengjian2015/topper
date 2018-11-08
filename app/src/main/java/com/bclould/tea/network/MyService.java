@@ -12,6 +12,9 @@ import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.model.DealListInfo;
 import com.bclould.tea.model.DynamicListInfo;
 import com.bclould.tea.model.ExchangeOrderInfo;
+import com.bclould.tea.model.FinanciaProductInfo;
+import com.bclould.tea.model.FinancialCoinInfo;
+import com.bclould.tea.model.FinancialInfo;
 import com.bclould.tea.model.GonggaoListInfo;
 import com.bclould.tea.model.GoogleInfo;
 import com.bclould.tea.model.GrabRedInfo;
@@ -52,6 +55,7 @@ import com.bclould.tea.model.StateInfo;
 import com.bclould.tea.model.TransRecordInfo;
 import com.bclould.tea.model.TransferInfo;
 import com.bclould.tea.model.TransferListInfo;
+import com.bclould.tea.model.TransferRecordInfo;
 import com.bclould.tea.model.UnclaimedRedInfo;
 import com.bclould.tea.model.UpdateLogInfo;
 import com.bclould.tea.model.UpgradeInfo;
@@ -1561,5 +1565,84 @@ public interface MyService {
     Observable<HistoryInfo> historyFtc(
             @Header("Authorization") String token,
             @Field("page") int page
+    );
+    //理财首页
+    @GET("team/financial/assets")
+    Observable<FinancialInfo> assets(
+            @Header("Authorization") String token,
+            @Query("coin_id") int coin_id
+    );
+
+    //资产转入
+    @POST("team/financial/product/in")
+    @FormUrlEncoded
+    Observable<BaseInfo> productIn(
+            @Header("Authorization") String token,
+            @Field("coin_id") int coin_id,
+            @Field("number") String number,
+            @Field("second_password") String second_password
+    );
+
+    //资产转入
+    @POST("team/financial/product/out")
+    @FormUrlEncoded
+    Observable<BaseInfo> productOut(
+            @Header("Authorization") String token,
+            @Field("coin_id") int coin_id,
+            @Field("number") String number,
+            @Field("second_password") String second_password
+    );
+
+    //购买理财币种列表
+    @GET("team/financial/coin/list")
+    Observable<FinancialCoinInfo> coinList(
+            @Header("Authorization") String token,
+            @Query("type") String type,
+            @Query("product_id") String product_id
+    );
+
+    //购买
+    @POST("team/financial/buy")
+    @FormUrlEncoded
+    Observable<BaseInfo> financialBuy(
+            @Header("Authorization") String token,
+            @Field("coin_id") int coin_id,
+            @Field("number") String number,
+            @Field("product_id") String product_id,
+            @Field("second_password") String second_password
+    );
+
+    //收益记录
+    @GET("team/financial/income/list")
+    Observable<HistoryInfo> incomeList(
+            @Header("Authorization") String token,
+            @Query("coin_id") int coin_id,
+            @Query("page") int page,
+            @Query("id") int id
+    );
+
+    //理财记录
+    @GET("team/financial/buy/list")
+    Observable<HistoryInfo> buyList(
+            @Header("Authorization") String token,
+            @Query("coin_id") int coin_id,
+            @Query("page") int page,
+            @Query("id") int id
+    );
+
+    //转入转出记录
+    @GET("team/financial/in/out")
+    Observable<TransferRecordInfo> financialInOut(
+            @Header("Authorization") String token,
+            @Query("coin_id") int coin_id,
+            @Query("page") int page,
+            @Query("type") int type
+    );
+
+    //理财分类
+    @GET("team/financial/product/list")
+    Observable<FinanciaProductInfo> financialProduct(
+            @Header("Authorization") String token,
+            @Query("coin_id") int coin_id
     );
 }

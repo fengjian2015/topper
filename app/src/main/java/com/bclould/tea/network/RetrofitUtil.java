@@ -9,7 +9,9 @@ import android.util.Log;
 import com.bclould.tea.Presenter.LogoutPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.NetworkUtils;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.google.gson.GsonBuilder;
@@ -27,6 +29,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
+import static com.bclould.tea.Presenter.LoginPresenter.TOKEN_TIME;
 
 /**
  * Created by dada on 2017/6/14.
@@ -75,6 +80,12 @@ public class RetrofitUtil {
                 Log.d("CacheInterceptor", "no network");
             }
             Response originalResponse = chain.proceed(request);
+            //设置TOKEN
+            String authorization=originalResponse.header("Authorization123");
+            if(!StringUtils.isEmpty(authorization)){
+                MySharedPreferences.getInstance().setString(TOKEN, authorization);
+                MySharedPreferences.getInstance().setLong(TOKEN_TIME,System.currentTimeMillis());
+            }
             UtilTool.Log("攔截器", originalResponse.isSuccessful() + "");
             int code = originalResponse.code();
             String message = originalResponse.message();

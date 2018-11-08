@@ -119,7 +119,7 @@ public class SelectConversationAdapter extends RecyclerView.Adapter {
                         url = mDBRoomMember.findMemberUrl(mConversationInfo.getUser());
                         if (StringUtils.isEmpty(url) && mMgr.findUser(mConversationInfo.getUser())) {
                             UserInfo info = mMgr.queryUser(mConversationInfo.getUser());
-                            if (!info.getPath().isEmpty()) {
+                            if (!StringUtils.isEmpty(info.getPath())) {
                                 url = info.getPath();
                             }
                         }
@@ -139,7 +139,7 @@ public class SelectConversationAdapter extends RecyclerView.Adapter {
             String url=mDBRoomMember.findMemberUrl(user);
             if(StringUtils.isEmpty(url)&&mMgr.findUser(user)){
                 UserInfo info = mMgr.queryUser(user);
-                if (!info.getPath().isEmpty()) {
+                if (!StringUtils.isEmpty(info.getPath())) {
                     url=info.getPath();
                 }
             }

@@ -1029,7 +1029,7 @@ public class UtilTool {
         String url = mDBRoomMember.findMemberUrl(user);
         if (StringUtils.isEmpty(url) && dbManager.findUser(user)) {
             UserInfo info = dbManager.queryUser(user);
-            if (!info.getPath().isEmpty()) {
+            if (!StringUtils.isEmpty(info.getPath())) {
                 url = info.getPath();
             }
         }
@@ -1102,6 +1102,9 @@ public class UtilTool {
     public static String getPostfix3(String fileName) {
         String pos = "";
         try {
+            if(StringUtils.isEmpty(fileName)){
+                return pos;
+            }
             pos = fileName.substring(fileName.lastIndexOf("."));
         } catch (Exception e) {
             e.printStackTrace();
@@ -1669,6 +1672,17 @@ public class UtilTool {
         }
         return result;
     }
+    public static String expectedReturn(double money,int day,double rate){
+        if(day==0){
+            day=1;
+        }
+        double expected=money*rate*day/365;
+        return changeMoney(expected);
+    }
 
+    public static String changeMoney(double money) {
+        DecimalFormat df = new DecimalFormat("#####0.00");
+        return df.format(money);
+    }
 
 }

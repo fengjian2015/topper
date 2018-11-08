@@ -137,7 +137,7 @@ public class PlatformGuessFragment extends Fragment {
         mBlockchainGuessPresenter.getGuessList(mPage_id, mPageSize, 2, user, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
-                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                if (ActivityUtil.isActivityOnTop(getContext())) {
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
                             mRefreshLayout.finishRefresh();
@@ -174,7 +174,7 @@ public class PlatformGuessFragment extends Fragment {
 
             @Override
             public void error() {
-                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                if (ActivityUtil.isActivityOnTop(getContext())) {
                     isFinish = true;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
@@ -191,11 +191,13 @@ public class PlatformGuessFragment extends Fragment {
 
             @Override
             public void finishRefresh() {
-                isFinish = true;
-                if (type == PULL_DOWN) {
-                    mRefreshLayout.finishRefresh();
-                }else{
-                    mRefreshLayout.finishLoadMore();
+                if (ActivityUtil.isActivityOnTop(getContext())) {
+                    isFinish = true;
+                    if (type == PULL_DOWN) {
+                        mRefreshLayout.finishRefresh();
+                    } else {
+                        mRefreshLayout.finishLoadMore();
+                    }
                 }
             }
         });

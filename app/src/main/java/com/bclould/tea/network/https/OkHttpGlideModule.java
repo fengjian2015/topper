@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
 
@@ -48,47 +49,67 @@ public class OkHttpGlideModule implements GlideModule {
 
     @Override
     public void registerComponents(Context context, Glide glide, Registry registry) {
-        X509TrustManager xtm = new X509TrustManager() {
+//        X509TrustManager xtm = new X509TrustManager() {
+//            @Override
+//            public void checkClientTrusted(X509Certificate[] chain, String authType) {
+//            }
+//
+//            @Override
+//            public void checkServerTrusted(X509Certificate[] chain, String authType) {
+//            }
+//
+//            @Override
+//            public X509Certificate[] getAcceptedIssuers() {
+//                X509Certificate[] x509Certificates = new X509Certificate[0];
+//                return x509Certificates;
+//            }
+//        };
+//        SSLContext sslContext = null;
+//        try {
+//            sslContext = SSLContext.getInstance("SSL");
+//            sslContext.init(null, new TrustManager[]{xtm}, new SecureRandom());
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        } catch (KeyManagementException e) {
+//            e.printStackTrace();
+//        }
+//        HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
+//            @Override
+//            public boolean verify(String hostname, SSLSession session) {
+//                return true;
+//            }
+//        };
+//        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+//        builder.sslSocketFactory(sslContext.getSocketFactory());
+//        builder.hostnameVerifier(DO_NOT_VERIFY);
+//        builder.hostnameVerifier(new HostnameVerifier() {
+//            @Override
+//            public boolean verify(String hostname, SSLSession session) {
+//                return true;
+//            }
+//        });
+//        builder.connectTimeout(20, TimeUnit.SECONDS);
+//        builder.readTimeout(20, TimeUnit.SECONDS);
+//        registry.replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(builder.build()));
+
+
+        //定义一个信任所有证书的TrustManager
+        final X509TrustManager trustAllCert = new X509TrustManager() {
             @Override
-            public void checkClientTrusted(X509Certificate[] chain, String authType) {
+            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
             }
 
             @Override
-            public void checkServerTrusted(X509Certificate[] chain, String authType) {
+            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
             }
 
             @Override
-            public X509Certificate[] getAcceptedIssuers() {
-                X509Certificate[] x509Certificates = new X509Certificate[0];
-                return x509Certificates;
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return new java.security.cert.X509Certificate[]{};
             }
         };
-        SSLContext sslContext = null;
-        try {
-            sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, new TrustManager[]{xtm}, new SecureRandom());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        }
-        HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-                return true;
-            }
-        };
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.sslSocketFactory(sslContext.getSocketFactory());
-        builder.hostnameVerifier(DO_NOT_VERIFY);
-        builder.hostnameVerifier(new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-                return true;
-            }
-        });
-        builder.connectTimeout(20, TimeUnit.SECONDS);
-        builder.readTimeout(20, TimeUnit.SECONDS);
-        registry.replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(builder.build()));
+        //设置OkHttpClient
+        OkHttpClient client = new OkHttpClient.Builder().
+                sslSocketFactory(new SSLSocketFactoryCompat(trustAllCert),trustAllCert).build();
     }
 }

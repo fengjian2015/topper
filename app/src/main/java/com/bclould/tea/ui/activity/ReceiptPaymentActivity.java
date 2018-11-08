@@ -226,7 +226,9 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 String coinName = data.getStringExtra("coinName");
                 String remark = data.getStringExtra("remark");
                 String count = data.getStringExtra("count");
-                Glide.with(this).load(url).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(mIvQr);
+                Bitmap bitmap = UtilTool.createQRImage(url);
+                Glide.with(ReceiptPaymentActivity.this).load(bitmap).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(mIvQr);
+//                Glide.with(this).load(url).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(mIvQr);
                 hideDialog();
                 if (remark.isEmpty()) {
                     mTvRemark.setVisibility(View.GONE);

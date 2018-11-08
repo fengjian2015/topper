@@ -138,9 +138,9 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_conversation_list, container, false);
+        ButterKnife.bind(this, view);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        ButterKnife.bind(this, view);
         mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));
         mgr = new DBManager(getActivity());
         mDBRoomMember = new DBRoomMember(getActivity());
@@ -177,6 +177,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            if(getActivity()==null&&!isAdded())return;
             switch (msg.what) {
                 case 0:
                     initRecyclerView();
@@ -212,27 +213,32 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
-                    mTitleProgress.setVisibility(View.GONE);
-                    mTvTitle.setText(getString(R.string.talk));
-                } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
-                    mTitleProgress.setVisibility(View.VISIBLE);
-                    mTvTitle.setText(getString(R.string.in_link));
-                } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
-                    mTitleProgress.setVisibility(View.GONE);
-                    mTvTitle.setText(getString(R.string.talk) + getString(R.string.not_link));
-                } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
-                    mTitleProgress.setVisibility(View.GONE);
-                    mTvTitle.setText(getString(R.string.talk));
+                try {
+                    if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
+                        mTitleProgress.setVisibility(View.GONE);
+                        mTvTitle.setText(getString(R.string.talk));
+                    } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
+                        mTitleProgress.setVisibility(View.VISIBLE);
+                        mTvTitle.setText(getString(R.string.in_link));
+                    } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
+                        mTitleProgress.setVisibility(View.GONE);
+                        mTvTitle.setText(getString(R.string.talk) + getString(R.string.not_link));
+                    } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
+                        mTitleProgress.setVisibility(View.GONE);
+                        mTvTitle.setText(getString(R.string.talk));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         });
+
     }
 
 
     @Override
     public void onStateChange(int serviceState) {
-        if (serviceState == -1 || mTvTitle == null) return;
+        if (serviceState == -1 || mTvTitle == null || mTitleProgress == null) return;
         onChangeChatState(serviceState);
         if (imState == serviceState) {
             return;
@@ -258,7 +264,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
         if (getActivity() != null)
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
-
         mHeightPixels = mDm.heightPixels;
     }
 
@@ -461,8 +466,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
         ConnectStateChangeListenerManager.get().unregisterStateChangeListener(this);
+        EventBus.getDefault().unregister(this);
     }
 
     private void initData() {

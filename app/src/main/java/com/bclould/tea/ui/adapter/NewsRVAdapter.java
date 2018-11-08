@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -32,12 +33,12 @@ import butterknife.ButterKnife;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsRVAdapter extends RecyclerView.Adapter {
 
-    private final Context mContext;
+    private final Activity mContext;
     private final List<NewsListInfo.ListsBean> mNewsList;
 
 
 
-    public NewsRVAdapter(Context context, List<NewsListInfo.ListsBean> newsList) {
+    public NewsRVAdapter(Activity context, List<NewsListInfo.ListsBean> newsList) {
         mContext = context;
         mNewsList = newsList;
     }
@@ -175,6 +176,7 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
                     .centerCrop()
                     .placeholder(R.mipmap.ic_empty_photo)
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
+            if(mContext==null)return;
             Glide.with(mContext).load(listBean.getIndex_pic()).apply(requestOptions).into(mIvImage);
         }
     }

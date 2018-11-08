@@ -152,6 +152,9 @@ public class NewsDetailsActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                if(mProgressBar==null){
+                    return;
+                }
                 mProgressBar.setVisibility(View.GONE);
                 if (mProgressBar.getProgress() != 100) {
                     mLlLoadError.setVisibility(View.VISIBLE);
@@ -168,6 +171,7 @@ public class NewsDetailsActivity extends BaseActivity {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
+                if(mLlLoadError==null)return;
                 mLlLoadError.setVisibility(View.VISIBLE);
                 mRlWebView.setVisibility(View.GONE);
                 mLoadError = true;
@@ -177,12 +181,18 @@ public class NewsDetailsActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                if(mProgressBar==null){
+                    return;
+                }
                 mProgressBar.setVisibility(View.VISIBLE);
             }
 
         });
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
+                if(mProgressBar==null){
+                    return;
+                }
                 mProgressBar.setMax(100);
                 mProgressBar.setProgress(progress);
             }

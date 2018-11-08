@@ -1013,6 +1013,9 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(mEkbEmoticonsKeyboard==null){
+                    return false;
+                }
                 FuncLayout funcView = mEkbEmoticonsKeyboard.getFuncView();
                 if (funcView.isShown()) {
                     funcView.hideAllFuncView();
@@ -1301,14 +1304,18 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
-                    mTitleProgress.setVisibility(View.GONE);
-                } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
-                    mTitleProgress.setVisibility(View.VISIBLE);
-                } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
-                    mTitleProgress.setVisibility(View.VISIBLE);
-                } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
-                    mTitleProgress.setVisibility(View.GONE);
+                try {
+                    if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
+                        mTitleProgress.setVisibility(View.GONE);
+                    } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
+                        mTitleProgress.setVisibility(View.VISIBLE);
+                    } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
+                        mTitleProgress.setVisibility(View.VISIBLE);
+                    } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
+                        mTitleProgress.setVisibility(View.GONE);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         });

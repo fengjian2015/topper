@@ -197,6 +197,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
             @Override
             public void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if(mRefreshLayout==null)return;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
                     } else {
@@ -253,11 +254,13 @@ public class NewsFragment extends Fragment implements OnBannerListener {
 
             @Override
             public void finishRefresh() {
-                isFinish = true;
-                if (type == PULL_DOWN) {
-                    mRefreshLayout.finishRefresh();
-                } else {
-                    mRefreshLayout.finishLoadMore();
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    isFinish = true;
+                    if (type == PULL_DOWN) {
+                        mRefreshLayout.finishRefresh();
+                    } else {
+                        mRefreshLayout.finishLoadMore();
+                    }
                 }
             }
         });
@@ -272,7 +275,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
                 .setImageLoader(new ImageLoader() {
                     @Override
                     public void displayImage(Context context, Object path, ImageView imageView) {
-                        Glide.with(context.getApplicationContext())
+                        Glide.with(getActivity())
                                 .load(path)
                                 .apply(mRequestOptions)
                                 .into(imageView);

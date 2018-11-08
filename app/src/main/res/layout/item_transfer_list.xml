@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:orientation="vertical"
+        android:paddingRight="@dimen/x30"
+        android:paddingLeft="@dimen/x30"
+        android:paddingBottom="@dimen/y20"
+        android:layout_marginBottom="@dimen/y30"
+        android:paddingTop="@dimen/y20">
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MainTextShallowStyle36"
+            android:text="超级节点"
+            android:layout_marginBottom="@dimen/y10"/>
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            style="@style/BlueTextStyle36"
+            android:layout_centerVertical="true"
+            android:text="2,566.34"
+            />
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/SecondaryTextStyle28"
+            android:text="2018.01.01 20:00"
+            android:layout_below="@+id/tv_title"/>
+    </RelativeLayout>
+    <View
+        style="@style/HorizontalBoundaryStyle"></View>
+
+</LinearLayout>

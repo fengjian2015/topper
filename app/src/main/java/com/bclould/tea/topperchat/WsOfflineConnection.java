@@ -66,7 +66,7 @@ public class WsOfflineConnection {
                         isConnection=false;
                         if (ex != null) {
                             setIsLogin(false);
-                            UtilTool.Log("fengjian","離線连接服務器失敗");
+                            UtilTool.Log("fengjian","離線连接服務器失敗"+ex.getMessage());
                             ex.printStackTrace();
                             return;
                         }

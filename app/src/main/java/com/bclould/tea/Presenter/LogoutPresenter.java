@@ -48,12 +48,12 @@ public class LogoutPresenter {
             mProgressDialog.setMessage(mActivity.getString(R.string.kitson));
         }
 
-        mProgressDialog.show();
+        mProgressDialog.showDialog();
     }
 
     private void hideDialog() {
         if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
+            mProgressDialog.hideDialog();
             mProgressDialog = null;
         }
     }

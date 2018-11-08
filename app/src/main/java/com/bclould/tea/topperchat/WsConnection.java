@@ -415,6 +415,9 @@ public class WsConnection {
      * 通过广播去关闭service
      */
     public static void stopAllIMCoreService(Context context) {
+        if(context==null){
+            return;
+        }
         Intent intent = new Intent();
         intent.setAction(IMCoreService.ACTION_LOGOUT);
         context.sendBroadcast(intent);

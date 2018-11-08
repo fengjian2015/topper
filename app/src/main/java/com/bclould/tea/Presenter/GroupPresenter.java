@@ -298,6 +298,9 @@ public class GroupPresenter {
                                         ((Activity) mContext).runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                if (mContext instanceof Activity && !ActivityUtil.isActivityOnTop((Activity) mContext)) {
+                                                    return;
+                                                }
                                                 callBack.send();
                                             }
                                         });

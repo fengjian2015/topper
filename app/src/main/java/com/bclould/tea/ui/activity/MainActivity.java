@@ -652,7 +652,6 @@ public class MainActivity extends BaseActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             exitBy2Click();      //调用双击退出函数
         }
-        finish();
         return false;
     }
 
