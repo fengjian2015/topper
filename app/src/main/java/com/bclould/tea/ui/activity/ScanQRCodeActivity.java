@@ -135,6 +135,11 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
             setResult(RESULT_OK, intent);
             UtilTool.Log("日志", result);
             finish();
+        }else if(mCode==4){
+            Intent intent = new Intent(ScanQRCodeActivity.this, FriendListFragment.class);
+            intent.putExtra("result", result);
+            setResult(RESULT_OK, intent);
+            finish();
         }
         //再次延时1.5秒后启动
         mZxingview.startSpot();

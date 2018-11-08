@@ -53,6 +53,7 @@ public class RegisterActivity2 extends AppCompatActivity {
     private RegisterPresenter mRegisterPresenter;
     private String mUsername;
     private String mEmail;
+    private String referrer;
     private int mRecLen = 60;
     Timer mTimer = new Timer();
 
@@ -97,6 +98,7 @@ public class RegisterActivity2 extends AppCompatActivity {
     private void initIntent() {
         mUsername = getIntent().getStringExtra("username");
         mEmail = getIntent().getStringExtra("email");
+        referrer=getIntent().getStringExtra("referrer");
     }
 
     @OnClick({R.id.iv_back, R.id.tv_send, R.id.eye, R.id.btn_register})
@@ -197,6 +199,7 @@ public class RegisterActivity2 extends AppCompatActivity {
         String password = mEtPassword.getText().toString().trim();
         Intent intent = new Intent(this, ServiceAgreementActivity.class);
         intent.putExtra("username", mUsername);
+        intent.putExtra("referrer",referrer);
         intent.putExtra("email", mEmail);
         intent.putExtra("vcode", vcode);
         intent.putExtra("password", password);

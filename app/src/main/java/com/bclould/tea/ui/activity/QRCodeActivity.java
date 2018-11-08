@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
@@ -48,7 +49,10 @@ public class QRCodeActivity extends BaseActivity {
     RelativeLayout mRlQr;
     @Bind(R.id.btn_save_qr)
     Button mBtnSaveQr;
+    @Bind(R.id.tv_desc)
+    TextView mTvDesc;
     private MessageInfo mMessageInfo = new MessageInfo();
+    private int type = 0;//0自己的二维码  1推荐码
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,11 +74,20 @@ public class QRCodeActivity extends BaseActivity {
             DBManager mgr = new DBManager(this);
             String user = getIntent().getStringExtra("user");
             if (user == null) {
-                user = UtilTool.getTocoId();
+                if (type == 0)
+                    user = UtilTool.getTocoId();
+                else if(type==1)
+                    user = UtilTool.getUser();
             }
             UtilTool.getImage(mgr, user, this, mTouxiang);
 //            mTouxiang.setImageBitmap(UtilTool.getImage(mgr,user, this));
-            Bitmap bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(this, Constants.BUSINESSCARD, "name", user, "名片"));
+            Bitmap bitmap = null;
+            if (type == 0) {
+                bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(this, Constants.BUSINESSCARD, "name", user, "名片"));
+            } else if(type==1){
+                bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(this, Constants.COMMANDUSERNAME, "name", user, "推荐码"));
+                mTvDesc.setVisibility(View.GONE);
+            }
             mQrCodeIv.setImageBitmap(bitmap);
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,6 +95,7 @@ public class QRCodeActivity extends BaseActivity {
     }
 
     private void initIntent() {
+        type = getIntent().getIntExtra("type", 0);
         String action = getIntent().getAction();
         if (action != null && action.equals("android.intent.action.qrcode") && WsConnection.getInstance().getOutConnection()) {
             finish();

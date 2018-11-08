@@ -28,6 +28,7 @@ public class Constants {
     public static final String MONEYIN = "moneyIn";
     public static final String MONEYOUT = "moneyOut";
     public static final String BUSINESSCARD = "businessCard";
+    public static final String COMMANDUSERNAME="CommandUserName";
     public static final String GROUPCARD = "groupCard";
     public static final String BUCKET_NAME = isDebug ? "toco--bucket" : "topper-bucket";
     public static final String BUCKET_NAME2 = "topper-chat-bucket";
