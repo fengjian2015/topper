@@ -64,7 +64,15 @@ public class MyAssetsInfo {
         private String lock;
         private String total;
         private String currency;
-        private double number;
+        private String number;
+
+        public String getNumber() {
+            return number;
+        }
+
+        public void setNumber(String number) {
+            this.number = number;
+        }
 
         public int getId() {
             return id;
@@ -170,12 +178,6 @@ public class MyAssetsInfo {
             this.currency = currency;
         }
 
-        public double getNumber() {
-            return number;
-        }
 
-        public void setNumber(double number) {
-            this.number = number;
-        }
     }
 }
