@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg_color"
+    android:orientation="vertical"
+    tools:context="com.bclould.tea.ui.activity.FGCExchangeActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        style="@style/TopNavigationBarStyle">
+
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return" />
+
+        <TextView
+            style="@style/MainTextShallowStyle36"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/exchange_fgc" />
+
+    </RelativeLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_data"
+        android:layout_below="@+id/tv">
+
+        <com.scwang.smartrefresh.header.WaterDropHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/ll_exchange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/x20"
+                android:paddingTop="@dimen/x20">
+                <TextView
+                    android:id="@+id/tv_1"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ll_exchange"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:text="@string/fgc_gains"
+                    android:layout_marginBottom="@dimen/y20"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_marginRight="@dimen/x10"
+                    android:background="@mipmap/icon_fgc_background"
+                    android:layout_marginBottom="@dimen/y20"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y110"
+                    android:layout_marginTop="@dimen/y20">
+                    <EditText
+                        android:id="@+id/et_count"
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/x20"
+                        android:layout_marginRight="@dimen/x10"
+                        android:layout_weight="3"
+                        android:background="@drawable/bg_shallow_shape"
+                        android:hint="@string/et_count"
+                        android:inputType="numberDecimal"
+                        android:paddingLeft="@dimen/x20"
+                        android:paddingRight="@dimen/x20"
+                        android:singleLine="true"
+                        android:textColorHint="@color/secondary_text_color" />
+
+                    <TextView
+                        android:id="@+id/tv_coin"
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/x10"
+                        android:layout_marginRight="@dimen/x20"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_shallow_shape"
+                        android:gravity="center"
+                        android:text="USDT" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y110"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_marginRight="@dimen/x20"
+                    android:layout_marginTop="@dimen/y30"
+                    android:background="@drawable/bg_shallow_shape"
+                    android:paddingLeft="@dimen/x20"
+                    android:paddingRight="@dimen/x20">
+
+                    <TextView
+                        android:id="@+id/tv_price"
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:hint="@string/convertible_to_fgc"
+                        android:textColorHint="@color/secondary_text_color"/>
+
+                    <Button
+                        android:id="@+id/btn_float"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/y70"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_blue_shape4"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y110"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_marginRight="@dimen/x20"
+                    android:layout_marginTop="@dimen/y30"
+                    android:background="@drawable/bg_shallow_shape"
+                    android:paddingLeft="@dimen/x20"
+                    android:paddingRight="@dimen/x20">
+
+                    <TextView
+                        android:id="@+id/tv_available"
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        />
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/btn_exchange"
+                    style="@style/ShortBtnStyle"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/y10"
+                    android:layout_marginTop="@dimen/y30"
+                    android:text="@string/confirm_exchange"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:id="@+id/tv"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ll_exchange"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:text="@string/exchange_record" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tv"
+                    android:layout_marginTop="@dimen/y10"
+                    android:background="@drawable/bg_pay_record_shape"
+                    android:paddingLeft="@dimen/x50"
+                    android:paddingRight="@dimen/x50"></android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+
+        </ScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</LinearLayout>

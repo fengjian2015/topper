@@ -12,6 +12,7 @@ import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.model.DealListInfo;
 import com.bclould.tea.model.DynamicListInfo;
 import com.bclould.tea.model.ExchangeOrderInfo;
+import com.bclould.tea.model.FGCInfo;
 import com.bclould.tea.model.FinanciaProductInfo;
 import com.bclould.tea.model.FinancialCoinInfo;
 import com.bclould.tea.model.FinancialInfo;
@@ -1646,5 +1647,22 @@ public interface MyService {
     Observable<FinanciaProductInfo> financialProduct(
             @Header("Authorization") String token,
             @Query("coin_id") int coin_id
+    );
+
+    //黄金兑换汇率
+    @GET("team/exchange/fgc/info")
+    Observable<FGCInfo> exchangeFGC(
+            @Header("Authorization") String token,
+            @Query("page") int page,
+            @Query("page_size") int page_size
+    );
+
+    //黄金兑换汇率
+    @POST("team/exchange/fgc/exchange")
+    @FormUrlEncoded
+    Observable<BaseInfo> exchangeFGC1(
+            @Header("Authorization") String token,
+            @Field("usd_number") String usd_number,
+            @Field("second_password") String second_password
     );
 }

@@ -2376,4 +2376,9 @@ Please reset encryption request</string>
     <string name="expected">expected revenue</string>
     <string name="please_enter_referrer_name">Please enter the referrer\'s name</string>
     <string name="recommendation_code">Recommended code </string>
+    <string name="exchange_FGC">Exchange fgc</string>
+    <string name="convertible_to_fgc"> can be redeemed for FGC</string>
+    <string name="fgc_gains">FGC gains </string>
+    <string name="gold_exchange">gold exchange </string>
+    <string name="available_fgc">Available FGC:</string>
 </resources>

@@ -1297,12 +1297,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.FriendVerificationActivity"
+        <activity
+            android:name=".ui.activity.FriendVerificationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
-
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ui.activity.FinancialActivity"
             android:launchMode="singleTop"
@@ -1315,12 +1315,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.TransferRecordActivity"
+        <activity
+            android:name=".ui.activity.TransferRecordActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.FinancialHistoryActivity"
+        <activity
+            android:name=".ui.activity.FinancialHistoryActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.activity.FGCExchangeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"

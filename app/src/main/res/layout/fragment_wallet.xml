@@ -153,6 +153,37 @@
 
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/rl_fgc_exchange"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y130">
+
+            <ImageView
+                android:id="@+id/iv7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:src="@mipmap/icon_wealth_fgc_change"/>
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_toRightOf="@+id/iv7"
+                android:text="@string/gold_exchange"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:src="@mipmap/iocn_person_turninto"/>
+
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/rl_financial_management"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y130"

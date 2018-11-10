@@ -2357,4 +2357,9 @@
     <string name="expected">预计收益</string>
     <string name="please_enter_referrer_name">请输入推荐人名字</string>
     <string name="recommendation_code">推荐码</string>
+    <string name="exchange_fgc">兑换FGC</string>
+    <string name="convertible_to_fgc">可兑换为FGC</string>
+    <string name="fgc_gains">FGC涨势</string>
+    <string name="gold_exchange">黄金兑换</string>
+    <string name="available_fgc">可用FGC:</string>
 </resources>

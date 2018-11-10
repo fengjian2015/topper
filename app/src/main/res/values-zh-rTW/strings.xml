@@ -1264,4 +1264,9 @@
     <string name="expected">預計收益</string>
     <string name="please_enter_referrer_name">請輸入推薦人名字</string>
     <string name="recommendation_code">推薦碼</string>
+    <string name="exchange_fgc">兌換FGC</string>
+    <string name="convertible_to_fgc">可兌換為FGC</string>
+    <string name="fgc_gains">FGC漲勢</string>
+    <string name="gold_exchange">黃金兌換</string>
+    <string name="available_fgc">可用FGC:</string>
 </resources>
