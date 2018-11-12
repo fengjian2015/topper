@@ -44,9 +44,38 @@ public class DBRoomMember {
                 values.put("remark", roomMemberInfo.getRemark());
                 values.put("roomId", roomMemberInfo.getRoomId());
                 values.put("isRefresh",roomMemberInfo.getIsRefresh());
-                int id = (int) db.insert("RoomMember", null, values);
-                DatabaseManager.getInstance().closeWritableDatabase();
+                db.insert("RoomMember", null, values);
+
             }
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
+
+    public synchronized void addRoomMember(GroupInfo.DataBean usersBeans){
+        ArrayList<String> roomMemberInfos = queryAllRequestId(usersBeans.getId()+"");
+        SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+        db.beginTransaction();
+        try {
+            for(GroupInfo.DataBean.UsersBean usersBean:usersBeans.getUsers()){
+                ContentValues values = new ContentValues();
+                values.put("name", usersBean.getName());
+                values.put("my_user", UtilTool.getTocoId());
+                values.put("jid", usersBean.getToco_id());
+                values.put("image_url", usersBean.getAvatar());
+                values.put("remark", "");
+                values.put("roomId", usersBeans.getId()+"");
+                values.put("isRefresh",1);
+                if(roomMemberInfos.contains(usersBean.getToco_id())){
+                    db.update("RoomMember", values, "roomId=? and my_user=? and jid=?", new String[]{usersBeans.getId()+"", UtilTool.getTocoId(), usersBean.getToco_id()});
+                }else{
+                    db.insert("RoomMember", null, values);
+                }
+            }
+            db.setTransactionSuccessful();
+        }finally {
+            UtilTool.Log("fengjian","加载完毕");
+            db.endTransaction();
         }
     }
 
@@ -119,6 +148,27 @@ public class DBRoomMember {
                     roomMemberInfo.setRoomId(c.getString(c.getColumnIndex("roomId")));
                     roomMemberInfo.setId(c.getInt(c.getColumnIndex("id")));
                     addRequestInfos.add(roomMemberInfo);
+                }
+                c.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                DatabaseManager.getInstance().closeWritableDatabase();
+            }
+            return addRequestInfos;
+        }
+    }
+
+
+    public ArrayList<String> queryAllRequestId(String roomId) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            ArrayList<String> addRequestInfos = new ArrayList<>();
+            try {
+                String sql = "select jid from RoomMember where my_user=? and roomId = ?";
+                Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId(), roomId});
+                while (c.moveToNext()) {
+                    addRequestInfos.add(c.getString(c.getColumnIndex("jid")));
                 }
                 c.close();
             } catch (Exception e) {

@@ -78,16 +78,7 @@ public class RoomMemberManage {
                isLoadMember=true;
                for(int j=0;j<dataBean.size();j++) {
                    GroupInfo.DataBean data =dataBean.get(j);
-                   for (int i = 0; i < data.getUsers().size(); i++) {
-                       GroupInfo.DataBean.UsersBean usersBean = data.getUsers().get(i);
-                       RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
-                       roomMemberInfo.setRoomId(data.getId() + "");
-                       roomMemberInfo.setJid(usersBean.getToco_id());
-                       roomMemberInfo.setImage_url(usersBean.getAvatar());
-                       roomMemberInfo.setName(usersBean.getName());
-                       roomMemberInfo.setIsRefresh(1);
-                       mDBRoomMember.addRoomMember(roomMemberInfo);
-                   }
+                   mDBRoomMember.addRoomMember(data);
                    ArrayList<RoomMemberInfo> roomManageInfos=mDBRoomMember.queryAllOldRequest(data.getId()+"");
                    mDBRoomMember.deleteOldRoomMember(roomManageInfos,data.getId()+"");
                    mDBRoomMember.updateIsRefresh(data.getUsers(),data.getId()+"");

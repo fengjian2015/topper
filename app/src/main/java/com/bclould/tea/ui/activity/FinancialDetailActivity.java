@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bclould.tea.utils.EventBusUtil;
 import com.bumptech.glide.Glide;
 import com.bclould.tea.Presenter.FinanciaPresenter;
 import com.bclould.tea.R;
@@ -203,6 +204,7 @@ public class FinancialDetailActivity extends BaseActivity {
         new FinanciaPresenter(this).financialBuy(mDataBean.getId(), number, product_id + "", password, new FinanciaPresenter.CallBack1() {
             @Override
             public void send(BaseInfo baseInfo) {
+                EventBus.getDefault().post(new MessageEvent(EventBusUtil.refresh_financial));//发送更新未读消息通知
                 finish();
             }
 

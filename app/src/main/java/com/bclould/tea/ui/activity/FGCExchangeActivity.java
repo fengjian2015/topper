@@ -36,6 +36,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -175,8 +176,8 @@ public class FGCExchangeActivity extends BaseActivity {
     }
 
     private void setTvPrice(String money){
-       String m= UtilTool.changeMoney1(UtilTool.parseDouble(money)/rate);
-        mTvPrice.setText(m);
+        String format = UtilTool.changeMoney1(UtilTool.parseDouble(money)/rate);
+        mTvPrice.setText(format);
     }
 
     private InputFilter lengthFilter = new InputFilter() {
@@ -230,7 +231,7 @@ public class FGCExchangeActivity extends BaseActivity {
             }
         });
         String count = mEtCount.getText().toString();
-        pwdDialog.showDialog(count, "USDT", getString(R.string.exchange) + "FGC", null, null);
+        pwdDialog.showDialog(count, "USDT", getString(R.string.exchange) + "GC", null, null);
     }
 
     private void exchange(String password){

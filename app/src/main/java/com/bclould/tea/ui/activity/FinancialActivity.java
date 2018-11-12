@@ -33,6 +33,7 @@ import com.bclould.tea.ui.widget.ManagementFundsDialog;
 import com.bclould.tea.ui.widget.MyGridView;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -41,6 +42,8 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +102,7 @@ public class FinancialActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_financial);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);//初始化EventBus
         initCoin();
         initAdapter();
         setListHight();
@@ -395,4 +399,19 @@ public class FinancialActivity extends BaseActivity {
         mMyGridview.setAdapter(mFinancialGridAdapter);
     }
 
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(EventBusUtil.refresh_financial)) {
+           initHttp(true,1);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//初始化EventBus
+    }
 }
