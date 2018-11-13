@@ -226,6 +226,7 @@ public class BlockchainGuessPresenter {
     }
 
     public void bet(int bet_id, int period_qty, int coin_id, String random, String password, final CallBack5 callBack5) {
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .bet(UtilTool.getToken(), bet_id, period_qty, coin_id + "", random, password)

@@ -138,6 +138,7 @@ public class PayRecordActivity extends BaseActivity {
         mFiltrateList.add(getString(R.string.out_coin));
         mFiltrateList.add(getString(R.string.reward));
         mFiltrateList.add(getString(R.string.exchange));
+        mFiltrateList.add(getString(R.string.guess));
         mTvDate.setText(mDate);
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
     }
@@ -376,6 +377,8 @@ public class PayRecordActivity extends BaseActivity {
                     mTypes = "6";
                 } else if (typeName.equals(getString(R.string.exchange))) {
                     mTypes = "7";
+                }else if (typeName.equals(getString(R.string.guess))) {
+                    mTypes = "8";
                 }
                 initData(PULL_DOWN);
                 mMap.put(getString(R.string.filtrate), position);

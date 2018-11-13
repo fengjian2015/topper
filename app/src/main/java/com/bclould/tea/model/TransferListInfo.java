@@ -10,7 +10,7 @@ public class TransferListInfo {
 
     /**
      * status : 1
-     * data : [{"user_id":34,"log_id":12,"type":"转账","coin_name":"TPC","type_desc":"支出转账","number":"-2","created_at":"2018-03-23 11:40:01"},{"user_id":35,"log_id":12,"type":"转账","coin_name":"TPC","type_desc":"收到转账","number":"2","created_at":"2018-03-23 11:40:01"}]
+     * data : [{"id":19632,"user_id":41,"log_id":0,"type":"竞猜","coin_name":"DOGE","number":"2.204","created_at":"2018-11-09 10:11:18","data_arr":{"bet_id":21,"period_qty":8},"type_number":19,"type_desc":"竞猜抽成"}]
      */
 
     private int status;
@@ -34,24 +34,28 @@ public class TransferListInfo {
 
     public static class DataBean {
         /**
-         * user_id : 34
-         * log_id : 12
-         * type : 转账
-         * coin_name : TPC
-         * type_desc : 支出转账
-         * number : -2
-         * created_at : 2018-03-23 11:40:01
+         * id : 19632
+         * user_id : 41
+         * log_id : 0
+         * type : 竞猜
+         * coin_name : DOGE
+         * number : 2.204
+         * created_at : 2018-11-09 10:11:18
+         * data_arr : {"bet_id":21,"period_qty":8}
+         * type_number : 19
+         * type_desc : 竞猜抽成
          */
 
+        private int id;
         private int user_id;
         private int log_id;
-        private int id;
         private String type;
         private String coin_name;
-        private String type_desc;
         private String number;
         private String created_at;
+        private DataArrBean data_arr;
         private int type_number;
+        private String type_desc;
 
         public int getId() {
             return id;
@@ -59,15 +63,6 @@ public class TransferListInfo {
 
         public void setId(int id) {
             this.id = id;
-        }
-
-
-        public int getType_number() {
-            return type_number;
-        }
-
-        public void setType_number(int type_number) {
-            this.type_number = type_number;
         }
 
         public int getUser_id() {
@@ -102,14 +97,6 @@ public class TransferListInfo {
             this.coin_name = coin_name;
         }
 
-        public String getType_desc() {
-            return type_desc;
-        }
-
-        public void setType_desc(String type_desc) {
-            this.type_desc = type_desc;
-        }
-
         public String getNumber() {
             return number;
         }
@@ -124,6 +111,56 @@ public class TransferListInfo {
 
         public void setCreated_at(String created_at) {
             this.created_at = created_at;
+        }
+
+        public DataArrBean getData_arr() {
+            return data_arr;
+        }
+
+        public void setData_arr(DataArrBean data_arr) {
+            this.data_arr = data_arr;
+        }
+
+        public int getType_number() {
+            return type_number;
+        }
+
+        public void setType_number(int type_number) {
+            this.type_number = type_number;
+        }
+
+        public String getType_desc() {
+            return type_desc;
+        }
+
+        public void setType_desc(String type_desc) {
+            this.type_desc = type_desc;
+        }
+
+        public static class DataArrBean {
+            /**
+             * bet_id : 21
+             * period_qty : 8
+             */
+
+            private int bet_id;
+            private int period_qty;
+
+            public int getBet_id() {
+                return bet_id;
+            }
+
+            public void setBet_id(int bet_id) {
+                this.bet_id = bet_id;
+            }
+
+            public int getPeriod_qty() {
+                return period_qty;
+            }
+
+            public void setPeriod_qty(int period_qty) {
+                this.period_qty = period_qty;
+            }
         }
     }
 }
