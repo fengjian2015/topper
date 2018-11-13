@@ -395,6 +395,7 @@ public class WsConnection {
 
     //退出登錄用
     public void logoutService(Context context) {
+        if(context==null)return;
         if (context instanceof Activity) {
             UtilTool.Log("fengjian", ((Activity) context).getClass().getName());
         }

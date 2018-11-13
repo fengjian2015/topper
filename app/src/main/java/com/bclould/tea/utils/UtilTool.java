@@ -1685,4 +1685,8 @@ public class UtilTool {
         return df.format(money);
     }
 
+    public static String changeMoney1(double money) {
+        DecimalFormat df = new DecimalFormat("#####0.########");
+        return df.format(money);
+    }
 }

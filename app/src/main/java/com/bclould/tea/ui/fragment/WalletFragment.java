@@ -21,6 +21,7 @@ import com.bclould.tea.model.CardInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.BlockchainGambleActivity;
 import com.bclould.tea.ui.activity.CoinExchangeActivity;
+import com.bclould.tea.ui.activity.FGCExchangeActivity;
 import com.bclould.tea.ui.activity.FinancialActivity;
 import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.NewsManagerActivity;
@@ -97,6 +98,7 @@ public class WalletFragment extends Fragment {
     private void initViewPage() {
         initData();
         mWalletPVAdapter = new WalletPVAdapter(getContext(), mViews, mDataList);
+
         mCardShadowTransformer = new ShadowTransformer(mViewPager, mWalletPVAdapter);
         mCardShadowTransformer.enableScaling(true);
         mViewPager.setAdapter(mWalletPVAdapter);
@@ -145,7 +147,7 @@ public class WalletFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.rl_otc, R.id.rl_guess, R.id.rl_exchange, R.id.rl_my_ad,R.id.rl_financial_management})
+    @OnClick({R.id.rl_otc, R.id.rl_guess, R.id.rl_exchange, R.id.rl_my_ad,R.id.rl_financial_management,R.id.rl_fgc_exchange})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_otc:
@@ -179,6 +181,13 @@ public class WalletFragment extends Fragment {
             case R.id.rl_financial_management:
                 if (!WsConnection.getInstance().getOutConnection()) {
                     startActivity(new Intent(getActivity(), FinancialActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
+                break;
+            case R.id.rl_fgc_exchange:
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    startActivity(new Intent(getActivity(), FGCExchangeActivity.class));
                 } else {
                     startActivity(new Intent(getActivity(), InitialActivity.class));
                 }

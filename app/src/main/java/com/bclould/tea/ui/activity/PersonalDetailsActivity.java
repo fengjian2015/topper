@@ -28,6 +28,7 @@ import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
@@ -150,27 +151,33 @@ public class PersonalDetailsActivity extends BaseActivity {
 
     //上傳頭像
     private void upImage(String path) throws UnsupportedEncodingException {
-        File file = new File(path);
-        final String keyCut = UtilTool.getUserId() + UtilTool.createtFileName() + "cut" + UtilTool.getPostfix2(file.getName());
-        final File newFile = new File(Constants.PUBLICDIR + keyCut);
-        Bitmap cutImg = BitmapFactory.decodeFile(path);
-        UtilTool.comp(cutImg, newFile);
-        final Bitmap bitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] bytes = UtilTool.getFileToByte(newFile);
-        String Base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
-        UtilTool.Log("編碼", Base64Image.length() + "");
-        mPersonalDetailsPresenter.upImage(Base64Image, new PersonalDetailsPresenter.CallBack() {
-            @Override
-            public void send() {
-                UtilTool.saveImages(bitmap, UtilTool.getTocoId(), PersonalDetailsActivity.this, mMgr);
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
-                UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this, mTouxiang);
+        try {
+            File file = new File(path);
+            final String keyCut = UtilTool.getUserId() + UtilTool.createtFileName() + "cut" + UtilTool.getPostfix2(file.getName());
+            final File newFile = new File(Constants.PUBLICDIR + keyCut);
+            Bitmap cutImg = BitmapFactory.decodeFile(path);
+            UtilTool.comp(cutImg, newFile);
+            final Bitmap bitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] bytes = UtilTool.getFileToByte(newFile);
+            String Base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+            UtilTool.Log("編碼", Base64Image.length() + "");
+            mPersonalDetailsPresenter.upImage(Base64Image, new PersonalDetailsPresenter.CallBack() {
+                @Override
+                public void send() {
+                    UtilTool.saveImages(bitmap, UtilTool.getTocoId(), PersonalDetailsActivity.this, mMgr);
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
+                    UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this, mTouxiang);
 
-                //                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this));
-            }
-        });
+                    //                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this));
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            ToastShow.showToast2(this,getString(R.string.up_error));
+        }
+
         /*boolean type = XmppConnection.getInstance().changeImage(bytes);
         if (type) {
             List<UserInfo> userInfos = mMgr.queryUser(UtilTool.getTocoId());

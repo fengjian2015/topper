@@ -7,6 +7,7 @@ import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
+import com.bclould.tea.model.FGCInfo;
 import com.bclould.tea.model.FinanciaProductInfo;
 import com.bclould.tea.model.FinancialCoinInfo;
 import com.bclould.tea.model.FinancialInfo;
@@ -404,6 +405,84 @@ public class FinanciaPresenter {
     }
 
 
+    public void exchangeFGC(int page,final CallBack6 callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .exchangeFGC(UtilTool.getToken(),page,10)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<FGCInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(FGCInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send(baseInfo);
+                        } else {
+                            callBack.error();
+                            ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        callBack.error();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void exchange(String money,String password,final CallBack1 callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .exchangeFGC1(UtilTool.getToken(),money,password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send(baseInfo);
+                        } else {
+                            callBack.error();
+                        }
+                        ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        callBack.error();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //定义接口
     public interface CallBack {
         void send(FinancialInfo baseInfo);
@@ -437,6 +516,12 @@ public class FinanciaPresenter {
     //定义接口
     public interface CallBack5 {
         void send(FinanciaProductInfo baseInfo);
+        void error();
+    }
+
+    //定义接口
+    public interface CallBack6 {
+        void send(FGCInfo baseInfo);
         void error();
     }
 }
