@@ -63,13 +63,14 @@
                     android:text="@string/fgc_gains"
                     android:layout_marginBottom="@dimen/y20"/>
 
-                <ImageView
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/mLineChar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/y220"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_marginRight="@dimen/x10"
-                    android:background="@mipmap/icon_fgc_background"
-                    android:layout_marginBottom="@dimen/y20"/>
+                    android:layout_marginBottom="@dimen/y20"
+                   />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/y110"

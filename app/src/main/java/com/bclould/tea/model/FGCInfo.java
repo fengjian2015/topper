@@ -7,14 +7,15 @@ import java.util.List;
  */
 
 public class FGCInfo {
+
     /**
      * status : 1
-     * data : {"rate":45.3,"usd_num":100.0244,"fgc_num":100,"record":[{"user_id":23,"coin_number":1.5,"fgc_number":250.5,"rate":45.5,"created_at":"2018-11-10"}]}
+     * data : {"fgc_num":"39.98030089","usd_num":1000,"rate":0.34,"x":["11-05","11-06","11-07","11-08","11-09","11-12","11-13"],"y":["275.950","276.450","276.700","280.550","279.750","278.800","276.600"],"record":[{"id":4,"user_id":603,"coin_number":"2","fgc_number":"0.05015045","rate":"39.88","created_at":"2018-11-10 16:09:44"},{"id":3,"user_id":603,"coin_number":"1","fgc_number":"0.02507522","rate":"39.88","created_at":"2018-11-10 16:09:36"},{"id":2,"user_id":603,"coin_number":"1","fgc_number":"0.02507522","rate":"39.88","created_at":"2018-11-10 16:09:04"},{"id":1,"user_id":603,"coin_number":"1","fgc_number":"39.88","rate":"39.88","created_at":"2018-11-10 15:58:48"}]}
      */
 
     private int status;
-    private DataBean data;
     private String message;
+    private DataBean data;
 
     public String getMessage() {
         return message;
@@ -42,23 +43,43 @@ public class FGCInfo {
 
     public static class DataBean {
         /**
-         * rate : 45.3
-         * usd_num : 100.0244
-         * fgc_num : 100
-         * record : [{"user_id":23,"coin_number":1.5,"fgc_number":250.5,"rate":45.5,"created_at":"2018-11-10"}]
+         * fgc_num : 39.98030089
+         * usd_num : 1000
+         * rate : 0.34
+         * x : ["11-05","11-06","11-07","11-08","11-09","11-12","11-13"]
+         * y : ["275.950","276.450","276.700","280.550","279.750","278.800","276.600"]
+         * record : [{"id":4,"user_id":603,"coin_number":"2","fgc_number":"0.05015045","rate":"39.88","created_at":"2018-11-10 16:09:44"},{"id":3,"user_id":603,"coin_number":"1","fgc_number":"0.02507522","rate":"39.88","created_at":"2018-11-10 16:09:36"},{"id":2,"user_id":603,"coin_number":"1","fgc_number":"0.02507522","rate":"39.88","created_at":"2018-11-10 16:09:04"},{"id":1,"user_id":603,"coin_number":"1","fgc_number":"39.88","rate":"39.88","created_at":"2018-11-10 15:58:48"}]
          */
 
+        private String fgc_num;
+        private int usd_num;
         private double rate;
-        private double usd_num;
-        private double fgc_num;
+        private List<String> x;
+        private List<Float> y;
         private List<RecordBean> record;
 
-        public double getFgc_num() {
+        public List<Float> getY() {
+            return y;
+        }
+
+        public void setY(List<Float> y) {
+            this.y = y;
+        }
+
+        public String getFgc_num() {
             return fgc_num;
         }
 
-        public void setFgc_num(double fgc_num) {
+        public void setFgc_num(String fgc_num) {
             this.fgc_num = fgc_num;
+        }
+
+        public int getUsd_num() {
+            return usd_num;
+        }
+
+        public void setUsd_num(int usd_num) {
+            this.usd_num = usd_num;
         }
 
         public double getRate() {
@@ -69,14 +90,13 @@ public class FGCInfo {
             this.rate = rate;
         }
 
-        public double getUsd_num() {
-            return usd_num;
+        public List<String> getX() {
+            return x;
         }
 
-        public void setUsd_num(double usd_num) {
-            this.usd_num = usd_num;
+        public void setX(List<String> x) {
+            this.x = x;
         }
-
 
 
         public List<RecordBean> getRecord() {
@@ -89,18 +109,28 @@ public class FGCInfo {
 
         public static class RecordBean {
             /**
-             * user_id : 23
-             * coin_number : 1.5
-             * fgc_number : 250.5
-             * rate : 45.5
-             * created_at : 2018-11-10
+             * id : 4
+             * user_id : 603
+             * coin_number : 2
+             * fgc_number : 0.05015045
+             * rate : 39.88
+             * created_at : 2018-11-10 16:09:44
              */
 
+            private int id;
             private int user_id;
-            private double coin_number;
-            private double fgc_number;
-            private double rate;
+            private String coin_number;
+            private String fgc_number;
+            private String rate;
             private String created_at;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
 
             public int getUser_id() {
                 return user_id;
@@ -110,27 +140,27 @@ public class FGCInfo {
                 this.user_id = user_id;
             }
 
-            public double getCoin_number() {
+            public String getCoin_number() {
                 return coin_number;
             }
 
-            public void setCoin_number(double coin_number) {
+            public void setCoin_number(String coin_number) {
                 this.coin_number = coin_number;
             }
 
-            public double getFgc_number() {
+            public String getFgc_number() {
                 return fgc_number;
             }
 
-            public void setFgc_number(double fgc_number) {
+            public void setFgc_number(String fgc_number) {
                 this.fgc_number = fgc_number;
             }
 
-            public double getRate() {
+            public String getRate() {
                 return rate;
             }
 
-            public void setRate(double rate) {
+            public void setRate(String rate) {
                 this.rate = rate;
             }
 

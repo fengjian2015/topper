@@ -1243,14 +1243,14 @@
     <string name="twelve_months_deposit">12個月定存</string>
     <string name="multi_banking">多種類理財</string>
     <string name="more_flexible_financial_benefits">多幣種，多類型，更靈活的理財收益</string>
-    <string name="current_rate_return">當前收益率</string>
+    <string name="current_rate_return">當前年化收益率</string>
     <string name="asset_transfer">資產轉入</string>
     <string name="transfer_assets">資產轉出</string>
     <string name="input_quantity">輸入數量:</string>
     <string name="quantity_available">可用數量:</string>
     <string name="transfer_out">轉出</string>
     <string name="available1">可用</string>
-    <string name="current_rate_return1">當前收益率:</string>
+    <string name="current_rate_return1">當前年化收益率:</string>
     <string name="lock_time">鎖定時間:</string>
     <string name="input_quantity1">輸入數量</string>
     <string name="starting">起投</string>

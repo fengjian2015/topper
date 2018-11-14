@@ -31,7 +31,7 @@
             android:layout_height="@dimen/y85"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="@dimen/y4"
-            android:text="@string/current_rate_return" />
+             />
 
 
         <TextView
@@ -54,7 +54,7 @@
             android:layout_marginTop="@dimen/y4"
             android:layout_toRightOf="@+id/view"
             android:layout_alignParentRight="true"
-            android:text="@string/current_rate_return" />
+            />
     </RelativeLayout>
 
 </LinearLayout>

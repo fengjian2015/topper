@@ -2355,14 +2355,14 @@ Please reset encryption request</string>
     <string name="twelve_months_deposit">12 months deposit </string>
     <string name="multi_banking">Multiple types of wealth management</string>
     <string name="more_flexible_financial_benefits">Multi-currency, multi-type, more flexible financial benefits </string>
-    <string name="current_rate_return"> current rate of return </string>
+    <string name="current_rate_return"> current annualized rate of return </string>
     <string name="asset_transfer"> asset transfer </string>
     <string name="transfer_assets"> asset transfer </string>
     <string name="input_quantity">Enter the number: </string>
     <string name="quantity_available">Available quantity: </string>
     <string name="transfer_out">transfer </string>
     <string name="available1">available</string>
-    <string name="current_rate_return1">current rate of return: </string>
+    <string name="current_rate_return1">current annualized rate of return: </string>
     <string name="lock_time">Lock time: </string>
     <string name="input_quantity1">Enter the number </string>
     <string name="starting">starting </string>

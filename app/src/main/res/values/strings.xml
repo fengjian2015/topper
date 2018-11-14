@@ -2336,14 +2336,14 @@
     <string name="twelve_months_deposit">12个月定存</string>
     <string name="multi_banking">多种类理财</string>
     <string name="more_flexible_financial_benefits">多币种，多类型，更灵活的理财收益</string>
-    <string name="current_rate_return">当前收益率</string>
+    <string name="current_rate_return">当前年化收益率</string>
     <string name="asset_transfer">资产转入</string>
     <string name="transfer_assets">资产转出</string>
     <string name="input_quantity">输入数量:</string>
     <string name="quantity_available">可用数量:</string>
     <string name="transfer_out">转出</string>
     <string name="available1">可用</string>
-    <string name="current_rate_return1">当前收益率:</string>
+    <string name="current_rate_return1">当前年化收益率:</string>
     <string name="lock_time">锁定时间:</string>
     <string name="input_quantity1">输入数量</string>
     <string name="starting">起投</string>
