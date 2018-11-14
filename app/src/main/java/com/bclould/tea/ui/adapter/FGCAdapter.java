@@ -7,9 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.FGCInfo;
 
 import java.util.List;
@@ -22,7 +24,7 @@ import butterknife.ButterKnife;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class FGCAdapter extends RecyclerView.Adapter {
+public class FGCAdapter extends BaseAdapter{
 
     private final Context mContext;
     private final List<FGCInfo.DataBean.RecordBean> mList;
@@ -34,60 +36,57 @@ public class FGCAdapter extends RecyclerView.Adapter {
         mList = list;
     }
 
-
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_fgc_list, parent, false);
-        return new ViewHolder(view);
+    public int getCount() {
+        return mList.size();
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setData(mList.get(position), position);
+    public Object getItem(int i) {
+        return mList.get(i);
     }
 
     @Override
-    public int getItemCount() {
-        if (mList.size() != 0) {
-            return mList.size();
+    public long getItemId(int i) {
+        return i;
+    }
+
+    @Override
+    public View getView(final int i, View view, ViewGroup viewGroup) {
+        ViewHolder holder;
+        if(view==null){
+            holder=new ViewHolder();
+            view=View.inflate(mContext,R.layout.item_fgc_list,null);
+            holder.mTvMoney=view.findViewById(R.id.tv_money);
+            holder.mTvTime=view.findViewById(R.id.tv_time);
+            holder.mTvIncome=view.findViewById(R.id.tv_income);
+            holder.mTvRate=view.findViewById(R.id.tv_rate);
+            view.setTag(holder);
+        }else {
+            holder= (ViewHolder) view.getTag();
         }
-        return 0;
-    }
-
-
-    class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_money)
-        TextView mTvMoney;
-        @Bind(R.id.tv_time)
-        TextView mTvTime;
-        @Bind(R.id.tv_income)
-        TextView mTvIncome;
-        @Bind(R.id.tv_rate)
-        TextView mTvRate;
-        private int position;
-
-        ViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mOnclickListener != null) {
-                        mOnclickListener.onclick(position);
-                    }
+        FGCInfo.DataBean.RecordBean hashMap=mList.get(i);
+        holder.mTvTime.setText(hashMap.getCreated_at());
+        holder.mTvRate.setText(hashMap.getRate()+":1");
+        holder.mTvMoney.setText(hashMap.getCoin_number()+"USDT");
+        holder.mTvIncome.setText("+"+hashMap.getFgc_number()+"FGC");
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnclickListener != null) {
+                    mOnclickListener.onclick(i);
                 }
-            });
-        }
+            }
+        });
+        return view;
+    }
 
-        public void setData(FGCInfo.DataBean.RecordBean hashMap, int position) {
-            this.position = position;
-            mTvTime.setText(hashMap.getCreated_at());
-            mTvRate.setText(hashMap.getRate()+":1");
-            mTvMoney.setText(hashMap.getCoin_number()+"USDT");
-            mTvIncome.setText("+"+hashMap.getFgc_number()+"FGC");
-        }
 
+    class ViewHolder  {
+        TextView mTvMoney;
+        TextView mTvTime;
+        TextView mTvIncome;
+        TextView mTvRate;
     }
 
     public void setOnClickListener(OnclickListener onClickListener) {

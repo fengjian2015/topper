@@ -72,7 +72,7 @@ public class MyTeamActivity extends BaseActivity {
                     mRefreshLayout.setEnableLoadMore(false);
                 }
                 if(isRefresh){
-                    page=0;
+                    page=1;
                 }else{
                     page++;
                 }

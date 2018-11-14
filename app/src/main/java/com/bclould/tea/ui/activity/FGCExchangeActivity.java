@@ -26,6 +26,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.FGCInfo;
 import com.bclould.tea.ui.adapter.FGCAdapter;
+import com.bclould.tea.ui.widget.MyListView;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.UtilTool;
@@ -74,7 +75,7 @@ public class FGCExchangeActivity extends BaseActivity implements OnChartGestureL
     @Bind(R.id.btn_exchange)
     Button mBtnExchange;
     @Bind(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    MyListView mRecyclerView;
     @Bind(R.id.ll_exchange)
     LinearLayout mLlExchange;
     @Bind(R.id.refresh_layout)
@@ -82,7 +83,6 @@ public class FGCExchangeActivity extends BaseActivity implements OnChartGestureL
     @Bind(R.id.mLineChar)
     LineChart mLineChar;
     private int page = 1;
-    private LinearLayoutManager mLayoutManager;
     private FGCAdapter mFGCAdapter;
     private List<FGCInfo.DataBean.RecordBean> mHashMapList = new ArrayList<>();
     private double maxMoney = 0;
@@ -107,8 +107,6 @@ public class FGCExchangeActivity extends BaseActivity implements OnChartGestureL
 
     private void initRecylerView() {
         mRecyclerView.setFocusable(false);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
         mFGCAdapter = new FGCAdapter(this, mHashMapList);
         mRecyclerView.setAdapter(mFGCAdapter);
         mRefreshLayout.setEnableLoadMore(false);
@@ -226,12 +224,13 @@ public class FGCExchangeActivity extends BaseActivity implements OnChartGestureL
         Float max = Collections.max(ylist);//获取最大值
         Float min = Collections.min(ylist);
         YAxis leftAxis = mLineChar.getAxisLeft();
-        if(min>1000) {
-            min=min-1000;
+        if(min>3000) {
+            min=min-500;
             leftAxis.setAxisMinimum(min);
-        }else{
-            leftAxis.setAxisMinimum(min);
+        }else if(min>1000){
+            min=min-100;
         }
+        leftAxis.setAxisMinimum(min);
         mMonths.clear();
         values.add(new Entry(0,  min));
         mMonths.add("");
@@ -292,10 +291,10 @@ public class FGCExchangeActivity extends BaseActivity implements OnChartGestureL
             @Override
             public void afterTextChanged(Editable editable) {
                 double counts = UtilTool.parseDouble(mEtCount.getText().toString());
-                if (counts > maxMoney) {
-                    mEtCount.setText(maxMoney + "");
-                    mEtCount.setSelection(mEtCount.getText().length());
-                }
+//                if (counts > maxMoney) {
+//                    mEtCount.setText(maxMoney + "");
+//                    mEtCount.setSelection(mEtCount.getText().length());
+//                }
                 setTvPrice(mEtCount.getText().toString());
             }
         });

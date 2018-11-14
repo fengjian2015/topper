@@ -58,14 +58,6 @@ public class FGCInfo {
         private List<Float> y;
         private List<RecordBean> record;
 
-        public List<Float> getY() {
-            return y;
-        }
-
-        public void setY(List<Float> y) {
-            this.y = y;
-        }
-
         public String getFgc_num() {
             return fgc_num;
         }
@@ -98,6 +90,13 @@ public class FGCInfo {
             this.x = x;
         }
 
+        public List<Float> getY() {
+            return y;
+        }
+
+        public void setY(List<Float> y) {
+            this.y = y;
+        }
 
         public List<RecordBean> getRecord() {
             return record;
