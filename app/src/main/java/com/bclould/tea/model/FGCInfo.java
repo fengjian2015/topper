@@ -52,7 +52,7 @@ public class FGCInfo {
          */
 
         private String fgc_num;
-        private int usd_num;
+        private double usd_num;
         private double rate;
         private List<String> x;
         private List<Float> y;
@@ -74,11 +74,11 @@ public class FGCInfo {
             this.fgc_num = fgc_num;
         }
 
-        public int getUsd_num() {
+        public double getUsd_num() {
             return usd_num;
         }
 
-        public void setUsd_num(int usd_num) {
+        public void setUsd_num(double usd_num) {
             this.usd_num = usd_num;
         }
 
