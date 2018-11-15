@@ -1417,6 +1417,14 @@ public class UtilTool {
         }
     }
 
+    public static float parseFloat(String number) {
+        try {
+            return Float.parseFloat(number);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     private static long homeTime = 0;
 
     public static boolean homeClickTwo() {

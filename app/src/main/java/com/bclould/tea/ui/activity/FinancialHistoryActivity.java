@@ -92,7 +92,7 @@ public class FinancialHistoryActivity extends BaseActivity {
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                initHttp(false, page++);
+                initHttp(false, page+1);
             }
         });
     }

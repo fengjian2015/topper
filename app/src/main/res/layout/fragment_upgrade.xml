@@ -115,12 +115,18 @@
             style="@style/MainTextShallowStyle36"
             android:gravity="center"/>
     </LinearLayout>
-    <TextView
-        android:id="@+id/tv_prompt"
-        style="@style/SecondaryTextStyle30"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y60"
-        android:paddingLeft="@dimen/x30"
-        android:paddingRight="@dimen/x30" />
+        android:scrollbars="none">
+        <TextView
+            android:id="@+id/tv_prompt"
+            style="@style/SecondaryTextStyle30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y60"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30" />
+    </ScrollView>
+
 </LinearLayout>

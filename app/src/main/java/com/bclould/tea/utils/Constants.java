@@ -12,9 +12,9 @@ import android.support.annotation.RequiresApi;
 public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOPPERCHAT";
     public static final int BET_ARR_COUNT = 4;
-    private static final boolean isDebug = true;
+    private static final boolean isDebug = false;
 //    public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";
-    public static final String BASE_URL = isDebug ? "http://www.bclould.com:8140/" : "https://api.cnblocklink.com/";
+    public static final String BASE_URL = isDebug ? "http://www.bclould.com:8195/" : "https://api.cnblocklink.com/";
     public static final String NEW_BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://www.cnblocklink.com/";
     public static final String DOMAINNAME3 = isDebug ? "wss://socket.bclould.com:8179/toco_server" : "wss://socket.cnblocklink.com:2087/toco_server";
     public static final String MSG_OFFLINE = isDebug ? "wss://socket.bclould.com:8180/users_offline_msg" : "wss://offline.cnblocklink.com:8443/users_offline_msg";
@@ -25,6 +25,7 @@ public class Constants {
     public static final String REDBAG = "[redBag]";
     public static final String TRANSFER = "[transfer]";
     public static final String REDPACKAGE = "redPackage";
+
     public static final String MONEYIN = "moneyIn";
     public static final String MONEYOUT = "moneyOut";
     public static final String BUSINESSCARD = "businessCard";
