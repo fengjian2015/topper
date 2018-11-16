@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.HistoryInfo;
+import com.bclould.tea.utils.StringUtils;
 
 import java.util.List;
 
@@ -62,6 +63,8 @@ public class HistoryAdapter extends RecyclerView.Adapter {
         TextView mTvMoney;
         @Bind(R.id.tv_time)
         TextView mTvTime;
+        @Bind(R.id.tv_source)
+        TextView mTvSource;
         private int position;
 
         ViewHolder(View view) {
@@ -82,6 +85,12 @@ public class HistoryAdapter extends RecyclerView.Adapter {
             mTvTitle.setText(hashMap.getType());
             mTvTime.setText(hashMap.getCreated_at());
             mTvMoney.setText(hashMap.getAmount());
+            if(!StringUtils.isEmpty(hashMap.getFrom())){
+                mTvSource.setVisibility(View.VISIBLE);
+                mTvSource.setText(hashMap.getFrom());
+            }else{
+                mTvSource.setVisibility(View.GONE);
+            }
         }
     }
 
