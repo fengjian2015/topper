@@ -28,6 +28,7 @@ import com.bclould.tea.ui.activity.NodeActivity;
 import com.bclould.tea.ui.activity.PersonalDetailsActivity;
 import com.bclould.tea.ui.activity.SystemSetActivity;
 import com.bclould.tea.ui.activity.UserSafetyActivity;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -124,6 +125,8 @@ public class MyFragment extends Fragment {
         } else if (msg.equals(getString(R.string.check_new_version))) {
             init();
         } else if (msg.equals(getString(R.string.refresh_the_interface))) {
+            init();
+        }else if (msg.equals(EventBusUtil.change_name)){
             init();
         }
     }

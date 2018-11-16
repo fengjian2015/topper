@@ -2362,4 +2362,5 @@
     <string name="fgc_gains">USDT涨势</string>
     <string name="gold_exchange">黄金兑换</string>
     <string name="available_fgc">可用GC:</string>
+    <string name="change_username">修改昵称</string>
 </resources>

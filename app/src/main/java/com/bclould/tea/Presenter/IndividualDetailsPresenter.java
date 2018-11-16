@@ -160,9 +160,51 @@ public class IndividualDetailsPresenter {
                 });
     }
 
+    //修改備註
+    public void getChangeName(String name, final CallBack1 callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(context)
+                .getServer()
+                .getNameList(UtilTool.getToken(), name)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo individualInfo) {
+                        if (individualInfo.getStatus() == 1) {
+                            callBack.send(individualInfo);
+                        }
+                        ToastShow.showToast2((Activity) context,individualInfo.getMessage());
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //定义接口
     public interface CallBack {
         void send(IndividualInfo.DataBean data);
+
+        void error();
+    }
+
+    //定义接口
+    public interface CallBack1 {
+        void send(BaseInfo data);
 
         void error();
     }

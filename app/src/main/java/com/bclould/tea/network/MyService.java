@@ -1665,4 +1665,12 @@ public interface MyService {
             @Field("usd_number") String usd_number,
             @Field("second_password") String second_password
     );
+
+    //獲取昵称
+    @FormUrlEncoded
+    @POST("api/user/name")
+    Observable<BaseInfo> getNameList(
+            @Header("Authorization") String token,
+            @Field("name") String name
+    );
 }

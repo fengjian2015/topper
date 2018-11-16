@@ -1,22 +1,27 @@
 package com.bclould.tea.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tea.Presenter.GroupPresenter;
+import com.bclould.tea.Presenter.IndividualDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
+import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 
@@ -25,6 +30,8 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.bclould.tea.Presenter.LoginPresenter.MYUSERNAME;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ModificationNameActivity extends BaseActivity {
@@ -39,7 +46,7 @@ public class ModificationNameActivity extends BaseActivity {
     TextView mTvTitle;
     @Bind(R.id.et_announcement)
     EditText mEtAnnouncement;
-    private int type = 0;//1修改我在本群暱稱，2修改群暱稱 3.修改公告
+    private int type = 0;//1修改我在本群暱稱，2修改群暱稱 3.修改公告 4:修改自己昵称
     private String content;
     private String roomId;
     private String tocoId;
@@ -69,6 +76,10 @@ public class ModificationNameActivity extends BaseActivity {
             mTvTitle.setText(getString(R.string.gonggao));
             mEtName.setVisibility(View.GONE);
             mEtAnnouncement.setVisibility(View.VISIBLE);
+        }else if(type==4){
+            mTvTitle.setText(getString(R.string.change_username));
+            InputFilter[] filters = {new InputFilter.LengthFilter(20)};
+            mEtName.setFilters(filters);
         }
         mEtName.setText(content);
         mEtName.setSelection(mEtName.getText().length());
@@ -142,6 +153,22 @@ public class ModificationNameActivity extends BaseActivity {
                     finish();
                 }
             });
+        }else if(type==4){
+            new IndividualDetailsPresenter(this).getChangeName(name, new IndividualDetailsPresenter.CallBack1() {
+                @Override
+                public void send(BaseInfo baseInfo) {
+                    MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName());
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.change_name));
+                    finish();
+                }
+
+                @Override
+                public void error() {
+
+                }
+            });
+
+
         }
     }
 }

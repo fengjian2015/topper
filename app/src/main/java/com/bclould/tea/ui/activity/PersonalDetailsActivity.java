@@ -25,6 +25,7 @@ import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
@@ -36,6 +37,8 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -100,6 +103,7 @@ public class PersonalDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         initInterface();
         MyApp.getInstance().addActivity(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -203,7 +207,7 @@ public class PersonalDetailsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.rl_touxiang, R.id.rl_qr_card, R.id.rl_alipay,R.id.rl_referrer})
+    @OnClick({R.id.bark, R.id.rl_touxiang, R.id.rl_qr_card, R.id.rl_alipay,R.id.rl_referrer,R.id.rl_username})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -231,7 +235,18 @@ public class PersonalDetailsActivity extends BaseActivity {
                 intent.putExtra("type",1);
                 startActivity(intent);
                 break;
+            case R.id.rl_username:
+                //修改昵称
+                goModificationName();
+                break;
         }
+    }
+
+    private void goModificationName() {
+        Intent intent = new Intent(this, ModificationNameActivity.class);
+        intent.putExtra("type", 4);
+        intent.putExtra("content", mTvUsername.getText().toString());
+        startActivity(intent);
     }
 
     private void alipayAuth() {
@@ -338,5 +353,19 @@ public class PersonalDetailsActivity extends BaseActivity {
                 .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
                 .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
                 .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(EventBusUtil.change_name)) {
+            mTvUsername.setText(UtilTool.getUser());
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
