@@ -170,7 +170,8 @@ public class PlatformGuessFragment extends Fragment {
 
             @Override
             public void error() {
-                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                if (ActivityUtil.isActivityOnTop(getContext())) {
+                    if(mRefreshLayout==null)return;
                     isFinish = true;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
