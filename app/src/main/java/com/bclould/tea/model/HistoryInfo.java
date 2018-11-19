@@ -52,6 +52,15 @@ public class HistoryInfo {
         private String created_at;
         private String title;
         private String number;
+        private String from;
+
+        public String getFrom() {
+            return from;
+        }
+
+        public void setFrom(String from) {
+            this.from = from;
+        }
 
         public String getTitle() {
             return title;

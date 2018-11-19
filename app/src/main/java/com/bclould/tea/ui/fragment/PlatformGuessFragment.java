@@ -63,7 +63,7 @@ public class PlatformGuessFragment extends Fragment {
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int mPage_id = 0;
+    private int mPage = 1;
     private int mPageSize = 10;
     private String mUser = "";
     private GuessListRVAdapter mGuessListRVAdapter;
@@ -88,15 +88,15 @@ public class PlatformGuessFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.bet))) {
-            initData(mUser, PULL_DOWN);
+            initData(mUser, PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.guess_cancel))) {
-            initData(mUser, PULL_DOWN);
+            initData(mUser, PULL_DOWN,1);
         }
     }
 
     private void init() {
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(getContext());
-        initData(mUser, PULL_DOWN);
+        initData(mUser, PULL_DOWN,1);
         initRecyclerView();
         initListener();
     }
@@ -108,14 +108,14 @@ public class PlatformGuessFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 if (isFinish)
-                initData(mUser, PULL_DOWN);
+                initData(mUser, PULL_DOWN,1);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 if (isFinish) {
-                    initData(mUser, PULL_UP);
+                    initData(mUser, PULL_UP,mPage+1);
                 }
             }
         });
@@ -129,19 +129,18 @@ public class PlatformGuessFragment extends Fragment {
 
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData(String user, final int type) {
-        if (type == PULL_DOWN) {
-            mPage_id = 0;
-        }
+    private void initData(String user, final int type,int p) {
         isFinish = false;
-        mBlockchainGuessPresenter.getGuessList(mPage_id, mPageSize, 2, user, new BlockchainGuessPresenter.CallBack() {
+        mBlockchainGuessPresenter.getGuessList(p, mPageSize, 2, user, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (ActivityUtil.isActivityOnTop(getContext())) {
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
                             mRefreshLayout.finishRefresh();
+                            mPage=1;
                         } else {
+                            mPage++;
                             mRefreshLayout.finishLoadMore();
                         }
                         isFinish = true;
@@ -159,9 +158,6 @@ public class PlatformGuessFragment extends Fragment {
                                 }
                             }
                             mDataList.addAll(data);
-                            if (mDataList.size() != 0) {
-                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
-                            }
                             mGuessListRVAdapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);
@@ -175,6 +171,7 @@ public class PlatformGuessFragment extends Fragment {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(getContext())) {
+                    if(mRefreshLayout==null)return;
                     isFinish = true;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();

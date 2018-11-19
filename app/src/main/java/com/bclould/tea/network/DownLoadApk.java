@@ -27,68 +27,80 @@ public class DownLoadApk {
     public static final String TAG = DownLoadApk.class.getSimpleName();
 
     public static void download(Context context, String url, String title, final String appName) {
-        // 获取存储ID
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        long downloadId = sp.getLong(DownloadManager.EXTRA_DOWNLOAD_ID, -1L);
-        if (downloadId != -1L) {
-            FileDownloadManager fdm = FileDownloadManager.getInstance(context);
-            int status = fdm.getDownloadStatus(downloadId);
-            if (status == DownloadManager.STATUS_SUCCESSFUL) {
-                //启动更新界面
-                Uri uri = fdm.getDownloadUri(downloadId);
-                if (uri != null) {
-                    if (compare(getApkInfo(context, uri.getPath()), context)) {
-                        startInstall(context, uri);
-                        return;
-                    } else {
-                        fdm.getDownloadManager().remove(downloadId);
+        try {
+            // 获取存储ID
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+            long downloadId = sp.getLong(DownloadManager.EXTRA_DOWNLOAD_ID, -1L);
+            if (downloadId != -1L) {
+                FileDownloadManager fdm = FileDownloadManager.getInstance(context);
+                int status = fdm.getDownloadStatus(downloadId);
+                if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                    //启动更新界面
+                    Uri uri = fdm.getDownloadUri(downloadId);
+                    if (uri != null) {
+                        if (compare(getApkInfo(context, uri.getPath()), context)) {
+                            startInstall(context, uri);
+                            return;
+                        } else {
+                            fdm.getDownloadManager().remove(downloadId);
+                        }
                     }
+                    start(context, url, title, appName);
+                } else if (status == DownloadManager.STATUS_FAILED) {
+                    start(context, url, title, appName);
+                } else {
+                    start(context, url, title, appName);
                 }
-                start(context, url, title, appName);
-            } else if (status == DownloadManager.STATUS_FAILED) {
-                start(context, url, title, appName);
             } else {
                 start(context, url, title, appName);
             }
-        } else {
-            start(context, url, title, appName);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
     private static void start(Context context, String url, String title, String appName) {
-        UtilTool.Log("更新", appName);
-        FileDownloadManager manager = FileDownloadManager.getInstance(context);
-        DownloadManager downloadManager = manager.getDownloadManager();
-        Uri uri = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setTitle(title);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, appName + ".apk");
-        long id = downloadManager.enqueue(request);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putLong(DownloadManager.EXTRA_DOWNLOAD_ID, id).commit();
-        Log.d(TAG, "apk start download " + id);
+        try {
+            UtilTool.Log("更新", appName);
+            FileDownloadManager manager = FileDownloadManager.getInstance(context);
+            DownloadManager downloadManager = manager.getDownloadManager();
+            Uri uri = Uri.parse(url);
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.setTitle(title);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, appName + ".apk");
+            long id = downloadManager.enqueue(request);
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+            sp.edit().putLong(DownloadManager.EXTRA_DOWNLOAD_ID, id).commit();
+            Log.d(TAG, "apk start download " + id);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static void startInstall(Context context, Uri uri) {
-        UtilTool.Log("更新", uri.toString());
-        if (Build.VERSION.SDK_INT >= 24) {
-            String path = uri.getPath();
-            File file= new File(path);
-            Uri apkUri = FileProvider.getUriForFile(context, "com.bclould.tea.provider", file);//在AndroidManifest中的android:authorities值
-            Intent install = new Intent(Intent.ACTION_VIEW);
-            install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加这一句表示对目标应用临时授权该Uri所代表的文件
-            install.setDataAndType(apkUri, "application/vnd.android.package-archive");
-            context.startActivity(install);
-        } else {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.addCategory(Intent.CATEGORY_DEFAULT);
-            intent.setType("application/vnd.android.package-archive");
-            intent.setData(uri);
-            intent.setDataAndType(uri, "application/vnd.android.package-archive");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+        try {
+            UtilTool.Log("更新", uri.toString());
+            if (Build.VERSION.SDK_INT >= 24) {
+                String path = uri.getPath();
+                File file= new File(path);
+                Uri apkUri = FileProvider.getUriForFile(context, "com.bclould.tea.provider", file);//在AndroidManifest中的android:authorities值
+                Intent install = new Intent(Intent.ACTION_VIEW);
+                install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加这一句表示对目标应用临时授权该Uri所代表的文件
+                install.setDataAndType(apkUri, "application/vnd.android.package-archive");
+                context.startActivity(install);
+            } else {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.setType("application/vnd.android.package-archive");
+                intent.setData(uri);
+                intent.setDataAndType(uri, "application/vnd.android.package-archive");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

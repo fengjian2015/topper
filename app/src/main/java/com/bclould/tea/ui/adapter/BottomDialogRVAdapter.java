@@ -71,7 +71,7 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
             viewHolder2.setData(mArr.get(position), position);
         } else {
             ViewHolder viewHolder = (ViewHolder) holder;
-            viewHolder.setData(mArr.get(position));
+            viewHolder.setData(mArr.get(position),position);
         }
 
     }
@@ -85,6 +85,7 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
         @Bind(R.id.tv_name)
         TextView mTvName;
         private String mName;
+        private int position;
 
         ViewHolder(View view) {
             super(view);
@@ -98,7 +99,7 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
                         activity.hideDialog(mName, mSign);
                     } else if (mContext instanceof StartGuessActivity) {
                         StartGuessActivity activity = (StartGuessActivity) mContext;
-                        activity.hideDialog(mName, mSign);
+                        activity.hideDialog(mName, mSign,position);
                     }else if (mContext instanceof RedPacketRecordActivity) {
                         RedPacketRecordActivity activity = (RedPacketRecordActivity) mContext;
                         activity.hideDialog(mName, mSign);
@@ -108,7 +109,8 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
             });
         }
 
-        public void setData(String name) {
+        public void setData(String name, int position) {
+            this.position=position;
             mName = name;
             mTvName.setText(name);
         }

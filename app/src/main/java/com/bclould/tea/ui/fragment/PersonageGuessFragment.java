@@ -70,7 +70,7 @@ public class PersonageGuessFragment extends Fragment {
     private GuessListRVAdapter mGuessListRVAdapter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int mPage_id = 0;
+    private int mPage = 1;
     private int mPageSize = 10;
 
     @Nullable
@@ -89,18 +89,18 @@ public class PersonageGuessFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.push_guess))) {
-            initData("", PULL_DOWN);
+            initData("", PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.bet))) {
-            initData("", PULL_DOWN);
+            initData("", PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.guess_cancel))) {
-            initData("", PULL_DOWN);
+            initData("", PULL_DOWN,1);
         }
     }
 
     private void init() {
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(getContext());
         initRecyclerView();
-        initData("", PULL_DOWN);
+        initData("", PULL_DOWN,1);
         initListener();
     }
 
@@ -111,14 +111,14 @@ public class PersonageGuessFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 if (isFinish)
-                initData("", PULL_DOWN);
+                initData("", PULL_DOWN,1);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 if (isFinish) {
-                    initData("", PULL_UP);
+                    initData("", PULL_UP,mPage+1);
                 }
             }
         });
@@ -131,7 +131,7 @@ public class PersonageGuessFragment extends Fragment {
                             .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
                                     InputMethodManager.HIDE_NOT_ALWAYS);
                     String user = mEtSearch.getText().toString().trim();
-                    initData(user, PULL_DOWN);
+                    initData(user, PULL_DOWN,1);
                     return true;
                 }
                 return false;
@@ -147,20 +147,19 @@ public class PersonageGuessFragment extends Fragment {
 
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData(String user, final int type) {
-        if (type == PULL_DOWN) {
-            mPage_id = 0;
-        }
+    private void initData(String user, final int type,int p) {
         isFinish = false;
         mGuessListRVAdapter.notifyDataSetChanged();
-        mBlockchainGuessPresenter.getGuessList(mPage_id, mPageSize, 1, user, new BlockchainGuessPresenter.CallBack() {
+        mBlockchainGuessPresenter.getGuessList(p, mPageSize, 1, user, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
                             mRefreshLayout.finishRefresh();
+                            mPage=1;
                         } else {
+                            mPage++;
                             mRefreshLayout.finishLoadMore();
                         }
                         isFinish = true;
@@ -178,9 +177,6 @@ public class PersonageGuessFragment extends Fragment {
                                 }
                             }
                             mDataList.addAll(data);
-                            if (mDataList.size() != 0) {
-                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
-                            }
                             mGuessListRVAdapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);
@@ -235,6 +231,6 @@ public class PersonageGuessFragment extends Fragment {
                 .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
         String user = mEtSearch.getText().toString().trim();
-        initData(user, PULL_DOWN);
+        initData(user, PULL_DOWN,1);
     }
 }

@@ -2381,4 +2381,5 @@ Please reset encryption request</string>
     <string name="fgc_gains">USDT gains </string>
     <string name="gold_exchange">gold exchange </string>
     <string name="available_fgc">Available GC:</string>
+    <string name="change_username">Modify nickname </string>
 </resources>

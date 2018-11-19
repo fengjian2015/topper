@@ -423,7 +423,7 @@ public interface MyService {
             @Field("coin_name") String coin_name,
             @Field("status") String status,
             @Field("user_name") String user_name,
-            @Field("page_id") int page_id,
+            @Field("page") int page_id,
             @Field("page_size") int page_size
     );
 
@@ -860,7 +860,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<GuessListInfo> GuessList(
             @Header("Authorization") String token,
-            @Field("page_id") int page_id,
+            @Field("page") int page,
             @Field("page_size") int page_size,
             @Field("type") int type,
             @Field("user_name") String user_name
@@ -1664,5 +1664,13 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("usd_number") String usd_number,
             @Field("second_password") String second_password
+    );
+
+    //獲取昵称
+    @FormUrlEncoded
+    @POST("api/user/name")
+    Observable<BaseInfo> getNameList(
+            @Header("Authorization") String token,
+            @Field("name") String name
     );
 }

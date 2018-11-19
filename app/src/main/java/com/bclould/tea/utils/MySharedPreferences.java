@@ -2,17 +2,22 @@ package com.bclould.tea.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
+import com.bclould.tea.base.MyApp;
 
 
 /**
  * Created by GA on 2017/9/28.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class MySharedPreferences {
 
     public static final String SETTING = "setting";
     public static MySharedPreferences instance = null;
-    private Context mContext;
+    private static Context mContext;
 
     public static MySharedPreferences getInstance() {
 
@@ -21,7 +26,6 @@ public class MySharedPreferences {
             instance = new MySharedPreferences();
 
         }
-
         return instance;
     }
 
@@ -37,7 +41,10 @@ public class MySharedPreferences {
 
     //存储布尔值sp
     public void setBoolean(String value, boolean key) {
-
+        if(mContext==null){
+            MyApp.getInstance().initSharedPreferences();
+            return;
+        }
         SharedPreferences sp = mContext.getSharedPreferences(SETTING, 0);
 
         SharedPreferences.Editor edit = sp.edit();
@@ -50,7 +57,10 @@ public class MySharedPreferences {
 
     //取出布尔值sp
     public boolean getBoolean(String value) {
-
+        if(mContext==null){
+            MyApp.getInstance().initSharedPreferences();
+            return false;
+        }
         SharedPreferences sp = mContext.getSharedPreferences(SETTING, 0);
 
         boolean b = sp.getBoolean(value, false);
@@ -61,7 +71,10 @@ public class MySharedPreferences {
 
     //存储字符串sp
     public void setString(String key, String value) {
-
+        if(mContext==null){
+            MyApp.getInstance().initSharedPreferences();
+            return;
+        }
         SharedPreferences sp = mContext.getSharedPreferences(SETTING, 0);
 
         SharedPreferences.Editor edit = sp.edit();
@@ -74,7 +87,10 @@ public class MySharedPreferences {
 
     //取出字符串sp
     public String getString(String value) {
-
+        if(mContext==null){
+            MyApp.getInstance().initSharedPreferences();
+            return "";
+        }
         SharedPreferences sp = mContext.getSharedPreferences(SETTING, 0);
 
         String s = sp.getString(value, "");
@@ -85,7 +101,10 @@ public class MySharedPreferences {
 
     //存储整数sp
     public void setInteger(String value, int key) {
-
+        if(mContext==null){
+            MyApp.getInstance().initSharedPreferences();
+            return;
+        }
         SharedPreferences sp = mContext.getSharedPreferences(SETTING, 0);
 
         SharedPreferences.Editor edit = sp.edit();
@@ -98,7 +117,10 @@ public class MySharedPreferences {
 
     //取出字符串sp
     public int getInteger(String value) {
-
+        if(mContext==null){
+            MyApp.getInstance().initSharedPreferences();
+            return 0;
+        }
         SharedPreferences sp = mContext.getSharedPreferences(SETTING, 0);
 
         int i = sp.getInt(value, 0);
@@ -109,7 +131,10 @@ public class MySharedPreferences {
 
     //存储整数sp
     public void setLong(String value, long key) {
-
+        if(mContext==null){
+            MyApp.getInstance().initSharedPreferences();
+            return;
+        }
         SharedPreferences sp = mContext.getSharedPreferences(SETTING, 0);
 
         SharedPreferences.Editor edit = sp.edit();
@@ -122,7 +147,10 @@ public class MySharedPreferences {
 
     //取出字符串sp
     public long getLong(String value) {
-
+        if(mContext==null){
+            MyApp.getInstance().initSharedPreferences();
+            return 0;
+        }
         SharedPreferences sp = mContext.getSharedPreferences(SETTING, 0);
 
         long i = sp.getLong(value, 0);

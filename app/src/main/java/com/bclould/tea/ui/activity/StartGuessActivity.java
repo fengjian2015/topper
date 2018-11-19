@@ -104,6 +104,8 @@ public class StartGuessActivity extends BaseActivity {
     private int mId;
     private PWDDialog pwdDialog;
 
+    private int timePosition=0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,6 +151,12 @@ public class StartGuessActivity extends BaseActivity {
         mTimeList.add(getString(R.string.time_deadline2));
         mTimeList.add(getString(R.string.time_deadline3));
         mTimeList.add(getString(R.string.time_deadline4));
+        mTimeListInt.add(10);
+        mTimeListInt.add(30);
+        mTimeListInt.add(3*60);
+        mTimeListInt.add(6*60);
+        mTimeListInt.add(12*60);
+        mTimeListInt.add(24*60);
         mTypeList.add(getString(R.string.start_guess_type));
         mTypeList.add(getString(R.string.start_guess_type2));
     }
@@ -215,6 +223,7 @@ public class StartGuessActivity extends BaseActivity {
     }
 
     List<String> mTimeList = new ArrayList<>();
+    List<Integer> mTimeListInt=new ArrayList<>();
     List<String> mTypeList = new ArrayList<>();
 
     private void showBottomDialog(int type, List<String> list) {
@@ -285,7 +294,8 @@ public class StartGuessActivity extends BaseActivity {
         tvTitle.setText(getString(R.string.coins));
     }
 
-    public void hideDialog(String name, int sign) {
+    public void hideDialog(String name, int sign, int position) {
+        timePosition=position;
         mBottomDialog.dismiss();
         if (sign == DEADLINE) {
             mTvDeadline.setText(name);
@@ -317,13 +327,13 @@ public class StartGuessActivity extends BaseActivity {
         String count = mEtBetCount.getText().toString();
         String singleCount = mEtSingleInsertCount.getText().toString();
         String command = mEtCommand.getText().toString();
-        String deadline = mTvDeadline.getText().toString();
-        String timeMinute;
-        if (deadline.contains(getString(R.string.fen))) {
-            timeMinute = Integer.parseInt(deadline.substring(0, 2)) + "";
-        } else {
-            timeMinute = Integer.parseInt(deadline.substring(0, 2)) * 60 + "";
-        }
+//        String deadline = mTvDeadline.getText().toString();
+        String timeMinute=mTimeListInt.get(timePosition)+"";
+//        if (deadline.contains(getString(R.string.fen))) {
+//            timeMinute = Integer.parseInt(deadline.substring(0, 2)) + "";
+//        } else {
+//            timeMinute = Integer.parseInt(deadline.substring(0, 2)) * 60 + "";
+//        }
         UtilTool.Log("時間", timeMinute);
         BlockchainGuessPresenter blockchainGuessPresenter = new BlockchainGuessPresenter(this);
         blockchainGuessPresenter.pushingGuess(mId, title, count, timeMinute, count, password, singleCount, command, new BlockchainGuessPresenter.CallBack2() {

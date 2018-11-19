@@ -66,10 +66,9 @@ public class SellFragment extends BaseFragment {
     private BuySellPresenter mBuySellPresenter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int mPage_id = 1;
+    private int mPage = 1;
     private int mPageSize = 10;
     private int mState_id;
-    private int mDataSize;
 
 
     @Nullable
@@ -87,36 +86,35 @@ public class SellFragment extends BaseFragment {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initRecyclerView();
-        initData(PULL_DOWN);
+        initData(PULL_DOWN,1);
         initListener();
         return mView;
     }
 
-    /*@Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            initData(mCoinName);
-        }
-    }*/
+		/*@Override
+		public void setUserVisibleHint(boolean isVisibleToUser) {
+			super.setUserVisibleHint(isVisibleToUser);
+			if (isVisibleToUser) {
+				initData(mCoinName);
+			}
+		}*/
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (event.getCoinName() != null) {
             mCoinName = event.getCoinName();
-        }
-        if (event.getNumber() != 0) {
+        }   if (event.getNumber() != 0) {
             mState_id = event.getNumber();
         }
         if (msg.equals(getString(R.string.coin_switchover))) {
-            initData(PULL_DOWN);
+            initData(PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.publish_deal))) {
-            initData(PULL_DOWN);
+            initData(PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.state_switchover))) {
-            initData(PULL_DOWN);
+            initData(PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.sold_out_buy))) {
-            initData(PULL_DOWN);
+            initData(PULL_DOWN,1);
         }
     }
 
@@ -134,41 +132,35 @@ public class SellFragment extends BaseFragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 if (isFinish)
-                    initData(PULL_DOWN);
+                    initData(PULL_DOWN,1);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 if (isFinish) {
-                    if (mDataSize == 10) {
-                        initData(PULL_UP);
-                    }else {
-                        mRefreshLayout.finishLoadMore();
-                        mRefreshLayout.setEnableLoadMore(false);
-                    }
+                    initData(PULL_UP,mPage+1);
                 }
             }
         });
     }
 
-    private void initData(final int type) {
-        if (type == PULL_DOWN) {
-            mPage_id = 1;
-        }
+    private void initData(final int type,int p) {
+
         isFinish = false;
-        mBuySellPresenter.getDealList(mPage_id, mPageSize, 2, mCoinName, mState_id, new BuySellPresenter.CallBack() {
+        mBuySellPresenter.getDealList(p, mPageSize, 2, mCoinName, mState_id, new BuySellPresenter.CallBack() {
             @Override
             public void send(List<DealListInfo.DataBean> dataBean) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
                             mRefreshLayout.finishRefresh();
+                            mPage=1;
                         } else {
+                            mPage++;
                             mRefreshLayout.finishLoadMore();
                         }
                         isFinish = true;
-                        mDataSize = dataBean.size();
                         if (mDataList.size() != 0 || dataBean.size() != 0) {
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mLlNoData.setVisibility(View.GONE);
@@ -179,18 +171,10 @@ public class SellFragment extends BaseFragment {
                                     mLlNoData.setVisibility(View.VISIBLE);
                                     mLlError.setVisibility(View.GONE);
                                 } else {
-                                    mPage_id++;
                                     mDataList.clear();
-                                }
-                            } else {
-                                if (dataBean.size() == 10) {
-                                    mPage_id++;
                                 }
                             }
                             mDataList.addAll(dataBean);
-                            if (mDataList.size() != 0) {
-                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
-                            }
                             mBuySellRVAdapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);

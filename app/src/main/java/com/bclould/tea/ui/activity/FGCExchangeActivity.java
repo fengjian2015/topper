@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -75,7 +76,7 @@ public class FGCExchangeActivity extends BaseActivity implements OnChartGestureL
     @Bind(R.id.btn_exchange)
     Button mBtnExchange;
     @Bind(R.id.recycler_view)
-    MyListView mRecyclerView;
+    RecyclerView mRecyclerView;
     @Bind(R.id.ll_exchange)
     LinearLayout mLlExchange;
     @Bind(R.id.refresh_layout)
@@ -90,6 +91,7 @@ public class FGCExchangeActivity extends BaseActivity implements OnChartGestureL
     private PWDDialog pwdDialog;
     private LineDataSet set1;
     protected List<String> mMonths =new ArrayList<>();
+    private LinearLayoutManager mLinearLayoutManager;
 
 
     @Override
@@ -106,9 +108,11 @@ public class FGCExchangeActivity extends BaseActivity implements OnChartGestureL
 
 
     private void initRecylerView() {
-        mRecyclerView.setFocusable(false);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mFGCAdapter = new FGCAdapter(this, mHashMapList);
         mRecyclerView.setAdapter(mFGCAdapter);
+        mRecyclerView.setNestedScrollingEnabled(false);
         mRefreshLayout.setEnableLoadMore(false);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -219,52 +223,57 @@ public class FGCExchangeActivity extends BaseActivity implements OnChartGestureL
     }
 
     private void setChatData(FGCInfo baseInfo, List<Float> ylist){
-        ArrayList<Entry> values = new ArrayList<Entry>();
-        //这里我模拟一些数据
-        Float max = Collections.max(ylist);//获取最大值
-        Float min = Collections.min(ylist);
-        YAxis leftAxis = mLineChar.getAxisLeft();
-        if(min>3000) {
-            min=min-500;
+        try {
+            if(ylist==null||ylist.size()==0)return;
+            ArrayList<Entry> values = new ArrayList<Entry>();
+            //这里我模拟一些数据
+            Float max = Collections.max(ylist);//获取最大值
+            Float min = Collections.min(ylist);
+            YAxis leftAxis = mLineChar.getAxisLeft();
+            if(min>3000) {
+                min=min-500;
+                leftAxis.setAxisMinimum(min);
+            }else if(min>1000){
+                min=min-100;
+            }
             leftAxis.setAxisMinimum(min);
-        }else if(min>1000){
-            min=min-100;
-        }
-        leftAxis.setAxisMinimum(min);
-        mMonths.clear();
-        values.add(new Entry(0,  min));
-        mMonths.add("");
-        for(int i=0;i<baseInfo.getData().getX().size();i++){
-            mMonths.add(baseInfo.getData().getX().get(i));
-            Entry entry = new Entry(i+1,baseInfo.getData().getY().get(i));
-            values.add(entry);
-        }
+            mMonths.clear();
+            values.add(new Entry(0,  min));
+            mMonths.add("");
+            for(int i=0;i<baseInfo.getData().getX().size();i++){
+                mMonths.add(baseInfo.getData().getX().get(i));
+                Entry entry = new Entry(i+1,baseInfo.getData().getY().get(i));
+                values.add(entry);
+            }
 
-        set1 = new LineDataSet(values, null);
-        set1.setHighlightEnabled(false);
-        set1.setDrawFilled(true);
-        set1.setDrawValues(false);
-        set1.setDrawCircles(true);  //设置有圆点
-        if (Utils.getSDKInt() >= 18) {
-            set1.setFillDrawable(getResources().getDrawable(R.drawable.fgc_xian));
+            set1 = new LineDataSet(values, null);
+            set1.setHighlightEnabled(false);
+            set1.setDrawFilled(true);
+            set1.setDrawValues(false);
+            set1.setDrawCircles(true);  //设置有圆点
+            if (Utils.getSDKInt() >= 18) {
+                set1.setFillDrawable(getResources().getDrawable(R.drawable.fgc_xian));
+            }
+            set1.setColor(getResources().getColor(R.color.blue3));
+            set1.setValueTextColor(getResources().getColor(R.color.secondary_text_color));
+            set1.setLineWidth(2f);
+            set1.setDrawHighlightIndicators(false);
+            set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+
+            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            //添加数据集
+            dataSets.add(set1);
+            set1.setDrawValues(!set1.isDrawValuesEnabled());
+            //创建一个数据集的数据对象
+            LineData data = new LineData(dataSets);
+
+            //谁知数据
+            mLineChar.setData(data);
+            mLineChar.setVisibleXRangeMaximum(7);//设置x轴的显示数值间距
+            mLineChar.invalidate();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        set1.setColor(getResources().getColor(R.color.blue3));
-        set1.setValueTextColor(getResources().getColor(R.color.secondary_text_color));
-        set1.setLineWidth(2f);
-        set1.setDrawHighlightIndicators(false);
-        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-
-        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-        //添加数据集
-        dataSets.add(set1);
-        set1.setDrawValues(!set1.isDrawValuesEnabled());
-        //创建一个数据集的数据对象
-        LineData data = new LineData(dataSets);
-
-        //谁知数据
-        mLineChar.setData(data);
-        mLineChar.setVisibleXRangeMaximum(7);//设置x轴的显示数值间距
-        mLineChar.invalidate();
     }
 
 
