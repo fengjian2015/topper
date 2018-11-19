@@ -377,6 +377,7 @@ public class WsConnection {
     }
 
     public void goMainActivity() {
+        if(mContext==null)return;
         logoutService(mContext);
         MySharedPreferences.getInstance().setString(TOKEN, "");
         MySharedPreferences.getInstance().setString(LoginPresenter.TOCOID, "");
