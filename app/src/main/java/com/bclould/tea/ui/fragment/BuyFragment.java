@@ -36,7 +36,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.bclould.tea.Presenter.LoginPresenter.STATE;
 import static com.bclould.tea.Presenter.LoginPresenter.STATE_ID;
 
 /**
@@ -65,9 +64,10 @@ public class BuyFragment extends Fragment {
     private BuySellPresenter mBuySellPresenter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int mPage_id = 0;
+    private int mPage_id = 1;
     private int mPageSize = 10;
     private int mState_id;
+    private int mDataSize;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -97,7 +97,8 @@ public class BuyFragment extends Fragment {
         String msg = event.getMsg();
         if (event.getCoinName() != null) {
             mCoinName = event.getCoinName();
-        }if (event.getNumber() != 0) {
+        }
+        if (event.getNumber() != 0) {
             mState_id = event.getNumber();
         }
         if (msg.equals(getString(R.string.coin_switchover))) {
@@ -105,7 +106,7 @@ public class BuyFragment extends Fragment {
         } else if (msg.equals(getString(R.string.publish_deal))) {
             initData(PULL_DOWN);
         } else if (msg.equals(getString(R.string.state_switchover))) {
-            initData( PULL_DOWN);
+            initData(PULL_DOWN);
         } else if (msg.equals(getString(R.string.sold_out_sell))) {
             initData(PULL_DOWN);
         }
@@ -125,14 +126,21 @@ public class BuyFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                initData(PULL_DOWN);
+                if (isFinish) {
+                    initData(PULL_DOWN);
+                }
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 if (isFinish) {
-                    initData(PULL_UP);
+                    if (mDataSize == 10) {
+                        initData(PULL_UP);
+                    } else {
+                        mRefreshLayout.finishLoadMore();
+                        mRefreshLayout.setEnableLoadMore(false);
+                    }
                 }
             }
         });
@@ -147,7 +155,7 @@ public class BuyFragment extends Fragment {
 
     private void initData(final int type) {
         if (type == PULL_DOWN) {
-            mPage_id = 0;
+            mPage_id = 1;
         }
         isFinish = false;
         mBuySellPresenter.getDealList(mPage_id, mPageSize, 1, mCoinName, mState_id, new BuySellPresenter.CallBack() {
@@ -161,6 +169,7 @@ public class BuyFragment extends Fragment {
                             mRefreshLayout.finishLoadMore();
                         }
                         isFinish = true;
+                        mDataSize = dataBean.size();
                         if (mDataList.size() != 0 || dataBean.size() != 0) {
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mLlNoData.setVisibility(View.GONE);
@@ -171,13 +180,18 @@ public class BuyFragment extends Fragment {
                                     mLlNoData.setVisibility(View.VISIBLE);
                                     mLlError.setVisibility(View.GONE);
                                 } else {
+                                    mPage_id++;
                                     mDataList.clear();
+                                }
+                            } else {
+                                if (dataBean.size() == 10) {
+                                    mPage_id++;
                                 }
                             }
                             mDataList.addAll(dataBean);
-                            if (mDataList.size() != 0) {
+                            /*if (mDataList.size() != 0) {
                                 mPage_id = mDataList.get(mDataList.size() - 1).getId();
-                            }
+                            }*/
                             mBuySellRVAdapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);

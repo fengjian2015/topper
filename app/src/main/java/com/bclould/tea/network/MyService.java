@@ -352,7 +352,7 @@ public interface MyService {
             @Field("type") int type,
             @Field("coin_name") String coin_name,
             @Field("country") int country,
-            @Field("page_id") int page_id,
+            @Field("page") int page_id,
             @Field("page_size") int page_size
     );
 

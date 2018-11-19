@@ -66,9 +66,10 @@ public class SellFragment extends BaseFragment {
     private BuySellPresenter mBuySellPresenter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int mPage_id = 0;
+    private int mPage_id = 1;
     private int mPageSize = 10;
     private int mState_id;
+    private int mDataSize;
 
 
     @Nullable
@@ -104,7 +105,8 @@ public class SellFragment extends BaseFragment {
         String msg = event.getMsg();
         if (event.getCoinName() != null) {
             mCoinName = event.getCoinName();
-        }   if (event.getNumber() != 0) {
+        }
+        if (event.getNumber() != 0) {
             mState_id = event.getNumber();
         }
         if (msg.equals(getString(R.string.coin_switchover))) {
@@ -139,7 +141,12 @@ public class SellFragment extends BaseFragment {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 if (isFinish) {
-                    initData(PULL_UP);
+                    if (mDataSize == 10) {
+                        initData(PULL_UP);
+                    }else {
+                        mRefreshLayout.finishLoadMore();
+                        mRefreshLayout.setEnableLoadMore(false);
+                    }
                 }
             }
         });
@@ -147,7 +154,7 @@ public class SellFragment extends BaseFragment {
 
     private void initData(final int type) {
         if (type == PULL_DOWN) {
-            mPage_id = 0;
+            mPage_id = 1;
         }
         isFinish = false;
         mBuySellPresenter.getDealList(mPage_id, mPageSize, 2, mCoinName, mState_id, new BuySellPresenter.CallBack() {
@@ -161,6 +168,7 @@ public class SellFragment extends BaseFragment {
                             mRefreshLayout.finishLoadMore();
                         }
                         isFinish = true;
+                        mDataSize = dataBean.size();
                         if (mDataList.size() != 0 || dataBean.size() != 0) {
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mLlNoData.setVisibility(View.GONE);
@@ -171,7 +179,12 @@ public class SellFragment extends BaseFragment {
                                     mLlNoData.setVisibility(View.VISIBLE);
                                     mLlError.setVisibility(View.GONE);
                                 } else {
+                                    mPage_id++;
                                     mDataList.clear();
+                                }
+                            } else {
+                                if (dataBean.size() == 10) {
+                                    mPage_id++;
                                 }
                             }
                             mDataList.addAll(dataBean);
