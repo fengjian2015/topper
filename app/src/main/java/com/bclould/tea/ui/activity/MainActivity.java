@@ -593,30 +593,34 @@ public class MainActivity extends BaseActivity {
 
     @SuppressLint("RestrictedApi")
     private void changeFragment(int index) {
-        if (mSupportFragmentManager == null) {
-            mSupportFragmentManager = getSupportFragmentManager();
-        }
-        FragmentTransaction ft = mSupportFragmentManager.beginTransaction();
-        FragmentFactory fragmentFactory = FragmentFactory.getInstanes();
-        Fragment LastFragment = fragmentFactory.createMainFragment(lastIndex);
-        Fragment fragment = fragmentFactory.createMainFragment(index);
-        if (mSupportFragmentManager.getFragments() == null) {
-            if (!fragment.isAdded() && null == mSupportFragmentManager.findFragmentByTag(index + "")) {
-                ft.add(R.id.main_fl, fragment, index + "");
+        try {
+            if (mSupportFragmentManager == null) {
+                mSupportFragmentManager = getSupportFragmentManager();
             }
-        } else if (!mSupportFragmentManager.getFragments().contains(fragment)) {
-            if (!fragment.isAdded() && null == mSupportFragmentManager.findFragmentByTag(index + "")) {
-                ft.add(R.id.main_fl, fragment, index + "");
+            FragmentTransaction ft = mSupportFragmentManager.beginTransaction();
+            FragmentFactory fragmentFactory = FragmentFactory.getInstanes();
+            Fragment LastFragment = fragmentFactory.createMainFragment(lastIndex);
+            Fragment fragment = fragmentFactory.createMainFragment(index);
+            if (mSupportFragmentManager.getFragments() == null) {
+                if (!fragment.isAdded() && null == mSupportFragmentManager.findFragmentByTag(index + "")) {
+                    ft.add(R.id.main_fl, fragment, index + "");
+                }
+            } else if (!mSupportFragmentManager.getFragments().contains(fragment)) {
+                if (!fragment.isAdded() && null == mSupportFragmentManager.findFragmentByTag(index + "")) {
+                    ft.add(R.id.main_fl, fragment, index + "");
+                }
             }
+            if (ft != null) {
+                ft.hide(LastFragment);
+                ft.show(fragment);
+                ft.commitAllowingStateLoss();
+                if (mSupportFragmentManager != null)
+                    mSupportFragmentManager.executePendingTransactions();
+            }
+            lastIndex = index;
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        if (ft != null) {
-            ft.hide(LastFragment);
-            ft.show(fragment);
-            ft.commitAllowingStateLoss();
-            if (mSupportFragmentManager != null)
-                mSupportFragmentManager.executePendingTransactions();
-        }
-        lastIndex = index;
     }
 
 //     当activity销毁时不保存其内部的view的状态

@@ -201,9 +201,9 @@ public class PlatformGuessFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+    public void onDestroy() {
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
+        ButterKnife.unbind(this);
     }
 }
