@@ -125,6 +125,7 @@ public class WebViewActivity extends BaseActivity {
         });
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
+                if(mProgressBar==null) return;
                 mProgressBar.setMax(100);
                 mProgressBar.setProgress(progress);
             }

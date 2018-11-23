@@ -111,7 +111,7 @@ public class DownLoadApk {
      * @param context Context
      * @param path    apk path
      */
-    private static PackageInfo getApkInfo(Context context, String path) {
+    private static PackageInfo getApkInfo(Context context, String path) throws Exception{
         PackageManager pm = context.getPackageManager();
         PackageInfo info = null;
         try {
@@ -133,7 +133,7 @@ public class DownLoadApk {
      * @param context Context
      * @return 如果当前应用版本小于apk的版本则返回true
      */
-    private static boolean compare(PackageInfo apkInfo, Context context) {
+    private static boolean compare(PackageInfo apkInfo, Context context) throws Exception{
         if (apkInfo == null) {
             return false;
         }

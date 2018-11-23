@@ -108,7 +108,7 @@ public class UpgradeFragment extends LazyFragment {
     }
 
     private void init() {
-        if(mUpgradeInfo==null){
+        if(mUpgradeInfo==null||mRlSelectMoney==null){
             return;
         }
         if(type==1){
