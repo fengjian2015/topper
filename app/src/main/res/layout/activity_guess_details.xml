@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
+        >
 
         <LinearLayout
             android:id="@+id/ll_time"
@@ -537,6 +537,7 @@
                                 android:gravity="center"
                                 android:hint="0"
                                 android:maxLength="1"
+                                android:inputType="number"
                                 android:singleLine="true"
                                 android:textColor="@color/blue2"
                                 android:textColorHint="#CDD8E9"
@@ -686,6 +687,7 @@
                                 android:gravity="center"
                                 android:hint="0"
                                 android:maxLength="1"
+                                android:inputType="number"
                                 android:singleLine="true"
                                 android:textColor="@color/blue2"
                                 android:textColorHint="#CDD8E9"
@@ -836,6 +838,7 @@
                                 android:hint="0"
                                 android:maxLength="1"
                                 android:singleLine="true"
+                                android:inputType="number"
                                 android:textColor="@color/blue2"
                                 android:textColorHint="#CDD8E9"
                                 android:textCursorDrawable="@null"
@@ -986,6 +989,7 @@
                                 android:maxLength="1"
                                 android:singleLine="true"
                                 android:textColor="@color/blue2"
+                                android:inputType="number"
                                 android:textColorHint="#CDD8E9"
                                 android:textCursorDrawable="@null"
                                 android:textSize="@dimen/x60"
@@ -1134,6 +1138,7 @@
                                 android:hint="0"
                                 android:maxLength="1"
                                 android:singleLine="true"
+                                android:inputType="number"
                                 android:textColor="@color/blue2"
                                 android:textColorHint="#CDD8E9"
                                 android:textCursorDrawable="@null"

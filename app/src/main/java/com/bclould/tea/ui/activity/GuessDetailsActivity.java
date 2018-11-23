@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -40,6 +42,7 @@ import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -456,39 +459,63 @@ public class GuessDetailsActivity extends BaseActivity {
     }
 
 
+    private void setEtListener(final EditText editText1, final EditText editText2, final LinearLayout linearLayout){
+        editText1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!StringUtils.isEmpty(editText1.getText().toString())&&linearLayout.isShown()){
+                    editText2.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        editText1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT&&linearLayout.isShown()) {
+                    editText2.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
     private void initEidt() {
-        mEtArray.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    mEtArray2.requestFocus();
-                    return true;
-                }
-                return false;
-            }
-        });
+        setEtListener(mEtArray,mEtArray2,mLlArray);
+        setEtListener(mEtArray2,mEtArray3,mLlArray);
+        setEtListener(mEtArray3,mEtArray4,mLlArray);
+        setEtListener(mEtArray4,mEt2Array,mLlArray2);
 
-        mEtArray2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    mEtArray3.requestFocus();
-                    return true;
-                }
-                return false;
-            }
-        });
+        setEtListener(mEt2Array,mEt2Array2,mLlArray2);
+        setEtListener(mEt2Array2,mEt2Array3,mLlArray2);
+        setEtListener(mEt2Array3,mEt2Array4,mLlArray2);
+        setEtListener(mEt2Array4,mEt3Array,mLlArray3);
 
-        mEtArray3.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    mEtArray4.requestFocus();
-                    return true;
-                }
-                return false;
-            }
-        });
+        setEtListener(mEt3Array,mEt3Array2,mLlArray3);
+        setEtListener(mEt3Array2,mEt3Array3,mLlArray3);
+        setEtListener(mEt3Array3,mEt3Array4,mLlArray3);
+        setEtListener(mEt3Array4,mEt4Array,mLlArray4);
+
+        setEtListener(mEt4Array,mEt4Array2,mLlArray4);
+        setEtListener(mEt4Array2,mEt4Array3,mLlArray4);
+        setEtListener(mEt4Array3,mEt4Array4,mLlArray4);
+        setEtListener(mEt4Array4,mEt5Array,mLlArray5);
+
+        setEtListener(mEt5Array,mEt5Array2,mLlArray5);
+        setEtListener(mEt5Array2,mEt5Array3,mLlArray5);
+        setEtListener(mEt5Array3,mEt5Array4,mLlArray5);
+
+
 /*
         mEtArray2.setOnKeyListener(new View.OnKeyListener() {
             @Override
