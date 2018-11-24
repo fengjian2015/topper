@@ -19,6 +19,7 @@ import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.xmpp.RoomManage;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -98,6 +99,7 @@ public class FriendVerificationActivity extends BaseActivity {
                     userInfo.setRemark(name);
                     userInfo.setPath(avatar);
                     mDBManager.addUser(userInfo);
+                    RoomManage.getInstance().addSingleMessageManage(userId,name).sendMessage(getString(R.string.we_already_friends_come_chat_together));
                     finish();
                 }
             });

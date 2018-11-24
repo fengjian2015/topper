@@ -17,6 +17,7 @@ import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ActivityUtil;
@@ -24,6 +25,7 @@ import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.xmpp.RoomManage;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -106,9 +108,16 @@ public class AddFriendReceiver extends BroadcastReceiver {
                                     mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
                                     mNewFriend--;
                                     MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
+                                    UserInfo userInfo=new UserInfo();
+                                    userInfo.setUser(tocoId);
+                                    userInfo.setUserName(alertSubName);
+                                    userInfo.setRemark(alertSubName);
+                                    userInfo.setPath("");
+                                    mMgr.addUser(userInfo);
                                     EventBus.getDefault().post(new MessageEvent(EventBusUtil.receive_add_request));
                                     //同意
                                     EventBus.getDefault().post(new MessageEvent(EventBusUtil.new_friend));
+                                    RoomManage.getInstance().addSingleMessageManage(tocoId,alertSubName).sendMessage(context.getString(R.string.we_already_friends_come_chat_together));
                                 }
                             });
                         }

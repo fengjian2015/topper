@@ -1295,7 +1295,7 @@ public class SocketListener {
                 mgr.addUser(userInfo);
                 EventBus.getDefault().post(new MessageEvent(EventBusUtil.new_friend));
                 context.sendBroadcast(intent);
-                RoomManage.getInstance().addSingleMessageManage(from,toName).sendMessage(context.getString(R.string.we_already_friends_come_chat_together));
+//                RoomManage.getInstance().addSingleMessageManage(from,toName).sendMessage(context.getString(R.string.we_already_friends_come_chat_together));
             } else if ("2".equals(messageMap.get("status") + "")) {
                 //发送广播传递response字符串
                 response = context.getString(R.string.ta_reject_add_friend);
