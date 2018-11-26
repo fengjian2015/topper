@@ -44,8 +44,7 @@ public class PublicPresenter {
 
     private void hideDialog() {
         if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
+            mProgressDialog.hideDialog();
         }
     }
     public void publicList(final CallBack callBack) {

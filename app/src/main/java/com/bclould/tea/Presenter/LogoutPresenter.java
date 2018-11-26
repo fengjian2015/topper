@@ -54,7 +54,6 @@ public class LogoutPresenter {
     private void hideDialog() {
         if (mProgressDialog != null) {
             mProgressDialog.hideDialog();
-            mProgressDialog = null;
         }
     }
 

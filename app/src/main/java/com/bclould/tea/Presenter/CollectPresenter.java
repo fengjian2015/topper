@@ -51,11 +51,8 @@ public class CollectPresenter {
     }
 
     private void hideDialog() {
-        if (ActivityUtil.isActivityOnTop((Activity) mContext)) {
-            if (mProgressDialog != null) {
-                mProgressDialog.dismiss();
-                mProgressDialog = null;
-            }
+        if (mProgressDialog != null) {
+            mProgressDialog.hideDialog();
         }
     }
 

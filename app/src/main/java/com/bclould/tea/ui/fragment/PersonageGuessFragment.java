@@ -226,11 +226,18 @@ public class PersonageGuessFragment extends Fragment {
 
     @OnClick(R.id.iv_search)
     public void onViewClicked() {
-        // 隐藏键盘
-        ((InputMethodManager) mEtSearch.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-        String user = mEtSearch.getText().toString().trim();
-        initData(user, PULL_DOWN,1);
+        try {
+            // 隐藏键盘
+            if(getActivity()==null)return;
+            ((InputMethodManager) mEtSearch.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                    .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+            String user = mEtSearch.getText().toString().trim();
+            initData(user, PULL_DOWN,1);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
     }
 }

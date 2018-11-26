@@ -55,9 +55,8 @@ public class NewsNoticePresenter {
     }
 
     private void hideDialog() {
-        if (mProgressDialog != null && ActivityUtil.isActivityOnTop(mContext)) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
+        if (mProgressDialog != null) {
+            mProgressDialog.hideDialog();
         }
     }
 

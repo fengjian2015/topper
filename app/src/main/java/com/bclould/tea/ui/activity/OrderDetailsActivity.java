@@ -131,14 +131,19 @@ public class OrderDetailsActivity extends BaseActivity {
             runOnUiThread(new Runnable() {      // UI thread
                 @Override
                 public void run() {
-                    mRecLen--;
-                    int second = mRecLen % 60;
-                    int minute = mRecLen / 60;
-                    mTvTime.setText(minute + getString(R.string.fen) + second + getString(R.string.second));
-                    if (mRecLen < 0) {
-                        mTimer.cancel();
-                        finish();
-                        Toast.makeText(OrderDetailsActivity.this, getString(R.string.order_timeout), Toast.LENGTH_SHORT).show();
+                    try {
+                        if(mTvTime==null)return;
+                        mRecLen--;
+                        int second = mRecLen % 60;
+                        int minute = mRecLen / 60;
+                        mTvTime.setText(minute + getString(R.string.fen) + second + getString(R.string.second));
+                        if (mRecLen < 0) {
+                            mTimer.cancel();
+                            finish();
+                            Toast.makeText(OrderDetailsActivity.this, getString(R.string.order_timeout), Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
                 }
             });
