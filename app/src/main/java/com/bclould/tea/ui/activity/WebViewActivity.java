@@ -99,6 +99,9 @@ public class WebViewActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                if(isFinishing()){
+                    return;
+                }
                 mProgressBar.setVisibility(View.GONE);
                 if (mProgressBar.getProgress() != 100) {
                     mLlLoadError.setVisibility(View.VISIBLE);
@@ -113,6 +116,9 @@ public class WebViewActivity extends BaseActivity {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError
                     error) {
                 super.onReceivedError(view, request, error);
+                if(isFinishing()){
+                    return;
+                }
                 mLlLoadError.setVisibility(View.VISIBLE);
                 mWebView.setVisibility(View.GONE);
             }
@@ -120,6 +126,9 @@ public class WebViewActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                if(isFinishing()){
+                    return;
+                }
                 mProgressBar.setVisibility(View.VISIBLE);
             }
         });

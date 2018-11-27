@@ -459,7 +459,7 @@ public class GuessDetailsActivity extends BaseActivity {
     }
 
 
-    private void setEtListener(final EditText editText1, final EditText editText2, final LinearLayout linearLayout){
+    private void setEtListener(final EditText editText1, final EditText editText2, final LinearLayout linearLayout) {
         editText1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -468,7 +468,7 @@ public class GuessDetailsActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!StringUtils.isEmpty(editText1.getText().toString())&&linearLayout.isShown()){
+                if (!StringUtils.isEmpty(editText1.getText().toString()) && linearLayout.isShown()) {
                     editText2.requestFocus();
                 }
             }
@@ -481,7 +481,7 @@ public class GuessDetailsActivity extends BaseActivity {
         editText1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_NEXT&&linearLayout.isShown()) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT && linearLayout.isShown()) {
                     editText2.requestFocus();
                     return true;
                 }
@@ -491,29 +491,29 @@ public class GuessDetailsActivity extends BaseActivity {
     }
 
     private void initEidt() {
-        setEtListener(mEtArray,mEtArray2,mLlArray);
-        setEtListener(mEtArray2,mEtArray3,mLlArray);
-        setEtListener(mEtArray3,mEtArray4,mLlArray);
-        setEtListener(mEtArray4,mEt2Array,mLlArray2);
+        setEtListener(mEtArray, mEtArray2, mLlArray);
+        setEtListener(mEtArray2, mEtArray3, mLlArray);
+        setEtListener(mEtArray3, mEtArray4, mLlArray);
+        setEtListener(mEtArray4, mEt2Array, mLlArray2);
 
-        setEtListener(mEt2Array,mEt2Array2,mLlArray2);
-        setEtListener(mEt2Array2,mEt2Array3,mLlArray2);
-        setEtListener(mEt2Array3,mEt2Array4,mLlArray2);
-        setEtListener(mEt2Array4,mEt3Array,mLlArray3);
+        setEtListener(mEt2Array, mEt2Array2, mLlArray2);
+        setEtListener(mEt2Array2, mEt2Array3, mLlArray2);
+        setEtListener(mEt2Array3, mEt2Array4, mLlArray2);
+        setEtListener(mEt2Array4, mEt3Array, mLlArray3);
 
-        setEtListener(mEt3Array,mEt3Array2,mLlArray3);
-        setEtListener(mEt3Array2,mEt3Array3,mLlArray3);
-        setEtListener(mEt3Array3,mEt3Array4,mLlArray3);
-        setEtListener(mEt3Array4,mEt4Array,mLlArray4);
+        setEtListener(mEt3Array, mEt3Array2, mLlArray3);
+        setEtListener(mEt3Array2, mEt3Array3, mLlArray3);
+        setEtListener(mEt3Array3, mEt3Array4, mLlArray3);
+        setEtListener(mEt3Array4, mEt4Array, mLlArray4);
 
-        setEtListener(mEt4Array,mEt4Array2,mLlArray4);
-        setEtListener(mEt4Array2,mEt4Array3,mLlArray4);
-        setEtListener(mEt4Array3,mEt4Array4,mLlArray4);
-        setEtListener(mEt4Array4,mEt5Array,mLlArray5);
+        setEtListener(mEt4Array, mEt4Array2, mLlArray4);
+        setEtListener(mEt4Array2, mEt4Array3, mLlArray4);
+        setEtListener(mEt4Array3, mEt4Array4, mLlArray4);
+        setEtListener(mEt4Array4, mEt5Array, mLlArray5);
 
-        setEtListener(mEt5Array,mEt5Array2,mLlArray5);
-        setEtListener(mEt5Array2,mEt5Array3,mLlArray5);
-        setEtListener(mEt5Array3,mEt5Array4,mLlArray5);
+        setEtListener(mEt5Array, mEt5Array2, mLlArray5);
+        setEtListener(mEt5Array2, mEt5Array3, mLlArray5);
+        setEtListener(mEt5Array3, mEt5Array4, mLlArray5);
 
 
 /*
@@ -1044,14 +1044,18 @@ public class GuessDetailsActivity extends BaseActivity {
 
             }
         });
-        number.setText(mTvNumber.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[0] + getString(R.string.hash_value));
-        number2.setText(mTvNumber2.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[1] + getString(R.string.hash_value));
-        number3.setText(mTvNumber3.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[2] + getString(R.string.hash_value));
-        number4.setText(mTvNumber4.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[3] + getString(R.string.hash_value));
-        hash.setText(mHashArr[0]);
-        hash2.setText(mHashArr[1]);
-        hash3.setText(mHashArr[2]);
-        hash4.setText(mHashArr[3]);
+        if(mIndexArr!=null&&mIndexArr.length>=4) {
+            number.setText(mTvNumber.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[0] + getString(R.string.hash_value));
+            number2.setText(mTvNumber2.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[1] + getString(R.string.hash_value));
+            number3.setText(mTvNumber3.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[2] + getString(R.string.hash_value));
+            number4.setText(mTvNumber4.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[3] + getString(R.string.hash_value));
+        }
+        if(mHashArr!=null&&mHashArr.length>=4){
+            hash.setText(mHashArr[0]);
+            hash2.setText(mHashArr[1]);
+            hash3.setText(mHashArr[2]);
+            hash4.setText(mHashArr[3]);
+        }
     }
 
     private void PlusMinus(int type) {
