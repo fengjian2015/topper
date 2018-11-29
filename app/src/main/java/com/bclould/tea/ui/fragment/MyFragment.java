@@ -158,7 +158,7 @@ public class MyFragment extends Fragment {
         if (mMgr == null) {
             mMgr = new DBManager(getContext());
         }
-        UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext(), mIvTouxiang);
+        UtilTool.getImage(mMgr, UtilTool.getTocoId(), getActivity(), mIvTouxiang);
     }
 
     @Override
