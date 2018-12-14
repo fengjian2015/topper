@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
@@ -22,9 +23,16 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.adapter.BlockchainGambleVPAdapter;
+import com.bclould.tea.ui.widget.WinningPopWindow;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,12 +68,14 @@ public class BlockchainGambleActivity extends BaseActivity {
     private ViewGroup mView;
     private int mHeightPixels;
     private PopupWindow mPopupWindow;
+    private WinningPopWindow mWinningPopWindow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blockchain_gamble);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);//初始化EventBus
         MyApp.getInstance().addActivity(this);
         getPhoneSize();
         mViewPager.setCurrentItem(0);
@@ -73,6 +83,44 @@ public class BlockchainGambleActivity extends BaseActivity {
         initTopMenu();
         initViewPager();
     }
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(EventBusUtil.winning_show)) {
+            show(event.getContent());
+        }else if (msg.equals(EventBusUtil.winning_shut_down)) {
+            shutDown();
+        }
+    }
+
+    private void show(final String content){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWinningPopWindow=new WinningPopWindow(BlockchainGambleActivity.this,content,mRlTitle);
+            }
+        });
+    }
+
+    private void shutDown(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(mWinningPopWindow!= null){
+                    mWinningPopWindow.dismiss();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//初始化EventBus
+    }
+
 
     @Override
     protected void attachBaseContext(Context newBase) {

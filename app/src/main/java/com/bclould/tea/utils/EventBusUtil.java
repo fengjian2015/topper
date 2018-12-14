@@ -25,5 +25,7 @@ public class EventBusUtil {
     public static final String refresh_upgrade="刷新升级界面";
     public static final String refresh_financial="刷新理财界面";
     public static final String change_name="修改昵称";
+    public static final String winning_show="奖金弹窗显示";
+    public static final String winning_shut_down="奖金弹窗关闭";
 }
 

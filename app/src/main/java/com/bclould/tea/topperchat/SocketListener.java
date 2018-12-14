@@ -42,6 +42,7 @@ import com.bclould.tea.utils.MyLifecycleHandler;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.utils.WinningManager;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.RoomManage;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -89,6 +90,7 @@ import static com.bclould.tea.topperchat.WsContans.BC_TRANSFER_INFORM;
 import static com.bclould.tea.topperchat.WsContans.BC_UPDATE_GROUP_LOGO;
 import static com.bclould.tea.topperchat.WsContans.BC_UPDATE_GROUP_NAME;
 import static com.bclould.tea.topperchat.WsContans.BC_UPDATE_GROUP_REMARK;
+import static com.bclould.tea.topperchat.WsContans.BC_WINNING_NOTICEP;
 import static com.bclould.tea.topperchat.WsContans.CONTENT;
 import static com.bclould.tea.topperchat.WsContans.MSG_BROADCAST;
 import static com.bclould.tea.topperchat.WsContans.MSG_GROUP;
@@ -780,6 +782,9 @@ public class SocketListener {
                 case BC_KICK_OUT_GROUP:
                     kickOut(messageMap);
                     break;
+                case BC_WINNING_NOTICEP:
+                    winningNotice(messageMap);
+                    break;
             }
 
         } catch (Exception e) {
@@ -854,6 +859,18 @@ public class SocketListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 中奖名单
+     * @param messageMap
+     */
+    private void winningNotice(Map<Object, Object> messageMap) {
+        String text=messageMap.get("text")+"";
+        WinningManager.getInstance().addList(text);
+        UtilTool.Log("fengjian","中奖");
+//        MessageEvent messageEvent = new MessageEvent(EventBusUtil.kick_out_success);
+//        EventBus.getDefault().post(messageEvent);
     }
 
     /**

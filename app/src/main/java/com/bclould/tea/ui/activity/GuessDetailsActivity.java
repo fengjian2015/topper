@@ -36,16 +36,20 @@ import com.bclould.tea.ui.adapter.GuessBetRVAdapter;
 import com.bclould.tea.ui.widget.CurrencyDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.PWDDialog;
+import com.bclould.tea.ui.widget.WinningPopWindow;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -228,7 +232,8 @@ public class GuessDetailsActivity extends BaseActivity {
     ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
-
+    @Bind(R.id.rl_title)
+    RelativeLayout mRlTitle;
     private int mBet_id;
     private int mPeriod_qty;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
@@ -311,6 +316,7 @@ public class GuessDetailsActivity extends BaseActivity {
     private int mLimit_people_number;
     private String mGuess_pw = "";
     private PWDDialog pwdDialog;
+    private WinningPopWindow mWinningPopWindow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -318,15 +324,50 @@ public class GuessDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_guess_details);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        EventBus.getDefault().register(this);//初始化EventBus
         initIntent();
         initRecylerView();
         initData();
         initEidt();
     }
 
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(EventBusUtil.winning_show)) {
+            show(event.getContent());
+        }else if (msg.equals(EventBusUtil.winning_shut_down)) {
+            shutDown();
+        }
+    }
+
+    private void show(final String content){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWinningPopWindow=new WinningPopWindow(GuessDetailsActivity.this,content,mRlTitle);
+            }
+        });
+    }
+
+    private void shutDown(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(mWinningPopWindow!= null){
+                    mWinningPopWindow.dismiss();
+                }
+            }
+        });
+    }
+
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);//初始化EventBus
         if (mTimer != null && mTask != null) {
             mTask.cancel();
             mTimer.cancel();

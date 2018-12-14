@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.Presenter.BlockchainGuessPresenter;
@@ -26,13 +27,20 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.GuessListInfo;
 import com.bclould.tea.ui.adapter.GuessListRVAdapter;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
+import com.bclould.tea.ui.widget.WinningPopWindow;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +77,8 @@ public class MyStartActivity extends BaseActivity {
     ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
+    @Bind(R.id.rl_title)
+    RelativeLayout mRlTitle;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
 
     private int PULL_UP = 0;
@@ -81,13 +91,53 @@ public class MyStartActivity extends BaseActivity {
     private Map<String, Integer> mMap = new HashMap<>();
     private int mType;
 
+    private WinningPopWindow mWinningPopWindow;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_start);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        EventBus.getDefault().register(this);//初始化EventBus
         init();
+    }
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(EventBusUtil.winning_show)) {
+            show(event.getContent());
+        } else if (msg.equals(EventBusUtil.winning_shut_down)) {
+            shutDown();
+        }
+    }
+
+    private void show(final String content) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWinningPopWindow = new WinningPopWindow(MyStartActivity.this, content, mRlTitle);
+            }
+        });
+    }
+
+    private void shutDown() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mWinningPopWindow != null) {
+                    mWinningPopWindow.dismiss();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//初始化EventBus
     }
 
     @Override
@@ -111,14 +161,14 @@ public class MyStartActivity extends BaseActivity {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 if (isFinish)
-                initData(mType, PULL_DOWN);
+                    initData(mType, PULL_DOWN);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 if (isFinish)
-                initData(mType, PULL_UP);
+                    initData(mType, PULL_UP);
             }
         });
     }
