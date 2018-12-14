@@ -791,79 +791,83 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
 
         GuessHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
-            mTvReward.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mDataBean.getIs_self() == 1) {
-                        ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.self_dynamic_no_reward));
-                    }else {
+            try {
+                ButterKnife.bind(this, view);
+                mTvReward.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mDataBean.getIs_self() == 1) {
+                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.self_dynamic_no_reward));
+                        }else {
+                            Intent intent = new Intent(mContext, RewardActivity.class);
+                            intent.putExtra("name", mDataBean.getUser_name());
+                            intent.putExtra("url", mDataBean.getAvatar());
+                            intent.putExtra("dynamic_id", mDataBean.getId());
+                            mContext.startActivity(intent);
+                        }
+                    }
+                });
+                mTvReward.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         Intent intent = new Intent(mContext, RewardActivity.class);
                         intent.putExtra("name", mDataBean.getUser_name());
                         intent.putExtra("url", mDataBean.getAvatar());
                         intent.putExtra("dynamic_id", mDataBean.getId());
                         mContext.startActivity(intent);
                     }
-                }
-            });
-            mTvReward.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, RewardActivity.class);
-                    intent.putExtra("name", mDataBean.getUser_name());
-                    intent.putExtra("url", mDataBean.getAvatar());
-                    intent.putExtra("dynamic_id", mDataBean.getId());
-                    mContext.startActivity(intent);
-                }
-            });
-            mTvPinglun.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.comment));
-                    messageEvent.setState(mDataBean.getId() + "");
-                    messageEvent.setType(false);
-                    EventBus.getDefault().post(messageEvent);
-                }
-            });
-            mTvZan.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mDynamicPresenter.like(mDataBean.getId() + "", new DynamicPresenter.CallBack4() {
-                        @Override
-                        public void send(LikeInfo data) {
-                            mTvZan.setText(data.getData().getLikeCounts() + "");
-                            if (data.getData().getStatus() == 1) {
-                                mTvZan.setSelected(true);
-                            } else {
-                                mTvZan.setSelected(false);
-                            }
-                        }
-                    });
-                }
-            });
-            mIvTouxiang.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, IndividualDetailsActivity.class);
-                    intent.putExtra("roomId", mDataBean.getToco_id());
-                    intent.putExtra("name", mDataBean.getUser_name());
-                    intent.putExtra("user", mDataBean.getToco_id());
-                    mContext.startActivity(intent);
-                }
-            });
-            mTvLookAll.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mTvLookAll.setVisibility(View.GONE);
-                    if (mDataBean.getReviewList().size() != 0) {
-                        mRlComment.setVisibility(View.VISIBLE);
-                        mCommentView.setList(mDataBean.getReviewList(), mDataBean.getId());
-                        mCommentView.notifyDataSetChanged();
-                    } else {
-                        mRlComment.setVisibility(View.GONE);
+                });
+                mTvPinglun.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.comment));
+                        messageEvent.setState(mDataBean.getId() + "");
+                        messageEvent.setType(false);
+                        EventBus.getDefault().post(messageEvent);
                     }
-                }
-            });
+                });
+                mTvZan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDynamicPresenter.like(mDataBean.getId() + "", new DynamicPresenter.CallBack4() {
+                            @Override
+                            public void send(LikeInfo data) {
+                                mTvZan.setText(data.getData().getLikeCounts() + "");
+                                if (data.getData().getStatus() == 1) {
+                                    mTvZan.setSelected(true);
+                                } else {
+                                    mTvZan.setSelected(false);
+                                }
+                            }
+                        });
+                    }
+                });
+                mIvTouxiang.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mContext, IndividualDetailsActivity.class);
+                        intent.putExtra("roomId", mDataBean.getToco_id());
+                        intent.putExtra("name", mDataBean.getUser_name());
+                        intent.putExtra("user", mDataBean.getToco_id());
+                        mContext.startActivity(intent);
+                    }
+                });
+                mTvLookAll.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mTvLookAll.setVisibility(View.GONE);
+                        if (mDataBean.getReviewList().size() != 0) {
+                            mRlComment.setVisibility(View.VISIBLE);
+                            mCommentView.setList(mDataBean.getReviewList(), mDataBean.getId());
+                            mCommentView.notifyDataSetChanged();
+                        } else {
+                            mRlComment.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {

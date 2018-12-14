@@ -15,7 +15,7 @@ public class WinningManager {
     public static final int SHUT_DOWN=1;
     public static final int SHOW=2;
     private boolean isShow=true;
-    private long time=2000;
+    private long time=3000;
     private static WinningManager mInstance;
 
     Handler mHandler=new Handler(Looper.getMainLooper()){

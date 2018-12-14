@@ -678,7 +678,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<TransferListInfo> getTransRecord(
             @Header("Authorization") String token,
-            @Field("page_id") int page_id,
+            @Field("page") int page_id,
             @Field("page_size") int page_size,
             @Field("type") String type,
             @Field("date") String date

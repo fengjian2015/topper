@@ -86,7 +86,7 @@ public class PayRecordActivity extends BaseActivity {
     private Dialog mBottomDialog;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int mPage_id = 0;
+    private int mPage_id = 1;
     private int mPageSize = 10;
     boolean isFinish = true;
     String mTypes = "";
@@ -106,7 +106,7 @@ public class PayRecordActivity extends BaseActivity {
         initIntent();
         initRecycler();
         initMap();
-        initData(PULL_DOWN);
+        initData(PULL_DOWN,1);
         initListener();
     }
 
@@ -121,7 +121,7 @@ public class PayRecordActivity extends BaseActivity {
             public void onLoadMore(RefreshLayout refreshLayout) {
                 refreshLayout.finishLoadMore(1000);
                 if (isFinish) {
-                    initData(PULL_UP);
+                    initData(PULL_UP,mPage_id+1);
                 }
             }
         });
@@ -149,19 +149,18 @@ public class PayRecordActivity extends BaseActivity {
 
     List<TransferListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData(final int type) {
-        if (type == PULL_DOWN) {
-            mPage_id = 0;
-        }
+    private void initData(final int type,int page) {
         isFinish = false;
-        mReceiptPaymentPresenter.transRecord(mPage_id, mPageSize, mTypes, mDate, new ReceiptPaymentPresenter.CallBack4() {
+        mReceiptPaymentPresenter.transRecord(page, mPageSize, mTypes, mDate, new ReceiptPaymentPresenter.CallBack4() {
             @Override
             public void send(List<TransferListInfo.DataBean> data) {
                 if (ActivityUtil.isActivityOnTop(PayRecordActivity.this)) {
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
+                            mPage_id=1;
                             mRefreshLayout.finishRefresh();
                         } else {
+                            mPage_id++;
                             mRefreshLayout.finishLoadMore();
                         }
                         isFinish = true;
@@ -178,9 +177,6 @@ public class PayRecordActivity extends BaseActivity {
                                 }
                             }
                             mDataList.addAll(data);
-                            if (mDataList.size() != 0) {
-                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
-                            }
                             mPayRecordRVAdapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);
@@ -235,7 +231,7 @@ public class PayRecordActivity extends BaseActivity {
                 showFiltrateDialog();
                 break;
             case R.id.ll_error:
-                initData(PULL_DOWN);
+                initData(PULL_DOWN,1);
                 break;
         }
     }
@@ -255,7 +251,7 @@ public class PayRecordActivity extends BaseActivity {
                         mDate = options1Items.get(options1).getPickerViewText()
                                 + "-" + options2Items.get(options1).get(options2);
                         mTvDate.setText(mDate);
-                        initData(PULL_DOWN);
+                        initData(PULL_DOWN,1);
                     }
                 }
             })
@@ -380,7 +376,7 @@ public class PayRecordActivity extends BaseActivity {
                 }else if (typeName.equals(getString(R.string.guess))) {
                     mTypes = "8";
                 }
-                initData(PULL_DOWN);
+                initData(PULL_DOWN,1);
                 mMap.put(getString(R.string.filtrate), position);
                 mBottomDialog.dismiss();
             }
