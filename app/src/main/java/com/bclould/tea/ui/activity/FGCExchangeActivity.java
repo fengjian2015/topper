@@ -230,12 +230,16 @@ public class FGCExchangeActivity extends BaseActivity implements OnChartGestureL
             Float max = Collections.max(ylist);//获取最大值
             Float min = Collections.min(ylist);
             YAxis leftAxis = mLineChar.getAxisLeft();
-            if(min>3000) {
-                min=min-500;
-                leftAxis.setAxisMinimum(min);
-            }else if(min>1000){
-                min=min-100;
-            }
+//            if(min>3000) {
+//                min=min-500;
+//                leftAxis.setAxisMinimum(min);
+//            }else if(min>1000){
+//                min=min-100;
+//            }else if(min>10){
+//                min=min-10;
+//            }
+            min=min-((max+min)/2-min);
+
             leftAxis.setAxisMinimum(min);
             mMonths.clear();
             values.add(new Entry(0,  min));
