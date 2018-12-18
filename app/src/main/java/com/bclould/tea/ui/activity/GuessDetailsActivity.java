@@ -1330,7 +1330,7 @@ public class GuessDetailsActivity extends BaseActivity {
     }
 
     private void bet(String password, final int count) {
-
+        if(!ActivityUtil.isActivityOnTop(this))return;
         UtilTool.Log("數組", mRandomSumArr);
         mBlockchainGuessPresenter.bet(mBet_id, mPeriod_qty, mCoin_id, mRandomSumArr, password, new BlockchainGuessPresenter.CallBack5() {
             @Override

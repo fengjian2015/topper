@@ -9,7 +9,6 @@
     <RelativeLayout
         style="@style/TopNavigationBarStyle">
 
-
         <ImageView
             android:id="@+id/bark"
             android:layout_width="wrap_content"
