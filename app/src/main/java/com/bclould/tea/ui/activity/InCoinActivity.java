@@ -37,12 +37,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class InCoinActivity extends BaseActivity {
-
-
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_record)
-    TextView mTvRecord;
     @Bind(R.id.tv_count)
     TextView mTvCount;
     @Bind(R.id.iv_site_qr)
@@ -72,6 +66,7 @@ public class InCoinActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_coin);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.in_coin),getString(R.string.record));
         MyApp.getInstance().addActivity(this);
         initIntent();
         initData();
@@ -129,7 +124,7 @@ public class InCoinActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_record, R.id.btn_copy})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_add, R.id.btn_copy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -138,7 +133,7 @@ public class InCoinActivity extends BaseActivity {
             case R.id.ll_error:
                 initData();
                 break;
-            case R.id.tv_record:
+            case R.id.tv_add:
                 Intent intent = new Intent(this, BillDetailsActivity.class);
                 intent.putExtra("type", 0);
                 intent.putExtra("coin_id", mId + "");

@@ -7,25 +7,9 @@
     android:orientation="vertical"
     android:background="@color/app_bg_color"
     tools:context="com.bclould.tea.ui.activity.FinancialDetailActivity">
-    <RelativeLayout
-        style="@style/TopNavigationBarStyle"
-        >
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/purchase_history"/>
-    </RelativeLayout>
-    <TextView
-        style="@style/HorizontalBoundaryStyle"/>
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y130"

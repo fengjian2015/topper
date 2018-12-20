@@ -44,12 +44,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class NewFriendActivity extends BaseActivity {
-
-
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_add)
-    ImageView mTvAdd;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private DBManager mMgr;
@@ -62,6 +56,7 @@ public class NewFriendActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_friend);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.new_friend),R.mipmap.icon_nav_add);
         EventBus.getDefault().register(this);
         mPersonalDetailsPresenter = new PersonalDetailsPresenter(this);
         mMgr = new DBManager(this);
@@ -124,13 +119,13 @@ public class NewFriendActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.tv_add})
+    @OnClick({R.id.bark, R.id.iv_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_add:
+            case R.id.iv_more:
                 startActivity(new Intent(this, AddFriendActivity.class));
                 break;
         }

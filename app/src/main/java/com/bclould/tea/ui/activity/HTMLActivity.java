@@ -34,20 +34,10 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class HTMLActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView bark;
-    @Bind(R.id.tv_title)
-    TextView tvTitle;
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;
     @Bind(R.id.web_view)
     WebView mWebView;
-    @Bind(R.id.iv_finish)
-    ImageView mIvFinish;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     private String html5Url;
 
     @Override
@@ -55,6 +45,7 @@ public class HTMLActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_html);
         ButterKnife.bind(this);
+        setHtmlTitle("");
         MyApp.getInstance().app().addActivity(this);
         init();
     }
@@ -135,9 +126,9 @@ public class HTMLActivity extends BaseActivity {
 
             @Override
             public void onReceivedTitle(WebView view, String title) {
-                if (!StringUtils.isEmpty(title)&&tvTitle!=null) {
+                if (!StringUtils.isEmpty(title)&&mTvTitleTop!=null) {
 //                    if (!(Tools.checkHttp(title) || Tools.checkLinkedExe(title))) {
-                    tvTitle.setText(title);
+                    mTvTitleTop.setText(title);
 //                    }
                 }
                 super.onReceivedTitle(view, title);

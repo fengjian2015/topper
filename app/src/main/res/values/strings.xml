@@ -2364,4 +2364,5 @@
     <string name="available_fgc">可用GC:</string>
     <string name="change_username">修改昵称</string>
     <string name="no_data">暂无数据</string>
+    <string name="public_open">系统公众号已对外开放，个人或企业用户申请\n联系方式：</string>
 </resources>

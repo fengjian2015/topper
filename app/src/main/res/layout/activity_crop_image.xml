@@ -7,39 +7,9 @@
               android:background="@color/app_bg_color"
               android:orientation="vertical"
               tools:context="com.bclould.tea.ui.activity.CropImageActivity">
-
-    <RelativeLayout
+    <include
         android:id="@+id/rl_title"
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:maxWidth="@dimen/x300"
-            android:singleLine="true"
-            android:text="@string/crop"/>
-
-        <TextView
-            android:id="@+id/tv_ok"
-            style="@style/BlueTextStyle28"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:paddingRight="@dimen/x20"
-            android:text="@string/finish"/>
-    </RelativeLayout>
+        layout="@layout/activity_top"/>
 
     <com.isseiaoki.simplecropview.CropImageView
         android:id="@+id/CropImageView"

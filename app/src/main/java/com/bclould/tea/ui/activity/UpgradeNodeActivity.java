@@ -65,6 +65,7 @@ public class UpgradeNodeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upgrade_node);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.upgrade_node),getString(R.string.purchase_history));
         EventBus.getDefault().register(this);
         init();
         initData();
@@ -129,13 +130,13 @@ public class UpgradeNodeActivity extends BaseActivity {
         mTvAvailable.setText(mUpgradeInfo.getData().getOver_num());
     }
 
-    @OnClick({R.id.bark,R.id.tv_history})
+    @OnClick({R.id.bark,R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_history:
+            case R.id.tv_add:
                 startActivity(new Intent(UpgradeNodeActivity.this,HistoryActivity.class));
                 break;
         }

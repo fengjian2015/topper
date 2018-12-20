@@ -37,12 +37,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class OrderCloseActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
-    @Bind(R.id.tv_question)
-    TextView mTvQuestion;
     @Bind(R.id.tv_order_type)
     TextView mTvOrderType;
     @Bind(R.id.tv_who)
@@ -101,6 +95,7 @@ public class OrderCloseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_close);
         ButterKnife.bind(this);
+        setTitle("",getString(R.string.help));
         MyApp.getInstance().addActivity(this);
         mOrderDetailsPresenter = new OrderDetailsPresenter(this);
         initIntent();
@@ -140,7 +135,7 @@ public class OrderCloseActivity extends BaseActivity {
                             mLlFinish.setVisibility(View.VISIBLE);
                             mTvOrderType.setTextColor(getResources().getColor(R.color.color_orange));
                         }
-                        mTvTitle.setText(getString(R.string.buy) + data.getCoin_name());
+                        mTvTitleTop.setText(getString(R.string.buy) + data.getCoin_name());
                         mTvShijiHint.setText(getString(R.string.shiji_out_coin));
                     } else {
                         if (data.getStatus() == 0) {
@@ -155,7 +150,7 @@ public class OrderCloseActivity extends BaseActivity {
                             mLlFinish.setVisibility(View.VISIBLE);
                             mTvOrderType.setTextColor(getResources().getColor(R.color.color_orange));
                         }
-                        mTvTitle.setText(getString(R.string.work_off) + data.getCoin_name());
+                        mTvTitleTop.setText(getString(R.string.work_off) + data.getCoin_name());
                         mTvShijiHint.setText(getString(R.string.shijikouchu));
                     }
                     mTvMoney.setText(data.getTrans_amount());
@@ -194,13 +189,13 @@ public class OrderCloseActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.tv_question, R.id.btn_confirm, R.id.ll_error})
+    @OnClick({R.id.bark, R.id.tv_add, R.id.btn_confirm, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_question:
+            case R.id.tv_add:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.btn_confirm:

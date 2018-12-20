@@ -33,10 +33,6 @@ import butterknife.OnClick;
 public class SubscribeCoinActivity extends BaseActivity {
 
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.iv_query)
-    ImageView mIvQuery;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private SubscribeCoinRVAdatper mAdatper;
@@ -47,6 +43,7 @@ public class SubscribeCoinActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscribe_coin);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.add),R.mipmap.icon_bg_btc);
         initData();
         MyApp.getInstance().addActivity(this);
     }
@@ -77,13 +74,13 @@ public class SubscribeCoinActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.bark, R.id.iv_query})
+    @OnClick({R.id.bark, R.id.iv_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.iv_query:
+            case R.id.iv_more:
                 break;
         }
     }

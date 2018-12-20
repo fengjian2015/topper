@@ -60,10 +60,6 @@ import static com.bclould.tea.R.style.BottomDialog;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PayRecordActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_filtrate)
-    TextView mTvFiltrate;
     @Bind(R.id.tv_date)
     TextView mTvDate;
     @Bind(R.id.rl_date_selector)
@@ -101,6 +97,7 @@ public class PayRecordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_record);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.payment_record),getString(R.string.filtrate));
         MyApp.getInstance().addActivity(this);
         getOptionData();
         initIntent();
@@ -218,7 +215,7 @@ public class PayRecordActivity extends BaseActivity {
         mRecyclerView.setAdapter(mPayRecordRVAdapter);
     }
 
-    @OnClick({R.id.bark, R.id.rl_date_selector, R.id.tv_filtrate, R.id.ll_error})
+    @OnClick({R.id.bark, R.id.rl_date_selector, R.id.tv_add, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -227,7 +224,7 @@ public class PayRecordActivity extends BaseActivity {
             case R.id.rl_date_selector:
                 initOptionPicker();
                 break;
-            case R.id.tv_filtrate:
+            case R.id.tv_add:
                 showFiltrateDialog();
                 break;
             case R.id.ll_error:

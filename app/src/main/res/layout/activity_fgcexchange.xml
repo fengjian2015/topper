@@ -7,27 +7,9 @@
     android:background="@color/app_bg_color"
     android:orientation="vertical"
     tools:context="com.bclould.tea.ui.activity.FGCExchangeActivity">
-
-    <RelativeLayout
+    <include
         android:id="@+id/rl_title"
-        style="@style/TopNavigationBarStyle">
-
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return" />
-
-        <TextView
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/exchange_fgc" />
-
-    </RelativeLayout>
+        layout="@layout/activity_top"/>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"

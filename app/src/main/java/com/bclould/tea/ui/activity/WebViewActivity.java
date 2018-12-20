@@ -39,14 +39,6 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class WebViewActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.title_name)
-    TextView mTitleName;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;
     @Bind(R.id.web_view)
@@ -61,6 +53,7 @@ public class WebViewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
         ButterKnife.bind(this);
+        setTitle("");
         MyApp.getInstance().addActivity(this);
         initIntent();
         initWebView();
@@ -145,7 +138,7 @@ public class WebViewActivity extends BaseActivity {
     private void initIntent() {
         mUrl = getIntent().getStringExtra("url");
         mTitle = getIntent().getStringExtra("title");
-        mTitleName.setText(mTitle);
+        mTvTitleTop.setText(mTitle);
     }
 
     @OnClick({R.id.bark, R.id.ll_load_error})

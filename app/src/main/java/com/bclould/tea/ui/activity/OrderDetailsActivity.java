@@ -46,12 +46,6 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class OrderDetailsActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
-    @Bind(R.id.tv_help)
-    TextView mTvHelp;
     @Bind(R.id.tv_order_number)
     TextView mTvOrderNumber;
     @Bind(R.id.tv_pay_type)
@@ -163,6 +157,7 @@ public class OrderDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
         ButterKnife.bind(this);
+        setTitle("",getString(R.string.help));
         MyApp.getInstance().addActivity(this);
         initInterface();
     }
@@ -186,7 +181,7 @@ public class OrderDetailsActivity extends BaseActivity {
             mType1 = mData.getType();
             mTimer.schedule(mTask, 1000, 1000);
             if (mData.getType() == 1) {
-                mTvTitle.setText(getString(R.string.buy) + mData.getCoin_name());
+                mTvTitleTop.setText(getString(R.string.buy) + mData.getCoin_name());
                 mLlBuyer.setVisibility(View.VISIBLE);
                 mLlSeller.setVisibility(View.GONE);
                 mTvPaymentType.setText(getString(R.string.payment_method));
@@ -194,7 +189,7 @@ public class OrderDetailsActivity extends BaseActivity {
             } else {
                 mLlBuyer.setVisibility(View.GONE);
                 mLlSeller.setVisibility(View.VISIBLE);
-                mTvTitle.setText(getString(R.string.work_off) + mData.getCoin_name());
+                mTvTitleTop.setText(getString(R.string.work_off) + mData.getCoin_name());
                 mTvPaymentType.setText(getString(R.string.shoukuan_fs));
                 mTvPayType.setText(getString(R.string.dengdai_sk));
             }
@@ -254,11 +249,11 @@ public class OrderDetailsActivity extends BaseActivity {
                     if (data.getType() == 1) {
                         mLlBuyer.setVisibility(View.VISIBLE);
                         mLlSeller.setVisibility(View.GONE);
-                        mTvTitle.setText(getString(R.string.buy) + data.getCoin_name());
+                        mTvTitleTop.setText(getString(R.string.buy) + data.getCoin_name());
                     } else {
                         mLlBuyer.setVisibility(View.GONE);
                         mLlSeller.setVisibility(View.VISIBLE);
-                        mTvTitle.setText(getString(R.string.work_off) + data.getCoin_name());
+                        mTvTitleTop.setText(getString(R.string.work_off) + data.getCoin_name());
                     }
                     if (data.getStatus() == 0) {
                         mLlBuyer.setVisibility(View.GONE);
@@ -367,7 +362,7 @@ public class OrderDetailsActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.ll_error, R.id.btn_contact, R.id.bark, R.id.tv_help, R.id.btn_buy_cancel, R.id.btn_sell_cancel, R.id.btn_buy_confirm, R.id.btn_sell_confirm})
+    @OnClick({R.id.ll_error, R.id.btn_contact, R.id.bark, R.id.tv_add, R.id.btn_buy_cancel, R.id.btn_sell_cancel, R.id.btn_buy_confirm, R.id.btn_sell_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -394,7 +389,7 @@ public class OrderDetailsActivity extends BaseActivity {
                     Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.tv_help:
+            case R.id.tv_add:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.btn_buy_cancel:

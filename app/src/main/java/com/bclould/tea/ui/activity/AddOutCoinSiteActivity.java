@@ -62,6 +62,7 @@ public class AddOutCoinSiteActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_out_coin_site);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.add_site));
         initInterface();
         MyApp.getInstance().addActivity(this);
     }

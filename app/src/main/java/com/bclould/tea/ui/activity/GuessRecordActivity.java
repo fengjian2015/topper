@@ -49,8 +49,6 @@ import butterknife.OnClick;
 public class GuessRecordActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
@@ -64,7 +62,7 @@ public class GuessRecordActivity extends BaseActivity {
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
     @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
+    View mRlTitle;
     private GuessListRVAdapter mGuessListRVAdapter;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private int PULL_UP = 0;
@@ -79,6 +77,7 @@ public class GuessRecordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess_record);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.guess_record));
         MyApp.getInstance().addActivity(this);
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(this);
         EventBus.getDefault().register(this);//初始化EventBus

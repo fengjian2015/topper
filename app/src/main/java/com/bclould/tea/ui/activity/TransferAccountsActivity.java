@@ -34,10 +34,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class TransferAccountsActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_record)
-    TextView mTvRecord;
     @Bind(R.id.et_email)
     EditText mEtEmail;
     @Bind(R.id.et_coin_count)
@@ -65,6 +61,7 @@ public class TransferAccountsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer_accounts);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.transfer),getString(R.string.record));
         MyApp.getInstance().addActivity(this);
         initIntent();
     }
@@ -83,13 +80,13 @@ public class TransferAccountsActivity extends BaseActivity {
         mTvCoinName.setText(mCoinName);
     }
 
-    @OnClick({R.id.bark, R.id.tv_record, R.id.btn_confirm})
+    @OnClick({R.id.bark, R.id.tv_add, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_record:
+            case R.id.tv_add:
                 Intent intent = new Intent(this, BillDetailsActivity.class);
                 intent.putExtra("type", 2);
                 startActivity(intent);

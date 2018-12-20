@@ -61,10 +61,6 @@ public class StartGuessActivity extends BaseActivity {
 
     private static final int DEADLINE = 0;
     private static final int GUESS_TYPE = 1;
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     @Bind(R.id.tv_hint)
     TextView mTvHint;
     @Bind(R.id.tv_type)
@@ -104,7 +100,7 @@ public class StartGuessActivity extends BaseActivity {
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
     @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
+    View mRlTitle;
 
     private Dialog mBottomDialog;
     private int mId;
@@ -119,6 +115,7 @@ public class StartGuessActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_guess);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.start_guess));
         MyApp.getInstance().addActivity(this);
         mEtSingleInsertCount.setKeyListener(null);
         EventBus.getDefault().register(this);//初始化EventBus

@@ -1271,4 +1271,5 @@
     <string name="available_fgc">可用GC:</string>
     <string name="change_username">修改暱稱</string>
     <string name="no_data">暫無數據</string>  
+    <string name="public_open">系統公眾號已對外開放，個人或企業用戶申請\n聯繫方式：</string>
 </resources>

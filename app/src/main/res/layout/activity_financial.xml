@@ -7,45 +7,20 @@
     android:background="@color/app_bg_color"
     android:orientation="vertical"
     tools:context="com.bclould.tea.ui.activity.FinancialActivity">
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
 
-    <RelativeLayout android:id="@+id/rl1" style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return" />
-
-        <TextView
-            android:id="@+id/title"
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:drawableRight="@mipmap/icon_right"
-            android:drawablePadding="@dimen/x10"
-            android:text="@string/manage_money" />
-        <ImageView
-            android:id="@+id/iv_transfer"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/icon_transfer" />
-    </RelativeLayout>
-    <TextView android:id="@+id/tv"
-        android:layout_below="@+id/rl1"
-        style="@style/HorizontalBoundaryStyle" />
     <LinearLayout
         android:id="@+id/ll_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/xx2"
-        android:layout_below="@+id/xx3"
+        android:layout_below="@+id/rl_title"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
 
         <ImageView
             android:id="@+id/iv2"
@@ -67,7 +42,7 @@
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tv"
+        android:layout_below="@+id/rl_title"
         android:layout_above="@+id/ll_data"
         >
     <com.scwang.smartrefresh.header.WaterDropHeader

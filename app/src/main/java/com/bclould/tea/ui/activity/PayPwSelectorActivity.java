@@ -42,8 +42,6 @@ public class PayPwSelectorActivity extends BaseActivity {
 
     public static final String GESTURE_PW_SELE = "gesture_pw_sele";
     public static final String FINGERPRINT_PW_SELE = "fingerprint_pw_sele";
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.tv_gesture)
     TextView mTvGesture;
     @Bind(R.id.on_off_gesture)
@@ -65,6 +63,7 @@ public class PayPwSelectorActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_pw_selector);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.set_app_look));
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }

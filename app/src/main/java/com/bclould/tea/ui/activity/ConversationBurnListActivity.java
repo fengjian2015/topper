@@ -56,6 +56,7 @@ public class ConversationBurnListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation_burn_list);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.burn_after_reading),R.mipmap.icon_nav_add);
         EventBus.getDefault().register(this);//初始化EventBus
         mDBManager=new DBManager(this);
         mDBConversationBurnManage=new DBConversationBurnManage(this);
@@ -163,7 +164,7 @@ public class ConversationBurnListActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.iv_else, R.id.bark})
+    @OnClick({R.id.iv_more, R.id.bark})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:

@@ -55,8 +55,6 @@ import static com.bclould.tea.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class RealNameC1Activity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.iv_auth_type)
     ImageView mIvAuthType;
     @Bind(R.id.tv_cause)
@@ -113,6 +111,7 @@ public class RealNameC1Activity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_real_namec1);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.real_name_verify));
         mRealNamePresenter = new RealNamePresenter(this);
         MyApp.getInstance().addActivity(this);
         if (!EventBus.getDefault().isRegistered(this)) {

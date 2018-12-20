@@ -74,10 +74,6 @@ public class GuessDetailsActivity extends BaseActivity {
     private static final int MINUS = 1;
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.title)
-    TextView mTitle;
-    @Bind(R.id.iv_share)
-    ImageView mIvShare;
     @Bind(R.id.tv_day)
     TextView mTvDay;
     @Bind(R.id.tv2)
@@ -233,7 +229,7 @@ public class GuessDetailsActivity extends BaseActivity {
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
     @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
+    View mRlTitle;
     private int mBet_id;
     private int mPeriod_qty;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
@@ -323,6 +319,8 @@ public class GuessDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess_details);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.coin_quiz_detail),R.mipmap.ico_news_share);
+        mImageView.setVisibility(View.GONE);
         MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();
@@ -446,9 +444,9 @@ public class GuessDetailsActivity extends BaseActivity {
                             mLlGuessCount.setVisibility(View.GONE);
                             mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
                             mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
-                            mIvShare.setVisibility(View.GONE);
+                            mImageView.setVisibility(View.GONE);
                         } else {
-                            mIvShare.setVisibility(View.VISIBLE);
+                            mImageView.setVisibility(View.VISIBLE);
                             if (data.getOver_count_num() == 0) {
                                 mLlGuessCount.setVisibility(View.GONE);
                                 mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
@@ -458,7 +456,7 @@ public class GuessDetailsActivity extends BaseActivity {
                             }
                         }
                     } else if (data.getStatus() == 3) {
-                        mIvShare.setVisibility(View.GONE);
+                        mImageView.setVisibility(View.GONE);
                         mLlNo.setVisibility(View.GONE);
                         mLlAlready.setVisibility(View.VISIBLE);
                         String[] split = data.getWin_number().split("_");
@@ -467,7 +465,7 @@ public class GuessDetailsActivity extends BaseActivity {
                         mTvNumber3.setText(split[2]);
                         mTvNumber4.setText(split[3]);
                     } else if (data.getStatus() == 4) {
-                        mIvShare.setVisibility(View.GONE);
+                        mImageView.setVisibility(View.GONE);
                         mLlNo.setVisibility(View.VISIBLE);
                         mLlAlready.setVisibility(View.GONE);
                         mLlGuessCount.setVisibility(View.GONE);
@@ -841,12 +839,12 @@ public class GuessDetailsActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.ll_error, R.id.iv_share, R.id.ll_hash, R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
+    @OnClick({R.id.ll_error, R.id.iv_more, R.id.ll_hash, R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
-            case R.id.iv_share:
+            case R.id.iv_more:
                 showShareDialog();
                 break;
             case R.id.ll_hash:

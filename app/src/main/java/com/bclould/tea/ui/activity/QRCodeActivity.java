@@ -39,8 +39,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
 public class QRCodeActivity extends BaseActivity {
 
 
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.qr_code_iv)
     ImageView mQrCodeIv;
     @Bind(R.id.touxiang)
@@ -59,6 +57,7 @@ public class QRCodeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_code);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.qr_code),getString(R.string.share));
         MyApp.getInstance().addActivity(this);
         initIntent();
         init();
@@ -103,13 +102,13 @@ public class QRCodeActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.btn_save_qr, R.id.tv_share})
+    @OnClick({R.id.bark, R.id.btn_save_qr, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_share:
+            case R.id.tv_add:
                 goShare();
                 break;
             case R.id.btn_save_qr:

@@ -59,12 +59,6 @@ import static com.bclould.tea.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MyJoinActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
-    @Bind(R.id.tv_filtrate)
-    TextView mTvFiltrate;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.iv)
@@ -78,7 +72,7 @@ public class MyJoinActivity extends BaseActivity {
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
     @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
+    View mRlTitle;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private int mType;
     private List<String> mFiltrateList = new ArrayList<>();
@@ -97,6 +91,7 @@ public class MyJoinActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_join);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.my_join),getString(R.string.filtrate));
         MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         init();
@@ -262,13 +257,13 @@ public class MyJoinActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.tv_filtrate})
+    @OnClick({R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_filtrate:
+            case R.id.tv_add:
                 showDialog();
                 break;
         }

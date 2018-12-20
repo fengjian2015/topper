@@ -52,6 +52,7 @@ public class GroupMemberActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         ButterKnife.bind(this);
+        setTitle(getString(R.string.group_member_manage));
         mDBRoomMember = new DBRoomMember(this);
         mMgr=new DBManager(this);
         mDBRoomManage=new DBRoomManage(this);

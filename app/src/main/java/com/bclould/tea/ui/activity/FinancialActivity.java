@@ -73,8 +73,6 @@ public class FinancialActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
-    @Bind(R.id.title)
-    TextView mTitle;
     @Bind(R.id.tv_type)
     TextView mTvType;
     @Bind(R.id.tv_asset_transfer)
@@ -102,6 +100,9 @@ public class FinancialActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_financial);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.manage_money),R.mipmap.icon_transfer);
+        mTvTitleTop.setCompoundDrawablePadding(10);
+        mTvTitleTop.setCompoundDrawablesWithIntrinsicBounds(null,null, getResources().getDrawable(R.mipmap.icon_right),null);
         EventBus.getDefault().register(this);//初始化EventBus
         initCoin();
         initAdapter();
@@ -175,13 +176,13 @@ public class FinancialActivity extends BaseActivity {
         mFinancialGridAdapter.notifyDataSetChanged();
     }
 
-    @OnClick({R.id.bark, R.id.title, R.id.tv_asset_transfer, R.id.tv_transfer_assets, R.id.rl_income_breakdown, R.id.rl_financial_record, R.id.iv_transfer, R.id.ll_error})
+    @OnClick({R.id.bark, R.id.tv_title_top, R.id.tv_asset_transfer, R.id.tv_transfer_assets, R.id.rl_income_breakdown, R.id.rl_financial_record, R.id.iv_more, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.title:
+            case R.id.tv_title_top:
                 showCoinDialog();
                 break;
             case R.id.tv_asset_transfer:
@@ -198,7 +199,7 @@ public class FinancialActivity extends BaseActivity {
                 // 2018/9/30 理财记录
                 goHistory(1);
                 break;
-            case R.id.iv_transfer:
+            case R.id.iv_more:
                 // 2018/10/11 转账记录
                 goTransferRecord();
                 break;
@@ -337,7 +338,7 @@ public class FinancialActivity extends BaseActivity {
 
     private void setCoinName(String coinName) {
         mCoinName = coinName;
-        mTitle.setText(coinName + getString(R.string.manage_money));
+        mTvTitleTop.setText(coinName + getString(R.string.manage_money));
         mTvType.setText(getString(R.string.total_assets1) + "(" + coinName + ")");
     }
 

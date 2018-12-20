@@ -60,8 +60,6 @@ public class FinancialDetailActivity extends BaseActivity {
     TextView mTvTime;
     @Bind(R.id.btn_next)
     Button mBtnNext;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     @Bind(R.id.rl_huo)
     RelativeLayout mRlHuo;
     @Bind(R.id.et_money)
@@ -84,6 +82,7 @@ public class FinancialDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_financial_detail);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.purchase_history));
         init();
         setOnClick();
         initHttpCoin();
@@ -118,7 +117,7 @@ public class FinancialDetailActivity extends BaseActivity {
         int coin_id = getIntent().getIntExtra("coin_id", 0);
         String income_rate = getIntent().getStringExtra("income_rate");
         double rate_value = getIntent().getDoubleExtra("rate_value", 0);
-        mTvTitle.setText(getIntent().getStringExtra("title"));
+        mTvTitleTop.setText(getIntent().getStringExtra("title"));
 
         mDataBean.setId(coin_id);
         mDataBean.setCoin_over(UtilTool.parseDouble(coinOver));

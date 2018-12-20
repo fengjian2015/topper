@@ -37,8 +37,6 @@ import butterknife.OnClick;
 public class GuessShareDynamicActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_share)
-    TextView mTvShare;
     @Bind(R.id.text_et)
     EditText mTextEt;
     @Bind(R.id.scrollView)
@@ -64,6 +62,7 @@ public class GuessShareDynamicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess_share_dynamic);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.share),getString(R.string.share));
         MyApp.getInstance().addActivity(this);
         mDynamicPresenter = new DynamicPresenter(this);
         initIntent();
@@ -86,13 +85,13 @@ public class GuessShareDynamicActivity extends BaseActivity {
         mTvCoin.setText(mCoin_name + getString(R.string.guess));
     }
 
-    @OnClick({R.id.bark, R.id.tv_share})
+    @OnClick({R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_share:
+            case R.id.tv_add:
                 if (mTextEt.getText().toString().isEmpty()) {
                     ToastShow.showToast2(this, getString(R.string.et_content));
                 } else {

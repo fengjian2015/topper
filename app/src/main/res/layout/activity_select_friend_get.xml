@@ -7,23 +7,9 @@
     android:orientation="vertical"
     android:background="@color/app_bg_color"
     tools:context="com.bclould.tea.ui.activity.SelectFriendGetActivity">
-    <RelativeLayout
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/select_friends"
-            style="@style/MainTextShallowStyle36"/>
-    </RelativeLayout>
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/y80"

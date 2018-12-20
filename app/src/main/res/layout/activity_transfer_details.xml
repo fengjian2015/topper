@@ -4,48 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg_color">
-
-    <RelativeLayout
+    <include
         android:id="@+id/rl_title"
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/transfer_details"/>
-
-        <TextView
-            android:id="@+id/tv_transfer_record"
-            style="@style/BlueTextStyle28"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:paddingRight="@dimen/x20"
-            android:text="@string/record"/>
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/xx"
-        style="@style/HorizontalBoundaryStyle"
-        android:layout_below="@+id/rl_title"/>
+        layout="@layout/activity_top"/>
 
     <ImageView
         android:id="@+id/iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/xx"
+        android:layout_below="@+id/rl_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/y100"
         android:src="@mipmap/icon_w_ok"/>

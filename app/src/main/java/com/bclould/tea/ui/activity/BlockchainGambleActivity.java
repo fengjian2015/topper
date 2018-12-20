@@ -46,10 +46,6 @@ import butterknife.OnClick;
 public class BlockchainGambleActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
-    @Bind(R.id.iv_more)
-    ImageView mIvMore;
     @Bind(R.id.rl_title)
     RelativeLayout mRlTitle;
     @Bind(R.id.xx)
@@ -62,8 +58,6 @@ public class BlockchainGambleActivity extends BaseActivity {
     LinearLayout mLlMenu;
     @Bind(R.id.view_pager)
     ViewPager mViewPager;
-    @Bind(R.id.xx4)
-    TextView mXx4;
     private DisplayMetrics mDm;
     private ViewGroup mView;
     private int mHeightPixels;
@@ -75,6 +69,7 @@ public class BlockchainGambleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blockchain_gamble);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.insert_coins_guess),R.mipmap.icon_nav_add);
         EventBus.getDefault().register(this);//初始化EventBus
         MyApp.getInstance().addActivity(this);
         getPhoneSize();
@@ -210,7 +205,7 @@ public class BlockchainGambleActivity extends BaseActivity {
 
         mPopupWindow = new PopupWindow(mView, ViewGroup.LayoutParams.WRAP_CONTENT, (int) (getResources().getDimension(R.dimen.y200)), true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-        mPopupWindow.showAsDropDown(mXx4, (widthPixels - mPopupWindow.getWidth()), 0);
+        mPopupWindow.showAsDropDown(mTvTitleTop, (widthPixels - mPopupWindow.getWidth()), 0);
         popChildClick();
     }
 

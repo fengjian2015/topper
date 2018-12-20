@@ -39,12 +39,14 @@ public class AccountBindingActivity extends BaseActivity {
     @Bind(R.id.tv_desc)
     TextView mTvDesc;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_account_binding);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.account_binding));
         desc();
     }
 
@@ -87,7 +89,7 @@ public class AccountBindingActivity extends BaseActivity {
         new DistributionPresenter(this).bindTeam(email, password, new DistributionPresenter.CallBack() {
             @Override
             public void send(BaseInfo baseInfo) {
-                MySharedPreferences.getInstance().setBoolean(BIND_FTC,true);
+                MySharedPreferences.getInstance().setBoolean(BIND_FTC, true);
                 showDialog();
             }
 

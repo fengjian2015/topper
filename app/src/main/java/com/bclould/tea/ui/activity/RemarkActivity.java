@@ -34,10 +34,6 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class RemarkActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.save)
-    TextView mSave;
     @Bind(R.id.et_remark)
     EditText mEtRemark;
 
@@ -50,6 +46,7 @@ public class RemarkActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remark);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.remark),getString(R.string.save));
         MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         init();
@@ -69,13 +66,13 @@ public class RemarkActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.save})
+    @OnClick({R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.save:
+            case R.id.tv_add:
                 preserve();
                 break;
         }

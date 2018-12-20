@@ -43,10 +43,6 @@ public class OutCoinActivity extends BaseActivity {
 
     private static final int SELECTORSITE = 1;
     private static final int SCANOUTSITE = 3;
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_record)
-    TextView mTvRecord;
     @Bind(R.id.tv_out_coin_site)
     EditText mTvOutCoinSite;
     @Bind(R.id.iv_qr_code)
@@ -91,6 +87,7 @@ public class OutCoinActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_out_coin);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.out_coin),getString(R.string.record));
         MyApp.getInstance().addActivity(this);
         initIntent();
         initData();
@@ -135,7 +132,7 @@ public class OutCoinActivity extends BaseActivity {
         mTvCoinCount.setText(mOver);
     }
 
-    @OnClick({R.id.ll_error,R.id.iv_qr_code, R.id.bark, R.id.tv_record, R.id.iv_selector_site, R.id.btn_confirm})
+    @OnClick({R.id.ll_error,R.id.iv_qr_code, R.id.bark, R.id.tv_add, R.id.iv_selector_site, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -150,7 +147,7 @@ public class OutCoinActivity extends BaseActivity {
                 intent.putExtra("code", SCANOUTSITE);
                 startActivityForResult(intent, SCANOUTSITE);
                 break;
-            case R.id.tv_record:
+            case R.id.tv_add:
                 skipRecord();
                 break;
             case R.id.iv_selector_site:

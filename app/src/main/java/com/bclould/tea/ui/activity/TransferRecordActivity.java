@@ -41,6 +41,7 @@ public class TransferRecordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer_record);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.transfer_record));
         initIntent();
         init();
         initData();

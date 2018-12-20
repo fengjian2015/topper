@@ -7,34 +7,9 @@
               android:background="@color/app_bg_color"
               android:orientation="vertical"
               tools:context="com.bclould.tea.ui.activity.SearchPublicActivity">
-
-    <RelativeLayout
+    <include
         android:id="@+id/rl_title"
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:maxWidth="@dimen/x300"
-            android:singleLine="true"
-            android:textColor="@color/black"/>
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/xx"
-        style="@style/HorizontalBoundaryStyle"
-        android:layout_below="@+id/rl_title"/>
+        layout="@layout/activity_top"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"

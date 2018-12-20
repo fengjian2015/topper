@@ -57,12 +57,8 @@ public class BankCardActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     @Bind(R.id.add_bank_card)
     Button mAddBankCard;
-    @Bind(R.id.tv_delete)
-    TextView mTvDelete;
     @Bind(R.id.rl_title)
     RelativeLayout mRlTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     @Bind(R.id.iv2)
     ImageView mIv2;
     @Bind(R.id.ll_error)
@@ -79,6 +75,7 @@ public class BankCardActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_card);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.bank_card),"",getString(R.string.delete));
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);//初始化EventBus
         mBankCardPresenter = new BankCardPresenter(this);
@@ -145,7 +142,7 @@ public class BankCardActivity extends BaseActivity {
     boolean isDelete = false;
 
     //点击事件的处理
-    @OnClick({R.id.bark, R.id.add_bank_card, R.id.tv_delete, R.id.ll_error})
+    @OnClick({R.id.bark, R.id.add_bank_card, R.id.tv_add1, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -157,7 +154,7 @@ public class BankCardActivity extends BaseActivity {
             case R.id.add_bank_card:
                 showPWDialog();
                 break;
-            case R.id.tv_delete:
+            case R.id.tv_add1:
                 isDelete = !isDelete;
                 if (mRecyclerView.getChildCount() != 0) {
                     for (int i = 0; i < mRecyclerView.getChildCount(); i++) {

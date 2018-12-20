@@ -33,8 +33,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class FileUploadingActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.iv_img)
     ImageView mIvImg;
     @Bind(R.id.tv_count)
@@ -52,6 +50,7 @@ public class FileUploadingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_uploading);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.dynamic_uploading));
         mFileUploadingPresenter = FileUploadingPresenter.getInstance(MyApp.getInstance().app());
         mFileUploadingPresenter.setOnUploadingCallbackListener(mUploadingCallback);
         mProgressBar.setMax(100);

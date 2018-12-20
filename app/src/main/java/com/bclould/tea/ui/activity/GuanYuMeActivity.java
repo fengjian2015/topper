@@ -51,6 +51,7 @@ public class GuanYuMeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guanyu_me);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.guanyu_me));
         init();
         MyApp.getInstance().addActivity(this);
     }

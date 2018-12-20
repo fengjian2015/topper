@@ -99,6 +99,7 @@ public class FGCExchangeActivity extends BaseActivity implements OnChartGestureL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fgcexchange);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.exchange_fgc));
         MyApp.getInstance().addActivity(this);
         initRecylerView();
         setOnClick();

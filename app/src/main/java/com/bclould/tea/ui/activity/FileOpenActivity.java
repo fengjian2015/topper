@@ -70,6 +70,7 @@ public class FileOpenActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_open);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.file_preview));
         mDBManager = new DBManager(this);
         mFileDownloadPresenter = FileDownloadPresenter.getInstance(this);
         mFileDownloadPresenter.setOnDownloadCallbackListener(mDownloadCallback);

@@ -60,8 +60,6 @@ public class UpIdCardActivity extends BaseActivity {
     private static final int SHOUCHI = 2;
     private static final int HUZHENGMIAN = 3;
     private static final int HUSHOUCHI = 4;
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.zhengmian_iv)
     ImageView mZhengmianIv;
     @Bind(R.id.zhengmian)
@@ -88,8 +86,6 @@ public class UpIdCardActivity extends BaseActivity {
     RelativeLayout mHuFanmian;
     @Bind(R.id.ll_huzhao)
     LinearLayout mLlHuzhao;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     private String mType;
     private Map<Integer, String> mShenfenMap = new HashMap<>();
     private Map<Integer, String> mHuzhaoMap = new HashMap<>();
@@ -105,6 +101,7 @@ public class UpIdCardActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_up_idcard);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.up_id_card));
         MyApp.getInstance().addActivity(this);
         initIntent();
         initMap();
@@ -132,7 +129,7 @@ public class UpIdCardActivity extends BaseActivity {
         } else {
             mLlShenfen.setVisibility(View.GONE);
             mLlHuzhao.setVisibility(View.VISIBLE);
-            mTvTitle.setText(getString(R.string.up_hu_zhao));
+            mTvTitleTop.setText(getString(R.string.up_hu_zhao));
         }
     }
 

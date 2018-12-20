@@ -71,8 +71,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SelectFriendActivity extends BaseActivity implements SelectFriendAdapter.OnItemListener, MessageManageListener {
 
-    @Bind(R.id.bark)
-    ImageView bark;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.image)
@@ -98,6 +96,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_friend);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.select_friends));
         MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         initRecylerView();

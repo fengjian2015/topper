@@ -70,14 +70,6 @@ public class PushBuyingActivity extends BaseActivity {
     List<String> mTimeList = new ArrayList<>();
     List<String> mBuySellList = new ArrayList<>();
     List<String> mPayList = new ArrayList<>();
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
-    @Bind(R.id.tv_question)
-    TextView mTvQuestion;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
     @Bind(R.id.tv_hint)
     TextView mTvHint;
     @Bind(R.id.tv4)
@@ -194,6 +186,7 @@ public class PushBuyingActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_buying);
+        setTitle(getString(R.string.push_ad),getString(R.string.question));
         mCoinPresenter = new CoinPresenter(this);
         mPushBuyingPresenter = new PushBuyingPresenter(this);/*
         if (MyApp.getInstance().mOtcCoinList.size() != 0) {
@@ -336,7 +329,7 @@ public class PushBuyingActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.rl_buy_sell, R.id.bark, R.id.tv_question, R.id.rl_selector_currency, R.id.rl_county, R.id.rl_payment, R.id.rl_payment_time, R.id.btn_pushing})
+    @OnClick({R.id.rl_buy_sell, R.id.bark, R.id.tv_add, R.id.rl_selector_currency, R.id.rl_county, R.id.rl_payment, R.id.rl_payment_time, R.id.btn_pushing})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -345,7 +338,7 @@ public class PushBuyingActivity extends BaseActivity {
             case R.id.rl_buy_sell:
                 showDialog(mModeOfPayment, mBuySellList, BUYSELL, getString(R.string.buysell));
                 break;
-            case R.id.tv_question:
+            case R.id.tv_add:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.rl_selector_currency:

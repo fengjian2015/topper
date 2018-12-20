@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.bclould.tea.R;
 import com.bclould.tea.ui.activity.ConversationActivity;
@@ -18,6 +19,7 @@ import com.bclould.tea.ui.activity.DeblockingFingerprintActivity;
 import com.bclould.tea.ui.activity.DeblockingGestureActivity;
 import com.bclould.tea.ui.widget.GestureLockViewGroup;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.umeng.analytics.MobclickAgent;
 import java.util.List;
@@ -39,6 +41,11 @@ public class BaseActivity extends SwipeActivity {
     private Dialog mGestureDialog;
     private TextView mTvHint;
     private GestureLockViewGroup mGestureView;
+    protected TextView mTvTitleTop;
+    protected TextView mTvAdd;
+    protected TextView mTvAdd1;
+    protected ImageView mImageView;
+    protected ImageView mIvFinish;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +54,55 @@ public class BaseActivity extends SwipeActivity {
 //            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             getWindow().setStatusBarColor(getResources().getColor(R.color.app_bg_color));
         }
+    }
+
+    protected void setTitle(String content){
+        mTvTitleTop=(TextView)findViewById(R.id.tv_title_top);
+        mTvTitleTop.setText(content);
+    }
+
+    protected void setHtmlTitle(String content){
+        mTvTitleTop=(TextView)findViewById(R.id.tv_title_top);
+        mIvFinish=(ImageView)findViewById(R.id.iv_finish);
+        mTvTitleTop.setText(content);
+    }
+
+    protected void setTitle(String content, String rightContent){
+        mTvTitleTop=(TextView)findViewById(R.id.tv_title_top);
+        mTvAdd=(TextView)findViewById(R.id.tv_add);
+        mTvTitleTop.setText(content);
+        mTvAdd.setText(rightContent);
+        mTvAdd.setVisibility(View.VISIBLE);
+    }
+    /**
+     * rightContent1红色右边字体
+     * @param content
+     * @param rightContent
+     * @param rightContent1
+     */
+    protected void setTitle(String content, String rightContent,String rightContent1){
+        mTvTitleTop=(TextView)findViewById(R.id.tv_title_top);
+        mTvAdd=(TextView)findViewById(R.id.tv_add);
+        mTvAdd1=(TextView)findViewById(R.id.tv_add1);
+        mTvTitleTop.setText(content);
+        if(!StringUtils.isEmpty(rightContent)) {
+            mTvAdd.setText(rightContent);
+            mTvAdd.setVisibility(View.VISIBLE);
+        }
+        if(!StringUtils.isEmpty(rightContent1)) {
+            mTvAdd1.setVisibility(View.VISIBLE);
+            mTvAdd1.setText(rightContent1);
+        }
+    }
+
+    protected void setTitle(String content,int id){
+        mTvTitleTop=(TextView)findViewById(R.id.tv_title_top);
+        mTvAdd=(TextView)findViewById(R.id.tv_add);
+        mTvAdd1=(TextView)findViewById(R.id.tv_add1);
+        mTvTitleTop.setText(content);
+        mImageView=(ImageView)findViewById(R.id.iv_more);
+        mImageView.setVisibility(View.VISIBLE);
+        mImageView.setImageResource(id);
     }
 
     @Override

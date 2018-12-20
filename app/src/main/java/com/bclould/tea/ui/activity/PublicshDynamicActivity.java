@@ -54,10 +54,6 @@ import io.reactivex.disposables.Disposable;
 public class PublicshDynamicActivity extends BaseActivity {
 
     private static final int LOCATION = 1;
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.publish)
-    TextView mPublish;
     @Bind(R.id.text_et)
     EditText mTextEt;
     @Bind(R.id.scrollView)
@@ -84,6 +80,7 @@ public class PublicshDynamicActivity extends BaseActivity {
         setContentView(R.layout.activity_publish_dynamic);
         mFileUploadingPresenter = FileUploadingPresenter.getInstance(MyApp.getInstance().app());
         ButterKnife.bind(this);
+        setTitle(getString(R.string.publish_dynamic),getString(R.string.push));
         initRecyclerView();
         MyApp.getInstance().addActivity(this);
     }
@@ -238,7 +235,7 @@ public class PublicshDynamicActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.publish, R.id.rl_site})
+    @OnClick({R.id.bark, R.id.tv_add, R.id.rl_site})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -249,7 +246,7 @@ public class PublicshDynamicActivity extends BaseActivity {
                 intent.putExtra("type", 2);
                 startActivityForResult(intent, LOCATION);
                 break;
-            case R.id.publish:
+            case R.id.tv_add:
                 String text = mTextEt.getText().toString().trim();
                 if (selectList.size() != 0 || !text.isEmpty()) {
                     checkFile();

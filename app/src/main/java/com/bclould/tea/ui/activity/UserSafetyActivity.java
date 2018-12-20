@@ -29,8 +29,6 @@ import static com.bclould.tea.Presenter.LoginPresenter.STATE;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class UserSafetyActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.rl_autonym_attestation)
     RelativeLayout mRlAutonymAttestation;
     @Bind(R.id.rl_login_password)
@@ -53,6 +51,7 @@ public class UserSafetyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_safety);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.user_safety));
         MyApp.getInstance().addActivity(this);
         if (!MySharedPreferences.getInstance().getString(STATE).isEmpty()) {
             mTvStatus.setText(getString(R.string.authenticated));

@@ -2383,4 +2383,5 @@ Please reset encryption request</string>
     <string name="available_fgc">Available GC:</string>
     <string name="change_username">Modify nickname </string>
     <string name="no_data">no data </string>
+    <string name="public_open">The system public number has been opened. For individual or business user\n contact </string>
 </resources>

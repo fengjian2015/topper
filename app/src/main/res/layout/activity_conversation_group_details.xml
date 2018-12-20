@@ -6,26 +6,9 @@
               android:background="@color/app_bg_color"
               android:orientation="vertical"
               tools:activity="com.bclould.tea.ui.activity.ConversationGroupDetailsActivity">
-
-    <RelativeLayout
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/session_details"/>
-    </RelativeLayout>
-
-    <View style="@style/HorizontalBoundaryStyle"></View>
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
 
     <ScrollView
         android:layout_width="match_parent"

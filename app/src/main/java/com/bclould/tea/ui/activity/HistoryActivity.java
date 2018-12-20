@@ -41,6 +41,8 @@ public class HistoryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.purchase_history),getString(R.string.filtrate));
+        mTvAdd.setVisibility(View.GONE);
         initAdapter();
         initHttp(true,1);
     }

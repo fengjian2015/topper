@@ -52,6 +52,7 @@ public class QRGroupActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrgroup);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.qr_code),R.mipmap.icon_nav_more_selected);
         MyApp.getInstance().addActivity(this);
         mDBRoomManage=new DBRoomManage(this);
         getInitent();
@@ -83,13 +84,13 @@ public class QRGroupActivity extends BaseActivity {
         roomId=getIntent().getStringExtra("roomId");
     }
 
-    @OnClick({R.id.bark, R.id.iv_else})
+    @OnClick({R.id.bark, R.id.iv_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.iv_else:
+            case R.id.iv_more:
                 goShare();
                 break;
         }

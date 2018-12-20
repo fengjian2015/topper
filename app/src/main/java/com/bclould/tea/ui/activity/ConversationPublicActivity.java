@@ -34,8 +34,6 @@ import butterknife.OnClick;
 public class ConversationPublicActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.title_name)
-    TextView mTitleName;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.refresh_layout)
@@ -53,6 +51,7 @@ public class ConversationPublicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation_public);
         ButterKnife.bind(this);
+        setTitle("",R.mipmap.icon_nav_more_selected);
         MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         mDBPublicManage=new DBPublicManage(this);
@@ -65,7 +64,7 @@ public class ConversationPublicActivity extends BaseActivity {
     }
 
     private void initData() {
-        mTitleName.setText(mDBPublicManage.findPublicName(publicID));
+        mTvTitleTop.setText(mDBPublicManage.findPublicName(publicID));
         setMenu();
     }
 
@@ -95,13 +94,13 @@ public class ConversationPublicActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);//
     }
 
-    @OnClick({R.id.bark,R.id.iv_else})
+    @OnClick({R.id.bark,R.id.iv_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.iv_else:
+            case R.id.iv_more:
                 goPublicDetail();
                 break;
         }

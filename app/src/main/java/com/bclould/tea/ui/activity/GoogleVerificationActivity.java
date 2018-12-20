@@ -54,12 +54,6 @@ public class GoogleVerificationActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_hint)
-    TextView mTvHint;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     @Bind(R.id.tv)
     TextView mTv;
     @Bind(R.id.tv_download)
@@ -112,6 +106,7 @@ public class GoogleVerificationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_verification);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.google_verify),getString(R.string.warm_prompt));
         mRegisterPresenter = new RegisterPresenter(this);
         MyApp.getInstance().addActivity(this);
         initInterface();
@@ -217,7 +212,7 @@ public class GoogleVerificationActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_qr_code, R.id.ll_error, R.id.bark, R.id.tv_hint, R.id.tv_download, R.id.btn_copy, R.id.btn_finish, R.id.tv_send, R.id.btn_unbinding, R.id.tv_unbinding})
+    @OnClick({R.id.iv_qr_code, R.id.ll_error, R.id.bark, R.id.tv_add, R.id.tv_download, R.id.btn_copy, R.id.btn_finish, R.id.tv_send, R.id.btn_unbinding, R.id.tv_unbinding})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -226,7 +221,7 @@ public class GoogleVerificationActivity extends BaseActivity {
             case R.id.iv_qr_code:
                 showImgDialog();
                 break;
-            case R.id.tv_hint:
+            case R.id.tv_add:
                 showHintDialog();
                 break;
             case R.id.tv_download:

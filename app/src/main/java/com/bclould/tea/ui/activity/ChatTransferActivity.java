@@ -57,8 +57,6 @@ import static com.bclould.tea.R.style.BottomDialog;
 public class ChatTransferActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_transfer_record)
-    TextView mTvTransferRecord;
     @Bind(R.id.tv_name)
     TextView mTvName;
     @Bind(R.id.iv_touxiang)
@@ -96,6 +94,7 @@ public class ChatTransferActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_transfer);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.transfer_accounts),getString(R.string.transfer_record));
         MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         mdbRoomManage = new DBRoomManage(this);
@@ -153,7 +152,7 @@ public class ChatTransferActivity extends BaseActivity {
         UtilTool.getImage(mMgr, mUser, ChatTransferActivity.this, mIvTouxiang);
     }
 
-    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_transfer_record, R.id.rl_selector_coin, R.id.btn_confirm})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_add, R.id.rl_selector_coin, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -162,7 +161,7 @@ public class ChatTransferActivity extends BaseActivity {
             case R.id.ll_error:
                 initData();
                 break;
-            case R.id.tv_transfer_record:
+            case R.id.tv_add:
                 Intent intent = new Intent(this, BillDetailsActivity.class);
                 intent.putExtra("type", 2);
                 startActivity(intent);

@@ -26,8 +26,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SetMoneyActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.et_count)
     EditText mEtCount;
     @Bind(R.id.et_remark)
@@ -40,6 +38,7 @@ public class SetMoneyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_money);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.set_money));
         MyApp.getInstance().addActivity(this);
     }
 

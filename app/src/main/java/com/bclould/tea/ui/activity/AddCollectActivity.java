@@ -44,8 +44,6 @@ import butterknife.OnClick;
 public class AddCollectActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_add)
-    TextView mTvAdd;
     @Bind(R.id.et_titles)
     ClearEditText mEtTitles;
     @Bind(R.id.et_url)
@@ -59,6 +57,7 @@ public class AddCollectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_collect);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.add_collect),getString(R.string.save));
         mCollectPresenter = new CollectPresenter(this);
         initIntent();
     }
@@ -139,12 +138,12 @@ public class AddCollectActivity extends BaseActivity {
                         UtilTool.Log("連接", iconUrl);*/
                         String type = element.attr("type");
                         String rel = element.attr("rel");
-                        if ("image/x-icon".equals(type) || "SHORTCUT ICON".equals(rel) ||"shortcut icon".equals(rel)||"apple-touch-icon-precomposed".equals(rel)) {
+                        if ("image/x-icon".equals(type) || "SHORTCUT ICON".equals(rel) || "shortcut icon".equals(rel) || "apple-touch-icon-precomposed".equals(rel)) {
                             if (!element.attr("href").startsWith("http") && !element.attr("href").startsWith("//")) {
                                 titleIConInfo.setIconUrl(element.baseUri() + element.attr("href"));
-                            }else if(element.attr("href").startsWith("//")){
+                            } else if (element.attr("href").startsWith("//")) {
                                 titleIConInfo.setIconUrl("https:" + element.attr("href"));
-                            }else {
+                            } else {
                                 titleIConInfo.setIconUrl(element.attr("href"));
                             }
                         }

@@ -63,8 +63,6 @@ import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 public class PersonalDetailsActivity extends BaseActivity {
 
     private static final String GENDER = "gender";
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.touxiang)
     ImageView mTouxiang;
     @Bind(R.id.rl_touxiang)
@@ -101,6 +99,7 @@ public class PersonalDetailsActivity extends BaseActivity {
         mPersonalDetailsPresenter = new PersonalDetailsPresenter(this);
         mMgr = new DBManager(this);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.personal_details));
         initInterface();
         MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);

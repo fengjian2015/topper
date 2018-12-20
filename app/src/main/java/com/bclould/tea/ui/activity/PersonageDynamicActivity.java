@@ -45,10 +45,6 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PersonageDynamicActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.tv_hint)
@@ -78,6 +74,7 @@ public class PersonageDynamicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_dynamic);
         ButterKnife.bind(this);
+        setTitle("");
         MyApp.getInstance().addActivity(this);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
@@ -212,7 +209,7 @@ public class PersonageDynamicActivity extends BaseActivity {
     private void initIntent() {
         mName = getIntent().getStringExtra("name");
         mUser = getIntent().getStringExtra("user");
-        mTvTitle.setText(mName);
+        mTvTitleTop.setText(mName);
     }
 
     @Override

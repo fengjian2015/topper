@@ -56,6 +56,7 @@ public class MyTeamActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_my_team);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.my_team));
         initRecyclerView();
         initHttp(true,1);
     }

@@ -8,36 +8,19 @@
               android:background="@color/app_bg_color"
               android:orientation="vertical"
               tools:context="com.bclould.tea.ui.activity.PublicActivity">
-
-    <RelativeLayout
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/the_pulice"/>
-
-        <TextView
-            android:id="@+id/tv_search"
-            style="@style/BlueTextStyle28"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:paddingRight="@dimen/x20"
-            android:text="@string/search"/>
-    </RelativeLayout>
-
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
+    <TextView
+        android:id="@+id/tv_public"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y200"
+        android:background="@mipmap/icon_public_gong"
+        android:gravity="center"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30"
+        style="@style/MainTextShallowStyle30"
+        android:text="@string/public_open"/>
     <RelativeLayout
         android:id="@+id/rl_data"
         android:layout_width="match_parent"

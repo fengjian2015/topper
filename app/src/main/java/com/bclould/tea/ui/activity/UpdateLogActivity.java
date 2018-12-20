@@ -34,8 +34,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class UpdateLogActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.tv_hint)
@@ -52,6 +50,7 @@ public class UpdateLogActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_log);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.update_log));
         MyApp.getInstance().addActivity(this);
         initRecyclerView();
         initData();

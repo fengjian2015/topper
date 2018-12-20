@@ -36,12 +36,8 @@ public class FinancialHistoryActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
-    @Bind(R.id.tv_filtrate)
-    TextView mTvFiltrate;
 
     private FinancialHistoryAdapter mFinancialHistoryAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -58,6 +54,7 @@ public class FinancialHistoryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.purchase_history),getString(R.string.filtrate));
         initIntent();
         initAdapter();
         initHttp(true, 1);
@@ -69,11 +66,10 @@ public class FinancialHistoryActivity extends BaseActivity {
         coin_id = getIntent().getIntExtra("coin_id", coin_id);
         coin_name = getIntent().getStringExtra("coin_name");
         if (type == 0) {
-            mTvTitle.setText(getString(R.string.income_breakdown));
+            mTvTitleTop.setText(getString(R.string.income_breakdown));
         } else {
-            mTvTitle.setText(getString(R.string.financial_record));
+            mTvTitleTop.setText(getString(R.string.financial_record));
         }
-        mTvFiltrate.setVisibility(View.VISIBLE);
     }
 
     private void initAdapter() {
@@ -175,13 +171,13 @@ public class FinancialHistoryActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.tv_filtrate})
+    @OnClick({R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_filtrate:
+            case R.id.tv_add:
                 // TODO: 2018/11/2 筛选
                 showDialog();
                 break;

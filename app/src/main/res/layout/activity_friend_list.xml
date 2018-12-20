@@ -13,11 +13,13 @@
         android:layout_height="0dp"
         android:background="#00000000"
         />
-
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
     <RelativeLayout
         android:id="@+id/rl_title"
-        style="@style/TopNavigationBarStyle">
-
+        style="@style/TopNavigationBarStyle"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/bark"

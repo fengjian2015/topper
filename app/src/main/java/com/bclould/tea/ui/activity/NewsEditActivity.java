@@ -63,14 +63,6 @@ import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsEditActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.publish)
-    TextView mPublish;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;
     @Bind(R.id.web_view)
@@ -104,6 +96,7 @@ public class NewsEditActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_edit2);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.ad_edit),getString(R.string.push));
         MyApp.getInstance().addActivity(this);
         initData();
         initIntent();
@@ -139,13 +132,13 @@ public class NewsEditActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.publish})
+    @OnClick({R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 showSaveDialog();
                 break;
-            case R.id.publish:
+            case R.id.tv_add:
                 showServiceChargeDialog();
                 break;
         }

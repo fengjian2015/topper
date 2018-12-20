@@ -47,6 +47,7 @@ public class UnclaimedRedActivity extends BaseActivity {
         setContentView(R.layout.activity_unclaimed_red);
         MyApp.getInstance().addActivity(this);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.unclaimed_red));
         roomId = getIntent().getStringExtra("roomId");
         mDBRoomMember = new DBRoomMember(this);
         mDBManager = new DBManager(this);

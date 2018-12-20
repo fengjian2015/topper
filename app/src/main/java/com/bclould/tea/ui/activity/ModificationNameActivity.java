@@ -36,14 +36,8 @@ import static com.bclould.tea.Presenter.LoginPresenter.MYUSERNAME;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ModificationNameActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_hint)
-    TextView mTvHint;
     @Bind(R.id.et_name)
     EditText mEtName;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     @Bind(R.id.et_announcement)
     EditText mEtAnnouncement;
     private int type = 0;//1修改我在本群暱稱，2修改群暱稱 3.修改公告 4:修改自己昵称
@@ -60,6 +54,7 @@ public class ModificationNameActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_modification_name);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.my_nickname_group),getString(R.string.finish));
         mDBRoomMember = new DBRoomMember(this);
         mDBRoomManage = new DBRoomManage(this);
         mDBManager = new DBManager(this);
@@ -69,15 +64,15 @@ public class ModificationNameActivity extends BaseActivity {
 
     private void initData() {
         if (type == 1) {
-            mTvTitle.setText(getString(R.string.my_nickname_group));
+            mTvTitleTop.setText(getString(R.string.my_nickname_group));
         } else if (type == 2) {
-            mTvTitle.setText(getString(R.string.modify_group_name));
+            mTvTitleTop.setText(getString(R.string.modify_group_name));
         }else if(type==3){
-            mTvTitle.setText(getString(R.string.gonggao));
+            mTvTitleTop.setText(getString(R.string.gonggao));
             mEtName.setVisibility(View.GONE);
             mEtAnnouncement.setVisibility(View.VISIBLE);
         }else if(type==4){
-            mTvTitle.setText(getString(R.string.change_username));
+            mTvTitleTop.setText(getString(R.string.change_username));
             InputFilter[] filters = {new InputFilter.LengthFilter(20)};
             mEtName.setFilters(filters);
         }
@@ -99,13 +94,13 @@ public class ModificationNameActivity extends BaseActivity {
         tocoId = getIntent().getStringExtra("tocoId");
     }
 
-    @OnClick({R.id.bark, R.id.tv_hint})
+    @OnClick({R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_hint:
+            case R.id.tv_add:
                 commit();
                 break;
 
