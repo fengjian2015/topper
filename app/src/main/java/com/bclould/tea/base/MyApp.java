@@ -144,6 +144,14 @@ public class MyApp extends Application {
         }
     }
 
+    /**
+     * @return 获取栈顶的Activity
+     */
+    public  Activity getTopActivity() {
+        Activity pop = (Activity) mActivityList.pop();
+        return pop;
+    }
+
     @Override
     public void onTerminate() {
         super.onTerminate();

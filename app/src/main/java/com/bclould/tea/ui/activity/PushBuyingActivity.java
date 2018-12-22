@@ -125,7 +125,7 @@ public class PushBuyingActivity extends BaseActivity {
     @Bind(R.id.xx5)
     TextView mXx5;
     @Bind(R.id.et_price)
-    EditText mEtPrice;
+    TextView mEtPrice;
     @Bind(R.id.tv_units)
     TextView mTvUnits;
     @Bind(R.id.rl_price)
@@ -312,12 +312,8 @@ public class PushBuyingActivity extends BaseActivity {
         mCoinPresenter.getCoinPrice(name, new CoinPresenter.CallBack2() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                if (ActivityUtil.isActivityOnTop(PushBuyingActivity.this) && data.getUSDT() != null && data.getRate() != null) {
-                    double usdt = Double.parseDouble(data.getUSDT());
-                    double cny = Double.parseDouble(data.getRate());
-                    DecimalFormat df = new DecimalFormat("0.00");
-                    String price = df.format(cny * usdt);
-                    mEtPrice.setHint(getString(R.string.reference_value) + price);
+                if (ActivityUtil.isActivityOnTop(PushBuyingActivity.this)) {
+                    mEtPrice.setText(data.getPrice()+"");
                 }
             }
 

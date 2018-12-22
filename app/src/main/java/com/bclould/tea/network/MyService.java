@@ -12,6 +12,8 @@ import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.model.DealListInfo;
 import com.bclould.tea.model.DynamicListInfo;
 import com.bclould.tea.model.ExchangeOrderInfo;
+import com.bclould.tea.model.ExternalTokenInfo;
+import com.bclould.tea.model.ExternalUserInfo;
 import com.bclould.tea.model.FGCInfo;
 import com.bclould.tea.model.FinanciaProductInfo;
 import com.bclould.tea.model.FinancialCoinInfo;
@@ -66,10 +68,12 @@ import com.bclould.tea.model.VersionInfo;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -1672,5 +1676,24 @@ public interface MyService {
     Observable<BaseInfo> getNameList(
             @Header("Authorization") String token,
             @Field("name") String name
+    );
+
+    //第三方登录获取token
+    @FormUrlEncoded
+    @POST("oauth/client")
+    Observable<ExternalTokenInfo> getExToken(
+            @Header("Authorization") String token,
+            @Field("grant_type") String grant_type,
+            @Field("client_id") String client_id,
+            @Field("client_secret") String client_secret,
+            @Field("scope") String scope
+    );
+
+    //第三方登录获取token
+    @FormUrlEncoded
+    @POST("oauth/api")
+    Observable<ExternalUserInfo> getExUser(
+            @Header("Authorization") String token,
+            @Field("access_token") String access_token
     );
 }

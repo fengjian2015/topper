@@ -44,6 +44,7 @@ import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.service.IMService;
 import com.bclould.tea.topperchat.AddFriendReceiver;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.ui.activity.authorization.AuthorizationActivity;
 import com.bclould.tea.ui.fragment.DiscoverFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.Constants;
@@ -52,6 +53,7 @@ import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.IMUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.SharedPreferencesUtil;
 import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -189,11 +191,22 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 第三方授权根据IS_EXTERNAL判断是否跳转到授权页面
+     */
+    private void goAuthorization(){
+        boolean isExternal=MySharedPreferences.getInstance().getBoolean(SharedPreferencesUtil.IS_EXTERNAL);
+        if(isExternal){
+            Intent intentResult = new Intent(MyApp.getInstance().getTopActivity(), AuthorizationActivity.class);
+            startActivity(intentResult);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         resumeRelogin();
-
+        goAuthorization();
     }
 
     @Override
@@ -562,6 +575,7 @@ public class MainActivity extends BaseActivity {
             mSupportFragmentManager.beginTransaction().remove(map.get(i));
             mSupportFragmentManager.beginTransaction().hide(map.get(i));
         }
+        MySharedPreferences.getInstance().setBoolean(SharedPreferencesUtil.IS_EXTERNAL,false);
         unregisterReceiver(mReceiver);
     }
 
