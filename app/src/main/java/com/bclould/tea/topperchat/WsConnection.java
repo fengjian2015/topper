@@ -377,33 +377,37 @@ public class WsConnection {
     }
 
     public void goMainActivity() {
-        if(mContext==null)return;
-        logoutService(mContext);
         MySharedPreferences.getInstance().setString(TOKEN, "");
         MySharedPreferences.getInstance().setString(LoginPresenter.TOCOID, "");
+        logoutService(mContext);
         MyApp.getInstance().mCoinList.clear();
         MyApp.getInstance().mPayCoinList.clear();
         MyApp.getInstance().mOtcCoinList.clear();
         MyApp.getInstance().mBetCoinList.clear();
-        if(getIsCheckActvity()) {
-            setIsCheckActvity(false);
+        if (getIsCheckActvity()) {
+            if (mContext == null) {
+                if (MyApp.getInstance() == null) {
+                    return;
+                } else {
+                    mContext = MyApp.getInstance();
+                }
+            }
             Intent intent = new Intent(mContext, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra("whence", 2);
             mContext.startActivity(intent);
+            setIsCheckActvity(false);
         }
     }
 
     //退出登錄用
     public void logoutService(Context context) {
-        if(context==null)return;
-        if (context instanceof Activity) {
-            UtilTool.Log("fengjian", ((Activity) context).getClass().getName());
+        if (context != null) {
+            ShortcutBadger.removeCount(context);
+            closeConnection();
+            stopAllIMCoreService(context);
+            context.stopService(new Intent(context, IMService.class));
         }
-        ShortcutBadger.removeCount(context);
-        closeConnection();
-        stopAllIMCoreService(context);
-        context.stopService(new Intent(context, IMService.class));
         LoginThread.isStartExReconnect = false;
         WsOfflineConnection.getInstance().closeConnection();
         UtilTool.Log("fengjian", "关闭连接");
