@@ -44,6 +44,7 @@ import com.bclould.tea.ui.activity.GroupListActivity;
 import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.LoginActivity;
 import com.bclould.tea.ui.activity.MyFriendActivity;
+import com.bclould.tea.ui.activity.PublicActivity;
 import com.bclould.tea.ui.activity.RegisterActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
 import com.bclould.tea.ui.adapter.ConversationAdapter;
@@ -370,6 +371,12 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                             mPopupWindow.dismiss();
                             break;
                         case 3:
+                            if (!WsConnection.getInstance().getOutConnection()) {
+                                startActivity(new Intent(getActivity(), PublicActivity.class));
+                            } else {
+                                startActivity(new Intent(getActivity(), InitialActivity.class));
+                            }
+                            mPopupWindow.dismiss();
                             break;
                     }
 

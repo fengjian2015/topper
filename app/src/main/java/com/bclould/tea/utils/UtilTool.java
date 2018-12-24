@@ -543,9 +543,15 @@ public class UtilTool {
         return versionCode;
     }
 
+    /**
+     * 目前是根据版本名判断（之前已经是使用名字转float比较大小，但版本名命名不规范，应该由code来判断，
+     * 现在是0.97版本，等待都更新到0.97后再改动命名规则，不然之前版本会崩溃）
+     * @param mContext
+     * @return
+     */
     public static boolean compareVersion(Context mContext) {
         String versionStr = getVersionCode(mContext);
-        float version = Float.parseFloat(versionStr);
+//        float version = Float.parseFloat(versionStr);
         String tag_version = "";
         String versionsTag = MySharedPreferences.getInstance().getString(Constants.APK_VERSIONS_TAG);
         if (versionsTag.isEmpty()) {
@@ -556,8 +562,8 @@ public class UtilTool {
         } else {
             tag_version = versionsTag;
         }
-        float tag = Float.parseFloat(tag_version);
-        if (version < tag) {
+//        float tag = Float.parseFloat(tag_version);
+        if (!versionStr.equals(tag_version)) {
             return true;
         } else {
             return false;

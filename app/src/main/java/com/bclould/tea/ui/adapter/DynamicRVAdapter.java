@@ -274,6 +274,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
+            if(mTvLocation==null){
+                return;
+            }
             mDataBean = dataBean;
             if (dataBean.getPosition() != null && !dataBean.getPosition().isEmpty()) {
                 mTvLocation.setVisibility(View.VISIBLE);
@@ -449,10 +452,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
+            if(mTvLocation==null){
+                return;
+            }
             mDataBean = dataBean;
             mCompressImgList = (ArrayList<String>) dataBean.getKey_compress_urls();
             mImgList.clear();
             mImgList.addAll((ArrayList<String>) dataBean.getKey_urls());
+            if(mTvLocation==null){
+                return;
+            }
             if (dataBean.getPosition() != null && !dataBean.getPosition().isEmpty()) {
                 mTvLocation.setVisibility(View.VISIBLE);
                 mIvLocation.setVisibility(View.VISIBLE);
@@ -657,6 +666,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
+            if(mTvLocation==null){
+                return;
+            }
             mDataBean = dataBean;
             mCompressImgList = (ArrayList<String>) dataBean.getKey_compress_urls();
             mImgList = (ArrayList<String>) dataBean.getKey_urls();
@@ -871,6 +883,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
+            if(mTvLocation==null){
+                return;
+            }
             mDataBean = dataBean;
             if (dataBean.getPosition() != null && !dataBean.getPosition().isEmpty()) {
                 mTvLocation.setVisibility(View.VISIBLE);

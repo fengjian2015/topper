@@ -48,8 +48,6 @@ public class OutCoinSiteActivity extends BaseActivity {
     ImageView mBark;
     @Bind(R.id.title)
     RelativeLayout mTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.btn_add_site)

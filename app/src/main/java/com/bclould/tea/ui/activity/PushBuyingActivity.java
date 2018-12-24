@@ -181,7 +181,7 @@ public class PushBuyingActivity extends BaseActivity {
     private String logo;
     private String mState;
     private int mState_id;
-
+    private BaseInfo.DataBean mDataBean;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -240,9 +240,6 @@ public class PushBuyingActivity extends BaseActivity {
         mState_id = MySharedPreferences.getInstance().getInteger(STATE_ID);
         mTvCurrency.setText(mCoinName);
         mTvState.setText(mState);
-        mTvUnits.setText(MySharedPreferences.getInstance().getString(CURRENCY));
-        mTvUnits2.setText(MySharedPreferences.getInstance().getString(CURRENCY));
-        mTvUnits3.setText(MySharedPreferences.getInstance().getString(CURRENCY));
         if (!mCoinName.isEmpty()) {
             initData(mCoinName);
         }
@@ -313,7 +310,11 @@ public class PushBuyingActivity extends BaseActivity {
             @Override
             public void send(BaseInfo.DataBean data) {
                 if (ActivityUtil.isActivityOnTop(PushBuyingActivity.this)) {
-                    mEtPrice.setText(data.getPrice()+"");
+                    mDataBean=data;
+                    mEtPrice.setText("");
+                    mTvUnits.setText(data.getCurrency());
+                    mTvUnits2.setText(data.getCurrency());
+                    mTvUnits3.setText(data.getCurrency());
                 }
             }
 
@@ -557,8 +558,10 @@ public class PushBuyingActivity extends BaseActivity {
             case BUYSELL:
                 mTvBuySell.setText(name);
                 if (name.equals(getString(R.string.mai2))) {
+                    mEtPrice.setText(mDataBean.getSale_price());
                     mTvHint.setText(getString(R.string.push_ad_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
                 } else {
+                    mEtPrice.setText(mDataBean.getBuy_price());
                     mTvHint.setText(getString(R.string.push_ad_hint2) + Double.parseDouble(mServiceCharge2) * 100 + "%" + getString(R.string.sxf));
                 }
                 /*mTvPayment.setText("");
