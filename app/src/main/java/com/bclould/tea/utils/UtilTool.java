@@ -551,7 +551,7 @@ public class UtilTool {
      */
     public static boolean compareVersion(Context mContext) {
         String versionStr = getVersionCode(mContext);
-//        float version = Float.parseFloat(versionStr);
+
         String tag_version = "";
         String versionsTag = MySharedPreferences.getInstance().getString(Constants.APK_VERSIONS_TAG);
         if (versionsTag.isEmpty()) {
@@ -562,11 +562,20 @@ public class UtilTool {
         } else {
             tag_version = versionsTag;
         }
-//        float tag = Float.parseFloat(tag_version);
-        if (!versionStr.equals(tag_version)) {
-            return true;
-        } else {
-            return false;
+        float newVersion = UtilTool.parseFloat(tag_version);
+        float nowVersion =UtilTool.parseFloat(versionStr);
+        if(newVersion!=0&&nowVersion!=0){
+            if (newVersion>nowVersion) {
+                return true;
+            } else {
+                return false;
+            }
+        }else {
+            if (!versionStr.equals(tag_version)) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

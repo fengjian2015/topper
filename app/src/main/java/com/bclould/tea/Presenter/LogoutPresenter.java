@@ -73,10 +73,7 @@ public class LogoutPresenter {
                     @Override
                     public void onNext(@NonNull BaseInfo baseInfo) {
                         hideDialog();
-                        if (baseInfo.getStatus() == 1) {
-                            imLogout(baseInfo.getMessage());
-                        }
-
+                        imLogout(mActivity.getString(R.string.out_group_success));
                     }
 
                     @Override
