@@ -6,6 +6,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 
 import com.bclould.tea.ui.fragment.ConversationFragment;
+import com.bclould.tea.ui.fragment.MallFragment;
 import com.bclould.tea.ui.fragment.MyFragment;
 import com.bclould.tea.ui.fragment.NewsFragment;
 import com.bclould.tea.ui.fragment.WalletFragment;
@@ -53,16 +54,19 @@ public class FragmentFactory {
 
         Fragment fragment = null;
         switch (position) {
-            case 0:// 云信页面
-                fragment = NewsFragment.getInstance();
-                break;
-            case 1:// 云币页面
-                fragment = WalletFragment.getInstance();
-                break;
-            case 2:// 云币页面
+            case 0:// 聊天页面
                 fragment = ConversationFragment.getInstance();
                 break;
-            case 3:// 我的页面
+            case 1:// 财富页面
+                fragment = WalletFragment.getInstance();
+                break;
+            case 2:// 商城页面
+                fragment = MallFragment.getInstance();
+                break;
+            case 3:// 新闻页面
+                fragment = NewsFragment.getInstance();
+                break;
+            case 4:// 我的页面
                 fragment = MyFragment.getInstance();
                 break;
             default:

@@ -2365,8 +2365,12 @@
     <string name="change_username">修改昵称</string>
     <string name="no_data">暂无数据</string>
     <string name="public_open">系统公众号已对外开放，个人或企业用户申请\n联系方式：</string>
-
     <string name="permissions">登录后开发者将获取以下权限</string>
     <string name="getting_information">· 获取你的公开令牌（昵称、头像）</string>
     <string name="confirm_login">确认登录</string>
+    <string name="allow">允许</string>
+    <string name="topperchat_authorization">TopperChat授权</string>
+
+    <string name="error">出错了</string>
+    <string name="mall">商城</string>
 </resources>

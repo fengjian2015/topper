@@ -70,8 +70,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
@@ -79,6 +81,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
@@ -1014,6 +1017,17 @@ public class UtilTool {
         return bitmap;
     }
 
+    public static String getImageUrl(DBManager mgr, String myUser){
+        if (mgr.findUser(myUser)) {
+            UserInfo info = mgr.queryUser(myUser);
+            return info.getPath();
+        }else if (!StringUtils.isEmpty(mgr.findStrangerPath(myUser))) {
+            return mgr.findStrangerPath(myUser);
+        } else {
+            return "";
+        }
+    }
+
 
     public static void getGroupImage(DBRoomManage dbRoomManage, String roomId, Activity context, ImageView imageView) {
         String url = dbRoomManage.findRoomUrl(roomId);
@@ -1502,7 +1516,8 @@ public class UtilTool {
             install.setDataAndType(uri, "application/vnd.android.package-archive");
             context.startActivity(install);
         } else {
-            Uri uri = Uri.fromFile(file);
+            String path = file.getAbsolutePath();
+            Uri uri =Uri.parse("file://" + path);
             Intent install = new Intent(Intent.ACTION_VIEW);
             install.setDataAndType(uri, "application/vnd.android.package-archive");
             install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1712,5 +1727,25 @@ public class UtilTool {
     public static String changeMoney1(double money) {
         DecimalFormat df = new DecimalFormat("#####0.########");
         return df.format(money);
+    }
+
+    /**
+     * 截取&字符
+     * @param content
+     * @return
+     */
+    public static HashMap getCutting(String content) throws UnsupportedEncodingException {
+        content= URLDecoder.decode(content,"utf-8");
+        HashMap hashMap=new HashMap();
+        String[] sq=content.split("&");
+        for (int i=0;i<sq.length;i++){
+            String[] sq1=sq[i].split("=");
+            if(sq1.length>=2) {
+                hashMap.put(sq1[0], sq1[1]);
+            }else{
+                hashMap.put(sq1[0], "");
+            }
+        }
+        return hashMap;
     }
 }

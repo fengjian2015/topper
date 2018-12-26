@@ -1271,7 +1271,7 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.MyTeamActivity"
+            android:name=".ui.activity.ftc.MyTeam.MyTeamActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
@@ -1289,7 +1289,7 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.AccountBindingActivity"
+            android:name=".ui.activity.ftc.AccountBinding.AccountBindingActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"

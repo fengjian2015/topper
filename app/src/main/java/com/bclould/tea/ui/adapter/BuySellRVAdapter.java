@@ -97,8 +97,8 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
         public void setData(final DealListInfo.DataBean dataBean) {
             if (mType) {
                 if (dataBean.getSelf_trans() == 1) {
-                    mTvPayWay.setBackground(mContext.getDrawable(R.drawable.bg_payway_shape2));
-                    mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape3));
+                    mTvPayWay.setBackground(mContext.getResources().getDrawable(R.drawable.bg_payway_shape2));
+                    mBtnSellBuy.setBackground(mContext.getResources().getDrawable(R.drawable.bg_buysell_shape3));
                     mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.red));
                     mBtnSellBuy.setText(mContext.getString(R.string.sold_out));
                     mBtnSellBuy.setOnClickListener(new View.OnClickListener() {
@@ -108,10 +108,10 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
                         }
                     });
                 } else {
-                    mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
+                    mBtnSellBuy.setBackground(mContext.getResources().getDrawable(R.drawable.bg_buysell_shape2));
                     mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.sell));
                     mBtnSellBuy.setText(mContext.getString(R.string.work_off));
-                    mTvPayWay.setBackground(mContext.getDrawable(R.drawable.bg_payway_shape2));
+                    mTvPayWay.setBackground(mContext.getResources().getDrawable(R.drawable.bg_payway_shape2));
                     mBtnSellBuy.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -126,7 +126,7 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
                 }
             } else {
                 if (dataBean.getSelf_trans() == 1) {
-                    mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape3));
+                    mBtnSellBuy.setBackground(mContext.getResources().getDrawable(R.drawable.bg_buysell_shape3));
                     mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.red));
                     mBtnSellBuy.setText(mContext.getString(R.string.sold_out));
                     mBtnSellBuy.setOnClickListener(new View.OnClickListener() {
@@ -136,10 +136,10 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
                         }
                     });
                 } else {
-                    mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));
+                    mBtnSellBuy.setBackground(mContext.getResources().getDrawable(R.drawable.bg_buysell_shape));
                     mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.blue2));
                     mBtnSellBuy.setText(mContext.getString(R.string.buy));
-                    mTvPayWay.setBackground(mContext.getDrawable(R.drawable.bg_payway_shape));
+                    mTvPayWay.setBackground(mContext.getResources().getDrawable(R.drawable.bg_payway_shape));
                     mBtnSellBuy.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

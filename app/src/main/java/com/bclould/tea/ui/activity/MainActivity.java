@@ -232,6 +232,7 @@ public class MainActivity extends BaseActivity {
             getMyImage();
             getFriends();
             getChatBackGround();
+            mallLogin();
         } else if (2 == whence || 3 == whence) {
             DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
             discoverFragment.initInterface();
@@ -249,6 +250,18 @@ public class MainActivity extends BaseActivity {
         String msg = event.getMsg();
         if (msg.equals(EventBusUtil.refresh_msg_number)) {
             refreshNumber();
+        }
+    }
+
+    /**
+     * 判断是否跳转到商城登录
+     */
+    private void mallLogin(){
+        String mallUrl=MySharedPreferences.getInstance().getString(SharedPreferencesUtil.WEB_LOGIN);
+        if(!StringUtils.isEmpty(mallUrl)){
+            Intent intent=new Intent(this,HTMLActivity.class);
+            intent.putExtra("html5Url",mallUrl);
+            startActivity(intent);
         }
     }
 
@@ -587,6 +600,12 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void onClick(View view) {
                     int index = mMainBottomMenu.indexOfChild(childAt);
+                    if(index==2){
+                        Intent intent=new Intent(MainActivity.this,HTMLActivity.class);
+                        intent.putExtra("html5Url",Constants.WEB_MALL);
+                        startActivity(intent);
+                        return;
+                    }
                     changeFragment(index);
                     setSelector(index);
                     converstonTop(index);

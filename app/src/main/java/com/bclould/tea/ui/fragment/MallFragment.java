@@ -1,15 +1,15 @@
-package com.bclould.tea.ui.activity;
+package com.bclould.tea.ui.fragment;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -17,19 +17,18 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bclould.tea.R;
-import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.H5AuthrizationInfo;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.ui.activity.InitialActivity;
+import com.bclould.tea.ui.activity.UserSafetyActivity;
 import com.bclould.tea.ui.widget.AuthorizationDialog;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.SharedPreferencesUtil;
@@ -43,49 +42,58 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
-public class HTMLActivity extends BaseActivity {
 
+/**
+ * Created by GA on 2017/9/19.
+ */
+
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class MallFragment extends Fragment {
+
+    public static MallFragment instance = null;
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;
     @Bind(R.id.web_view)
     WebView mWebView;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
+    @Bind(R.id.bark)
+    ImageView mBark;
+
     private String html5Url;
     private DBManager mMgr;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_html);
-        ButterKnife.bind(this);
-        setHtmlTitle("");
-        MyApp.getInstance().app().addActivity(this);
-        init();
+
+    public static MallFragment getInstance() {
+        if (instance == null) {
+            instance = new MallFragment();
+        }
+        return instance;
     }
 
+    @Nullable
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_mall, container, false);
+        ButterKnife.bind(this, view);
+        init();
+        return view;
     }
 
     private void init() {
         mProgressBar.setMax(100);
-        html5Url = getIntent().getStringExtra("html5Url");
+        html5Url = Constants.WEB_MALL;
         if (!UtilTool.checkLinkedExe(html5Url)) {
             html5Url = "http://" + html5Url;
         }
         initWebView();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        MySharedPreferences.getInstance().setString(SharedPreferencesUtil.WEB_LOGIN,"");
-    }
-
     private void initWebView() {
         //设置WebView支持JavaScript
         mWebView.getSettings().setJavaScriptEnabled(true);
-        if (UtilTool.isNetworkAvailable(HTMLActivity.this)) {
+        if (UtilTool.isNetworkAvailable(getActivity())) {
             mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
         } else {
             mWebView.getSettings().setCacheMode(
@@ -107,7 +115,7 @@ public class HTMLActivity extends BaseActivity {
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if(url.contains("TopperChatOauth")){
+                if (url.contains("TopperChatOauth")) {
                     topperChatOauth(url);
                     return true;
                 }
@@ -117,12 +125,14 @@ public class HTMLActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                if (mProgressBar==null){
+                if (mProgressBar == null) {
                     return;
                 }
                 mProgressBar.setVisibility(View.GONE);
+                mWebView.setVisibility(View.VISIBLE);
+                mLlError.setVisibility(View.GONE);
                 if (mWebView.canGoBack()) {
-                    mIvFinish.setVisibility(View.VISIBLE);
+                    mBark.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -130,12 +140,18 @@ public class HTMLActivity extends BaseActivity {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError
                     error) {
                 super.onReceivedError(view, request, error);
+                if (mProgressBar == null) {
+                    return;
+                }
+                mProgressBar.setVisibility(View.GONE);
+                mWebView.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                if (mProgressBar==null){
+                if (mProgressBar == null) {
                     return;
                 }
                 mProgressBar.setVisibility(View.VISIBLE);
@@ -145,7 +161,7 @@ public class HTMLActivity extends BaseActivity {
         });
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
-                if (mProgressBar==null){
+                if (mProgressBar == null) {
                     return;
                 }
                 mProgressBar.setMax(100);
@@ -154,10 +170,8 @@ public class HTMLActivity extends BaseActivity {
 
             @Override
             public void onReceivedTitle(WebView view, String title) {
-                if (!StringUtils.isEmpty(title)&&mTvTitleTop!=null) {
-//                    if (!(Tools.checkHttp(title) || Tools.checkLinkedExe(title))) {
-                    mTvTitleTop.setText(title);
-//                    }
+                if (!StringUtils.isEmpty(title) && mTvTitle != null) {
+                    mTvTitle.setText(title);
                 }
                 super.onReceivedTitle(view, title);
                 if (view == null) {
@@ -171,32 +185,32 @@ public class HTMLActivity extends BaseActivity {
 
     /**
      * 授权 http://www.bclould.com:8195/oauth/TopperChatOauth?avatar=w2&name=sdfsdf&text=sdfdsf
+     *
      * @param url
      */
-    private void topperChatOauth(String url){
+    private void topperChatOauth(String url) {
         try {
             if (mMgr == null) {
-                mMgr = new DBManager(this);
+                mMgr = new DBManager(getContext());
             }
             if (WsConnection.getInstance().getOutConnection()) {
                 MySharedPreferences.getInstance().setString(SharedPreferencesUtil.WEB_LOGIN,Constants.WEB_MALL+"tmpl/member/login.html");
-                startActivity(new Intent(HTMLActivity.this, InitialActivity.class));
+                startActivity(new Intent(getActivity(), InitialActivity.class));
                 return;
             }
-            String content=url.substring(url.indexOf("TopperChatOauth?")+"TopperChatOauth?".length(),url.length());
-            HashMap hashMap= UtilTool.getCutting(content);
+            String content = url.substring(url.indexOf("TopperChatOauth?") + "TopperChatOauth?".length(), url.length());
+            HashMap hashMap = UtilTool.getCutting(content);
 
-            AuthorizationDialog dialog=new AuthorizationDialog(this);
+            AuthorizationDialog dialog = new AuthorizationDialog(getActivity());
             dialog.show();
             dialog.setOnClickListener(new AuthorizationDialog.OnClickListener() {
                 @Override
                 public void onClick() {
-                    H5AuthrizationInfo h5AuthrizationInfo=new H5AuthrizationInfo();
+                    H5AuthrizationInfo h5AuthrizationInfo = new H5AuthrizationInfo();
                     h5AuthrizationInfo.setAvatar(UtilTool.getImageUrl(mMgr,UtilTool.getTocoId()));
                     h5AuthrizationInfo.setOpenid(UtilTool.getTocoId());
                     h5AuthrizationInfo.setUser_name(UtilTool.getUser());
                     h5AuthrizationInfo.setEmail(UtilTool.getEmail());
-                    UtilTool.Log("fengjian",JSONObject.toJSONString(h5AuthrizationInfo) );
                     mWebView.loadUrl("javascript:show1('" + JSONObject.toJSONString(h5AuthrizationInfo) + " ');");
                 }
 
@@ -205,34 +219,39 @@ public class HTMLActivity extends BaseActivity {
 
                 }
             });
-            dialog.setIvImage(hashMap.get("avatar")+"");
-            dialog.setTvTitle(hashMap.get("name")+"");
-            dialog.setTvContent(hashMap.get("text")+"");
-        }catch (Exception e){
+            dialog.setIvImage(hashMap.get("avatar") + "");
+            dialog.setTvTitle(hashMap.get("name") + "");
+            dialog.setTvContent(hashMap.get("text") + "");
+        } catch (Exception e) {
             e.printStackTrace();
-            ToastShow.showToast2(HTMLActivity.this,getString(R.string.error));
+            ToastShow.showToast2(getActivity(), getString(R.string.error));
         }
     }
 
 
-    @OnClick({R.id.bark, R.id.iv_finish})
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @OnClick({R.id.ll_error,R.id.bark})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.ll_error:
+                mWebView.loadUrl(html5Url);
+                break;
             case R.id.bark:
                 goBack();
-                break;
-            case R.id.iv_finish:
-                finish();
                 break;
         }
     }
 
     private void goBack() {
         if (mWebView.canGoBack()) {
-            mIvFinish.setVisibility(View.VISIBLE);
+            mBark.setVisibility(View.VISIBLE);
             mWebView.goBack();
-        } else {
-            this.finish();
         }
     }
+
 }

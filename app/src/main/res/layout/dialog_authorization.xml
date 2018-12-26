@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/x600"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_shape"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:gravity="center"
+        style="@style/MainTextDeepStyle36"
+        android:text="@string/topperchat_authorization"/>
+    <View
+        style="@style/HorizontalBoundaryStyle"
+        android:background="@color/gray"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/y30"
+        android:paddingLeft="@dimen/x40"
+        android:paddingRight="@dimen/x40"
+        android:paddingTop="@dimen/y30">
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/y80"
+            android:src="@mipmap/img_nfriend_headshot1"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/MainTextDeepStyle32"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="某某申请获得以下权限"
+            android:layout_marginTop="@dimen/y20"
+            />
+        <View
+            style="@style/HorizontalBoundaryStyle"
+            android:background="@color/gray"
+            android:layout_marginTop="@dimen/y20"
+            />
+        <TextView
+            android:id="@+id/tv_content"
+            style="@style/SecondaryTextStyle28"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/y20"
+            android:text="· 获取你的公开令牌（昵称、头像）"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1"
+        android:background="@color/gray"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/MainTextDeepStyle36"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/reject"/>
+
+        <TextView
+            android:layout_width="@dimen/y1"
+            android:layout_height="match_parent"
+            android:background="@color/gray"/>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            style="@style/BlueTextStyle36"
+            android:textColor="@color/red_color"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/allow"/>
+
+
+    </LinearLayout>
+</LinearLayout>

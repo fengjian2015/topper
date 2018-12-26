@@ -1272,4 +1272,9 @@
     <string name="change_username">修改暱稱</string>
     <string name="no_data">暫無數據</string>  
     <string name="public_open">系統公眾號已對外開放，個人或企業用戶申請\n聯繫方式：</string>
+    <string name="permissions">登錄後開發者將獲取以下權限</string>
+    <string name="getting_information">· 獲取你的公開令牌（暱稱、頭像）</string>
+    <string name="confirm_login">確認登錄</string>
+    <string name="allow">允許</string>
+    <string name="topperchat_authorization">TopperChat授權</string>
 </resources>

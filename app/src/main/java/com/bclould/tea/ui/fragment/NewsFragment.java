@@ -95,6 +95,8 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     ScrollView mScrollView;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv_loading)
+    ImageView mIvLoading;
     private NewsRVAdapter mNewsRVAdapter;
     private int mPage_id = 0;
     private int mPageSize = 10;
@@ -193,11 +195,11 @@ public class NewsFragment extends Fragment implements OnBannerListener {
         }
         isFinish = false;
         UtilTool.Log("分頁", mPage_id + "");
-        mNewsNoticePresenter.getNewsList(mPage_id, mPageSize, new NewsNoticePresenter.CallBack() {
+        mNewsNoticePresenter.getNewsList(mPage_id, mPageSize,mIvLoading, new NewsNoticePresenter.CallBack() {
             @Override
             public void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
-                    if(mRefreshLayout==null)return;
+                    if (mRefreshLayout == null) return;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
                     } else {

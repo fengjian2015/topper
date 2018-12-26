@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class AuthorizationActivity extends BaseActivity {
+public class AuthorizationActivity extends BaseActivity implements AuthorizationContacts.View{
     @Bind(R.id.tv_title_top)
     TextView mTvTitleTop;
     @Bind(R.id.iv_logo)
@@ -41,73 +41,22 @@ public class AuthorizationActivity extends BaseActivity {
     Button mBtnNext;
     @Bind(R.id.ll_data)
     LinearLayout mLlData;
-    private ExternalInfo mExternalInfo;
-    private ExternalUserInfo mExternalUserInfo;
-    private String access_token;
+
+
+    private AuthorizationPresenter mAuthorizationPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authorization);
         ButterKnife.bind(this);
-        init();
-
+        mAuthorizationPresenter=new AuthorizationPresenter();
+        mAuthorizationPresenter.bindView(this);
+        mAuthorizationPresenter.start(this);
     }
 
-    private void initHttp() {
-        new ExternalPresenter(this).publicsh("client_credentials", mExternalInfo.getClient_id(), mExternalInfo.getClient_secret(), mExternalInfo.getScope(), new ExternalPresenter.CallBack() {
-            @Override
-            public void send(ExternalTokenInfo data) {
-                if (!StringUtils.isEmpty(data.getError())) {
-                    mExternalUserInfo.setStatus(2);
-                    mExternalUserInfo.setError(data.getError());
-                    mExternalUserInfo.setMessage(data.getError_description());
-                    result(JSONObject.toJSONString(mExternalUserInfo));
-                    return;
-                }
-                if (data.isAuthorized()) {
-                    getUserInfo(data.getAccess_token());
-                } else {
-                    access_token=data.getAccess_token();
-                    mLlData.setVisibility(View.VISIBLE);
-                }
-            }
+    @Override
+    public void initView() {
 
-            @Override
-            public void error() {
-
-            }
-        });
-    }
-
-    private void getUserInfo(String access_token) {
-        new ExternalPresenter(this).getExUsers(access_token, new ExternalPresenter.CallBack1() {
-            @Override
-            public void send(ExternalUserInfo data) {
-                mExternalUserInfo = data;
-                result(JSONObject.toJSONString(mExternalUserInfo));
-            }
-
-            @Override
-            public void error() {
-
-            }
-        });
-
-
-    }
-
-    private void init() {
-        MySharedPreferences.getInstance().setBoolean(SharedPreferencesUtil.IS_EXTERNAL, false);
-        mExternalInfo = JSONObject.parseObject(MySharedPreferences.getInstance().getString(SharedPreferencesUtil.EXTERNAL_CONTENT), ExternalInfo.class);
-        initHttp();
-    }
-
-    private void result(String json) {
-        Intent intent = new Intent();
-        intent.setData(Uri.parse(mExternalInfo.getScope() + "://topper_chat_result/result?content=" + json));
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
     }
 
     @OnClick({R.id.tv_title_top, R.id.btn_next})
@@ -117,7 +66,7 @@ public class AuthorizationActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_next:
-                getUserInfo(access_token);
+                mAuthorizationPresenter.getUserInfo(mAuthorizationPresenter.getAccessToken());
                 break;
         }
     }
@@ -126,5 +75,10 @@ public class AuthorizationActivity extends BaseActivity {
     public void onPause() {
         super.onPause();
         finish();
+    }
+
+    @Override
+    public void setllDataView() {
+        mLlData.setVisibility(View.VISIBLE);
     }
 }

@@ -2384,4 +2384,9 @@ Please reset encryption request</string>
     <string name="change_username">Modify nickname </string>
     <string name="no_data">no data </string>
     <string name="public_open">The system public number has been opened. For individual or business user\n contact </string>
+    <string name="permissions">The developer will get the following permissions after logging in</string>
+    <string name="getting_information">· Get your public token (nickname, avatar) </string>
+    <string name="confirm_login"> confirm login </string>
+    <string name="allow">allow </string>
+    <string name="topperchat_authorization">TopperChat authorization </string>
 </resources>
