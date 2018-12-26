@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -19,9 +20,16 @@ import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.model.InCoinInfo;
+import com.bclould.tea.model.QrCardInfo;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,6 +52,8 @@ public class RegisterActivity extends LoginBaseActivity {
     EditText mEtUsername;
     @Bind(R.id.btn_next)
     Button mBtnNext;
+    @Bind(R.id.et_referrer)
+    EditText mEtReferrer;
     private RegisterPresenter mRegisterPresenter;
 
     @Override
@@ -115,13 +125,13 @@ public class RegisterActivity extends LoginBaseActivity {
         } else if (mEtUsername.getText().toString().length() < 6) {
             Toast.makeText(this, getResources().getString(R.string.toast_username_min), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtUsername);
-        } else {
+        }else {
             return true;
         }
         return false;
     }
 
-    @OnClick({R.id.iv_back, R.id.btn_next})
+    @OnClick({R.id.iv_back, R.id.btn_next,R.id.iv_qr_code})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -132,6 +142,14 @@ public class RegisterActivity extends LoginBaseActivity {
                     next();
                 }
                 break;
+            case R.id.iv_qr_code:
+                // TODO: 2018/11/8 扫一扫
+                if (!AuthorizationUserTools.isCameraCanUse(this))
+                    return;
+                Intent intent = new Intent(this, ScanQRCodeActivity.class);
+                intent.putExtra("code", 4);
+                startActivityForResult(intent, 4);
+                break;
         }
     }
 
@@ -139,14 +157,38 @@ public class RegisterActivity extends LoginBaseActivity {
     private void next() {
         String email = mEtEmail.getText().toString().trim();
         String username = mEtUsername.getText().toString().trim();
+        String referrer=mEtReferrer.getText().toString().trim();
         final Intent intent = new Intent(this, RegisterActivity2.class);
         intent.putExtra("username", username);
         intent.putExtra("email", email);
-        mRegisterPresenter.signUpValidator(email, username, new RegisterPresenter.CallBack2() {
+        intent.putExtra("referrer",referrer);
+        mRegisterPresenter.signUpValidator(email, username,referrer, new RegisterPresenter.CallBack2() {
             @Override
             public void send() {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 4) {
+                String result = data.getStringExtra("result");
+                if (result != null && !result.isEmpty()) {
+                    if (result.contains(Constants.COMMANDUSERNAME)) {
+                        String base64 = result.substring(Constants.COMMANDUSERNAME.length(), result.length());
+                        String jsonresult = new String(Base64.decode(base64, Base64.DEFAULT));
+                        UtilTool.Log("日志", jsonresult);
+
+                        Gson gson = new Gson();
+                        QrCardInfo qrCardInfo = gson.fromJson(jsonresult, QrCardInfo.class);
+                        String name = qrCardInfo.getName();
+                        mEtReferrer.setText(name+"");
+                    }
+                }
+            }
+        }
     }
 }

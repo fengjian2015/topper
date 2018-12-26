@@ -54,6 +54,7 @@ public class AddFriendSetActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend_set);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.add_friend_setting));
         initInterface();
         MyApp.getInstance().addActivity(this);
 

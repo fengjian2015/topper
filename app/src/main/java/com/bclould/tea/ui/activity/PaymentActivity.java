@@ -57,10 +57,6 @@ import static com.bclould.tea.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PaymentActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     @Bind(R.id.tv_give)
     TextView mTvGive;
     @Bind(R.id.tv_name)
@@ -108,6 +104,7 @@ public class PaymentActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.payment));
         MyApp.getInstance().addActivity(this);
         mPersonalDetailsPresenter = new PersonalDetailsPresenter(this);
         initIntent();
@@ -171,11 +168,11 @@ public class PaymentActivity extends BaseActivity {
         } else if (mType.equals(Constants.MONEYOUT)) {//生成付款碼
             mRlWho.setVisibility(View.GONE);
             initData();
-            mTvTitle.setText(getString(R.string.create_fk_code));
+            mTvTitleTop.setText(getString(R.string.create_fk_code));
             mBtnPayment.setText(getString(R.string.confirm));
         } else if (mType.equals(Constants.QRMONEYIN)) {//生成收款碼
             mRlWho.setVisibility(View.GONE);
-            mTvTitle.setText(getString(R.string.create_sk_code));
+            mTvTitleTop.setText(getString(R.string.create_sk_code));
             initData();
             mBtnPayment.setText(getString(R.string.confirm));
         } else if (mType.equals(Constants.COMMERCIAL_TENANT_RECOGNITION_SYMBOL)) {//商戶支付

@@ -1,46 +1,33 @@
 package com.bclould.tea.base;
 
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.bclould.tea.R;
-import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.DeblockingFingerprintActivity;
 import com.bclould.tea.ui.activity.DeblockingGestureActivity;
-import com.bclould.tea.ui.activity.PayPwSelectorActivity;
-import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.GestureLockViewGroup;
-import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.FingerprintUtil;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
-
+import com.umeng.analytics.MobclickAgent;
 import java.util.List;
+
+import butterknife.ButterKnife;
 
 import static com.bclould.tea.ui.activity.PayPwSelectorActivity.FINGERPRINT_PW_SELE;
 import static com.bclould.tea.ui.activity.PayPwSelectorActivity.GESTURE_PW_SELE;
-import static com.bclould.tea.ui.activity.SetGesturePWActivity.GESTURE_ANSWER;
 
 /**
  * Created by GA on 2017/9/22.
@@ -54,6 +41,11 @@ public class BaseActivity extends SwipeActivity {
     private Dialog mGestureDialog;
     private TextView mTvHint;
     private GestureLockViewGroup mGestureView;
+    protected TextView mTvTitleTop;
+    protected TextView mTvAdd;
+    protected TextView mTvAdd1;
+    protected ImageView mImageView;
+    protected ImageView mIvFinish;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +54,55 @@ public class BaseActivity extends SwipeActivity {
 //            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             getWindow().setStatusBarColor(getResources().getColor(R.color.app_bg_color));
         }
+    }
+
+    protected void setTitle(String content){
+        mTvTitleTop=(TextView)findViewById(R.id.tv_title_top);
+        mTvTitleTop.setText(content);
+    }
+
+    protected void setHtmlTitle(String content){
+        mTvTitleTop=(TextView)findViewById(R.id.tv_title_top);
+        mIvFinish=(ImageView)findViewById(R.id.iv_finish);
+        mTvTitleTop.setText(content);
+    }
+
+    protected void setTitle(String content, String rightContent){
+        mTvTitleTop=(TextView)findViewById(R.id.tv_title_top);
+        mTvAdd=(TextView)findViewById(R.id.tv_add);
+        mTvTitleTop.setText(content);
+        mTvAdd.setText(rightContent);
+        mTvAdd.setVisibility(View.VISIBLE);
+    }
+    /**
+     * rightContent1红色右边字体
+     * @param content
+     * @param rightContent
+     * @param rightContent1
+     */
+    protected void setTitle(String content, String rightContent,String rightContent1){
+        mTvTitleTop=(TextView)findViewById(R.id.tv_title_top);
+        mTvAdd=(TextView)findViewById(R.id.tv_add);
+        mTvAdd1=(TextView)findViewById(R.id.tv_add1);
+        mTvTitleTop.setText(content);
+        if(!StringUtils.isEmpty(rightContent)) {
+            mTvAdd.setText(rightContent);
+            mTvAdd.setVisibility(View.VISIBLE);
+        }
+        if(!StringUtils.isEmpty(rightContent1)) {
+            mTvAdd1.setVisibility(View.VISIBLE);
+            mTvAdd1.setText(rightContent1);
+        }
+    }
+
+    protected void setTitle(String content,int id){
+        mTvTitleTop=(TextView)findViewById(R.id.tv_title_top);
+        mTvAdd=(TextView)findViewById(R.id.tv_add);
+        mTvAdd1=(TextView)findViewById(R.id.tv_add1);
+        mTvTitleTop.setText(content);
+        mImageView=(ImageView)findViewById(R.id.iv_more);
+        mImageView.setVisibility(View.VISIBLE);
+        mImageView.setImageResource(id);
     }
 
     @Override
@@ -109,6 +150,7 @@ public class BaseActivity extends SwipeActivity {
     @Override
     public void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         if (!isActive) {
             //app 从后台唤醒，进入前台
             isActive = true;
@@ -127,6 +169,7 @@ public class BaseActivity extends SwipeActivity {
     @Override
     public void onPause() {
         super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override
@@ -145,6 +188,7 @@ public class BaseActivity extends SwipeActivity {
         super.onDestroy();
         this.finish();
         MyApp.getInstance().mActivityList.remove(this);
+        ButterKnife.unbind(this);
     }
 
     /**

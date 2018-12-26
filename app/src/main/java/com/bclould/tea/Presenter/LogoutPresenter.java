@@ -48,13 +48,12 @@ public class LogoutPresenter {
             mProgressDialog.setMessage(mActivity.getString(R.string.kitson));
         }
 
-        mProgressDialog.show();
+        mProgressDialog.showDialog();
     }
 
     private void hideDialog() {
         if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
+            mProgressDialog.hideDialog();
         }
     }
 
@@ -74,10 +73,7 @@ public class LogoutPresenter {
                     @Override
                     public void onNext(@NonNull BaseInfo baseInfo) {
                         hideDialog();
-                        if (baseInfo.getStatus() == 1) {
-                            imLogout(baseInfo.getMessage());
-                        }
-
+                        imLogout(mActivity.getString(R.string.out_group_success));
                     }
 
                     @Override

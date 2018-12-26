@@ -6,49 +6,16 @@
                 android:layout_height="match_parent"
                 android:background="@color/app_bg_color"
                 tools:activity="com.bclould.tea.ui.activity.HTMLActivity">
-
-    <RelativeLayout
+    <include
         android:id="@+id/rl_title"
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <ImageView
-            android:id="@+id/iv_finish"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/bark"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_sh_cancel"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:maxWidth="@dimen/x300"
-            android:singleLine="true"/>
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/xx"
-        style="@style/HorizontalBoundaryStyle"
-        android:layout_below="@+id/rl_title"/>
+        layout="@layout/activity_top"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y10"
-        android:layout_below="@+id/xx"
+        android:layout_below="@+id/rl_title"
         android:progressDrawable="@drawable/bg_progress_bar"
         android:visibility="gone"/>
 

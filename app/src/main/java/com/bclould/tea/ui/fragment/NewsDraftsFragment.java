@@ -155,16 +155,20 @@ public class NewsDraftsFragment extends Fragment {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
-                    if (type == PULL_DOWN) {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.GONE);
-                        mLlError.setVisibility(View.VISIBLE);
+                    isFinish = true;if (type == PULL_UP) {
+                        mRefreshLayout.finishLoadMore();
+                    } else {
+                        mRefreshLayout.finishRefresh();
                     }
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void finishRefresh() {
+                isFinish = true;
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
                 } else {

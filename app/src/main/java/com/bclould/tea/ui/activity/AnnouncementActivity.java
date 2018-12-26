@@ -31,6 +31,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
@@ -64,25 +65,26 @@ public class AnnouncementActivity extends BaseActivity {
 
     @Bind(R.id.et)
     EditText mEt;
-    @Bind(R.id.tv_hint)
-    TextView mTvHint;
     @Bind(R.id.addImage)
     Button mAddImage;
     @Bind(R.id.view)
     View mView;
+    @Bind(R.id.tv_add)
+    TextView mTvAdd;
 
     private List<LocalMedia> selectList = new ArrayList<>();
     private String roomId;
     private DBRoomManage mDBRoomManage;
     private SpannableString mSpannableString;
-    private List<HashMap> mStringList=new ArrayList<>();//記錄選擇的圖片key
-    private  List<HashMap> newHashMaps=new ArrayList<>();
+    private List<HashMap> mStringList = new ArrayList<>();//記錄選擇的圖片key
+    private List<HashMap> newHashMaps = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_announcement);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.gonggao), getString(R.string.edit));
         MyApp.getInstance().addActivity(this);
         mDBRoomManage = new DBRoomManage(this);
         initGetIntent();
@@ -103,20 +105,20 @@ public class AnnouncementActivity extends BaseActivity {
         setEtCompile(false);
         setAnnouncement();
         if (isOwner()) {
-            mTvHint.setVisibility(View.VISIBLE);
+            mTvAdd.setVisibility(View.VISIBLE);
         } else {
-            mTvHint.setVisibility(View.GONE);
+            mTvAdd.setVisibility(View.GONE);
         }
     }
 
-    private void setAnnouncement(){
-        String content=mDBRoomManage.findRoomDescription(roomId);
+    private void setAnnouncement() {
+        String content = mDBRoomManage.findRoomDescription(roomId);
         if (!StringUtils.isEmpty(content)) {
-            mSpannableString=new SpannableString(content);
+            mSpannableString = new SpannableString(content);
             mEt.setText(mSpannableString);
             searchImage(content);
-        }else{
-            mSpannableString=new SpannableString("");
+        } else {
+            mSpannableString = new SpannableString("");
         }
     }
 
@@ -141,24 +143,24 @@ public class AnnouncementActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.tv_hint, R.id.addImage})
+    @OnClick({R.id.bark, R.id.tv_add, R.id.addImage})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_hint:
-                if (getString(R.string.edit).equals(mTvHint.getText().toString())) {
+            case R.id.tv_add:
+                if (getString(R.string.edit).equals(mTvAdd.getText().toString())) {
                     //開始編輯模式
                     mAddImage.setVisibility(View.VISIBLE);
                     mView.setVisibility(View.VISIBLE);
-                    mTvHint.setText(getString(R.string.finish));
+                    mTvAdd.setText(getString(R.string.finish));
                     setEtCompile(true);
-                } else if (getString(R.string.finish).equals(mTvHint.getText().toString())) {
+                } else if (getString(R.string.finish).equals(mTvAdd.getText().toString())) {
                     //完成提交
-                    if(mStringList.size()>0){
+                    if (mStringList.size() > 0) {
                         uploadImage();
-                    }else{
+                    } else {
                         commit();
                     }
                 }
@@ -228,11 +230,11 @@ public class AnnouncementActivity extends BaseActivity {
      * 插入图片
      */
     private void insertCompilePic(Bitmap bitmap, final String url) {
-        HashMap map=new HashMap();
+        HashMap map = new HashMap();
         final String postfixs = UtilTool.getPostfix3(url);
-        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN." +postfixs;//命名aws文件名
-        map.put("url",url);
-        map.put("key",key);
+        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN." + postfixs;//命名aws文件名
+        map.put("url", url);
+        map.put("key", key);
         mStringList.add(map);
 
         // 根据Bitmap对象创建ImageSpan对象
@@ -253,7 +255,7 @@ public class AnnouncementActivity extends BaseActivity {
         System.out.println("插入的图片：" + edit_text.toString());
     }
 
-      /**
+    /**
      * 僅僅顯示的方法
      * 插入图片
      */
@@ -263,37 +265,37 @@ public class AnnouncementActivity extends BaseActivity {
             public void run() {
                 // 根据Bitmap对象创建ImageSpan对象
                 ImageSpan imageSpan = new ImageSpan(AnnouncementActivity.this, bitmap);
-                mSpannableString.setSpan(imageSpan, start, start+imageurl.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                mSpannableString.setSpan(imageSpan, start, start + imageurl.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 mEt.setText(mSpannableString);
             }
         });
     }
 
-    private void searchImage(String content){
+    private void searchImage(String content) {
         Pattern p = Pattern.compile("<img src=\"([^：]*?)\"/>");
         Matcher m = p.matcher(content);
         while (m.find()) {
-            String url=m.group().substring(10,m.group().length()-3);
-            String imageUrl= downFile(url);
-            final String group=m.group();
-            final int start=m.start();
-            Bitmap bmp=BitmapFactory.decodeResource(getResources(), R.drawable.image_placeholder);
-            insertPic(bmp,group,start);
-            Glide.with( this ) // could be an issue!
+            String url = m.group().substring(10, m.group().length() - 3);
+            String imageUrl = downFile(url);
+            final String group = m.group();
+            final int start = m.start();
+            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.image_placeholder);
+            insertPic(bmp, group, start);
+            Glide.with(this) // could be an issue!
                     .load(imageUrl)
                     .into(new SimpleTarget<Drawable>() {
                         @Override
                         public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
                             BitmapDrawable bd = (BitmapDrawable) resource;
                             Bitmap bm = bd.getBitmap();
-                            insertPic(bm,group,start);
+                            insertPic(bm, group, start);
                         }
                     });
         }
     }
 
     private void commit() {
-        final String content=mEt.getText().toString();
+        final String content = mEt.getText().toString();
         new GroupPresenter(this).updateBullet(Integer.parseInt(roomId), content, new GroupPresenter.CallBack() {
             @Override
             public void send() {
@@ -306,14 +308,14 @@ public class AnnouncementActivity extends BaseActivity {
         });
     }
 
-    private void uploadImage(){
+    private void uploadImage() {
         showDialog();
-        String content=mEt.getText().toString();
+        String content = mEt.getText().toString();
 
         newHashMaps.clear();
         newHashMaps.addAll(mStringList);
-        for( final HashMap hashMap:mStringList){
-            if(!content.contains((String)hashMap.get("key"))&&newHashMaps.contains(hashMap)){
+        for (final HashMap hashMap : mStringList) {
+            if (!content.contains((String) hashMap.get("key")) && newHashMaps.contains(hashMap)) {
                 newHashMaps.remove(hashMap);
                 continue;
             }
@@ -322,12 +324,13 @@ public class AnnouncementActivity extends BaseActivity {
             ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                 @Override
                 public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                    if(newHashMaps.contains(hashMap))
-                    newHashMaps.remove(hashMap);
-                    if(newHashMaps.size()==0){
+                    if (newHashMaps.contains(hashMap))
+                        newHashMaps.remove(hashMap);
+                    if (newHashMaps.size() == 0) {
                         AnnouncementActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                if(!ActivityUtil.isActivityOnTop(AnnouncementActivity.this))return;
                                 commit();
                                 hideDialog();
                             }
@@ -350,6 +353,7 @@ public class AnnouncementActivity extends BaseActivity {
     }
 
     private LoadingProgressDialog mProgressDialog;
+
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(this);
@@ -365,7 +369,7 @@ public class AnnouncementActivity extends BaseActivity {
         }
     }
 
-    private String downFile(String key){
+    private String downFile(String key) {
         OSSClient ossClient = OSSupload.getInstance().visitOSS();
         String url = null;
         url = ossClient.presignPublicObjectURL(Constants.BUCKET_NAME2, key);

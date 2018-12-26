@@ -44,6 +44,7 @@ import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.service.IMService;
 import com.bclould.tea.topperchat.AddFriendReceiver;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.ui.activity.authorization.AuthorizationActivity;
 import com.bclould.tea.ui.fragment.DiscoverFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.Constants;
@@ -52,6 +53,7 @@ import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.IMUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.SharedPreferencesUtil;
 import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -189,11 +191,22 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 第三方授权根据IS_EXTERNAL判断是否跳转到授权页面
+     */
+    private void goAuthorization(){
+        boolean isExternal=MySharedPreferences.getInstance().getBoolean(SharedPreferencesUtil.IS_EXTERNAL);
+        if(isExternal){
+            Intent intentResult = new Intent(MyApp.getInstance().getTopActivity(), AuthorizationActivity.class);
+            startActivity(intentResult);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         resumeRelogin();
-
+        goAuthorization();
     }
 
     @Override
@@ -219,6 +232,7 @@ public class MainActivity extends BaseActivity {
             getMyImage();
             getFriends();
             getChatBackGround();
+            mallLogin();
         } else if (2 == whence || 3 == whence) {
             DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
             discoverFragment.initInterface();
@@ -236,6 +250,18 @@ public class MainActivity extends BaseActivity {
         String msg = event.getMsg();
         if (msg.equals(EventBusUtil.refresh_msg_number)) {
             refreshNumber();
+        }
+    }
+
+    /**
+     * 判断是否跳转到商城登录
+     */
+    private void mallLogin(){
+        String mallUrl=MySharedPreferences.getInstance().getString(SharedPreferencesUtil.WEB_LOGIN);
+        if(!StringUtils.isEmpty(mallUrl)){
+            Intent intent=new Intent(this,HTMLActivity.class);
+            intent.putExtra("html5Url",mallUrl);
+            startActivity(intent);
         }
     }
 
@@ -459,7 +485,7 @@ public class MainActivity extends BaseActivity {
 
     private void getChatBackGround() {
         UtilTool.Log("token", UtilTool.getToken());
-        UtilTool.Log("fengjiantoken",UtilTool.getToken());
+        UtilTool.Log("fengjiantoken", UtilTool.getToken());
         new GroupPresenter(this).getBackgound(new GroupPresenter.CallBack2() {
             @Override
             public void send(String url) {
@@ -523,7 +549,17 @@ public class MainActivity extends BaseActivity {
     }
 
     public void getStateList() {
-        mCoinPresenter.getState();
+        mCoinPresenter.getState(new CoinPresenter.CallBack4() {
+            @Override
+            public void send() {
+
+            }
+
+            @Override
+            public void error() {
+
+            }
+        });
     }
 
     //检测版本更新
@@ -552,6 +588,7 @@ public class MainActivity extends BaseActivity {
             mSupportFragmentManager.beginTransaction().remove(map.get(i));
             mSupportFragmentManager.beginTransaction().hide(map.get(i));
         }
+        MySharedPreferences.getInstance().setBoolean(SharedPreferencesUtil.IS_EXTERNAL,false);
         unregisterReceiver(mReceiver);
     }
 
@@ -563,6 +600,12 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void onClick(View view) {
                     int index = mMainBottomMenu.indexOfChild(childAt);
+                    if(index==2){
+                        Intent intent=new Intent(MainActivity.this,HTMLActivity.class);
+                        intent.putExtra("html5Url",Constants.WEB_MALL);
+                        startActivity(intent);
+                        return;
+                    }
                     changeFragment(index);
                     setSelector(index);
                     converstonTop(index);
@@ -583,30 +626,34 @@ public class MainActivity extends BaseActivity {
 
     @SuppressLint("RestrictedApi")
     private void changeFragment(int index) {
-        if (mSupportFragmentManager == null) {
-            mSupportFragmentManager = getSupportFragmentManager();
-        }
-        FragmentTransaction ft = mSupportFragmentManager.beginTransaction();
-        FragmentFactory fragmentFactory = FragmentFactory.getInstanes();
-        Fragment LastFragment = fragmentFactory.createMainFragment(lastIndex);
-        Fragment fragment = fragmentFactory.createMainFragment(index);
-        if (mSupportFragmentManager.getFragments() == null) {
-            if (!fragment.isAdded() && null == mSupportFragmentManager.findFragmentByTag(index + "")) {
-                ft.add(R.id.main_fl, fragment, index + "");
+        try {
+            if (mSupportFragmentManager == null) {
+                mSupportFragmentManager = getSupportFragmentManager();
             }
-        } else if (!mSupportFragmentManager.getFragments().contains(fragment)) {
-            if (!fragment.isAdded() && null == mSupportFragmentManager.findFragmentByTag(index + "")) {
-                ft.add(R.id.main_fl, fragment, index + "");
+            FragmentTransaction ft = mSupportFragmentManager.beginTransaction();
+            FragmentFactory fragmentFactory = FragmentFactory.getInstanes();
+            Fragment LastFragment = fragmentFactory.createMainFragment(lastIndex);
+            Fragment fragment = fragmentFactory.createMainFragment(index);
+            if (mSupportFragmentManager.getFragments() == null) {
+                if (!fragment.isAdded() && null == mSupportFragmentManager.findFragmentByTag(index + "")) {
+                    ft.add(R.id.main_fl, fragment, index + "");
+                }
+            } else if (!mSupportFragmentManager.getFragments().contains(fragment)) {
+                if (!fragment.isAdded() && null == mSupportFragmentManager.findFragmentByTag(index + "")) {
+                    ft.add(R.id.main_fl, fragment, index + "");
+                }
             }
+            if (ft != null) {
+                ft.hide(LastFragment);
+                ft.show(fragment);
+                ft.commitAllowingStateLoss();
+                if (mSupportFragmentManager != null)
+                    mSupportFragmentManager.executePendingTransactions();
+            }
+            lastIndex = index;
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        if (ft != null) {
-            ft.hide(LastFragment);
-            ft.show(fragment);
-            ft.commitAllowingStateLoss();
-            if (mSupportFragmentManager != null)
-                mSupportFragmentManager.executePendingTransactions();
-        }
-        lastIndex = index;
     }
 
 //     当activity销毁时不保存其内部的view的状态
@@ -642,7 +689,6 @@ public class MainActivity extends BaseActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             exitBy2Click();      //调用双击退出函数
         }
-        finish();
         return false;
     }
 
@@ -663,10 +709,14 @@ public class MainActivity extends BaseActivity {
             }, 3000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
 
         } else {
-            Intent home = new Intent(Intent.ACTION_MAIN);
-            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            home.addCategory(Intent.CATEGORY_HOME);
-            startActivity(home);
+            try {
+                Intent home = new Intent(Intent.ACTION_MAIN);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                home.addCategory(Intent.CATEGORY_HOME);
+                startActivity(home);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

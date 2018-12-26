@@ -56,6 +56,7 @@ public class GroupConfirmActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_confirm);
         ButterKnife.bind(this);
+        setTitle("");
         mDBRoomManage = new DBRoomManage(this);
         mDBManager=new DBManager(this);
         getintent();

@@ -60,10 +60,6 @@ import static com.bclould.tea.R.style.BottomDialog;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PayRecordActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_filtrate)
-    TextView mTvFiltrate;
     @Bind(R.id.tv_date)
     TextView mTvDate;
     @Bind(R.id.rl_date_selector)
@@ -86,7 +82,7 @@ public class PayRecordActivity extends BaseActivity {
     private Dialog mBottomDialog;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int mPage_id = 0;
+    private int mPage_id = 1;
     private int mPageSize = 10;
     boolean isFinish = true;
     String mTypes = "";
@@ -101,12 +97,13 @@ public class PayRecordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_record);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.payment_record),getString(R.string.filtrate));
         MyApp.getInstance().addActivity(this);
         getOptionData();
         initIntent();
         initRecycler();
         initMap();
-        initData(PULL_DOWN);
+        initData(PULL_DOWN,1);
         initListener();
     }
 
@@ -121,7 +118,7 @@ public class PayRecordActivity extends BaseActivity {
             public void onLoadMore(RefreshLayout refreshLayout) {
                 refreshLayout.finishLoadMore(1000);
                 if (isFinish) {
-                    initData(PULL_UP);
+                    initData(PULL_UP,mPage_id+1);
                 }
             }
         });
@@ -138,6 +135,7 @@ public class PayRecordActivity extends BaseActivity {
         mFiltrateList.add(getString(R.string.out_coin));
         mFiltrateList.add(getString(R.string.reward));
         mFiltrateList.add(getString(R.string.exchange));
+        mFiltrateList.add(getString(R.string.guess));
         mTvDate.setText(mDate);
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
     }
@@ -148,19 +146,18 @@ public class PayRecordActivity extends BaseActivity {
 
     List<TransferListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData(final int type) {
-        if (type == PULL_DOWN) {
-            mPage_id = 0;
-        }
+    private void initData(final int type,int page) {
         isFinish = false;
-        mReceiptPaymentPresenter.transRecord(mPage_id, mPageSize, mTypes, mDate, new ReceiptPaymentPresenter.CallBack4() {
+        mReceiptPaymentPresenter.transRecord(page, mPageSize, mTypes, mDate, new ReceiptPaymentPresenter.CallBack4() {
             @Override
             public void send(List<TransferListInfo.DataBean> data) {
                 if (ActivityUtil.isActivityOnTop(PayRecordActivity.this)) {
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
+                            mPage_id=1;
                             mRefreshLayout.finishRefresh();
                         } else {
+                            mPage_id++;
                             mRefreshLayout.finishLoadMore();
                         }
                         isFinish = true;
@@ -177,9 +174,6 @@ public class PayRecordActivity extends BaseActivity {
                                 }
                             }
                             mDataList.addAll(data);
-                            if (mDataList.size() != 0) {
-                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
-                            }
                             mPayRecordRVAdapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);
@@ -194,6 +188,7 @@ public class PayRecordActivity extends BaseActivity {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(PayRecordActivity.this)) {
+                    isFinish = true;
                     if (type == PULL_DOWN) {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.GONE);
@@ -204,6 +199,7 @@ public class PayRecordActivity extends BaseActivity {
 
             @Override
             public void finishRefresh() {
+                isFinish = true;
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
                 } else {
@@ -219,7 +215,7 @@ public class PayRecordActivity extends BaseActivity {
         mRecyclerView.setAdapter(mPayRecordRVAdapter);
     }
 
-    @OnClick({R.id.bark, R.id.rl_date_selector, R.id.tv_filtrate, R.id.ll_error})
+    @OnClick({R.id.bark, R.id.rl_date_selector, R.id.tv_add, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -228,11 +224,11 @@ public class PayRecordActivity extends BaseActivity {
             case R.id.rl_date_selector:
                 initOptionPicker();
                 break;
-            case R.id.tv_filtrate:
+            case R.id.tv_add:
                 showFiltrateDialog();
                 break;
             case R.id.ll_error:
-                initData(PULL_DOWN);
+                initData(PULL_DOWN,1);
                 break;
         }
     }
@@ -252,7 +248,7 @@ public class PayRecordActivity extends BaseActivity {
                         mDate = options1Items.get(options1).getPickerViewText()
                                 + "-" + options2Items.get(options1).get(options2);
                         mTvDate.setText(mDate);
-                        initData(PULL_DOWN);
+                        initData(PULL_DOWN,1);
                     }
                 }
             })
@@ -374,8 +370,10 @@ public class PayRecordActivity extends BaseActivity {
                     mTypes = "6";
                 } else if (typeName.equals(getString(R.string.exchange))) {
                     mTypes = "7";
+                }else if (typeName.equals(getString(R.string.guess))) {
+                    mTypes = "8";
                 }
-                initData(PULL_DOWN);
+                initData(PULL_DOWN,1);
                 mMap.put(getString(R.string.filtrate), position);
                 mBottomDialog.dismiss();
             }

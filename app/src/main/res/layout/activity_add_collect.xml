@@ -5,39 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg_color"
     android:orientation="vertical">
-
-    <RelativeLayout
-        style="@style/TopNavigationBarStyle">
-
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/add_collect"/>
-
-        <TextView
-            android:id="@+id/tv_add"
-            style="@style/BlueTextStyle28"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:padding="@dimen/x20"
-            android:text="@string/save"/>
-
-    </RelativeLayout>
-
-    <TextView
-        style="@style/HorizontalBoundaryStyle"/>
+    <include layout="@layout/activity_top"></include>
 
     <com.bclould.tea.ui.widget.ClearEditText
         android:id="@+id/et_titles"

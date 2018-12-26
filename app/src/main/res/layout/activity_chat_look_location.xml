@@ -6,37 +6,16 @@
                 android:layout_height="match_parent"
                 android:background="@color/app_bg_color"
                 tools:activity="com.bclould.tea.ui.activity.ChatLookLocationActivity">
-
-    <RelativeLayout
-        android:id="@+id/rl_tou"
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/location"/>
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/tv_line"
-        style="@style/HorizontalBoundaryStyle"
-        android:layout_below="@+id/rl_tou"/>
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
 
     <com.tencent.tencentmap.mapsdk.map.MapView
         android:id="@+id/mapview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rl_content"
-        android:layout_below="@+id/tv_line">
+        android:layout_below="@+id/rl_title">
 
     </com.tencent.tencentmap.mapsdk.map.MapView>
 

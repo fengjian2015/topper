@@ -65,7 +65,7 @@ public class BuyFragment extends Fragment {
     private BuySellPresenter mBuySellPresenter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int mPage_id = 0;
+    private int mPage = 1;
     private int mPageSize = 10;
     private int mState_id;
 
@@ -82,7 +82,7 @@ public class BuyFragment extends Fragment {
         initRecyclerView();
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        initData(PULL_DOWN);
+        initData(PULL_DOWN,1);
         bindBankStatus();
         initListener();
         return mView;
@@ -101,13 +101,13 @@ public class BuyFragment extends Fragment {
             mState_id = event.getNumber();
         }
         if (msg.equals(getString(R.string.coin_switchover))) {
-            initData(PULL_DOWN);
+            initData(PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.publish_deal))) {
-            initData(PULL_DOWN);
+            initData(PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.state_switchover))) {
-            initData( PULL_DOWN);
+            initData( PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.sold_out_sell))) {
-            initData(PULL_DOWN);
+            initData(PULL_DOWN,1);
         }
     }
 
@@ -125,14 +125,14 @@ public class BuyFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                initData(PULL_DOWN);
+                initData(PULL_DOWN,1);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 if (isFinish) {
-                    initData(PULL_UP);
+                    initData(PULL_UP,mPage+1);
                 }
             }
         });
@@ -145,19 +145,18 @@ public class BuyFragment extends Fragment {
     }
 
 
-    private void initData(final int type) {
-        if (type == PULL_DOWN) {
-            mPage_id = 0;
-        }
+    private void initData(final int type,int p) {
         isFinish = false;
-        mBuySellPresenter.getDealList(mPage_id, mPageSize, 1, mCoinName, mState_id, new BuySellPresenter.CallBack() {
+        mBuySellPresenter.getDealList(p, mPageSize, 1, mCoinName, mState_id, new BuySellPresenter.CallBack() {
             @Override
             public void send(List<DealListInfo.DataBean> dataBean) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
                             mRefreshLayout.finishRefresh();
+                            mPage=1;
                         } else {
+                            mPage++;
                             mRefreshLayout.finishLoadMore();
                         }
                         isFinish = true;
@@ -175,9 +174,6 @@ public class BuyFragment extends Fragment {
                                 }
                             }
                             mDataList.addAll(dataBean);
-                            if (mDataList.size() != 0) {
-                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
-                            }
                             mBuySellRVAdapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);
@@ -191,6 +187,7 @@ public class BuyFragment extends Fragment {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    isFinish = true;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
                     } else {
@@ -206,6 +203,7 @@ public class BuyFragment extends Fragment {
 
             @Override
             public void finishRefresh() {
+                isFinish = true;
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
                 } else {

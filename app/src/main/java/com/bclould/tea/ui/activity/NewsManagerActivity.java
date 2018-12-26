@@ -46,14 +46,6 @@ import static com.bclould.tea.R.style.BottomDialog;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsManagerActivity extends BaseActivity {
-
-
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_filtrate)
-    TextView mTvFiltrate;
-    @Bind(R.id.tv_empty)
-    TextView mTvEmpty;
     @Bind(R.id.xx)
     TextView mXx;
     @Bind(R.id.xx2)
@@ -71,10 +63,11 @@ public class NewsManagerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_manager);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.ad_manager),getString(R.string.filtrate),getString(R.string.empty));
+        mTvAdd1.setVisibility(View.GONE);
         MyApp.getInstance().addActivity(this);
         initFiltrate();
         mViewPager.setCurrentItem(0);
-        mTvFiltrate.setVisibility(View.VISIBLE);
         setSelector(0);
         initTopMenu();
         initViewPager();
@@ -141,14 +134,14 @@ public class NewsManagerActivity extends BaseActivity {
             public void onPageSelected(int position) {
                 setSelector(position);
                 if (position == 0) {
-                    mTvFiltrate.setVisibility(View.VISIBLE);
-                    mTvEmpty.setVisibility(View.GONE);
+                    mTvAdd.setVisibility(View.VISIBLE);
+                    mTvAdd1.setVisibility(View.GONE);
                 } else if (position == 1) {
-                    mTvFiltrate.setVisibility(View.GONE);
-                    mTvEmpty.setVisibility(View.VISIBLE);
+                    mTvAdd.setVisibility(View.GONE);
+                    mTvAdd1.setVisibility(View.VISIBLE);
                 } else {
-                    mTvFiltrate.setVisibility(View.GONE);
-                    mTvEmpty.setVisibility(View.GONE);
+                    mTvAdd.setVisibility(View.GONE);
+                    mTvAdd1.setVisibility(View.GONE);
                 }
             }
 
@@ -159,16 +152,16 @@ public class NewsManagerActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.bark, R.id.tv_filtrate, R.id.tv_empty})
+    @OnClick({R.id.bark, R.id.tv_add, R.id.tv_add1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_filtrate:
+            case R.id.tv_add:
                 showFiltrateDialog();
                 break;
-            case R.id.tv_empty:
+            case R.id.tv_add1:
                 EventBus.getDefault().post(new MessageEvent(getString(R.string.empty_news_browsing_history_callback)));
 
                 break;

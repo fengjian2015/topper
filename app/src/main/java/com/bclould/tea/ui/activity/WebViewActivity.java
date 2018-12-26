@@ -39,14 +39,6 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class WebViewActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.title_name)
-    TextView mTitleName;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;
     @Bind(R.id.web_view)
@@ -61,6 +53,7 @@ public class WebViewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
         ButterKnife.bind(this);
+        setTitle("");
         MyApp.getInstance().addActivity(this);
         initIntent();
         initWebView();
@@ -99,6 +92,9 @@ public class WebViewActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                if(isFinishing()){
+                    return;
+                }
                 mProgressBar.setVisibility(View.GONE);
                 if (mProgressBar.getProgress() != 100) {
                     mLlLoadError.setVisibility(View.VISIBLE);
@@ -113,6 +109,9 @@ public class WebViewActivity extends BaseActivity {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError
                     error) {
                 super.onReceivedError(view, request, error);
+                if(isFinishing()){
+                    return;
+                }
                 mLlLoadError.setVisibility(View.VISIBLE);
                 mWebView.setVisibility(View.GONE);
             }
@@ -120,11 +119,15 @@ public class WebViewActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                if(isFinishing()){
+                    return;
+                }
                 mProgressBar.setVisibility(View.VISIBLE);
             }
         });
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
+                if(mProgressBar==null) return;
                 mProgressBar.setMax(100);
                 mProgressBar.setProgress(progress);
             }
@@ -135,7 +138,7 @@ public class WebViewActivity extends BaseActivity {
     private void initIntent() {
         mUrl = getIntent().getStringExtra("url");
         mTitle = getIntent().getStringExtra("title");
-        mTitleName.setText(mTitle);
+        mTvTitleTop.setText(mTitle);
     }
 
     @OnClick({R.id.bark, R.id.ll_load_error})

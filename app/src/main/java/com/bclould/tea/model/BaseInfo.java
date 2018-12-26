@@ -76,6 +76,15 @@ public class BaseInfo {
         private int gesture;
         private String country;
         private String response;
+        private String price;
+
+        public String getPrice() {
+            return price;
+        }
+
+        public void setPrice(String price) {
+            this.price = price;
+        }
 
         public String getResponse() {
             return response;

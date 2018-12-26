@@ -56,10 +56,6 @@ public class CollectActivity extends BaseActivity {
     List<CollectInfo.DataBean> mDataList = new ArrayList<>();
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_add)
-    TextView mTvAdd;
-    @Bind(R.id.tv_edit)
-    TextView mTvEdit;
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.tv_hint)
@@ -95,6 +91,7 @@ public class CollectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collect);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.my_collect),getString(R.string.add),getString(R.string.edit));
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -119,7 +116,7 @@ public class CollectActivity extends BaseActivity {
     private void initView() {
         if (intentType == 1) {
             mTvAdd.setVisibility(View.GONE);
-            mTvEdit.setVisibility(View.GONE);
+            mTvAdd1.setVisibility(View.GONE);
         }
 
     }
@@ -262,7 +259,7 @@ public class CollectActivity extends BaseActivity {
 
     boolean isEdit = false;
 
-    @OnClick({R.id.bark, R.id.tv_add, R.id.tv_edit, R.id.tv_cancel, R.id.tv_confirm, R.id.ll_error})
+    @OnClick({R.id.bark, R.id.tv_add, R.id.tv_add1, R.id.tv_cancel, R.id.tv_confirm, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -274,7 +271,7 @@ public class CollectActivity extends BaseActivity {
                 break;
             case R.id.tv_cancel:
                 isEdit = false;
-                mTvEdit.setVisibility(View.VISIBLE);
+                mTvAdd1.setVisibility(View.VISIBLE);
                 mRlEdit.setVisibility(View.GONE);
                 isEdit = false;
                 mItemTouchHelper.attachToRecyclerView(null);
@@ -286,11 +283,11 @@ public class CollectActivity extends BaseActivity {
             case R.id.tv_confirm:
                 saveSequence();
                 break;
-            case R.id.tv_edit:
+            case R.id.tv_add1:
                 isEdit = true;
                 mDataList2.clear();
                 mDataList2.addAll(mDataList);
-                mTvEdit.setVisibility(View.GONE);
+                mTvAdd1.setVisibility(View.GONE);
                 mRlEdit.setVisibility(View.VISIBLE);
                 isEdit = true;
                 mItemTouchHelper.attachToRecyclerView(mRecyclerView);
@@ -320,7 +317,7 @@ public class CollectActivity extends BaseActivity {
                 Gson gson = new Gson();
                 MySharedPreferences.getInstance().setString(COLLECT_JOSN, gson.toJson(collectInfo));
                 mRlEdit.setVisibility(View.GONE);
-                mTvEdit.setVisibility(View.VISIBLE);
+                mTvAdd1.setVisibility(View.VISIBLE);
                 mItemTouchHelper.attachToRecyclerView(null);
             }
         });

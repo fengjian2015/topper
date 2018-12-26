@@ -34,8 +34,6 @@ import butterknife.OnClick;
 public class PayPasswordActivity extends BaseActivity {
 
 
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.et_pay_password)
     EditText mEtPayPassword;
     @Bind(R.id.eye)
@@ -52,6 +50,7 @@ public class PayPasswordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_password);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.payment_pw));
         MyApp.getInstance().addActivity(this);
     }
 

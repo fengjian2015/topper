@@ -36,8 +36,6 @@ import static com.bclould.tea.Presenter.LoginPresenter.LOGINSET;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginSetActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.cb_email)
     CheckBox mCbEmail;
     @Bind(R.id.rl_email_verify)
@@ -71,6 +69,7 @@ public class LoginSetActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_set);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.login_set));
         MyApp.getInstance().addActivity(this);
         mLoginPresenter = new LoginPresenter(this);
         init();

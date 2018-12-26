@@ -179,10 +179,10 @@ public class SendRedPacketActivity extends BaseActivity {
                 } else if (getString(R.string.please_choose).equals(mTvCurrency.getText().toString())) {
                     Toast.makeText(this, getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
                     return;
-                } else if (Integer.parseInt(mEtCount.getText().toString()) > 200) {
+                } else if (Double.parseDouble(mEtCount.getText().toString()) > 200) {
                     Toast.makeText(this, getString(R.string.group_red_max_money), Toast.LENGTH_SHORT).show();
                     AnimatorTool.getInstance().editTextAnimator(mEtCount);
-                }else if (Integer.parseInt(mEtCount.getText().toString()) < 0.01) {
+                }else if (Double.parseDouble(mEtCount.getText().toString()) < 0.01) {
                     Toast.makeText(this, getString(R.string.group_red_min_money), Toast.LENGTH_SHORT).show();
                     AnimatorTool.getInstance().editTextAnimator(mEtCount);
                 } else {

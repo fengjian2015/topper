@@ -43,6 +43,7 @@ public class CropImageActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_crop_image);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.crop),getString(R.string.finish));
         initIntent();
         init();
     }
@@ -101,13 +102,13 @@ public class CropImageActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.tv_ok})
+    @OnClick({R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_ok:
+            case R.id.tv_add:
                 //完成
                 commit();
                 break;

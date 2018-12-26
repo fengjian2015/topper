@@ -180,6 +180,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation_group_details);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.session_details));
         MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();
@@ -188,6 +189,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
+
         super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 

@@ -95,6 +95,8 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     ScrollView mScrollView;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv_loading)
+    ImageView mIvLoading;
     private NewsRVAdapter mNewsRVAdapter;
     private int mPage_id = 0;
     private int mPageSize = 10;
@@ -193,47 +195,46 @@ public class NewsFragment extends Fragment implements OnBannerListener {
         }
         isFinish = false;
         UtilTool.Log("分頁", mPage_id + "");
-        mNewsNoticePresenter.getNewsList(mPage_id, mPageSize, new NewsNoticePresenter.CallBack() {
+        mNewsNoticePresenter.getNewsList(mPage_id, mPageSize,mIvLoading, new NewsNoticePresenter.CallBack() {
             @Override
             public void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (mRefreshLayout == null) return;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
                     } else {
                         mRefreshLayout.finishLoadMore();
                     }
                     isFinish = true;
-                    if (lists != null || top != null) {
-                        if (lists.size() != 0 || mNewsList.size() != 0 || top.size() != 0 || mTopList.size() != 0) {
-                            mRecyclerView.setVisibility(View.VISIBLE);
-                            mLlNoData.setVisibility(View.GONE);
-                            mLlError.setVisibility(View.GONE);
-                            if (type == PULL_UP) {
-                                mNewsList.addAll(lists);
-                                if (mNewsList.size() != 0)
-                                    mPage_id = mNewsList.get(mNewsList.size() - 1).getId();
-                                mNewsRVAdapter.notifyDataSetChanged();
-                            } else {
-                                mNewsList.clear();
-                                mTopList.clear();
-                                mNewsList.addAll(lists);
-                                mTopList.addAll(top);
-                                if (mNewsList.size() != 0)
-                                    mPage_id = mNewsList.get(mNewsList.size() - 1).getId();
-                                mNewsRVAdapter.notifyDataSetChanged();
-                                List<String> imgList = new ArrayList<>();
-                                List<String> titleList = new ArrayList<>();
-                                for (NewsListInfo.TopBean info : top) {
-                                    imgList.add(info.getIndex_pic());
-                                    titleList.add(info.getTitle());
-                                }
-                                initBanner(imgList, titleList);
-                            }
+                    if (lists != null && top != null && lists.size() != 0 && top.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.GONE);
+                        if (type == PULL_UP) {
+                            mNewsList.addAll(lists);
+                            if (mNewsList.size() != 0)
+                                mPage_id = mNewsList.get(mNewsList.size() - 1).getId();
+                            mNewsRVAdapter.notifyDataSetChanged();
                         } else {
-                            mRecyclerView.setVisibility(View.GONE);
-                            mLlNoData.setVisibility(View.VISIBLE);
-                            mLlError.setVisibility(View.GONE);
+                            mNewsList.clear();
+                            mTopList.clear();
+                            mNewsList.addAll(lists);
+                            mTopList.addAll(top);
+                            if (mNewsList.size() != 0)
+                                mPage_id = mNewsList.get(mNewsList.size() - 1).getId();
+                            mNewsRVAdapter.notifyDataSetChanged();
+                            List<String> imgList = new ArrayList<>();
+                            List<String> titleList = new ArrayList<>();
+                            for (NewsListInfo.TopBean info : top) {
+                                imgList.add(info.getIndex_pic());
+                                titleList.add(info.getTitle());
+                            }
+                            initBanner(imgList, titleList);
                         }
+                    } else {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     }
                 }
             }
@@ -241,6 +242,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    isFinish = true;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
                     } else {
@@ -254,10 +256,13 @@ public class NewsFragment extends Fragment implements OnBannerListener {
 
             @Override
             public void finishRefresh() {
-                if (type == PULL_DOWN) {
-                    mRefreshLayout.finishRefresh();
-                } else {
-                    mRefreshLayout.finishLoadMore();
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    isFinish = true;
+                    if (type == PULL_DOWN) {
+                        mRefreshLayout.finishRefresh();
+                    } else {
+                        mRefreshLayout.finishLoadMore();
+                    }
                 }
             }
         });
@@ -272,7 +277,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
                 .setImageLoader(new ImageLoader() {
                     @Override
                     public void displayImage(Context context, Object path, ImageView imageView) {
-                        Glide.with(context.getApplicationContext())
+                        Glide.with(getActivity())
                                 .load(path)
                                 .apply(mRequestOptions)
                                 .into(imageView);

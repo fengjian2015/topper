@@ -35,8 +35,6 @@ import static com.bclould.tea.Presenter.LoginPresenter.STATE;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SelectorLanguageActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.cb_system)
     CheckBox mCbSystem;
     @Bind(R.id.rl_follow_system)
@@ -49,8 +47,6 @@ public class SelectorLanguageActivity extends BaseActivity {
     CheckBox mCbTraditional;
     @Bind(R.id.rl_chinese_traditional)
     RelativeLayout mRlChineseTraditional;
-    @Bind(R.id.tv_save)
-    TextView mTvSave;
     @Bind(R.id.cb_english)
     CheckBox mCbEnglish;
     @Bind(R.id.rl_english)
@@ -62,6 +58,7 @@ public class SelectorLanguageActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selector_language);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.language),getString(R.string.save));
         MyApp.getInstance().addActivity(this);
         MySharedPreferences.getInstance().getSp().registerOnSharedPreferenceChangeListener(mPreferenceChangeListener);
         init();
@@ -100,13 +97,13 @@ public class SelectorLanguageActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.rl_follow_system, R.id.rl_simplified_chinese, R.id.rl_chinese_traditional, R.id.rl_english, R.id.tv_save})
+    @OnClick({R.id.bark, R.id.rl_follow_system, R.id.rl_simplified_chinese, R.id.rl_chinese_traditional, R.id.rl_english, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_save:
+            case R.id.tv_add:
                 saveSettings();
                 break;
             case R.id.rl_follow_system:

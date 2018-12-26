@@ -52,8 +52,7 @@ public class CoinPresenter {
 
     private void hideDialog() {
         if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
+            mProgressDialog.hideDialog();
         }
     }
 
@@ -120,7 +119,7 @@ public class CoinPresenter {
                 });
     }
 
-    public void getState() {
+    public void getState(final CallBack4 callBack4) {
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .getCountryList(UtilTool.getToken())
@@ -138,11 +137,13 @@ public class CoinPresenter {
                         if (stateInfo.getStatus() == 1) {
                             MyApp.getInstance().mStateList.clear();
                             MyApp.getInstance().mStateList.addAll(stateInfo.getData());
+                            callBack4.send();
                         }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        callBack4.error();
                     }
 
                     @Override
@@ -318,5 +319,7 @@ public class CoinPresenter {
     //定义接口
     public interface CallBack4 {
         void send();
+
+        void error();
     }
 }

@@ -2,8 +2,11 @@ package com.bclould.tea.Presenter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
@@ -55,15 +58,17 @@ public class NewsNoticePresenter {
     }
 
     private void hideDialog() {
-        if (mProgressDialog != null && ActivityUtil.isActivityOnTop(mContext)) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
+        if (mProgressDialog != null) {
+            mProgressDialog.hideDialog();
         }
     }
 
-    public void getNewsList(final int page, int pageSize, final CallBack callBack) {
+    public void getNewsList(final int page, int pageSize, final ImageView ivLoading, final CallBack callBack) {
+        AnimationDrawable animationDrawable;
         if (mCount == 1) {
-            showDialog();
+            animationDrawable = (AnimationDrawable) ivLoading.getBackground();
+            animationDrawable.start();
+            ivLoading.setVisibility(View.VISIBLE);
         }
         RetrofitUtil.getInstance(mContext)
                 .getServer()
@@ -78,7 +83,8 @@ public class NewsNoticePresenter {
 
                     @Override
                     public void onNext(NewsListInfo newsListInfo) {
-                        hideDialog();
+                        if(ivLoading==null)return;
+                        ivLoading.setVisibility(View.GONE);
                         if (newsListInfo.getStatus() == 1) {
                             if (mCount == 1) {
                                 mCount++;
@@ -94,8 +100,10 @@ public class NewsNoticePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        hideDialog();
+                        if(ivLoading==null)return;
+                        ivLoading.setVisibility(View.GONE);
                         if (mCount == 1) {
+                            mCount++;
                             SharedPreferences sp = MySharedPreferences.getInstance().getSp();
                             if (sp.contains(NEWS_JSON)) {
                                 Gson gson = new Gson();

@@ -91,6 +91,7 @@ public class MessageManage {
                     }else{
                         MessageEvent messageEvent = new MessageEvent(EventBusUtil.change_msg_state);
                         messageEvent.setId(msgId);
+                        messageEvent.setSendStatus(2);
                         EventBus.getDefault().post(messageEvent);
                     }
                     e.printStackTrace();

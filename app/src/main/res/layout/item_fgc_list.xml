@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+    <View
+        style="@style/HorizontalBoundaryStyle"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y170"
+        android:layout_marginLeft="@dimen/x10"
+        android:layout_marginRight="@dimen/x10"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/x10"
+        android:paddingRight="@dimen/x10">
+
+        <TextView
+            android:id="@+id/tv_money"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y85"
+            android:gravity="bottom"
+            android:paddingBottom="@dimen/y4"
+            android:text="100USDT" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            style="@style/SecondaryTextStyle24"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y85"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/y4"
+             />
+
+
+        <TextView
+            android:id="@+id/tv_income"
+            style="@style/BlueTextStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y85"
+            android:layout_toRightOf="@+id/view"
+            android:gravity="bottom"
+            android:paddingBottom="@dimen/y4"
+            android:layout_alignParentRight="true"
+            android:text="3个月定存" />
+
+        <TextView
+            android:id="@+id/tv_rate"
+            style="@style/SecondaryTextStyle24"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y85"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/y4"
+            android:layout_toRightOf="@+id/view"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

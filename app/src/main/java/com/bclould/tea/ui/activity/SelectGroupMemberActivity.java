@@ -40,10 +40,6 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
 
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.tv_confirm)
-    TextView mTvConfirm;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     private String roomId;
     private DBRoomMember mDBRoomMember;
     private ArrayList<RoomMemberInfo> mList = new ArrayList<>();
@@ -58,6 +54,7 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_group_member);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.new_group_manager),getString(R.string.confirm));
         mDBRoomMember = new DBRoomMember(this);
         mDBManager = new DBManager(this);
         mDBRoomManage = new DBRoomManage(this);
@@ -72,10 +69,10 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
 
     private void init() {
         if(type!=1){
-            mTvTitle.setText(getString(R.string.select_members));
+            mTvTitleTop.setText(getString(R.string.select_members));
         }
         if (type == 3) {
-            mTvConfirm.setVisibility(View.GONE);
+            mTvAdd.setVisibility(View.GONE);
         }
         mList.addAll(mDBRoomMember.queryAllRequest(roomId));
         for (RoomMemberInfo roomMemberInfo : mList) {
@@ -96,13 +93,13 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
     }
 
 
-    @OnClick({R.id.bark, R.id.tv_confirm})
+    @OnClick({R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_confirm:
+            case R.id.tv_add:
                 if (oldList.size() <= 0) {
                     return;
                 }

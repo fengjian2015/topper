@@ -59,10 +59,6 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MyAssetsActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_subscription)
-    TextView mTvSubscription;
     @Bind(R.id.et_coin_name)
     EditText mEtCoinName;
     @Bind(R.id.recycler_view)
@@ -99,6 +95,7 @@ public class MyAssetsActivity extends BaseActivity {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.assets),getString(R.string.expect_coin));
         mSubscribeCoinPresenter = new SubscribeCoinPresenter(this);
         MyApp.getInstance().addActivity(this);
         getTotal();
@@ -303,13 +300,13 @@ public class MyAssetsActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.tv_subscription, R.id.et_coin_name})
+    @OnClick({R.id.bark, R.id.tv_add, R.id.et_coin_name})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_subscription:
+            case R.id.tv_add:
                 startActivity(new Intent(this, ExpectCoinActivity.class));
                 break;
             case R.id.et_coin_name:

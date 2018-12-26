@@ -1,8 +1,10 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,16 +13,22 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSON;
 import com.bclould.tea.R;
 import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.ui.activity.authorization.AuthorizationActivity;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.ExternalUtil;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.SharedPreferencesUtil;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
+
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,6 +58,37 @@ public class StartActivity extends LoginBaseActivity {
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this);
         setSwipeEnabled(false);
+        MyApp.getInstance().addActivity(this);
+        external();
+    }
+
+    private void external(){
+        Intent intent = getIntent();
+        Uri uri = intent.getData();
+        if (uri != null) {
+            String scheme = uri.getScheme();//csd
+            String uriHost = uri.getHost();//pull.csd.demo
+            String uriPath = uri.getPath();///cyn
+            String type = uri.getQueryParameter("type");//110
+            String content = uri.getQueryParameter("content");//120
+            if (ExternalUtil.AUTHORIZATION.equals(type)) {//实际项目中可根据判断type值拉起相应的页面
+                MySharedPreferences.getInstance().setBoolean(SharedPreferencesUtil.IS_EXTERNAL,true);
+                MySharedPreferences.getInstance().setString(SharedPreferencesUtil.EXTERNAL_CONTENT,content);
+                if(StringUtils.isEmpty(UtilTool.getTocoId())||StringUtils.isEmpty(UtilTool.getToken())||UtilTool.getToken().equals("bearer")){
+                    WsConnection.getInstance().setOutConnection(true) ;
+                    MySharedPreferences.getInstance().setString(TOKEN, "");
+                    startLogin();
+                }else {
+                    startMain();
+                }
+                finish();
+            }
+        }else {
+            start();
+        }
+    }
+
+    private void start(){
         new Handler() {
             public void handleMessage(Message msg) {
                 if(StringUtils.isEmpty(UtilTool.getTocoId())||StringUtils.isEmpty(UtilTool.getToken())){
@@ -122,7 +161,6 @@ public class StartActivity extends LoginBaseActivity {
                 }
             }
         }.sendEmptyMessageDelayed(0, 2000);
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override
@@ -135,6 +173,11 @@ public class StartActivity extends LoginBaseActivity {
         Bundle bundle=getIntent().getExtras();
         if(bundle!=null)
         intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    private void startLogin(){
+        Intent intent=new Intent(StartActivity.this,LoginActivity.class);
         startActivity(intent);
     }
 }

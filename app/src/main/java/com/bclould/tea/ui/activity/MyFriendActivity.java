@@ -78,10 +78,6 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
 
     public static final String NEWFRIEND = "new_friend";
     public static FriendListFragment instance = null;
-    @Bind(R.id.iv_search)
-    ImageView mIvSearch;
-    @Bind(R.id.iv_more)
-    ImageView mIvMore;
     @Bind(R.id.rl_title)
     RelativeLayout mRlTitle;
     @Bind(R.id.xx)
@@ -102,8 +98,6 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
     SmartRefreshLayout mRefreshLayout;
     @Bind(R.id.side_bar)
     WaveSideBar mSideBar;
-    @Bind(R.id.tv_friend_count)
-    TextView mTvFriendCount;
     @Bind(R.id.status_bar_fix)
     View mStatusBarFix;
 
@@ -157,6 +151,7 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.friend));
         mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
         if (mNewFriend > 0) {
             mNumber.setText(mNewFriend + "");
@@ -244,7 +239,7 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
         if (userInfo2 != null)
             userInfos.remove(userInfo2);
         mUsers.addAll(userInfos);
-        mTvFriendCount.setText(getString(R.string.friend) + "(" + mUsers.size() + ")");
+        mTvTitleTop.setText(getString(R.string.friend) + "(" + mUsers.size() + ")");
         Collections.sort(mUsers);
         try {
             for (int i = 0; i < mUsers.size(); i++) {
@@ -360,18 +355,18 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
     }
 
 
-    @OnClick({R.id.bark, R.id.iv_more, R.id.iv_search, R.id.news_friend, R.id.my_group, R.id.my_public})
+    @OnClick({R.id.bark,  R.id.news_friend, R.id.my_group, R.id.my_public})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_more:
-                initPopWindow();
-                break;
+//            case R.id.iv_more:
+//                initPopWindow();
+//                break;
             case R.id.bark:
                 finish();
                 break;
-            case R.id.iv_search:
-                startActivity(new Intent(this, SearchActivity.class));
-                break;
+//            case R.id.iv_search:
+//                startActivity(new Intent(this, SearchActivity.class));
+//                break;
             case R.id.news_friend:
                 startActivity(new Intent(this, NewFriendActivity.class));
                 MySharedPreferences.getInstance().setInteger(NEWFRIEND, 0);

@@ -69,6 +69,7 @@ public class GroupListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_list);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.my_group));
         EventBus.getDefault().register(this);//初始化EventBus
         MyApp.getInstance().addActivity(this);
         initData();

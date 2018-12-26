@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.sdk.android.oss.ClientException;
@@ -33,6 +34,7 @@ import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -58,8 +60,6 @@ public class UpIdCardActivity extends BaseActivity {
     private static final int SHOUCHI = 2;
     private static final int HUZHENGMIAN = 3;
     private static final int HUSHOUCHI = 4;
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.zhengmian_iv)
     ImageView mZhengmianIv;
     @Bind(R.id.zhengmian)
@@ -101,6 +101,7 @@ public class UpIdCardActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_up_idcard);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.up_id_card));
         MyApp.getInstance().addActivity(this);
         initIntent();
         initMap();
@@ -128,6 +129,7 @@ public class UpIdCardActivity extends BaseActivity {
         } else {
             mLlShenfen.setVisibility(View.GONE);
             mLlHuzhao.setVisibility(View.VISIBLE);
+            mTvTitleTop.setText(getString(R.string.up_hu_zhao));
         }
     }
 
@@ -224,7 +226,9 @@ public class UpIdCardActivity extends BaseActivity {
             public void send(int status) {
                 if (status == 1) {
                     Toast.makeText(UpIdCardActivity.this, getString(R.string.up_succeed), Toast.LENGTH_SHORT).show();
-                    finish();
+                    Intent intent = new Intent(UpIdCardActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(new Intent(intent));
                 }
                 hideDialog();
             }
@@ -332,7 +336,7 @@ public class UpIdCardActivity extends BaseActivity {
                 .imageSpanCount(3)// 每行显示个数
                 .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选
                 .previewImage(true)// 是否可预览图片
-                .compressGrade(com.luck.picture.lib.compress.Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
+                .compressGrade(Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
                 .isCamera(true)// 是否显示拍照按钮
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 .compress(true)// 是否压缩

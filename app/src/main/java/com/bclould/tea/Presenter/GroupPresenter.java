@@ -61,8 +61,7 @@ public class GroupPresenter {
 
     private void hideDialog() {
         if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
+            mProgressDialog.hideDialog();
         }
     }
 
@@ -298,6 +297,9 @@ public class GroupPresenter {
                                         ((Activity) mContext).runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                if (mContext instanceof Activity && !ActivityUtil.isActivityOnTop((Activity) mContext)) {
+                                                    return;
+                                                }
                                                 callBack.send();
                                             }
                                         });

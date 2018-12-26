@@ -101,6 +101,8 @@ public class CameraInterface implements Camera.PreviewCallback {
     private int mediaQuality = JCameraView.MEDIA_QUALITY_MIDDLE;
     private SensorManager sm = null;
 
+    private boolean safeToTakePicture = false;//修复重复点击拍照崩溃问题
+
     //获取CameraInterface单例
     public static synchronized CameraInterface getInstance() {
         if (mCameraInterface == null)
@@ -394,6 +396,7 @@ public class CameraInterface implements Camera.PreviewCallback {
                 mCamera.setDisplayOrientation(cameraAngle);//浏览角度
                 mCamera.setPreviewCallback(this); //每一帧回调
                 mCamera.startPreview();//启动浏览
+                safeToTakePicture = true;
                 isPreviewing = true;
                 Log.i(TAG, "=== Start Preview ===");
             } catch (IOException e) {
@@ -466,28 +469,31 @@ public class CameraInterface implements Camera.PreviewCallback {
         }
 //
         Log.i("CJT", angle + " = " + cameraAngle + " = " + nowAngle);
-        mCamera.takePicture(null, null, new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                Matrix matrix = new Matrix();
-                if (SELECTED_CAMERA == CAMERA_POST_POSITION) {
-                    matrix.setRotate(nowAngle);
-                } else if (SELECTED_CAMERA == CAMERA_FRONT_POSITION) {
-                    matrix.setRotate(360 - nowAngle);
-                    matrix.postScale(-1, 1);
-                }
+        if(safeToTakePicture) {
+            mCamera.takePicture(null, null, new Camera.PictureCallback() {
+                @Override
+                public void onPictureTaken(byte[] data, Camera camera) {
+                    safeToTakePicture = false;
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    Matrix matrix = new Matrix();
+                    if (SELECTED_CAMERA == CAMERA_POST_POSITION) {
+                        matrix.setRotate(nowAngle);
+                    } else if (SELECTED_CAMERA == CAMERA_FRONT_POSITION) {
+                        matrix.setRotate(360 - nowAngle);
+                        matrix.postScale(-1, 1);
+                    }
 
-                bitmap = createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-                if (callback != null) {
-                    if (nowAngle == 90 || nowAngle == 270) {
-                        callback.captureResult(bitmap, true);
-                    } else {
-                        callback.captureResult(bitmap, false);
+                    bitmap = createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                    if (callback != null) {
+                        if (nowAngle == 90 || nowAngle == 270) {
+                            callback.captureResult(bitmap, true);
+                        } else {
+                            callback.captureResult(bitmap, false);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     //启动录像

@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,13 +31,17 @@ import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.widget.PWDDialog;
+import com.bclould.tea.ui.widget.WinningPopWindow;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,10 +61,6 @@ public class StartGuessActivity extends BaseActivity {
 
     private static final int DEADLINE = 0;
     private static final int GUESS_TYPE = 1;
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     @Bind(R.id.tv_hint)
     TextView mTvHint;
     @Bind(R.id.tv_type)
@@ -92,19 +93,71 @@ public class StartGuessActivity extends BaseActivity {
     RelativeLayout mRlSelectorDeadline;
     @Bind(R.id.btn_confirm)
     Button mBtnConfirm;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
+    @Bind(R.id.rl_title)
+    View mRlTitle;
 
     private Dialog mBottomDialog;
     private int mId;
     private PWDDialog pwdDialog;
+
+    private int timePosition = 0;
+
+    private WinningPopWindow mWinningPopWindow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_guess);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.start_guess));
         MyApp.getInstance().addActivity(this);
+        mEtSingleInsertCount.setKeyListener(null);
+        EventBus.getDefault().register(this);//初始化EventBus
         setData();
         initData();
+    }
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(EventBusUtil.winning_show)) {
+            show(event.getContent());
+        } else if (msg.equals(EventBusUtil.winning_shut_down)) {
+            shutDown();
+        }
+    }
+
+    private void show(final String content) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWinningPopWindow = new WinningPopWindow(StartGuessActivity.this, content, mRlTitle);
+            }
+        });
+    }
+
+    private void shutDown() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mWinningPopWindow != null) {
+                    mWinningPopWindow.dismiss();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//初始化EventBus
     }
 
     @Override
@@ -119,28 +172,39 @@ public class StartGuessActivity extends BaseActivity {
             coinPresenter.coinLists("bet", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
+                    mLlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
                     UtilTool.Log(getString(R.string.coins), data.size() + "");
                     MyApp.getInstance().mBetCoinList.addAll(data);
                 }
 
                 @Override
                 public void error() {
-
+                    mLlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             });
         }
     }
 
     private void setData() {
+        mTimeList.add(getString(R.string.time_bar2));
+        mTimeList.add(getString(R.string.time_bar4));
         mTimeList.add(getString(R.string.time_deadline));
         mTimeList.add(getString(R.string.time_deadline2));
         mTimeList.add(getString(R.string.time_deadline3));
         mTimeList.add(getString(R.string.time_deadline4));
+        mTimeListInt.add(10);
+        mTimeListInt.add(30);
+        mTimeListInt.add(3 * 60);
+        mTimeListInt.add(6 * 60);
+        mTimeListInt.add(12 * 60);
+        mTimeListInt.add(24 * 60);
         mTypeList.add(getString(R.string.start_guess_type));
         mTypeList.add(getString(R.string.start_guess_type2));
     }
 
-    @OnClick({R.id.bark, R.id.rl_selector_coin, R.id.rl_selector_deadline, R.id.btn_confirm, R.id.rl_guess_type})
+    @OnClick({R.id.bark, R.id.rl_selector_coin, R.id.rl_selector_deadline, R.id.btn_confirm, R.id.rl_guess_type, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -159,6 +223,9 @@ public class StartGuessActivity extends BaseActivity {
                 if (checkEdit()) {
                     showPWDialog();
                 }
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
         }
     }
@@ -199,6 +266,7 @@ public class StartGuessActivity extends BaseActivity {
     }
 
     List<String> mTimeList = new ArrayList<>();
+    List<Integer> mTimeListInt = new ArrayList<>();
     List<String> mTypeList = new ArrayList<>();
 
     private void showBottomDialog(int type, List<String> list) {
@@ -269,7 +337,8 @@ public class StartGuessActivity extends BaseActivity {
         tvTitle.setText(getString(R.string.coins));
     }
 
-    public void hideDialog(String name, int sign) {
+    public void hideDialog(String name, int sign, int position) {
+        timePosition = position;
         mBottomDialog.dismiss();
         if (sign == DEADLINE) {
             mTvDeadline.setText(name);
@@ -301,8 +370,13 @@ public class StartGuessActivity extends BaseActivity {
         String count = mEtBetCount.getText().toString();
         String singleCount = mEtSingleInsertCount.getText().toString();
         String command = mEtCommand.getText().toString();
-        String deadline = mTvDeadline.getText().toString();
-        String timeMinute = Integer.parseInt(deadline.substring(0, deadline.lastIndexOf(getString(R.string.hr)))) * 60 + "";
+//        String deadline = mTvDeadline.getText().toString();
+        String timeMinute = mTimeListInt.get(timePosition) + "";
+//        if (deadline.contains(getString(R.string.fen))) {
+//            timeMinute = Integer.parseInt(deadline.substring(0, 2)) + "";
+//        } else {
+//            timeMinute = Integer.parseInt(deadline.substring(0, 2)) * 60 + "";
+//        }
         UtilTool.Log("時間", timeMinute);
         BlockchainGuessPresenter blockchainGuessPresenter = new BlockchainGuessPresenter(this);
         blockchainGuessPresenter.pushingGuess(mId, title, count, timeMinute, count, password, singleCount, command, new BlockchainGuessPresenter.CallBack2() {
@@ -319,7 +393,7 @@ public class StartGuessActivity extends BaseActivity {
         mBottomDialog.dismiss();
         mTvCoin.setText(data.getName());
         mId = data.getId();
-        mEtSingleInsertCount.setHint(data.getSingle_coin());
+        mEtSingleInsertCount.setText(data.getSingle_coin());
         mTvHint.setText(getString(R.string.start_guess_service_hint) + Double.parseDouble(data.getBet_fee()) * 100 + "%" + getString(R.string.sxf));
     }
 }

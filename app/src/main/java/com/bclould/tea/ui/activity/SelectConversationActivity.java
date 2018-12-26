@@ -89,8 +89,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SelectConversationActivity extends BaseActivity implements SelectConversationAdapter.OnItemListener, MessageManageListener {
 
-    @Bind(R.id.bark)
-    ImageView bark;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.tv_select_friend)
@@ -129,6 +127,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_conversation);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.choose_a_chat));
         EventBus.getDefault().register(this);//初始化EventBus
         type = getIntent().getIntExtra("type", 0);
         if (type == 0) {

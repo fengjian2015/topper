@@ -19,8 +19,16 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.AddRequestInfo;
 import com.bclould.tea.model.NewFriendInfo;
 import com.bclould.tea.ui.adapter.NewFriendRVAdapter;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,12 +44,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class NewFriendActivity extends BaseActivity {
-
-
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_add)
-    ImageView mTvAdd;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private DBManager mMgr;
@@ -54,6 +56,8 @@ public class NewFriendActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_friend);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.new_friend),R.mipmap.icon_nav_add);
+        EventBus.getDefault().register(this);
         mPersonalDetailsPresenter = new PersonalDetailsPresenter(this);
         mMgr = new DBManager(this);
         initRecyclerView();
@@ -81,13 +85,22 @@ public class NewFriendActivity extends BaseActivity {
         mPersonalDetailsPresenter.getNewFriendData(true,new PersonalDetailsPresenter.CallBack5() {
             @Override
             public void send(NewFriendInfo listdata) {
+                mAddRequestInfos.clear();
                 mMgr.deleteRequest();
                 for(int i=0;i<listdata.getData().size();i++){
                     AddRequestInfo addRequestInfo=new AddRequestInfo();
+                    if(UtilTool.getTocoId().equals(listdata.getData().get(i).getToco_id())){
+                        addRequestInfo.setUrl(listdata.getData().get(i).getFriend_avatar());
+                        addRequestInfo.setUser(listdata.getData().get(i).getToco_id());
+                        addRequestInfo.setUserName(listdata.getData().get(i).getFriend_name());
+                        addRequestInfo.setToUser(listdata.getData().get(i).getFriend_toco_id());
+                    }else{
+                        addRequestInfo.setUrl(listdata.getData().get(i).getAvatar());
+                        addRequestInfo.setUser(listdata.getData().get(i).getToco_id());
+                        addRequestInfo.setUserName(listdata.getData().get(i).getName());
+                        addRequestInfo.setToUser(listdata.getData().get(i).getToco_id());
+                    }
                     addRequestInfo.setType(listdata.getData().get(i).getStatus());
-                    addRequestInfo.setUrl(listdata.getData().get(i).getAvatar());
-                    addRequestInfo.setUser(listdata.getData().get(i).getToco_id());
-                    addRequestInfo.setUserName(listdata.getData().get(i).getName());
                     addRequestInfo.setId(listdata.getData().get(i).getId());
                     mAddRequestInfos.add(addRequestInfo);
                     mMgr.addRequest(listdata.getData().get(i).getToco_id(),listdata.getData().get(i).getStatus(),listdata.getData().get(i).getName());
@@ -106,15 +119,31 @@ public class NewFriendActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.tv_add})
+    @OnClick({R.id.bark, R.id.iv_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_add:
+            case R.id.iv_more:
                 startActivity(new Intent(this, AddFriendActivity.class));
                 break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(EventBusUtil.new_friend)) {
+            if (ActivityUtil.isActivityOnTop(NewFriendActivity.this)) {
+                initData();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

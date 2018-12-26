@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.Presenter.BlockchainGuessPresenter;
@@ -26,13 +27,20 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.GuessListInfo;
 import com.bclould.tea.ui.adapter.GuessListRVAdapter;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
+import com.bclould.tea.ui.widget.WinningPopWindow;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,12 +59,6 @@ import static com.bclould.tea.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MyJoinActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
-    @Bind(R.id.tv_filtrate)
-    TextView mTvFiltrate;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.iv)
@@ -69,6 +71,8 @@ public class MyJoinActivity extends BaseActivity {
     ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
+    @Bind(R.id.rl_title)
+    View mRlTitle;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private int mType;
     private List<String> mFiltrateList = new ArrayList<>();
@@ -80,12 +84,16 @@ public class MyJoinActivity extends BaseActivity {
     private Dialog mBottomDialog;
     private HashMap<String, Integer> mMap = new HashMap<>();
 
+    private WinningPopWindow mWinningPopWindow;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_join);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.my_join),getString(R.string.filtrate));
         MyApp.getInstance().addActivity(this);
+        EventBus.getDefault().register(this);//初始化EventBus
         init();
     }
 
@@ -96,6 +104,43 @@ public class MyJoinActivity extends BaseActivity {
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(this);
         initRecyclerView();
         initData(mType, PULL_DOWN);
+    }
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(EventBusUtil.winning_show)) {
+            show(event.getContent());
+        } else if (msg.equals(EventBusUtil.winning_shut_down)) {
+            shutDown();
+        }
+    }
+
+    private void show(final String content) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWinningPopWindow = new WinningPopWindow(MyJoinActivity.this, content, mRlTitle);
+            }
+        });
+    }
+
+    private void shutDown() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mWinningPopWindow != null) {
+                    mWinningPopWindow.dismiss();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//初始化EventBus
     }
 
     @Override
@@ -110,7 +155,7 @@ public class MyJoinActivity extends BaseActivity {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 if (isFinish)
-                initData(mType, PULL_DOWN);
+                    initData(mType, PULL_DOWN);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -179,6 +224,7 @@ public class MyJoinActivity extends BaseActivity {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(MyJoinActivity.this)) {
+                    isFinish = true;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
                     } else {
@@ -194,6 +240,7 @@ public class MyJoinActivity extends BaseActivity {
 
             @Override
             public void finishRefresh() {
+                isFinish = true;
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
                 } else {
@@ -210,13 +257,13 @@ public class MyJoinActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.tv_filtrate})
+    @OnClick({R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_filtrate:
+            case R.id.tv_add:
                 showDialog();
                 break;
         }

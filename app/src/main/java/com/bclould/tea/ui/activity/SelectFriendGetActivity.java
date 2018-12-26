@@ -51,6 +51,7 @@ public class SelectFriendGetActivity extends BaseActivity implements FriendListR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_friend_get);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.select_friends));
         MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
 

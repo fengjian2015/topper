@@ -46,12 +46,8 @@ public class OutCoinSiteActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_coins)
-    TextView mTvCoins;
     @Bind(R.id.title)
     RelativeLayout mTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.btn_add_site)
@@ -69,6 +65,7 @@ public class OutCoinSiteActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_site);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.all_address));
         mOutCoinSitePresenter = new OutCoinSitePresenter(this);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);

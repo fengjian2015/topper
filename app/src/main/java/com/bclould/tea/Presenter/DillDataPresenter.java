@@ -46,8 +46,7 @@ public class DillDataPresenter {
 
     private void hideDialog() {
         if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
+            mProgressDialog.hideDialog();
         }
     }
 

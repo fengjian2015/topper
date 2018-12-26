@@ -71,8 +71,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SelectFriendActivity extends BaseActivity implements SelectFriendAdapter.OnItemListener, MessageManageListener {
 
-    @Bind(R.id.bark)
-    ImageView bark;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.image)
@@ -98,6 +96,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_friend);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.select_friends));
         MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         initRecylerView();
@@ -269,132 +268,137 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
     private Room mRoom;
 
     private void sendMessage(String user, String name) {
-        mRoom = RoomManage.getInstance().addSingleMessageManage(user, name);
-        mRoom.addMessageManageListener(this);
-        if (type == 0) {
-            if (shareType.contains(TEXT_PLAIN)) {
-                messageInfo = mRoom.sendMessage(shareText);
-                if (messageInfo != null) {
+        try {
+            mRoom = RoomManage.getInstance().addSingleMessageManage(user, name);
+            mRoom.addMessageManageListener(this);
+            if (type == 0) {
+                if (shareType.contains(TEXT_PLAIN)) {
+                    messageInfo = mRoom.sendMessage(shareText);
+                    if (messageInfo != null) {
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_complete));
+                        close();
+                    } else {
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_failure));
+                    }
+                } else if (shareType.contains(IMAGE_TYPE)) {
+//                showDialog();
+                    if(filePath==null){
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_failure));
+//                    hideDialog();
+                        return;
+                    }
+                    mRoom.Upload(filePath);
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_complete));
                     close();
-                } else {
-                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_failure));
-                }
-            } else if (shareType.contains(IMAGE_TYPE)) {
+                }else if(shareType.contains(VIDEO_TYPE)){
 //                showDialog();
-                if(filePath==null){
-                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_failure));
+                    if(filePath==null){
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_failure));
 //                    hideDialog();
-                    return;
+                        return;
+                    }
+                    mRoom.Upload(filePath);
+                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_complete));
+                    close();
+                }else if(shareType.contains(TYPE_HTML)){
+                    MessageInfo messageInfo=new MessageInfo();
+                    messageInfo.setMessage(shareText);
+                    mRoom.sendHtml(messageInfo);
+                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_complete));
+                    close();
                 }
-                mRoom.Upload(filePath);
-                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_complete));
-                close();
-            }else if(shareType.contains(VIDEO_TYPE)){
+            } else if (type == 1) {
+                if (msgType == TO_TEXT_MSG || msgType == FROM_TEXT_MSG) {
+                    String message = messageInfo.getMessage();
+                    messageInfo = mRoom.sendMessage(message);
+                    if (messageInfo != null) {
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
+                        close();
+                    } else {
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_failure));
+                    }
+                } else if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
 //                showDialog();
-                if(filePath==null){
-                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_failure));
-//                    hideDialog();
-                    return;
-                }
-                mRoom.Upload(filePath);
-                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_complete));
-                close();
-            }else if(shareType.contains(TYPE_HTML)){
-                MessageInfo messageInfo=new MessageInfo();
-                messageInfo.setMessage(shareText);
-                mRoom.sendHtml(messageInfo);
-                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_complete));
-                close();
-            }
-        } else if (type == 1) {
-            if (msgType == TO_TEXT_MSG || msgType == FROM_TEXT_MSG) {
-                String message = messageInfo.getMessage();
-                messageInfo = mRoom.sendMessage(message);
-                if (messageInfo != null) {
+                    if (messageInfo.getMessage().startsWith("http")) {
+                        mRoom.transmitImage(messageInfo);
+                    }else {
+                        mRoom.Upload(messageInfo.getVoice());
+                    }
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
                     close();
-                } else {
-                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_failure));
-                }
-            } else if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
+                } else if (msgType == FROM_VIDEO_MSG || msgType == TO_VIDEO_MSG) {
 //                showDialog();
-                if (messageInfo.getMessage().startsWith("http")) {
-                    mRoom.transmitImage(messageInfo);
-                }else {
+                    if (messageInfo.getMessage().startsWith("http")) {
+                        mRoom.transmitVideo(messageInfo);
+                    } else {
+                        mRoom.Upload(messageInfo.getMessage());
+                    }
+                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
+                    close();
+                }else if(msgType==FROM_FILE_MSG||msgType==TO_FILE_MSG){
+                    if(messageInfo.getVoice()!=null&&!messageInfo.getVoice().startsWith("http")){
+                        mRoom.uploadFile(messageInfo.getVoice());
+                    }else if (!StringUtils.isEmpty(messageInfo.getMessage())&&messageInfo.getMessage().startsWith("http")) {
+                        mRoom.transmitFile(messageInfo);
+                    } else {
+                        mRoom.uploadFile(messageInfo.getMessage());
+                    }
+                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
+                    SelectFriendActivity.this.finish();
+                }else if(msgType==TO_HTML_MSG||msgType==FROM_HTML_MSG){
+                    mRoom.sendHtml(messageInfo);
+                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
+                    close();
+                }
+            } else if (type == 2) {
+                if (TO_CARD_MSG == msgType || msgType == FROM_CARD_MSG) {
+                    if (mRoom.sendCaed(messageInfo)) {
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
+                        close();
+                    } else {
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
+                    }
+                } else if (TO_LINK_MSG == msgType || msgType == FROM_LINK_MSG) {
+                    if (mRoom.sendShareLink(messageInfo)) {
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
+                        close();
+                    } else {
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
+                    }
+                } else if (TO_GUESS_MSG == msgType || msgType == FROM_GUESS_MSG) {
+                    if (mRoom.sendShareGuess(messageInfo)) {
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
+                        close();
+                    } else {
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
+                    }
+                }else if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
+//                showDialog();
                     mRoom.Upload(messageInfo.getVoice());
+                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
+                    close();
+                }else if(msgType == FROM_INVITE_MSG || msgType == TO_INVITE_MSG){
+                    mRoom.sendInviteGroup(messageInfo);
+                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
+                    close();
+                }else if (msgType == TO_TEXT_MSG || msgType == FROM_TEXT_MSG) {
+                    String message = messageInfo.getMessage();
+                    messageInfo = mRoom.sendMessage(message);
+                    if (messageInfo != null) {
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
+                        close();
+                    } else {
+                        ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
+                    }
+                }else if(msgType==TO_HTML_MSG||msgType==FROM_HTML_MSG){
+                    mRoom.sendHtml(messageInfo);
+                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
+                    close();
                 }
-                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
-                close();
-            } else if (msgType == FROM_VIDEO_MSG || msgType == TO_VIDEO_MSG) {
-//                showDialog();
-                if (messageInfo.getMessage().startsWith("http")) {
-                    mRoom.transmitVideo(messageInfo);
-                } else {
-                    mRoom.Upload(messageInfo.getMessage());
-                }
-                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
-                close();
-            }else if(msgType==FROM_FILE_MSG||msgType==TO_FILE_MSG){
-                if(messageInfo.getVoice()!=null&&!messageInfo.getVoice().startsWith("http")){
-                    mRoom.uploadFile(messageInfo.getVoice());
-                }else if (!StringUtils.isEmpty(messageInfo.getMessage())&&messageInfo.getMessage().startsWith("http")) {
-                    mRoom.transmitFile(messageInfo);
-                } else {
-                    mRoom.uploadFile(messageInfo.getMessage());
-                }
-                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
-                SelectFriendActivity.this.finish();
-            }else if(msgType==TO_HTML_MSG||msgType==FROM_HTML_MSG){
-                mRoom.sendHtml(messageInfo);
-                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
-                close();
             }
-        } else if (type == 2) {
-            if (TO_CARD_MSG == msgType || msgType == FROM_CARD_MSG) {
-                if (mRoom.sendCaed(messageInfo)) {
-                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
-                    close();
-                } else {
-                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
-                }
-            } else if (TO_LINK_MSG == msgType || msgType == FROM_LINK_MSG) {
-                if (mRoom.sendShareLink(messageInfo)) {
-                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
-                    close();
-                } else {
-                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
-                }
-            } else if (TO_GUESS_MSG == msgType || msgType == FROM_GUESS_MSG) {
-                if (mRoom.sendShareGuess(messageInfo)) {
-                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
-                    close();
-                } else {
-                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
-                }
-            }else if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
-//                showDialog();
-                mRoom.Upload(messageInfo.getVoice());
-                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
-                close();
-            }else if(msgType == FROM_INVITE_MSG || msgType == TO_INVITE_MSG){
-                mRoom.sendInviteGroup(messageInfo);
-                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
-                close();
-            }else if (msgType == TO_TEXT_MSG || msgType == FROM_TEXT_MSG) {
-                String message = messageInfo.getMessage();
-                messageInfo = mRoom.sendMessage(message);
-                if (messageInfo != null) {
-                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
-                    close();
-                } else {
-                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
-                }
-            }else if(msgType==TO_HTML_MSG||msgType==FROM_HTML_MSG){
-                mRoom.sendHtml(messageInfo);
-                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
-                close();
-            }
+        }catch (Exception e){
+            e.printStackTrace();
+            ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
         }
     }
 

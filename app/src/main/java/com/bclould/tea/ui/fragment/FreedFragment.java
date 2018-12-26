@@ -148,7 +148,7 @@ public class FreedFragment extends LazyFragment {
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                initHttp(false,page++);
+                initHttp(false,page+1);
             }
         });
     }

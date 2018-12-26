@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -34,15 +36,20 @@ import com.bclould.tea.ui.adapter.GuessBetRVAdapter;
 import com.bclould.tea.ui.widget.CurrencyDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.PWDDialog;
+import com.bclould.tea.ui.widget.WinningPopWindow;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,10 +74,6 @@ public class GuessDetailsActivity extends BaseActivity {
     private static final int MINUS = 1;
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.title)
-    TextView mTitle;
-    @Bind(R.id.iv_share)
-    ImageView mIvShare;
     @Bind(R.id.tv_day)
     TextView mTvDay;
     @Bind(R.id.tv2)
@@ -225,12 +228,12 @@ public class GuessDetailsActivity extends BaseActivity {
     ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
-
+    @Bind(R.id.rl_title)
+    View mRlTitle;
     private int mBet_id;
     private int mPeriod_qty;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
-    private int
-            mCountdown = 0;
+    private int mCountdown = 0;
     private double mPrize_pool_number;
     private GuessBetRVAdapter mGuessBetRVAdapter;
     Timer mTimer = new Timer();
@@ -277,6 +280,7 @@ public class GuessDetailsActivity extends BaseActivity {
                             seconds = second + "";
                         }
                     }
+                    if (mTvDay == null) return;
                     mTvDay.setText(days);
                     mTvHr.setText(hrs);
                     mTvMinute.setText(minutes);
@@ -308,17 +312,64 @@ public class GuessDetailsActivity extends BaseActivity {
     private int mLimit_people_number;
     private String mGuess_pw = "";
     private PWDDialog pwdDialog;
+    private WinningPopWindow mWinningPopWindow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess_details);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.coin_quiz_detail),R.mipmap.ico_news_share);
+        mImageView.setVisibility(View.GONE);
         MyApp.getInstance().addActivity(this);
+        EventBus.getDefault().register(this);//初始化EventBus
         initIntent();
         initRecylerView();
         initData();
         initEidt();
+    }
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(EventBusUtil.winning_show)) {
+            show(event.getContent());
+        }else if (msg.equals(EventBusUtil.winning_shut_down)) {
+            shutDown();
+        }
+    }
+
+    private void show(final String content){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWinningPopWindow=new WinningPopWindow(GuessDetailsActivity.this,content,mRlTitle);
+            }
+        });
+    }
+
+    private void shutDown(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(mWinningPopWindow!= null){
+                    mWinningPopWindow.dismiss();
+                }
+            }
+        });
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//初始化EventBus
+        if (mTimer != null && mTask != null) {
+            mTask.cancel();
+            mTimer.cancel();
+        }
     }
 
     @Override
@@ -386,14 +437,16 @@ public class GuessDetailsActivity extends BaseActivity {
                         mLlAlready.setVisibility(View.GONE);
                         mCountdown = data.getCountdown();
                         UtilTool.Log("倒計時", data.getCountdown() + "");
-                        mTimer.schedule(mTask, 1000, 1000);
+                        if (mCountdown != 0) {
+                            mTimer.schedule(mTask, 1000, 1000);
+                        }
                         if (data.getStatus() == 2) {
                             mLlGuessCount.setVisibility(View.GONE);
                             mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
                             mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
-                            mIvShare.setVisibility(View.GONE);
+                            mImageView.setVisibility(View.GONE);
                         } else {
-                            mIvShare.setVisibility(View.VISIBLE);
+                            mImageView.setVisibility(View.VISIBLE);
                             if (data.getOver_count_num() == 0) {
                                 mLlGuessCount.setVisibility(View.GONE);
                                 mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
@@ -403,7 +456,7 @@ public class GuessDetailsActivity extends BaseActivity {
                             }
                         }
                     } else if (data.getStatus() == 3) {
-                        mIvShare.setVisibility(View.GONE);
+                        mImageView.setVisibility(View.GONE);
                         mLlNo.setVisibility(View.GONE);
                         mLlAlready.setVisibility(View.VISIBLE);
                         String[] split = data.getWin_number().split("_");
@@ -412,7 +465,7 @@ public class GuessDetailsActivity extends BaseActivity {
                         mTvNumber3.setText(split[2]);
                         mTvNumber4.setText(split[3]);
                     } else if (data.getStatus() == 4) {
-                        mIvShare.setVisibility(View.GONE);
+                        mImageView.setVisibility(View.GONE);
                         mLlNo.setVisibility(View.VISIBLE);
                         mLlAlready.setVisibility(View.GONE);
                         mLlGuessCount.setVisibility(View.GONE);
@@ -445,39 +498,63 @@ public class GuessDetailsActivity extends BaseActivity {
     }
 
 
+    private void setEtListener(final EditText editText1, final EditText editText2, final LinearLayout linearLayout) {
+        editText1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!StringUtils.isEmpty(editText1.getText().toString()) && linearLayout.isShown()) {
+                    editText2.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        editText1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT && linearLayout.isShown()) {
+                    editText2.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
     private void initEidt() {
-        mEtArray.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    mEtArray2.requestFocus();
-                    return true;
-                }
-                return false;
-            }
-        });
+        setEtListener(mEtArray, mEtArray2, mLlArray);
+        setEtListener(mEtArray2, mEtArray3, mLlArray);
+        setEtListener(mEtArray3, mEtArray4, mLlArray);
+        setEtListener(mEtArray4, mEt2Array, mLlArray2);
 
-        mEtArray2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    mEtArray3.requestFocus();
-                    return true;
-                }
-                return false;
-            }
-        });
+        setEtListener(mEt2Array, mEt2Array2, mLlArray2);
+        setEtListener(mEt2Array2, mEt2Array3, mLlArray2);
+        setEtListener(mEt2Array3, mEt2Array4, mLlArray2);
+        setEtListener(mEt2Array4, mEt3Array, mLlArray3);
 
-        mEtArray3.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    mEtArray4.requestFocus();
-                    return true;
-                }
-                return false;
-            }
-        });
+        setEtListener(mEt3Array, mEt3Array2, mLlArray3);
+        setEtListener(mEt3Array2, mEt3Array3, mLlArray3);
+        setEtListener(mEt3Array3, mEt3Array4, mLlArray3);
+        setEtListener(mEt3Array4, mEt4Array, mLlArray4);
+
+        setEtListener(mEt4Array, mEt4Array2, mLlArray4);
+        setEtListener(mEt4Array2, mEt4Array3, mLlArray4);
+        setEtListener(mEt4Array3, mEt4Array4, mLlArray4);
+        setEtListener(mEt4Array4, mEt5Array, mLlArray5);
+
+        setEtListener(mEt5Array, mEt5Array2, mLlArray5);
+        setEtListener(mEt5Array2, mEt5Array3, mLlArray5);
+        setEtListener(mEt5Array3, mEt5Array4, mLlArray5);
+
+
 /*
         mEtArray2.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -661,19 +738,19 @@ public class GuessDetailsActivity extends BaseActivity {
         int count = 0;
         if (mLlArray5.getVisibility() == View.VISIBLE) {
             count = 5;
-            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3 + "," + mRandomArr4 + "," + mRandomArr5;
+            getEditRandom(count);
         } else if (mLlArray4.getVisibility() == View.VISIBLE) {
             count = 4;
-            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3 + "," + mRandomArr4;
+            getEditRandom(count);
         } else if (mLlArray3.getVisibility() == View.VISIBLE) {
             count = 3;
-            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3;
+            getEditRandom(count);
         } else if (mLlArray2.getVisibility() == View.VISIBLE) {
             count = 2;
-            mRandomSumArr = mRandomArr + "," + mRandomArr2;
+            getEditRandom(count);
         } else if (mLlArray.getVisibility() == View.VISIBLE) {
             count = 1;
-            mRandomSumArr = mRandomArr;
+            getEditRandom(count);
         }
 
         pwdDialog = new PWDDialog(this);
@@ -687,12 +764,87 @@ public class GuessDetailsActivity extends BaseActivity {
         pwdDialog.showDialog(UtilTool.doubleMultiply(count, Double.parseDouble(mSingle_coin)), mTvCoin.getText().toString(), getString(R.string.bet) + mTvCoin.getText().toString() + getString(R.string.guess), null, null);
     }
 
-    @OnClick({R.id.ll_error, R.id.iv_share, R.id.ll_hash, R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
+    private void getEditRandom(int count) {
+        switch (count) {
+            case 1:
+                mRandomSumArr = mEtArray.getText().toString() + ":" +
+                        mEtArray2.getText().toString() + ":" +
+                        mEtArray3.getText().toString() + ":" +
+                        mEtArray4.getText().toString();
+                break;
+            case 2:
+                mRandomSumArr = mEtArray.getText().toString() + ":" +
+                        mEtArray2.getText().toString() + ":" +
+                        mEtArray3.getText().toString() + ":" +
+                        mEtArray4.getText().toString() + "," +
+                        mEt2Array.getText().toString() + ":" +
+                        mEt2Array2.getText().toString() + ":" +
+                        mEt2Array3.getText().toString() + ":" +
+                        mEt2Array4.getText().toString();
+                break;
+            case 3:
+                mRandomSumArr = mEtArray.getText().toString() + ":" +
+                        mEtArray2.getText().toString() + ":" +
+                        mEtArray3.getText().toString() + ":" +
+                        mEtArray4.getText().toString() + "," +
+                        mEt2Array.getText().toString() + ":" +
+                        mEt2Array2.getText().toString() + ":" +
+                        mEt2Array3.getText().toString() + ":" +
+                        mEt2Array4.getText().toString() + "," +
+                        mEt3Array.getText().toString() + ":" +
+                        mEt3Array2.getText().toString() + ":" +
+                        mEt3Array3.getText().toString() + ":" +
+                        mEt3Array4.getText().toString();
+                break;
+            case 4:
+                mRandomSumArr = mEtArray.getText().toString() + ":" +
+                        mEtArray2.getText().toString() + ":" +
+                        mEtArray3.getText().toString() + ":" +
+                        mEtArray4.getText().toString() + "," +
+                        mEt2Array.getText().toString() + ":" +
+                        mEt2Array2.getText().toString() + ":" +
+                        mEt2Array3.getText().toString() + ":" +
+                        mEt2Array4.getText().toString() + "," +
+                        mEt3Array.getText().toString() + ":" +
+                        mEt3Array2.getText().toString() + ":" +
+                        mEt3Array3.getText().toString() + ":" +
+                        mEt3Array4.getText().toString() + "," +
+                        mEt4Array.getText().toString() + ":" +
+                        mEt4Array2.getText().toString() + ":" +
+                        mEt4Array3.getText().toString() + ":" +
+                        mEt4Array4.getText().toString();
+                break;
+            case 5:
+                mRandomSumArr = mEtArray.getText().toString() + ":" +
+                        mEtArray2.getText().toString() + ":" +
+                        mEtArray3.getText().toString() + ":" +
+                        mEtArray4.getText().toString() + "," +
+                        mEt2Array.getText().toString() + ":" +
+                        mEt2Array2.getText().toString() + ":" +
+                        mEt2Array3.getText().toString() + ":" +
+                        mEt2Array4.getText().toString() + "," +
+                        mEt3Array.getText().toString() + ":" +
+                        mEt3Array2.getText().toString() + ":" +
+                        mEt3Array3.getText().toString() + ":" +
+                        mEt3Array4.getText().toString() + "," +
+                        mEt4Array.getText().toString() + ":" +
+                        mEt4Array2.getText().toString() + ":" +
+                        mEt4Array3.getText().toString() + ":" +
+                        mEt4Array4.getText().toString() + "," +
+                        mEt5Array.getText().toString() + ":" +
+                        mEt5Array2.getText().toString() + ":" +
+                        mEt5Array3.getText().toString() + ":" +
+                        mEt5Array4.getText().toString();
+                break;
+        }
+    }
+
+    @OnClick({R.id.ll_error, R.id.iv_more, R.id.ll_hash, R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
-            case R.id.iv_share:
+            case R.id.iv_more:
                 showShareDialog();
                 break;
             case R.id.ll_hash:
@@ -931,14 +1083,18 @@ public class GuessDetailsActivity extends BaseActivity {
 
             }
         });
-        number.setText(mTvNumber.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[0] + getString(R.string.hash_value));
-        number2.setText(mTvNumber2.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[1] + getString(R.string.hash_value));
-        number3.setText(mTvNumber3.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[2] + getString(R.string.hash_value));
-        number4.setText(mTvNumber4.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[3] + getString(R.string.hash_value));
-        hash.setText(mHashArr[0]);
-        hash2.setText(mHashArr[1]);
-        hash3.setText(mHashArr[2]);
-        hash4.setText(mHashArr[3]);
+        if(mIndexArr!=null&&mIndexArr.length>=4) {
+            number.setText(mTvNumber.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[0] + getString(R.string.hash_value));
+            number2.setText(mTvNumber2.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[1] + getString(R.string.hash_value));
+            number3.setText(mTvNumber3.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[2] + getString(R.string.hash_value));
+            number4.setText(mTvNumber4.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[3] + getString(R.string.hash_value));
+        }
+        if(mHashArr!=null&&mHashArr.length>=4){
+            hash.setText(mHashArr[0]);
+            hash2.setText(mHashArr[1]);
+            hash3.setText(mHashArr[2]);
+            hash4.setText(mHashArr[3]);
+        }
     }
 
     private void PlusMinus(int type) {
@@ -1027,168 +1183,152 @@ public class GuessDetailsActivity extends BaseActivity {
             if (mEtArray.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEtArray);
+                return false;
             } else if (mEtArray2.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEtArray2);
+                return false;
             } else if (mEtArray3.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEtArray3);
+                return false;
             } else if (mEtArray4.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEtArray4);
-            } else {
-                return true;
+                return false;
             }
         }
         if (mLlArray2.getVisibility() == View.VISIBLE) {
             if (mEt2Array.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt2Array);
+                return false;
             } else if (mEt2Array2.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
-                AnimatorTool.getInstance().editTextAnimator(mEtArray2);
+                AnimatorTool.getInstance().editTextAnimator(mEt2Array2);
+                return false;
             } else if (mEt2Array3.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt2Array3);
+                return false;
             } else if (mEt2Array4.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt2Array4);
-            } else {
-                return true;
+                return false;
             }
+        } else {
+            return true;
         }
         if (mLlArray3.getVisibility() == View.VISIBLE) {
             if (mEt3Array.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt3Array);
+                return false;
             } else if (mEt3Array2.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt3Array2);
+                return false;
             } else if (mEt3Array3.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt3Array3);
+                return false;
             } else if (mEt3Array4.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt3Array4);
-            } else {
-                return true;
+                return false;
             }
+        } else {
+            return true;
         }
         if (mLlArray4.getVisibility() == View.VISIBLE) {
             if (mEt4Array.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt4Array);
+                return false;
             } else if (mEt4Array2.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt4Array2);
+                return false;
             } else if (mEt4Array3.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt4Array3);
+                return false;
             } else if (mEt4Array4.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt4Array4);
-            } else {
-                return true;
+                return false;
             }
+        } else {
+            return true;
         }
         if (mLlArray5.getVisibility() == View.VISIBLE) {
             if (mEt5Array.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt5Array);
+                return false;
             } else if (mEt5Array2.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt5Array2);
+                return false;
             } else if (mEt5Array3.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt5Array3);
+                return false;
             } else if (mEt5Array4.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEt5Array4);
+                return false;
             } else {
                 return true;
             }
+        } else {
+            return true;
         }
-        return false;
     }
 
     private void getRandom(int status) {
         String[] randomArr = UtilTool.getRandomArr(Constants.BET_ARR_COUNT);
         switch (status) {
             case 1:
-                for (int i = 0; i < randomArr.length; i++) {
-                    if (i != 0) {
-                        mRandomArr = mRandomArr + ":" + randomArr[i];
-                    } else {
-                        mRandomArr = randomArr[i];
-                    }
-                }
                 mEtArray.setText(randomArr[0]);
                 mEtArray2.setText(randomArr[1]);
                 mEtArray3.setText(randomArr[2]);
                 mEtArray4.setText(randomArr[3]);
-                mEtArray4.setSelection(2);
+                mEtArray4.setSelection(1);
                 break;
             case 2:
-                for (int i = 0; i < randomArr.length; i++) {
-                    if (i != 0) {
-                        mRandomArr2 = mRandomArr2 + ":" + randomArr[i];
-                    } else {
-                        mRandomArr2 = randomArr[i];
-                    }
-                }
                 mEt2Array.setText(randomArr[0]);
                 mEt2Array2.setText(randomArr[1]);
                 mEt2Array3.setText(randomArr[2]);
                 mEt2Array4.setText(randomArr[3]);
-                mEt2Array4.setSelection(2);
+                mEt2Array4.setSelection(1);
                 break;
             case 3:
-                for (int i = 0; i < randomArr.length; i++) {
-                    if (i != 0) {
-                        mRandomArr3 = mRandomArr3 + ":" + randomArr[i];
-                    } else {
-                        mRandomArr3 = randomArr[i];
-                    }
-                }
                 mEt3Array.setText(randomArr[0]);
                 mEt3Array2.setText(randomArr[1]);
                 mEt3Array3.setText(randomArr[2]);
                 mEt3Array4.setText(randomArr[3]);
-                mEt3Array4.setSelection(2);
+                mEt3Array4.setSelection(1);
                 break;
             case 4:
-                for (int i = 0; i < randomArr.length; i++) {
-                    if (i != 0) {
-                        mRandomArr4 = mRandomArr4 + ":" + randomArr[i];
-                    } else {
-                        mRandomArr4 = randomArr[i];
-                    }
-                }
                 mEt4Array.setText(randomArr[0]);
                 mEt4Array2.setText(randomArr[1]);
                 mEt4Array3.setText(randomArr[2]);
                 mEt4Array4.setText(randomArr[3]);
-                mEt4Array4.setSelection(2);
+                mEt4Array4.setSelection(1);
                 break;
             case 5:
-                for (int i = 0; i < randomArr.length; i++) {
-                    if (i != 0) {
-                        mRandomArr5 = mRandomArr5 + ":" + randomArr[i];
-                    } else {
-                        mRandomArr5 = randomArr[i];
-                    }
-                }
                 mEt5Array.setText(randomArr[0]);
                 mEt5Array2.setText(randomArr[1]);
                 mEt5Array3.setText(randomArr[2]);
                 mEt5Array4.setText(randomArr[3]);
-                mEt5Array4.setSelection(2);
+                mEt5Array4.setSelection(1);
                 break;
         }
     }
 
     private void bet(String password, final int count) {
-
+        if(!ActivityUtil.isActivityOnTop(this))return;
         UtilTool.Log("數組", mRandomSumArr);
         mBlockchainGuessPresenter.bet(mBet_id, mPeriod_qty, mCoin_id, mRandomSumArr, password, new BlockchainGuessPresenter.CallBack5() {
             @Override

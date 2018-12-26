@@ -55,8 +55,6 @@ import static com.bclould.tea.topperchat.WsContans.TOCO_SERVICE;
 public class CreateGroupRoomActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_create)
-    TextView mTvCreate;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private List<UserInfo> mUserInfos=new ArrayList<>();
@@ -77,6 +75,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
         setContentView(R.layout.activity_create_group_room);
         context=this;
         ButterKnife.bind(this);
+        setTitle(getString(R.string.select_friends),getString(R.string.confirm));
         MyApp.getInstance().addActivity(this);
         initIntent();
         initData();
@@ -123,13 +122,13 @@ public class CreateGroupRoomActivity extends BaseActivity {
         mRecyclerView.setAdapter(createGroupRVAdapter);
     }
 
-    @OnClick({R.id.bark, R.id.tv_create})
+    @OnClick({R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_create:
+            case R.id.tv_add:
                 if(type==0){
                     createGroup();
                 }else if(type==1){

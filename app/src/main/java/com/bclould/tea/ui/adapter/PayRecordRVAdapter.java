@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.TransferListInfo;
+import com.bclould.tea.ui.activity.GuessDetailsActivity;
 import com.bclould.tea.ui.activity.PayDetailsActivity;
 
 import java.util.List;
@@ -74,11 +75,18 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, PayDetailsActivity.class);
-                    intent.putExtra("log_id", mDataBean.getLog_id() + "");
-                    intent.putExtra("id", mDataBean.getId() + "");
-                    intent.putExtra("type_number", mDataBean.getType_number() + "");
-                    mContext.startActivity(intent);
+                    if (mDataBean.getType_number() == 16 || mDataBean.getType_number() == 17 || mDataBean.getType_number() == 18 || mDataBean.getType_number() == 19) {
+                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                        intent.putExtra("bet_id", mDataBean.getData_arr().getBet_id());
+                        intent.putExtra("period_qty", mDataBean.getData_arr().getPeriod_qty());
+                        mContext.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(mContext, PayDetailsActivity.class);
+                        intent.putExtra("log_id", mDataBean.getLog_id() + "");
+                        intent.putExtra("id", mDataBean.getId() + "");
+                        intent.putExtra("type_number", mDataBean.getType_number() + "");
+                        mContext.startActivity(intent);
+                    }
                 }
             });
         }
@@ -98,6 +106,8 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
                 mIvPhoto.setImageResource(R.mipmap.icon_record_give);
             } else if (dataBean.getType_number() == 14 || dataBean.getType_number() == 15) {
                 mIvPhoto.setImageResource(R.mipmap.icon_record_ex);
+            } else if (dataBean.getType_number() == 16 || dataBean.getType_number() == 17 || dataBean.getType_number() == 18 || dataBean.getType_number() == 19) {
+                mIvPhoto.setImageResource(R.mipmap.icon_wealth_block);
             }
             mDataBean = dataBean;
             mTvName.setText(dataBean.getType());

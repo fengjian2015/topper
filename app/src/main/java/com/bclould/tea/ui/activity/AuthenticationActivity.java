@@ -21,6 +21,7 @@ import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.ConfirmDialog;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.UtilTool;
 
 import butterknife.Bind;
@@ -34,18 +35,14 @@ public class AuthenticationActivity extends LoginBaseActivity {
     ImageView mIvMove;
     @Bind(R.id.iv_target)
     ImageView mIvTarget;
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
     @Bind(R.id.iv_title)
     ImageView mIvTitle;
     @Bind(R.id.tv_hint)
     TextView mTvHint;
     @Bind(R.id.rl_data)
     RelativeLayout mRlData;
+    @Bind(R.id.status_bar_fix)
+    View mStatusBarFix;
 
     private int oldleft;
     private int oldtop;
@@ -66,6 +63,8 @@ public class AuthenticationActivity extends LoginBaseActivity {
         MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_authentication);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.security_verification));
+        mStatusBarFix.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(this)));
         mLoginPresenter = new LoginPresenter(this);
         mEmail = getIntent().getStringExtra("email");
         getPhoneSize();

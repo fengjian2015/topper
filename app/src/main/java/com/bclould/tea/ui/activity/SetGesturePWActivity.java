@@ -36,10 +36,6 @@ import butterknife.OnClick;
 public class SetGesturePWActivity extends BaseActivity {
 
     public static final String GESTURE_ANSWER = "gesture_answer";
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
     @Bind(R.id.gesture_view)
     GestureLockViewGroup mGestureView;
     @Bind(R.id.tv_hint)
@@ -55,6 +51,7 @@ public class SetGesturePWActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_set_gesture);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.set_gesture));
         initIntent();
         initGesture();
     }

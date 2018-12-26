@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bclould.tea.Presenter.PublicPresenter;
 import com.bclould.tea.R;
@@ -20,6 +24,7 @@ import com.bclould.tea.model.PublicInfo;
 import com.bclould.tea.topperchat.RoomMemberManage;
 import com.bclould.tea.ui.adapter.PublicListRVAdapter;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.gjiazhe.wavesidebar.WaveSideBar;
@@ -52,6 +57,8 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
     LinearLayout mLlNoData;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
+    @Bind(R.id.tv_public)
+    TextView mTvPublic;
 
     private List<PublicInfo.DataBean> mUsers = new ArrayList<>();
     private PublicListRVAdapter mPublicListRVAdapter;
@@ -63,21 +70,32 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
         setContentView(R.layout.activity_public);
         MyApp.getInstance().addActivity(this);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.the_pulice),getString(R.string.search));
         EventBus.getDefault().register(this);//初始化EventBus
-        mDBPublicManage=new DBPublicManage(this);
+        mDBPublicManage = new DBPublicManage(this);
+        initTextView();
         initRecylerView();
         setListener();
         initData();
+    }
+
+    private void initTextView() {
+        String message=getString(R.string.public_open);
+        String email=getString(R.string.official_email);
+        SpannableString spannableString = new SpannableString(message+email);
+        spannableString.setSpan(new ForegroundColorSpan(getColor(R.color.secondary_text_color)), message.length()-1,spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mTvPublic.setText(spannableString);
+
     }
 
     private void initData() {
         new PublicPresenter(this).publicList(new PublicPresenter.CallBack() {
             @Override
             public void send(PublicInfo dataBean) {
-                if(dataBean.getData().size()==0){
+                if (dataBean.getData().size() == 0) {
                     mLlNoData.setVisibility(View.VISIBLE);
                     mRlData.setVisibility(View.GONE);
-                }else{
+                } else {
                     mLlNoData.setVisibility(View.GONE);
                     mRlData.setVisibility(View.VISIBLE);
                 }
@@ -108,12 +126,12 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
         super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
-    private void updateList(){
-        List<PublicInfo.DataBean> dataBeanList=mDBPublicManage.queryAllRequest();
-        if(dataBeanList.size()==0){
+    private void updateList() {
+        List<PublicInfo.DataBean> dataBeanList = mDBPublicManage.queryAllRequest();
+        if (dataBeanList.size() == 0) {
             mLlNoData.setVisibility(View.VISIBLE);
             mRlData.setVisibility(View.GONE);
-        }else{
+        } else {
             mLlNoData.setVisibility(View.GONE);
             mRlData.setVisibility(View.VISIBLE);
         }
@@ -129,7 +147,7 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
         mUsers.clear();
         mMap.clear();
         mUsers.addAll(dataBeanList);
-        for(PublicInfo.DataBean dataBean:mUsers){
+        for (PublicInfo.DataBean dataBean : mUsers) {
             dataBean.setName(dataBean.getName());
         }
         Collections.sort(mUsers);
@@ -171,7 +189,7 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
         });
     }
 
-    @OnClick({R.id.bark,R.id.ll_error,R.id.tv_search})
+    @OnClick({R.id.bark, R.id.ll_error, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -180,8 +198,8 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
             case R.id.ll_error:
                 initData();
                 break;
-            case R.id.tv_search:
-                startActivity(new Intent(PublicActivity.this,SearchPublicActivity.class));
+            case R.id.tv_add:
+                startActivity(new Intent(PublicActivity.this, SearchPublicActivity.class));
                 break;
         }
     }
@@ -203,8 +221,8 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
 
     @Override
     public void onclick(int position) {
-        Intent intent=new Intent(PublicActivity.this,ConversationPublicActivity.class);
-        intent.putExtra("publicId",mUsers.get(position).getId()+"");
+        Intent intent = new Intent(PublicActivity.this, ConversationPublicActivity.class);
+        intent.putExtra("publicId", mUsers.get(position).getId() + "");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

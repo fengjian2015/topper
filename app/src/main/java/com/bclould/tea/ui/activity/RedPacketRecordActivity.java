@@ -247,6 +247,7 @@ public class RedPacketRecordActivity extends BaseActivity {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(RedPacketRecordActivity.this)) {
+                    isFinish = true;
                     mLlData.setVisibility(View.GONE);
                     if (type == PULL_UP) {
                         mRefreshLayout.finishLoadMore();
@@ -259,6 +260,7 @@ public class RedPacketRecordActivity extends BaseActivity {
 
             @Override
             public void finishRefresh() {
+                isFinish = true;
                 if (type == PULL_UP) {
                     mRefreshLayout.finishLoadMore();
                 } else {

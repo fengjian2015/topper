@@ -60,8 +60,6 @@ public class SystemSetActivity extends BaseActivity {
     public static final String INFORM = "inform";
     public static final String PRIVATE = UtilTool.getUserId() + "private";
     public static final String AUTOMATICALLY_DOWNLOA = UtilTool.getUserId() + "Dautomatically_download";
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.tv_inform)
     TextView mTvInform;
     @Bind(R.id.on_off_inform)
@@ -103,6 +101,7 @@ public class SystemSetActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_set);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.system_set));
         MyApp.getInstance().addActivity(this);
         init();
     }

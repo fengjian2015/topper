@@ -42,15 +42,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class VersionsUpdateActivity extends BaseActivity {
-
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.title)
-    TextView mTitle;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;
     @Bind(R.id.tv_body)
@@ -96,6 +87,7 @@ public class VersionsUpdateActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_versions_update);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.version_updating));
         mFileDownloadPresenter = FileDownloadPresenter.getInstance(this);
         mUpdateLogPresenter = new UpdateLogPresenter(this);
         mFileDownloadPresenter.setOnDownloadCallbackListener(mDownloadCallback);

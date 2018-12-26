@@ -33,9 +33,6 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginPasswordActivity extends BaseActivity {
 
-
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.et_pay_password)
     EditText mEtPayPassword;
     @Bind(R.id.eye)
@@ -52,6 +49,7 @@ public class LoginPasswordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_password);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.login_pw));
         MyApp.getInstance().addActivity(this);
     }
 

@@ -42,16 +42,12 @@ public class BillDetailsActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_record)
-    TextView mTvRecord;
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     @Bind(R.id.tv_hint)
     TextView mTvHint;
     @Bind(R.id.iv2)
@@ -71,6 +67,7 @@ public class BillDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill_details);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.detail),getString(R.string.question));
         MyApp.getInstance().addActivity(this);
         mDillDataPresenter = new DillDataPresenter(this);
         initIntent();
@@ -195,17 +192,17 @@ public class BillDetailsActivity extends BaseActivity {
         Intent intent = getIntent();
         mType = intent.getIntExtra("type", 0);
         if (mType == 0) {
-            mTvTitle.setText(getString(R.string.in_coin) + getString(R.string.record));
+            mTvTitleTop.setText(getString(R.string.in_coin) + getString(R.string.record));
             mCoinName = intent.getStringExtra("coin_name");
         } else if (mType == 1) {
-            mTvTitle.setText(getString(R.string.out_coin) + getString(R.string.record));
+            mTvTitleTop.setText(getString(R.string.out_coin) + getString(R.string.record));
             mCoinName = intent.getStringExtra("coin_name");
         } else {
-            mTvTitle.setText(getString(R.string.transfer) + getString(R.string.record));
+            mTvTitleTop.setText(getString(R.string.transfer) + getString(R.string.record));
         }
     }
 
-    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_record})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -214,7 +211,7 @@ public class BillDetailsActivity extends BaseActivity {
             case R.id.ll_error:
                 initData();
                 break;
-            case R.id.tv_record:
+            case R.id.tv_add:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
         }

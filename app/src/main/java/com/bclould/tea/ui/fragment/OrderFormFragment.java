@@ -79,7 +79,7 @@ public class OrderFormFragment extends Fragment {
     private BuySellPresenter mBuySellPresenter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int mPage_id = 0;
+    private int mPage = 1;
     private int mPageSize = 10;
 
     @Nullable
@@ -98,7 +98,7 @@ public class OrderFormFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initRecyclerView();
-        initData(mCoinName, mFiltrate, "", PULL_DOWN);
+        initData(mCoinName, mFiltrate, "", PULL_DOWN,1);
         initListener();
         return view;
     }
@@ -112,9 +112,9 @@ public class OrderFormFragment extends Fragment {
             mFiltrate = event.getFiltrate();
         }
         if (msg.equals(getString(R.string.coin_switchover))) {
-            initData(mCoinName, mFiltrate, "", PULL_DOWN);
+            initData(mCoinName, mFiltrate, "", PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.confirm_fk))) {
-            initData(mCoinName, mFiltrate, "", PULL_DOWN);
+            initData(mCoinName, mFiltrate, "", PULL_DOWN,1);
            /* for (OrderListInfo.DataBean info : mNewsList) {
                 if (info.getId() == Integer.parseInt(event.getId())) {
                     info.setStatus_name("等待放币");
@@ -139,13 +139,13 @@ public class OrderFormFragment extends Fragment {
                 }
             }
         } else if (msg.equals(getString(R.string.create_order))) {
-            initData(mCoinName, mFiltrate, "", PULL_DOWN);
+            initData(mCoinName, mFiltrate, "", PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.create_order))) {
-            initData(mCoinName, mFiltrate, "", PULL_DOWN);
+            initData(mCoinName, mFiltrate, "", PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.deal_order_filtrate))) {
-            initData(mCoinName, mFiltrate, "", PULL_DOWN);
+            initData(mCoinName, mFiltrate, "", PULL_DOWN,1);
         } else if (msg.equals(getString(R.string.order_update))) {
-            initData(mCoinName, mFiltrate, "", PULL_DOWN);
+            initData(mCoinName, mFiltrate, "", PULL_DOWN,1);
         }
     }
 
@@ -156,7 +156,7 @@ public class OrderFormFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 if (isFinish)
-                initData(mCoinName, mFiltrate, "", PULL_DOWN);
+                initData(mCoinName, mFiltrate, "", PULL_DOWN,1);
             }
         });
 
@@ -164,7 +164,7 @@ public class OrderFormFragment extends Fragment {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 if (isFinish) {
-                    initData(mCoinName, mFiltrate, "", PULL_UP);
+                    initData(mCoinName, mFiltrate, "", PULL_UP,mPage+1);
                 }
             }
         });
@@ -178,7 +178,7 @@ public class OrderFormFragment extends Fragment {
                             .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
                                     InputMethodManager.HIDE_NOT_ALWAYS);
                     String user = mEtSearch.getText().toString().trim();
-                    initData(mCoinName, mFiltrate, user, PULL_DOWN);
+                    initData(mCoinName, mFiltrate, user, PULL_DOWN,1);
                     return true;
                 }
                 return false;
@@ -192,20 +192,18 @@ public class OrderFormFragment extends Fragment {
         mRecyclerView.setAdapter(mOrderRVAdapter);
     }
 
-    private void initData(String coinName, String filtrate, String user, final int type) {
-        if (type == PULL_DOWN) {
-            mPage_id = 0;
-        }
+    private void initData(String coinName, String filtrate, String user, final int type,int p) {
         isFinish = false;
-        UtilTool.Log("分頁", mPage_id + "");
-        mBuySellPresenter.getOrderList(mPage_id, mPageSize, coinName, filtrate, user, new BuySellPresenter.CallBack3() {
+        mBuySellPresenter.getOrderList(p, mPageSize, coinName, filtrate, user, new BuySellPresenter.CallBack3() {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
+                            mPage=1;
                             mRefreshLayout.finishRefresh();
                         } else {
+                            mPage++;
                             mRefreshLayout.finishLoadMore();
                         }
                         isFinish = true;
@@ -223,9 +221,6 @@ public class OrderFormFragment extends Fragment {
                                 }
                             }
                             mDataList.addAll(data);
-                            if (mDataList.size() != 0) {
-                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
-                            }
                             mOrderRVAdapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);
@@ -239,6 +234,7 @@ public class OrderFormFragment extends Fragment {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    isFinish = true;
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
                     } else {
@@ -254,6 +250,7 @@ public class OrderFormFragment extends Fragment {
 
             @Override
             public void finishRefresh() {
+                isFinish = true;
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
                 } else {
@@ -273,10 +270,15 @@ public class OrderFormFragment extends Fragment {
 
     @OnClick(R.id.iv_search)
     public void onViewClicked() {// 隐藏键盘
-        ((InputMethodManager) mEtSearch.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-        String user = mEtSearch.getText().toString().trim();
-        initData(mCoinName, mFiltrate, user, PULL_DOWN);
+        try {
+            if(getActivity()==null)return;
+            ((InputMethodManager) mEtSearch.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                    .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+            String user = mEtSearch.getText().toString().trim();
+            initData(mCoinName, mFiltrate, user, PULL_DOWN,1);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

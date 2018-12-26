@@ -45,8 +45,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SerchImageActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.et_content)
     EditText mEtContent;
     @Bind(R.id.recycler_view)
@@ -73,6 +71,7 @@ public class SerchImageActivity extends BaseActivity {
         setContentView(R.layout.activity_serch_image);
         MyApp.getInstance().addActivity(this);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.search));
         init();
         initAdapter();
     }

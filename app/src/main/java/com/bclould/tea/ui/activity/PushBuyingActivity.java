@@ -70,14 +70,6 @@ public class PushBuyingActivity extends BaseActivity {
     List<String> mTimeList = new ArrayList<>();
     List<String> mBuySellList = new ArrayList<>();
     List<String> mPayList = new ArrayList<>();
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
-    @Bind(R.id.tv_question)
-    TextView mTvQuestion;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
     @Bind(R.id.tv_hint)
     TextView mTvHint;
     @Bind(R.id.tv4)
@@ -133,7 +125,7 @@ public class PushBuyingActivity extends BaseActivity {
     @Bind(R.id.xx5)
     TextView mXx5;
     @Bind(R.id.et_price)
-    EditText mEtPrice;
+    TextView mEtPrice;
     @Bind(R.id.tv_units)
     TextView mTvUnits;
     @Bind(R.id.rl_price)
@@ -189,11 +181,12 @@ public class PushBuyingActivity extends BaseActivity {
     private String logo;
     private String mState;
     private int mState_id;
-
+    private BaseInfo.DataBean mDataBean;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_buying);
+        setTitle(getString(R.string.push_ad),getString(R.string.question));
         mCoinPresenter = new CoinPresenter(this);
         mPushBuyingPresenter = new PushBuyingPresenter(this);/*
         if (MyApp.getInstance().mOtcCoinList.size() != 0) {
@@ -247,9 +240,6 @@ public class PushBuyingActivity extends BaseActivity {
         mState_id = MySharedPreferences.getInstance().getInteger(STATE_ID);
         mTvCurrency.setText(mCoinName);
         mTvState.setText(mState);
-        mTvUnits.setText(MySharedPreferences.getInstance().getString(CURRENCY));
-        mTvUnits2.setText(MySharedPreferences.getInstance().getString(CURRENCY));
-        mTvUnits3.setText(MySharedPreferences.getInstance().getString(CURRENCY));
         if (!mCoinName.isEmpty()) {
             initData(mCoinName);
         }
@@ -319,12 +309,12 @@ public class PushBuyingActivity extends BaseActivity {
         mCoinPresenter.getCoinPrice(name, new CoinPresenter.CallBack2() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                if (ActivityUtil.isActivityOnTop(PushBuyingActivity.this) && data.getUSDT() != null && data.getRate() != null) {
-                    double usdt = Double.parseDouble(data.getUSDT());
-                    double cny = Double.parseDouble(data.getRate());
-                    DecimalFormat df = new DecimalFormat("0.00");
-                    String price = df.format(cny * usdt);
-                    mEtPrice.setHint(getString(R.string.reference_value) + price);
+                if (ActivityUtil.isActivityOnTop(PushBuyingActivity.this)) {
+                    mDataBean=data;
+                    mEtPrice.setText("");
+                    mTvUnits.setText(data.getCurrency());
+                    mTvUnits2.setText(data.getCurrency());
+                    mTvUnits3.setText(data.getCurrency());
                 }
             }
 
@@ -336,7 +326,7 @@ public class PushBuyingActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.rl_buy_sell, R.id.bark, R.id.tv_question, R.id.rl_selector_currency, R.id.rl_county, R.id.rl_payment, R.id.rl_payment_time, R.id.btn_pushing})
+    @OnClick({R.id.rl_buy_sell, R.id.bark, R.id.tv_add, R.id.rl_selector_currency, R.id.rl_county, R.id.rl_payment, R.id.rl_payment_time, R.id.btn_pushing})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -345,7 +335,7 @@ public class PushBuyingActivity extends BaseActivity {
             case R.id.rl_buy_sell:
                 showDialog(mModeOfPayment, mBuySellList, BUYSELL, getString(R.string.buysell));
                 break;
-            case R.id.tv_question:
+            case R.id.tv_add:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.rl_selector_currency:
@@ -568,8 +558,10 @@ public class PushBuyingActivity extends BaseActivity {
             case BUYSELL:
                 mTvBuySell.setText(name);
                 if (name.equals(getString(R.string.mai2))) {
+                    mEtPrice.setText(mDataBean.getSale_price());
                     mTvHint.setText(getString(R.string.push_ad_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
                 } else {
+                    mEtPrice.setText(mDataBean.getBuy_price());
                     mTvHint.setText(getString(R.string.push_ad_hint2) + Double.parseDouble(mServiceCharge2) * 100 + "%" + getString(R.string.sxf));
                 }
                 /*mTvPayment.setText("");

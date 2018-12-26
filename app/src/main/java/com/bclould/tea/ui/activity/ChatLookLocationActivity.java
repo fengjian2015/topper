@@ -76,6 +76,7 @@ public class ChatLookLocationActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_look_location);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.location));
         MyApp.getInstance().addActivity(this);
         initIntent();
         checkSelf();

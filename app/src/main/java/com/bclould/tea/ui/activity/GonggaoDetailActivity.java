@@ -31,14 +31,6 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class GonggaoDetailActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.title_name)
-    TextView mTitleName;
-    @Bind(R.id.title)
-    RelativeLayout mTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;
     @Bind(R.id.web_view)
@@ -60,6 +52,7 @@ public class GonggaoDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_details);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.gongao_details));
         MyApp.getInstance().addActivity(this);
         initIntent();
     }

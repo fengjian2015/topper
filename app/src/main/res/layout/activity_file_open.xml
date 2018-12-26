@@ -9,29 +9,9 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context="com.bclould.tea.ui.activity.FileOpenActivity">
-
-    <RelativeLayout
+    <include
         android:id="@+id/rl_title"
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            android:id="@+id/title_name"
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:maxEms="14"
-            android:singleLine="true"
-            android:text="@string/file_preview"/>
-
-    </RelativeLayout>
+        layout="@layout/activity_top"/>
 
     <TextView
         android:id="@+id/xx"

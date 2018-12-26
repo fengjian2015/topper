@@ -1051,6 +1051,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     mediaPlayer.reset();
                     anim.selectDrawable(0);
                     anim.stop();
+                    if(position>=mMessageList.size())return;
                     mMessageList.get(position).setVoiceStatus(1);
                     notifyItemChanged(position);
                     for (int i = position; i < mMessageList.size(); i++) {
@@ -1186,7 +1187,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             mTvVoiceTime.setText(messageInfo.getVoiceTime() + "''");
-            int wide = Integer.parseInt(messageInfo.getVoiceTime()) * 2;
+            int wide = UtilTool.parseInt(messageInfo.getVoiceTime()) * 2;
             String blank = " ";
             for (int i = 0; i < wide; i++) {
                 blank += " ";

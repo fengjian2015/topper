@@ -37,8 +37,8 @@ android {
         applicationId "com.bclould.tea"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 81
-        versionName "0.81"
+        versionCode 98
+        versionName "0.98"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -84,6 +84,9 @@ configurations.all {
         }
     }
 }
+
+
+
 
 
 
@@ -159,10 +162,8 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.11.0'
     compile 'io.reactivex.rxjava2:rxjava:2.0.8'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
     compile 'com.squareup.retrofit2:retrofit:2.4.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-
     compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
 
@@ -208,7 +209,6 @@ dependencies {
     compile 'org.msgpack:jackson-dataformat-msgpack:0.8.16'
     compile 'com.iceteck.silicompressorr:silicompressor:2.1'
     compile 'com.github.andy6804tw:ZoomImageView-lib:0.0.1'
-    implementation files('libs/fastjson-1.2.9.jar')
     compile 'com.isseiaoki:simplecropview:1.1.7'
     compile 'com.leon:lfilepickerlibrary:1.8.0'
 
@@ -228,4 +228,10 @@ dependencies {
     implementation files('libs/alipaySdk-20180601.jar')
     implementation files('libs/ocr-sdk.jar')
     implementation project(':ocr_ui')
+
+    //友盟统计
+    compile 'com.umeng.analytics:analytics:latest.integration'
+
+    //线形图
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
 }

@@ -6,257 +6,274 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg_color"
     android:orientation="vertical">
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
 
-    <RelativeLayout
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/start_guess"/>
-
-    </RelativeLayout>
-
-    <TextView
-        style="@style/HorizontalBoundaryStyle"/>
-
-    <TextView
-        android:id="@+id/tv_hint"
-        style="@style/MainTextShallowStyle30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y20"
-        android:text="@string/start_guess_service_hint"/>
-
-    <TextView
-        style="@style/HorizontalBoundaryStyle"
-        android:layout_marginTop="@dimen/y20"/>
-
-    <RelativeLayout
-        android:id="@+id/rl_guess_type"
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_data"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y110"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/bg_shallow_shape">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_type"
+            style="@style/HorizontalBoundaryStyle"/>
+
+        <TextView
+            android:id="@+id/tv_hint"
             style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/x20"
-            android:gravity="center_vertical"
-            android:hint="@string/selector_guess_type"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/start_guess_service_hint"/>
+
+        <TextView
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginTop="@dimen/y20"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_guess_type"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y110"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_shallow_shape">
+
+            <TextView
+                android:id="@+id/tv_type"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/x20"
+                android:gravity="center_vertical"
+                android:hint="@string/selector_guess_type"
+                android:textColorHint="@color/secondary_text_color"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:src="@mipmap/iocn_person_turn"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_pw"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y110"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_shallow_shape"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/et_command"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="@string/et_command"
+                android:inputType="number"
+                android:maxLength="8"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
+                android:singleLine="true"
+                android:textColorHint="@color/secondary_text_color"/>
+
+        </RelativeLayout>
+
+
+        <EditText
+            android:id="@+id/et_guess_title"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y110"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_shallow_shape"
+            android:hint="@string/et_guess_title"
+            android:maxLength="20"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:singleLine="true"
             android:textColorHint="@color/secondary_text_color"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+        <RelativeLayout
+            android:id="@+id/rl_selector_coin"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y110"
+            android:layout_marginLeft="@dimen/x30"
             android:layout_marginRight="@dimen/x30"
-            android:src="@mipmap/iocn_person_turn"/>
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_shallow_shape">
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_coin"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/x20"
+                android:gravity="center_vertical"
+                android:hint="@string/selector_coin"
+                android:textColorHint="@color/secondary_text_color"/>
 
-    <RelativeLayout
-        android:id="@+id/rl_pw"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:src="@mipmap/iocn_person_turn"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_single_insert_count"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y110"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_shallow_shape">
+
+            <TextView
+                android:id="@+id/tv2"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:text="@string/single_insert_count"/>
+
+            <EditText
+                android:id="@+id/et_single_insert_count"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginRight="@dimen/x20"
+                android:layout_toLeftOf="@+id/tv"
+                android:layout_toRightOf="@+id/tv2"
+                android:background="@android:color/transparent"
+                android:gravity="right|center_vertical"
+                android:hint="@string/et_single_count"
+                android:inputType="numberDecimal"
+                android:textColorHint="@color/secondary_text_color"/>
+
+            <TextView
+                android:id="@+id/tv"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:text="@string/individual"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y110"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_shallow_shape">
+
+            <EditText
+                android:id="@+id/et_bet_count"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="@string/et_sum_count"
+                android:inputType="number"
+                android:maxLength="30"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
+                android:singleLine="true"
+                android:textColorHint="@color/secondary_text_color"/>
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:text="@string/injection"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_selector_deadline"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y110"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_shallow_shape">
+
+            <TextView
+                android:id="@+id/tv_deadline"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/x20"
+                android:gravity="center_vertical"
+                android:hint="@string/guess_deadline"
+                android:textColorHint="@color/secondary_text_color"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:src="@mipmap/iocn_person_turn"/>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            style="@style/LongBtnStyle"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y50"
+            android:text="@string/confirm"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_error"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y110"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/bg_shallow_shape"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/xx"
+        android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
-        <EditText
-            android:id="@+id/et_command"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:hint="@string/et_command"
-            android:inputType="number"
-            android:maxLength="8"
-            android:paddingLeft="@dimen/x20"
-            android:paddingRight="@dimen/x20"
-            android:singleLine="true"
-            android:textColorHint="@color/secondary_text_color"/>
-
-    </RelativeLayout>
-
-
-    <EditText
-        android:id="@+id/et_guess_title"
-        style="@style/MainTextShallowStyle30"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y110"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/bg_shallow_shape"
-        android:hint="@string/et_guess_title"
-        android:maxLength="20"
-        android:paddingLeft="@dimen/x20"
-        android:paddingRight="@dimen/x20"
-        android:singleLine="true"
-        android:textColorHint="@color/secondary_text_color"/>
-
-    <RelativeLayout
-        android:id="@+id/rl_selector_coin"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y110"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/bg_shallow_shape">
-
-        <TextView
-            android:id="@+id/tv_coin"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/x20"
-            android:gravity="center_vertical"
-            android:hint="@string/selector_coin"
-            android:textColorHint="@color/secondary_text_color"/>
-
         <ImageView
+            android:id="@+id/iv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x30"
-            android:src="@mipmap/iocn_person_turn"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_single_insert_count"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y110"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/bg_shallow_shape">
-
-        <TextView
-            android:id="@+id/tv2"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x30"
-            android:text="@string/single_insert_count"/>
-
-        <EditText
-            android:id="@+id/et_single_insert_count"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_toLeftOf="@+id/tv"
-            android:layout_toRightOf="@+id/tv2"
-            android:background="@android:color/transparent"
-            android:gravity="right|center_vertical"
-            android:hint="@string/et_single_count"
-            android:inputType="numberDecimal"
-            android:textColorHint="@color/secondary_text_color"/>
-
-        <TextView
-            android:id="@+id/tv"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x30"
-            android:text="@string/individual"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y110"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/bg_shallow_shape">
-
-        <EditText
-            android:id="@+id/et_bet_count"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:hint="@string/et_sum_count"
-            android:inputType="number"
-            android:maxLength="30"
-            android:paddingLeft="@dimen/x20"
-            android:paddingRight="@dimen/x20"
-            android:singleLine="true"
-            android:textColorHint="@color/secondary_text_color"/>
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/img_wrong"/>
 
         <TextView
             style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x30"
-            android:text="@string/injection"/>
+            android:layout_marginTop="@dimen/y50"
+            android:text="@string/loading_error_anew_loading_hint2"/>
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_selector_deadline"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y110"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/bg_shallow_shape">
-
-        <TextView
-            android:id="@+id/tv_deadline"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/x20"
-            android:gravity="center_vertical"
-            android:hint="@string/guess_deadline"
-            android:textColorHint="@color/secondary_text_color"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x30"
-            android:src="@mipmap/iocn_person_turn"/>
-
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/btn_confirm"
-        style="@style/LongBtnStyle"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y50"
-        android:text="@string/confirm"/>
+    </LinearLayout>
 
 </LinearLayout>

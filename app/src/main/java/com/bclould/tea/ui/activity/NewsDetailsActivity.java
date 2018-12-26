@@ -53,14 +53,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_LINK_MSG;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsDetailsActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.title_name)
-    TextView mTitleName;
-    @Bind(R.id.title)
-    RelativeLayout mTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     @Bind(R.id.web_view)
     WebView mWebView;
     @Bind(R.id.comment_et)
@@ -75,8 +67,6 @@ public class NewsDetailsActivity extends BaseActivity {
     RelativeLayout mRlWebView;
     @Bind(R.id.ll_load_error)
     LinearLayout mLlLoadError;
-    @Bind(R.id.iv_share)
-    ImageView ivShare;
     private int mId;
     private boolean mLoadError = false;
     private int mType;
@@ -89,6 +79,7 @@ public class NewsDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_details);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.gongao_details),R.mipmap.ico_news_share);
         MyApp.getInstance().addActivity(this);
         initIntent();
         initWebView();
@@ -141,9 +132,9 @@ public class NewsDetailsActivity extends BaseActivity {
                 view.loadUrl(url);
                 if (!url.equals(mUrl)) {
                     mRlEdit.setVisibility(View.GONE);
-                    ivShare.setVisibility(View.GONE);
+                    mImageView.setVisibility(View.GONE);
                 } else {
-                    ivShare.setVisibility(View.VISIBLE);
+                    mImageView.setVisibility(View.VISIBLE);
                     mRlEdit.setVisibility(View.VISIBLE);
                 }
                 return false;
@@ -152,6 +143,9 @@ public class NewsDetailsActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                if(mProgressBar==null){
+                    return;
+                }
                 mProgressBar.setVisibility(View.GONE);
                 if (mProgressBar.getProgress() != 100) {
                     mLlLoadError.setVisibility(View.VISIBLE);
@@ -168,6 +162,7 @@ public class NewsDetailsActivity extends BaseActivity {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
+                if(mLlLoadError==null)return;
                 mLlLoadError.setVisibility(View.VISIBLE);
                 mRlWebView.setVisibility(View.GONE);
                 mLoadError = true;
@@ -177,12 +172,18 @@ public class NewsDetailsActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                if(mProgressBar==null){
+                    return;
+                }
                 mProgressBar.setVisibility(View.VISIBLE);
             }
 
         });
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
+                if(mProgressBar==null){
+                    return;
+                }
                 mProgressBar.setMax(100);
                 mProgressBar.setProgress(progress);
             }
@@ -243,19 +244,19 @@ public class NewsDetailsActivity extends BaseActivity {
         UtilTool.Log("新聞id", mId + "");
         UtilTool.Log("新聞type", mType + "");
         if (mType == Constants.GONGGAO_TYPE) {
-            mTitleName.setText(getString(R.string.gongao_details));
+            mTvTitleTop.setText(getString(R.string.gongao_details));
             mRlEdit.setVisibility(View.GONE);
             mUrl = Constants.BASE_URL + Constants.GONGGAO_WEB_URL + mId;
         } else if (mType == Constants.UPDATE_LOG_TYPE) {
             mRlEdit.setVisibility(View.GONE);
-            mTitleName.setText(getString(R.string.update_log_details));
+            mTvTitleTop.setText(getString(R.string.update_log_details));
             mUrl = Constants.BASE_URL + Constants.UPDATE_LOG_URL + mId;
         } else {
             if (mType == Constants.NEW_MY_TYPE || mType == Constants.NEW_DRAFTS_TYPE) {
                 mRlEdit.setVisibility(View.GONE);
             }
-            ivShare.setVisibility(View.VISIBLE);
-            mTitleName.setText(getString(R.string.news_details));
+            mImageView.setVisibility(View.VISIBLE);
+            mTvTitleTop.setText(getString(R.string.news_details));
             //!!更換拼接方式時，修改chatAdapter中的鏈接跳轉
             mUrl = Constants.NEW_BASE_URL + Constants.NEWS_WEB_URL + mId + "/" + UtilTool.getUserId();
             messageInfo.setLinkUrl(mUrl);
@@ -263,7 +264,7 @@ public class NewsDetailsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.send, R.id.iv_share})
+    @OnClick({R.id.bark, R.id.send, R.id.iv_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -278,7 +279,7 @@ public class NewsDetailsActivity extends BaseActivity {
                     review();
                 }
                 break;
-            case R.id.iv_share:
+            case R.id.iv_more:
                 if (WsConnection.getInstance().getOutConnection()) {
                     Intent intent = new Intent(this, InitialActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -326,8 +327,10 @@ public class NewsDetailsActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mWebView.removeAllViews();
-        mWebView.destroy();
+        if(mWebView!=null){
+            mWebView.removeAllViews();
+            mWebView.destroy();
+        }
     }
 
     @Override
@@ -337,7 +340,7 @@ public class NewsDetailsActivity extends BaseActivity {
                 mWebView.goBack();
                 if (!mWebView.canGoBack()) {
                     mRlEdit.setVisibility(View.VISIBLE);
-                    ivShare.setVisibility(View.VISIBLE);
+                    mImageView.setVisibility(View.VISIBLE);
                 }
             } else {
                 finish();

@@ -153,6 +153,7 @@ public class RedPacketActivity extends BaseActivity {
                 @Override
                 public void send(GrabRedInfo grabRedInfo) {
                     GrabRedInfo.DataBean data = grabRedInfo.getData();
+                    if(data==null)return;
                     List<GrabRedInfo.DataBean.LogBean> logBeanList = data.getLog();
                     mCoin = data.getCoin_name();
                     mTvCoin.setText(data.getCoin_name());

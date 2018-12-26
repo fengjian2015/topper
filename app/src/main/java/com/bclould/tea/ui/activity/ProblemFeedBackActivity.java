@@ -29,8 +29,6 @@ import butterknife.OnClick;
 public class ProblemFeedBackActivity extends BaseActivity {
 
 
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.viewPager)
     ViewPager mViewPager;
     @Bind(R.id.ll_menu)
@@ -41,6 +39,7 @@ public class ProblemFeedBackActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problem_feedback);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.probelm_feedback));
         initInterface();
         MyApp.getInstance().addActivity(this);
     }

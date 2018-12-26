@@ -22,22 +22,36 @@
             style="@style/MainTextShallowStyle28"
             android:text="超级节点"
             android:layout_marginBottom="@dimen/y10"/>
-        <TextView
-            android:id="@+id/tv_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            style="@style/BlueTextStyle30"
-            android:text="2,566.34"
-            />
+
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/SecondaryTextStyle28"
             android:text="2018.01.01 20:00"
-            android:layout_below="@+id/tv_title"/>
+            android:layout_below="@+id/tv_title"
+            />
+
+            <TextView
+                android:id="@+id/tv_source"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/MainTextShallowStyle28"
+                android:text="超级节点"
+                android:layout_marginBottom="@dimen/y10"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"
+                />
+            <TextView
+                android:id="@+id/tv_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                style="@style/BlueTextStyle30"
+                android:text="2,566.34"
+                android:layout_below="@+id/tv_source"
+                />
 
     </RelativeLayout>
 

@@ -7,27 +7,9 @@
               android:background="@color/app_bg_color"
               android:orientation="vertical"
               tools:context="com.bclould.tea.ui.activity.PublicDetailsActivity">
-
-    <RelativeLayout
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <ImageView
-            android:id="@+id/iv_else"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_more_selected"/>
-
-    </RelativeLayout>
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
 
     <LinearLayout
         android:id="@+id/ll_data"

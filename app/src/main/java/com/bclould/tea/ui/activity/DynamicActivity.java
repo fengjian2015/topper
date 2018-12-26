@@ -307,6 +307,7 @@ public class DynamicActivity extends BaseActivity {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(DynamicActivity.this)) {
+                    isFinish = true;
                     if (type == PULL_UP) {
                         mRefreshLayout.finishLoadMore();
                     } else {
@@ -320,10 +321,13 @@ public class DynamicActivity extends BaseActivity {
 
             @Override
             public void finishRefresh() {
-                if (type == PULL_UP) {
-                    mRefreshLayout.finishLoadMore();
-                } else {
-                    mRefreshLayout.finishRefresh();
+                if (ActivityUtil.isActivityOnTop(DynamicActivity.this)) {
+                    isFinish = true;
+                    if (type == PULL_UP) {
+                        mRefreshLayout.finishLoadMore();
+                    } else {
+                        mRefreshLayout.finishRefresh();
+                    }
                 }
             }
         });

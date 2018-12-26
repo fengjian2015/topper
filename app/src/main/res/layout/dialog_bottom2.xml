@@ -2,16 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-                  android:background="@color/main_text_color"
+              android:background="@color/main_text_color"
               android:orientation="vertical">
 
 
-    <TextView
-        android:id="@+id/tv_title"
-        style="@style/MainTextDeepStyle36"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:gravity="center"/>
+        android:layout_height="@dimen/y100">
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/MainTextDeepStyle36"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/iv_load"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/tv_title"
+            android:background="@drawable/anim_progress_chat"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
 
     <TextView
         style="@style/HorizontalDeepBoundaryStyle"/>
@@ -33,7 +50,7 @@
             android:layout_height="@dimen/y80"
             android:layout_centerInParent="true"
             android:background="@drawable/bg_register_shape"
-            android:text="充币"
+            android:text="@string/in_coin"
             android:visibility="gone"/>
 
     </RelativeLayout>

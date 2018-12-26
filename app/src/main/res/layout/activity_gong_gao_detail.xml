@@ -5,8 +5,10 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg_color"
     android:orientation="vertical">
-
-    <RelativeLayout
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
+    <!--<RelativeLayout
         android:id="@+id/title"
         style="@style/TopNavigationBarStyle"
         android:layout_alignParentTop="true">
@@ -26,7 +28,7 @@
             android:layout_centerInParent="true"
             android:text="@string/gonggao_detail"/>
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <TextView
         android:id="@+id/xx"

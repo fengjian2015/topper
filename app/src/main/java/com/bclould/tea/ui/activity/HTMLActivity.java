@@ -1,6 +1,8 @@
 package com.bclould.tea.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,13 +21,23 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.history.DBManager;
+import com.bclould.tea.model.H5AuthrizationInfo;
+import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.ui.widget.AuthorizationDialog;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.SharedPreferencesUtil;
 import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
+
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,27 +46,18 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class HTMLActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView bark;
-    @Bind(R.id.tv_title)
-    TextView tvTitle;
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;
     @Bind(R.id.web_view)
     WebView mWebView;
-    @Bind(R.id.iv_finish)
-    ImageView mIvFinish;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     private String html5Url;
-
+    private DBManager mMgr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_html);
         ButterKnife.bind(this);
+        setHtmlTitle("");
         MyApp.getInstance().app().addActivity(this);
         init();
     }
@@ -73,6 +76,12 @@ public class HTMLActivity extends BaseActivity {
         initWebView();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        MySharedPreferences.getInstance().setString(SharedPreferencesUtil.WEB_LOGIN,"");
+    }
+
     private void initWebView() {
         //设置WebView支持JavaScript
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -84,7 +93,6 @@ public class HTMLActivity extends BaseActivity {
         }
         // 把图片加载放在最后来加载渲染
         mWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-        mWebView.addJavascriptInterface(new payview(), "callback");
         // 支持多窗口
         mWebView.getSettings().setSupportMultipleWindows(true);
         // 开启 DOM storage API 功能
@@ -98,8 +106,20 @@ public class HTMLActivity extends BaseActivity {
         }
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if(url.contains("TopperChatOauth")){
+                    topperChatOauth(url);
+                    return true;
+                }
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                if (mProgressBar==null){
+                    return;
+                }
                 mProgressBar.setVisibility(View.GONE);
                 if (mWebView.canGoBack()) {
                     mIvFinish.setVisibility(View.VISIBLE);
@@ -115,20 +135,28 @@ public class HTMLActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                if (mProgressBar==null){
+                    return;
+                }
                 mProgressBar.setVisibility(View.VISIBLE);
             }
+
+
         });
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
+                if (mProgressBar==null){
+                    return;
+                }
                 mProgressBar.setMax(100);
                 mProgressBar.setProgress(progress);
             }
 
             @Override
             public void onReceivedTitle(WebView view, String title) {
-                if (!StringUtils.isEmpty(title)) {
+                if (!StringUtils.isEmpty(title)&&mTvTitleTop!=null) {
 //                    if (!(Tools.checkHttp(title) || Tools.checkLinkedExe(title))) {
-                    tvTitle.setText(title);
+                    mTvTitleTop.setText(title);
 //                    }
                 }
                 super.onReceivedTitle(view, title);
@@ -141,34 +169,49 @@ public class HTMLActivity extends BaseActivity {
         mWebView.loadUrl(html5Url);
     }
 
-    public final class payview {
-        @JavascriptInterface
-        public void showPay(final int status, final String message) {
-            UtilTool.Log("fengjian", "彈出成功");
-            HTMLActivity.this.runOnUiThread(new Runnable() {
+    /**
+     * 授权 http://www.bclould.com:8195/oauth/TopperChatOauth?avatar=w2&name=sdfsdf&text=sdfdsf
+     * @param url
+     */
+    private void topperChatOauth(String url){
+        try {
+            if (mMgr == null) {
+                mMgr = new DBManager(this);
+            }
+            if (WsConnection.getInstance().getOutConnection()) {
+                MySharedPreferences.getInstance().setString(SharedPreferencesUtil.WEB_LOGIN,Constants.WEB_MALL+"tmpl/member/login.html");
+                startActivity(new Intent(HTMLActivity.this, InitialActivity.class));
+                return;
+            }
+            String content=url.substring(url.indexOf("TopperChatOauth?")+"TopperChatOauth?".length(),url.length());
+            HashMap hashMap= UtilTool.getCutting(content);
+
+            AuthorizationDialog dialog=new AuthorizationDialog(this);
+            dialog.show();
+            dialog.setOnClickListener(new AuthorizationDialog.OnClickListener() {
                 @Override
-                public void run() {
+                public void onClick() {
+                    H5AuthrizationInfo h5AuthrizationInfo=new H5AuthrizationInfo();
+                    h5AuthrizationInfo.setAvatar(UtilTool.getImageUrl(mMgr,UtilTool.getTocoId()));
+                    h5AuthrizationInfo.setOpenid(UtilTool.getTocoId());
+                    h5AuthrizationInfo.setUser_name(UtilTool.getUser());
+                    h5AuthrizationInfo.setEmail(UtilTool.getEmail());
+                    UtilTool.Log("fengjian",JSONObject.toJSONString(h5AuthrizationInfo) );
+                    mWebView.loadUrl("javascript:show1('" + JSONObject.toJSONString(h5AuthrizationInfo) + " ');");
+                }
+
+                @Override
+                public void onCancel() {
+
                 }
             });
+            dialog.setIvImage(hashMap.get("avatar")+"");
+            dialog.setTvTitle(hashMap.get("name")+"");
+            dialog.setTvContent(hashMap.get("text")+"");
+        }catch (Exception e){
+            e.printStackTrace();
+            ToastShow.showToast2(HTMLActivity.this,getString(R.string.error));
         }
-    }
-
-    private void tradeSuccessfully() {
-        HTMLActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mWebView.evaluateJavascript("javascript:payCallBack()", new ValueCallback<String>() {
-                        @Override
-                        public void onReceiveValue(String value) {
-                            UtilTool.Log("fengjian", "回調成功");
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
 

@@ -6,51 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg_color"
     android:orientation="vertical">
-
-    <RelativeLayout
-        style="@style/TopNavigationBarStyle">
-
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/my_collect"/>
-
-        <TextView
-            android:id="@+id/tv_add"
-            style="@style/BlueTextStyle28"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:padding="@dimen/x20"
-            android:text="@string/add"/>
-
-        <TextView
-            android:id="@+id/tv_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/tv_add"
-            android:gravity="center"
-            android:padding="@dimen/x20"
-            android:text="@string/edit"
-            android:textColor="@color/red_color"
-            android:textSize="@dimen/x28"/>
-
-    </RelativeLayout>
-
-    <TextView
-        style="@style/HorizontalBoundaryStyle"/>
-
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -42,6 +42,7 @@ public class MyBindingActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_my_binding);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.my_binding));
         mMgr=new DBManager(this);
         initHttp();
     }

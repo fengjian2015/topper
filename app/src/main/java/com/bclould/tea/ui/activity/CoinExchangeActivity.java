@@ -66,8 +66,6 @@ public class CoinExchangeActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_question)
-    TextView mTvQuestion;
     @Bind(R.id.tv_exchange)
     TextView mTvExchange;
     @Bind(R.id.et_count)
@@ -90,10 +88,6 @@ public class CoinExchangeActivity extends BaseActivity {
     Button mBtnExchange;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     @Bind(R.id.ll_exchange)
     LinearLayout mLlExchange;
     @Bind(R.id.tv)
@@ -117,6 +111,7 @@ public class CoinExchangeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_exchange);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.lrwmzpm),getString(R.string.question));
         MyApp.getInstance().addActivity(this);
         initListener();
         initRecylerView();
@@ -314,13 +309,13 @@ public class CoinExchangeActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.bark, R.id.tv_question, R.id.ll_coin_selector, R.id.btn_exchange, R.id.ll_error})
+    @OnClick({R.id.bark, R.id.tv_add, R.id.ll_coin_selector, R.id.btn_exchange, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_question:
+            case R.id.tv_add:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.ll_coin_selector:
@@ -369,6 +364,11 @@ public class CoinExchangeActivity extends BaseActivity {
                     mEtCount.setText("");
                     initListData(mCoin.get(0));
                 }
+            }
+
+            @Override
+            public void error() {
+
             }
         });
     }

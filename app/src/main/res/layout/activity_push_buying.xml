@@ -8,41 +8,9 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
-
-    <RelativeLayout
+    <include
         android:id="@+id/rl_title"
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/push_ad"/>
-
-        <TextView
-            android:id="@+id/tv_question"
-            style="@style/BlueTextStyle28"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:paddingRight="@dimen/x20"
-            android:text="@string/question"/>
-
-        <TextView
-            style="@style/HorizontalBoundaryStyle"
-            android:layout_alignParentBottom="true"/>
-
-    </RelativeLayout>
+        layout="@layout/activity_top"/>
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -470,7 +438,7 @@
                     android:layout_toRightOf="@+id/tv5"/>
 
 
-                <EditText
+                <TextView
                     android:id="@+id/et_price"
                     style="@style/MainTextShallowStyle30"
                     android:layout_width="match_parent"
@@ -482,6 +450,7 @@
                     android:paddingLeft="@dimen/x30"
                     android:paddingRight="@dimen/x20"
                     android:singleLine="true"
+                    android:gravity="center_vertical"
                     android:textColorHint="@color/secondary_text_color"
                     android:textCursorDrawable="@null"/>
 

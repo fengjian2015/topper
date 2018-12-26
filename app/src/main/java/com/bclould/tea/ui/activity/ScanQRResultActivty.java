@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -19,9 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ScanQRResultActivty extends AppCompatActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
+public class ScanQRResultActivty extends BaseActivity {
     @Bind(R.id.tv_content)
     TextView mTvContent;
     private String result;
@@ -31,6 +30,7 @@ public class ScanQRResultActivty extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_qrresult_activty);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.qr_scan_result));
         MyApp.getInstance().addActivity(this);
         initIntent();
     }

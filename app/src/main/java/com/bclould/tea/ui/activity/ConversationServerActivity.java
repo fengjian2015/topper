@@ -48,8 +48,6 @@ public class ConversationServerActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.title_name)
-    TextView mTitleName;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.refresh_layout)
@@ -68,6 +66,7 @@ public class ConversationServerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation_server);
         ButterKnife.bind(this);
+        setTitle("");
         MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);//初始化数据库管理类
         EventBus.getDefault().register(this);//初始化EventBus
@@ -118,7 +117,7 @@ public class ConversationServerActivity extends BaseActivity {
     }
 
     private void setTitleName() {
-        mTitleName.setText(mName);
+        mTvTitleTop.setText(mName);
     }
 
     private void clearNotification() {

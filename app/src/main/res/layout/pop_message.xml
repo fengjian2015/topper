@@ -39,5 +39,14 @@
         android:drawableLeft="@mipmap/icon_talk_add"
         android:gravity="center"
         android:text="@string/add_friend"/>
+    <TextView
+        style="@style/MainTextDeepStyle30"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawablePadding="@dimen/x30"
+        android:drawableLeft="@mipmap/icon_thepublic1"
+        android:gravity="center"
+        android:text="@string/the_pulice"/>
 
 </LinearLayout>

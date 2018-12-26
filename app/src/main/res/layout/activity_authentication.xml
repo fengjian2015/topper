@@ -7,33 +7,19 @@
                 android:background="@color/app_bg_color"
                 tools:context="com.bclould.tea.ui.activity.AuthenticationActivity">
 
-    <RelativeLayout
-        android:id="@+id/rl_title"
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y30"
-            android:gravity="center"
-            android:text="@string/security_verification"
-            />
-    </RelativeLayout>
+    <View
+        android:id="@+id/status_bar_fix"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#00000000"
+        />
+    <include android:id="@+id/title" layout="@layout/activity_top"></include>
 
     <RelativeLayout
         android:id="@+id/rl_data"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/rl_title"
+        android:layout_below="@+id/title"
         android:visibility="invisible">
 
         <ImageView

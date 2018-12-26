@@ -60,6 +60,14 @@
             android:name="TencentMapSDK"
             android:value="VKMBZ-GAMWJ-UA5FV-KAXJS-IEHET-QABI7" />
 
+        <!-- 友盟统计 -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5bcd3a26b465f57c2c0001ae" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="wangluo" />
+
         <provider
             android:name=".utils.MyFileProvider"
             android:authorities="com.bclould.tea.provider"
@@ -94,7 +102,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+            <intent-filter>
+                <data
+                    android:host="topper_chat"
+                    android:path="/main"
+                    android:scheme="csd" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
@@ -112,7 +127,9 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+
+        </activity>
 
         <!-- 注册页面 -->
         <activity
@@ -1201,9 +1218,8 @@
             android:name=".ui.activity.AuthenticationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-
-        android:theme="@style/Transparent"
-        android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:theme="@style/TranslucentTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ui.activity.DeblockingFingerprintActivity"
             android:launchMode="singleTop"
@@ -1255,7 +1271,7 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.MyTeamActivity"
+            android:name=".ui.activity.ftc.MyTeam.MyTeamActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
@@ -1273,7 +1289,7 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.AccountBindingActivity"
+            android:name=".ui.activity.ftc.AccountBinding.AccountBindingActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
@@ -1290,6 +1306,48 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.FriendVerificationActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.FinancialActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.FinancialDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.TransferRecordActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.FinancialHistoryActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.FGCExchangeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
+        <activity android:name=".ui.activity.authorization.AuthorizationActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 </manifest>

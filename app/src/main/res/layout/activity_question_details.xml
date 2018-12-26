@@ -5,8 +5,10 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg_color"
     android:orientation="vertical">
-
-    <RelativeLayout
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
+ <!--   <RelativeLayout
         android:id="@+id/title"
         style="@style/TopNavigationBarStyle"
         android:layout_alignParentTop="true">
@@ -31,7 +33,7 @@
     <TextView
         android:id="@+id/xx"
         style="@style/HorizontalBoundaryStyle"
-        android:layout_below="@+id/title"/>
+        android:layout_below="@+id/title"/>-->
 
     <WebView
         android:id="@+id/web_view"

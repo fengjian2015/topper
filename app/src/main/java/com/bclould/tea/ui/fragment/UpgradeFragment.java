@@ -108,7 +108,7 @@ public class UpgradeFragment extends LazyFragment {
     }
 
     private void init() {
-        if(mUpgradeInfo==null){
+        if(mUpgradeInfo==null||mRlSelectMoney==null){
             return;
         }
         if(type==1){
@@ -204,9 +204,6 @@ public class UpgradeFragment extends LazyFragment {
     }
 
     private void add(){
-        if(currentMoney==max){
-            return;
-        }
         currentMoney+=addMin;
         setmTvMoney(currentMoney+"");
     }
@@ -228,7 +225,11 @@ public class UpgradeFragment extends LazyFragment {
                 payHttp(password);
             }
         });
-        pwdDialog.showDialog(UtilTool.removeZero(currentMoney + ""), "FTC", getString(R.string.upgrade_node), null, null);
+        if(type==2||type==3) {
+            pwdDialog.showDialog(UtilTool.removeZero(currentMoney*10000 + ""), "FTC", getString(R.string.upgrade_node), null, null);
+        }else{
+            pwdDialog.showDialog(UtilTool.removeZero(currentMoney + ""), "FTC", getString(R.string.upgrade_node), null, null);
+        }
     }
 
     private void payHttp(String password){

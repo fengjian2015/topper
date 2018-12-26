@@ -5,44 +5,9 @@
               android:layout_height="match_parent"
               android:background="@color/app_bg_color"
               android:orientation="vertical">
-
-    <RelativeLayout
-        style="@style/TopNavigationBarStyle">
-
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/receipt_payment"/>
-
-        <TextView
-            android:id="@+id/tv_selector_way"
-            style="@style/BlueTextStyle28"
-            android:textColor="#7CA1E5"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:drawablePadding="@dimen/x10"
-            android:drawableRight="@mipmap/iocn_two_c"
-            android:gravity="center"
-            android:padding="@dimen/x20"
-            android:text="@string/receipt"/>
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/xx2"
-        style="@style/HorizontalBoundaryStyle"/>
-
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
     <LinearLayout
         android:id="@+id/ll_data"
         android:layout_width="match_parent"

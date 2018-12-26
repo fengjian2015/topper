@@ -9,7 +9,9 @@ import android.util.Log;
 import com.bclould.tea.Presenter.LogoutPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.NetworkUtils;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.google.gson.GsonBuilder;
@@ -22,11 +24,16 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
+import static com.bclould.tea.Presenter.LoginPresenter.TOKEN_TIME;
 
 /**
  * Created by dada on 2017/6/14.
@@ -75,19 +82,26 @@ public class RetrofitUtil {
                 Log.d("CacheInterceptor", "no network");
             }
             Response originalResponse = chain.proceed(request);
+            //设置TOKEN
+            String authorization = originalResponse.header("Authorization123");
+            if (!StringUtils.isEmpty(authorization)) {
+                MySharedPreferences.getInstance().setString(TOKEN, authorization);
+                MySharedPreferences.getInstance().setLong(TOKEN_TIME, System.currentTimeMillis());
+            }
             UtilTool.Log("攔截器", originalResponse.isSuccessful() + "");
             int code = originalResponse.code();
             String message = originalResponse.message();
             if (code == 200) {
             } else if (code == 401) {
-                UtilTool.Log("fengjiantoken","登錄token過期"+request.url()+"    "+request.body().toString());
+                UtilTool.Log("fengjiantoken", "登錄token過期" + request.url() + "    " + request.body().toString());
                 LogoutPresenter logoutPresenter = new LogoutPresenter((Activity) mContext);
                 logoutPresenter.imLogout(mContext.getString(R.string.token_stale_dated));
             } else if (code == 500) {
                 ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
             } else if (code == 504) {
                 ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.network_error));
-            }else {
+            } else if (code == 502) {
+            } else {
                 ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
             }
             UtilTool.Log("攔截器", request.url() + "接口返回碼： " + code + "----接口返回消息： " + message);

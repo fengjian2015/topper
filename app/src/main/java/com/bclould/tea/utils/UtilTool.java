@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -69,8 +70,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
@@ -78,6 +81,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
@@ -542,9 +546,15 @@ public class UtilTool {
         return versionCode;
     }
 
+    /**
+     * 目前是根据版本名判断（之前已经是使用名字转float比较大小，但版本名命名不规范，应该由code来判断，
+     * 现在是0.97版本，等待都更新到0.97后再改动命名规则，不然之前版本会崩溃）
+     * @param mContext
+     * @return
+     */
     public static boolean compareVersion(Context mContext) {
         String versionStr = getVersionCode(mContext);
-        float version = Float.parseFloat(versionStr);
+
         String tag_version = "";
         String versionsTag = MySharedPreferences.getInstance().getString(Constants.APK_VERSIONS_TAG);
         if (versionsTag.isEmpty()) {
@@ -555,11 +565,20 @@ public class UtilTool {
         } else {
             tag_version = versionsTag;
         }
-        float tag = Float.parseFloat(tag_version);
-        if (version < tag) {
-            return true;
-        } else {
-            return false;
+        float newVersion = UtilTool.parseFloat(tag_version);
+        float nowVersion =UtilTool.parseFloat(versionStr);
+        if(newVersion!=0&&nowVersion!=0){
+            if (newVersion>nowVersion) {
+                return true;
+            } else {
+                return false;
+            }
+        }else {
+            if (!versionStr.equals(tag_version)) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -998,6 +1017,17 @@ public class UtilTool {
         return bitmap;
     }
 
+    public static String getImageUrl(DBManager mgr, String myUser){
+        if (mgr.findUser(myUser)) {
+            UserInfo info = mgr.queryUser(myUser);
+            return info.getPath();
+        }else if (!StringUtils.isEmpty(mgr.findStrangerPath(myUser))) {
+            return mgr.findStrangerPath(myUser);
+        } else {
+            return "";
+        }
+    }
+
 
     public static void getGroupImage(DBRoomManage dbRoomManage, String roomId, Activity context, ImageView imageView) {
         String url = dbRoomManage.findRoomUrl(roomId);
@@ -1029,7 +1059,7 @@ public class UtilTool {
         String url = mDBRoomMember.findMemberUrl(user);
         if (StringUtils.isEmpty(url) && dbManager.findUser(user)) {
             UserInfo info = dbManager.queryUser(user);
-            if (!info.getPath().isEmpty()) {
+            if (!StringUtils.isEmpty(info.getPath())) {
                 url = info.getPath();
             }
         }
@@ -1102,6 +1132,9 @@ public class UtilTool {
     public static String getPostfix3(String fileName) {
         String pos = "";
         try {
+            if(StringUtils.isEmpty(fileName)){
+                return pos;
+            }
             pos = fileName.substring(fileName.lastIndexOf("."));
         } catch (Exception e) {
             e.printStackTrace();
@@ -1150,7 +1183,7 @@ public class UtilTool {
         return deadline;
     }
 
-    private static String[] mRandomArrs = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    //    private static String[] mRandomArrs = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
     private static int[] mRandomArr = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
     public static String[] getRandomArr(int betArrCount) {
@@ -1163,14 +1196,14 @@ public class UtilTool {
 
     public static String getRandom(int index) {
         String random = "";
-        for (int i = 0; i < 2; i++) {
-            if (index <= 2) {
-                int randomArrIndex = (int) (Math.random() * mRandomArr.length);
-                random = random + mRandomArr[randomArrIndex];
-            } else {
+        for (int i = 0; i < 1; i++) {
+//            if (index <= 2) {
+            int randomArrIndex = (int) (Math.random() * mRandomArr.length);
+            random = random + mRandomArr[randomArrIndex];
+            /*} else {
                 int randomArrsIndex = (int) (Math.random() * mRandomArrs.length);
                 random = random + mRandomArrs[randomArrsIndex];
-            }
+            }*/
         }
         return random;
     }
@@ -1414,6 +1447,14 @@ public class UtilTool {
         }
     }
 
+    public static float parseFloat(String number) {
+        try {
+            return Float.parseFloat(number);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     private static long homeTime = 0;
 
     public static boolean homeClickTwo() {
@@ -1475,7 +1516,8 @@ public class UtilTool {
             install.setDataAndType(uri, "application/vnd.android.package-archive");
             context.startActivity(install);
         } else {
-            Uri uri = Uri.fromFile(file);
+            String path = file.getAbsolutePath();
+            Uri uri =Uri.parse("file://" + path);
             Intent install = new Intent(Intent.ACTION_VIEW);
             install.setDataAndType(uri, "application/vnd.android.package-archive");
             install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1654,8 +1696,10 @@ public class UtilTool {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
     /**
      * 获取状态栏高度
+     *
      * @param context
      * @return
      */
@@ -1667,6 +1711,41 @@ public class UtilTool {
         }
         return result;
     }
+    public static String expectedReturn(double money,int day,double rate){
+        if(day==0){
+            day=1;
+        }
+        double expected=money*rate*day/365;
+        return changeMoney(expected);
+    }
 
+    public static String changeMoney(double money) {
+        DecimalFormat df = new DecimalFormat("#####0.00");
+        return df.format(money);
+    }
 
+    public static String changeMoney1(double money) {
+        DecimalFormat df = new DecimalFormat("#####0.########");
+        return df.format(money);
+    }
+
+    /**
+     * 截取&字符
+     * @param content
+     * @return
+     */
+    public static HashMap getCutting(String content) throws UnsupportedEncodingException {
+        content= URLDecoder.decode(content,"utf-8");
+        HashMap hashMap=new HashMap();
+        String[] sq=content.split("&");
+        for (int i=0;i<sq.length;i++){
+            String[] sq1=sq[i].split("=");
+            if(sq1.length>=2) {
+                hashMap.put(sq1[0], sq1[1]);
+            }else{
+                hashMap.put(sq1[0], "");
+            }
+        }
+        return hashMap;
+    }
 }

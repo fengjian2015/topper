@@ -12,6 +12,7 @@ import com.bclould.tea.model.UpdateLogInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.activity.VersionsUpdateActivity;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -53,8 +54,7 @@ public class UpdateLogPresenter {
 
     private void hideDialog() {
         if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
+            mProgressDialog.hideDialog();
         }
     }
 
@@ -109,6 +109,7 @@ public class UpdateLogPresenter {
 
                     @Override
                     public void onNext(VersionInfo versionInfo) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         hideDialog();
                         if (versionInfo.getStatus() == 1) {
                             MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, versionInfo.getData().getDownload_url());
@@ -123,6 +124,7 @@ public class UpdateLogPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         callBack2.error();
                         hideDialog();
                         UtilTool.Log("日志", e.getMessage());

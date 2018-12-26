@@ -30,14 +30,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class TransferDetailsActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_transfer_record)
-    TextView mTvTransferRecord;
-    @Bind(R.id.rl_title)
-    RelativeLayout mRlTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.tv_hint)
@@ -54,6 +46,7 @@ public class TransferDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer_details);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.transfer_details),getString(R.string.record));
         MyApp.getInstance().addActivity(this);
         initIntent();
     }
@@ -81,13 +74,13 @@ public class TransferDetailsActivity extends BaseActivity {
         mTvTime.setText(getString(R.string.transfer_time) + "：" + time);
     }
 
-    @OnClick({R.id.bark, R.id.tv_transfer_record})
+    @OnClick({R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_transfer_record:
+            case R.id.tv_add:
                 Intent intent = new Intent(this, BillDetailsActivity.class);
                 intent.putExtra("type", 2);
                 startActivity(intent);

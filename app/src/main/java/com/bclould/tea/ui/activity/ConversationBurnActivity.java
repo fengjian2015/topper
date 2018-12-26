@@ -501,7 +501,7 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
             mEkbEmoticonsKeyboard.startOTR();
             UtilTool.Log("fengjian---", "开启加密");
         } else if (msg.equals(EventBusUtil.change_msg_state)) {
-            changeMsgState(event.getId());
+            changeMsgState(event.getId(),event.getSendStatus());
             UtilTool.Log("fengjian---", "改變消息狀態");
         }  else if (msg.equals(getString(R.string.update_file_message))) {
             changeMsgFile(event.getId(), event.getFilepath());
@@ -558,10 +558,14 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
         }
     }
 
-    private void changeMsgState(String id) {
+    private void changeMsgState(String id, int sendStatus) {
         for (int i = 0; i < mMessageList.size(); i++) {
             if (id.equals(mMessageList.get(i).getMsgId())) {
-                mMessageList.get(i).setSendStatus(1);
+                if(sendStatus==0) {
+                    mMessageList.get(i).setSendStatus(1);
+                }else{
+                    mMessageList.get(i).setSendStatus(sendStatus);
+                }
                 mChatAdapter.notifyItemChanged(i);
                 break;
             }

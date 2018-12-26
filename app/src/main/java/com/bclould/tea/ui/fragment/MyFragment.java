@@ -16,18 +16,21 @@ import android.widget.TextView;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.topperchat.WsConnection;
-import com.bclould.tea.ui.activity.AccountBindingActivity;
+import com.bclould.tea.ui.activity.HTMLActivity;
+import com.bclould.tea.ui.activity.ftc.AccountBinding.AccountBindingActivity;
 import com.bclould.tea.ui.activity.CollectActivity;
 import com.bclould.tea.ui.activity.DynamicActivity;
 import com.bclould.tea.ui.activity.GuanYuMeActivity;
 import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.LoginActivity;
 import com.bclould.tea.ui.activity.MyBindingActivity;
-import com.bclould.tea.ui.activity.MyTeamActivity;
+import com.bclould.tea.ui.activity.ftc.MyTeam.MyTeamActivity;
 import com.bclould.tea.ui.activity.NodeActivity;
 import com.bclould.tea.ui.activity.PersonalDetailsActivity;
 import com.bclould.tea.ui.activity.SystemSetActivity;
 import com.bclould.tea.ui.activity.UserSafetyActivity;
+import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -92,6 +95,10 @@ public class MyFragment extends Fragment {
     ImageView mIvLogin;
     @Bind(R.id.rl_no_login)
     RelativeLayout mRlNoLogin;
+    @Bind(R.id.rl_participation_profit)
+    RelativeLayout mRlParticipationProfit;
+    @Bind(R.id.rl_my_team)
+    RelativeLayout mRlMyTeam;
 
 
     private DBManager mMgr;
@@ -125,6 +132,8 @@ public class MyFragment extends Fragment {
             init();
         } else if (msg.equals(getString(R.string.refresh_the_interface))) {
             init();
+        } else if (msg.equals(EventBusUtil.change_name)) {
+            init();
         }
     }
 
@@ -155,7 +164,14 @@ public class MyFragment extends Fragment {
         if (mMgr == null) {
             mMgr = new DBManager(getContext());
         }
-        UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext(), mIvTouxiang);
+        UtilTool.getImage(mMgr, UtilTool.getTocoId(), getActivity(), mIvTouxiang);
+        if (MySharedPreferences.getInstance().getBoolean(BIND_FTC)) {
+            mRlParticipationProfit.setVisibility(View.VISIBLE);
+            mRlMyTeam.setVisibility(View.VISIBLE);
+        } else {
+            mRlParticipationProfit.setVisibility(View.GONE);
+            mRlMyTeam.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -165,7 +181,7 @@ public class MyFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.rl_dynamic, R.id.rl_collect, R.id.rl_already_login, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we, R.id.rl_no_login,R.id.rl_my_team,R.id.rl_participation_profit,R.id.rl_account_binding})
+    @OnClick({R.id.rl_dynamic, R.id.rl_collect, R.id.rl_already_login, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we, R.id.rl_no_login, R.id.rl_my_team, R.id.rl_participation_profit, R.id.rl_account_binding})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_already_login:
@@ -215,9 +231,9 @@ public class MyFragment extends Fragment {
                 break;
             case R.id.rl_my_team:
                 if (!WsConnection.getInstance().getOutConnection()) {
-                    if(MySharedPreferences.getInstance().getBoolean(BIND_FTC)){
+                    if (MySharedPreferences.getInstance().getBoolean(BIND_FTC)) {
                         startActivity(new Intent(getActivity(), MyTeamActivity.class));
-                    }else{
+                    } else {
                         startActivity(new Intent(getActivity(), AccountBindingActivity.class));
                     }
                 } else {
@@ -226,9 +242,9 @@ public class MyFragment extends Fragment {
                 break;
             case R.id.rl_participation_profit:
                 if (!WsConnection.getInstance().getOutConnection()) {
-                    if(MySharedPreferences.getInstance().getBoolean(BIND_FTC)){
+                    if (MySharedPreferences.getInstance().getBoolean(BIND_FTC)) {
                         startActivity(new Intent(getActivity(), NodeActivity.class));
-                    }else{
+                    } else {
                         startActivity(new Intent(getActivity(), AccountBindingActivity.class));
                     }
 
@@ -238,9 +254,9 @@ public class MyFragment extends Fragment {
                 break;
             case R.id.rl_account_binding:
                 if (!WsConnection.getInstance().getOutConnection()) {
-                    if(MySharedPreferences.getInstance().getBoolean(BIND_FTC)){
+                    if (MySharedPreferences.getInstance().getBoolean(BIND_FTC)) {
                         startActivity(new Intent(getActivity(), MyBindingActivity.class));
-                    }else{
+                    } else {
                         startActivity(new Intent(getActivity(), AccountBindingActivity.class));
                     }
                 } else {

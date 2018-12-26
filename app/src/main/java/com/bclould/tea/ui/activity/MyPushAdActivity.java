@@ -55,10 +55,6 @@ import static com.bclould.tea.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MyPushAdActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_filtrate)
-    TextView mTvFiltrate;
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.tv_sum_sell)
@@ -123,6 +119,7 @@ public class MyPushAdActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_push_ad);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.my_publish),getString(R.string.filtrate));
         MyApp.getInstance().addActivity(this);
         mMap.put(getString(R.string.filtrate), 0);
         mFiltrateList.add(getString(R.string.all));
@@ -219,7 +216,7 @@ public class MyPushAdActivity extends BaseActivity {
     private List<String> mFiltrateList = new ArrayList<>();
     boolean isOnOff = false;
 
-    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_filtrate, R.id.rl_my_buy, R.id.rl_my_sell, R.id.ll_on_off, R.id.rl_sum_buy, R.id.rl_sum_sell})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_add, R.id.rl_my_buy, R.id.rl_my_sell, R.id.ll_on_off, R.id.rl_sum_buy, R.id.rl_sum_sell})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -252,7 +249,7 @@ public class MyPushAdActivity extends BaseActivity {
                     mTvOnOff.setText(getString(R.string.zhankai));
                 }
                 break;
-            case R.id.tv_filtrate:
+            case R.id.tv_add:
                 showFiltrateDialog();
                 break;
             case R.id.rl_my_buy:

@@ -48,10 +48,6 @@ public class BuySellActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
-    @Bind(R.id.tv_help)
-    TextView mTvHelp;
     @Bind(R.id.iv_touxiang)
     ImageView mIvTouxiang;
     @Bind(R.id.tv_name)
@@ -97,6 +93,7 @@ public class BuySellActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_sell);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.buy_btc),getString(R.string.help));
         MyApp.getInstance().addActivity(this);
         initInterface();
         setListener();
@@ -318,25 +315,27 @@ public class BuySellActivity extends BaseActivity {
         mTvPrice.setText(mData.getPrice());
         mEtCny.setHint(mData.getMin_amount() + "-" + mData.getMax_amount() + mData.getCurrency());
         mTvReputation.setText(getString(R.string.deal) + " " + mData.getCount_trans_number() + " | " + getString(R.string.count) + mData.getNumber() + " " + mData.getCoin_name());
-        mTvTitle.setText(getString(R.string.buy) + mData.getCoin_name());
+        mTvTitleTop.setText(getString(R.string.buy) + mData.getCoin_name());
         if (mType) {
             mTvBuysellCount.setText(getString(R.string.sell_count));
             mBtnSellBuy.setText(getString(R.string.work_off));
             mEtCoin.setHint(getString(R.string.sell_count));
-            mTvTitle.setText(getString(R.string.work_off) + mData.getCoin_name());
+            mTvTitleTop.setText(getString(R.string.work_off) + mData.getCoin_name());
             mEtCoin.setBackground(getResources().getDrawable(R.drawable.bg_blue_border2));
+            mEtCoin.setTextColor(getColor(R.color.app_bg_color));
             mEtCny.setBackground(getResources().getDrawable(R.drawable.bg_blue_border2));
+            mEtCny.setTextColor(getColor(R.color.app_bg_color));
             mBtnSellBuy.setBackground(getResources().getDrawable(R.drawable.bg_green_shape2));
         }
     }
 
-    @OnClick({R.id.bark, R.id.tv_help, R.id.btn_sell_buy})
+    @OnClick({R.id.bark, R.id.tv_add, R.id.btn_sell_buy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_help:
+            case R.id.tv_add:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.btn_sell_buy:

@@ -67,8 +67,7 @@ public class MyApp extends Application {
 
         new MyHostnameVerifier();
 
-        //初始化sp
-        MySharedPreferences.getInstance().init(this);
+        initSharedPreferences();
 
         new CrashHandler(this);
         //初始化
@@ -86,6 +85,11 @@ public class MyApp extends Application {
         AlipayClient.getInstance().init(this);
     }
 
+
+    public void initSharedPreferences(){
+        //初始化sp
+        MySharedPreferences.getInstance().init(this);
+    }
 
     //创建项目公开目录
 
@@ -138,6 +142,14 @@ public class MyApp extends Application {
                 activity.finish();
             }
         }
+    }
+
+    /**
+     * @return 获取栈顶的Activity
+     */
+    public  Activity getTopActivity() {
+        Activity pop = (Activity) mActivityList.pop();
+        return pop;
     }
 
     @Override

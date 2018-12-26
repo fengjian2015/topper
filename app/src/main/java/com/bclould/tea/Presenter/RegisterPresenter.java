@@ -45,8 +45,7 @@ public class RegisterPresenter {
 
     private void hideDialog() {
         if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
+            mProgressDialog.hideDialog();
         }
     }
 
@@ -84,11 +83,11 @@ public class RegisterPresenter {
                 });
     }
 
-    public void register(String user, String email, String emailCode, String password) {
+    public void register(String user, String email, String emailCode, String password,String inviter_id) {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .signUp(user, email, password, emailCode)
+                .signUp(user, email, password, emailCode,inviter_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {
@@ -99,9 +98,12 @@ public class RegisterPresenter {
 
                     @Override
                     public void onNext(@NonNull BaseInfo baseInfo) {
-                        mContext.startActivity(new Intent(mContext, LoginActivity.class));
-                        ServiceAgreementActivity serviceAgreementActivity = (ServiceAgreementActivity) mContext;
-                        serviceAgreementActivity.finish();
+                        hideDialog();
+                        if(baseInfo.getStatus()==1){
+                            mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                            ServiceAgreementActivity serviceAgreementActivity = (ServiceAgreementActivity) mContext;
+                            serviceAgreementActivity.finish();
+                        }
                         Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
@@ -118,11 +120,11 @@ public class RegisterPresenter {
                 });
     }
 
-    public void signUpValidator(final String email, final String user, final CallBack2 callBack2) {
+    public void signUpValidator(final String email, final String user,String inviter_id, final CallBack2 callBack2) {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .signUpValidator(email, user)
+                .signUpValidator(email, user,inviter_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {
@@ -133,10 +135,10 @@ public class RegisterPresenter {
 
                     @Override
                     public void onNext(@NonNull BaseInfo baseInfo) {
+                        hideDialog();
                         if (baseInfo.getStatus() == 1) {
                             callBack2.send();
                         } else {
-                            hideDialog();
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }

@@ -23,6 +23,7 @@ import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.StringUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -60,6 +61,7 @@ public class BankCardBindingActivity2 extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_card_binding2);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.bank_card_information));
         MyApp.getInstance().addActivity(this);
         initIntent();
         mBankCardPresenter = new BankCardPresenter(this);
@@ -78,18 +80,18 @@ public class BankCardBindingActivity2 extends BaseActivity {
         mTvBankNumber.setText(mCardNumber);
         if (type) {
             mData = (BankCardInfo.DataBean) intent.getSerializableExtra("data");
-            if (!mData.getBank().isEmpty()) {
+            if (!StringUtils.isEmpty(mData.getBank())) {
                 mEtCardType.setText(mData.getBank());
                 mEtCardType.setKeyListener(null);
             }
-            if (!mData.getTruename().isEmpty()) {
+            if (!StringUtils.isEmpty(mData.getTruename())) {
                 mEtCardholder.setText(mData.getTruename());
                 mEtCardholder.setKeyListener(null);
             }
         } else {
             String card_type = intent.getStringExtra("card_type");
             String bank_name = intent.getStringExtra("bank_name");
-            if (!bank_name.isEmpty()) {
+            if (!StringUtils.isEmpty(bank_name)) {
                 mEtCardType.setText(bank_name);
                 mEtCardType.setKeyListener(null);
             }

@@ -47,12 +47,8 @@ import butterknife.OnClick;
 public class ReceiptPaymentActivity extends BaseActivity {
     private static final int MONEYIN = 0;
     private static final int MONEYOUT = 1;
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_selector_way)
-    TextView mTvSelectorWay;
-    @Bind(R.id.xx2)
-    TextView mXx2;
+    @Bind(R.id.rl_title)
+    View mXx2;
     @Bind(R.id.tv_hint)
     TextView mTvHint;
     @Bind(R.id.iv_qr)
@@ -98,6 +94,9 @@ public class ReceiptPaymentActivity extends BaseActivity {
         setContentView(R.layout.activity_receipt_payment);
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.receipt_payment),getString(R.string.receipt));
+        mTvAdd.setCompoundDrawablePadding(20);
+        mTvAdd.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.iocn_two_c), null);
         MyApp.getInstance().addActivity(this);
         getPhoneSize();
         moneyIn();
@@ -146,7 +145,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_selector_way, R.id.rl_receipt_payment_record, R.id.tv_set})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_add, R.id.rl_receipt_payment_record, R.id.tv_set})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -155,7 +154,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
             case R.id.ll_error:
                 moneyIn();
                 break;
-            case R.id.tv_selector_way:
+            case R.id.tv_add:
                 initPopWindow();
                 break;
             case R.id.tv_set:
@@ -226,7 +225,9 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 String coinName = data.getStringExtra("coinName");
                 String remark = data.getStringExtra("remark");
                 String count = data.getStringExtra("count");
-                Glide.with(this).load(url).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(mIvQr);
+                Bitmap bitmap = UtilTool.createQRImage(url);
+                Glide.with(ReceiptPaymentActivity.this).load(bitmap).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(mIvQr);
+//                Glide.with(this).load(url).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(mIvQr);
                 hideDialog();
                 if (remark.isEmpty()) {
                     mTvRemark.setVisibility(View.GONE);
@@ -236,8 +237,8 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 }
                 mTvCoin.setText(coinName);
                 mTvCount.setText(count);
-                mTvSelectorWay.setText(getString(R.string.payment));
-                mTvSelectorWay.setTextColor(Color.rgb(73, 187, 100));
+                mTvAdd.setText(getString(R.string.payment));
+                mTvAdd.setTextColor(Color.rgb(73, 187, 100));
                 mTvHint.setText(getString(R.string.qr_coder_pay));
                 mRlBackgound.setBackgroundResource(R.drawable.bg_pay_shape);
             } else if (requestCode == MONEYIN) {
@@ -245,8 +246,8 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 mRlData.setVisibility(View.VISIBLE);
                 mTvSet.setText(getString(R.string.gg_set));
                 mTvHint.setText(getString(R.string.receipt_payment_hint));
-                mTvSelectorWay.setText(getString(R.string.receipt));
-                mTvSelectorWay.setTextColor(Color.rgb(124, 161, 229));
+                mTvAdd.setText(getString(R.string.receipt));
+                mTvAdd.setTextColor(Color.rgb(124, 161, 229));
                 mRlBackgound.setBackgroundResource(R.drawable.bg_get_shape);
                 String coinId = data.getStringExtra("coinId");
                 String coinName = data.getStringExtra("coinName");
@@ -275,8 +276,8 @@ public class ReceiptPaymentActivity extends BaseActivity {
         receipt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mTvSelectorWay.setText(receipt.getText());
-                mTvSelectorWay.setTextColor(Color.rgb(124, 161, 229));
+                mTvAdd.setText(receipt.getText());
+                mTvAdd.setTextColor(Color.rgb(124, 161, 229));
                 mPopupWindow.dismiss();
                 moneyIn();
             }

@@ -1,1 +1,1 @@
-include ':app', ':library', ':keyboard', ':otr4jandroid', ':richtexteditorlib', ':lubottommenu', ':camera', ':AndroidAsync', ':ocr_ui'
+include ':app', ':library', ':keyboard', ':otr4jandroid', ':richtexteditorlib', ':lubottommenu', ':camera', ':AndroidAsync', ':ocr_ui', ':topperlogin'

@@ -25,9 +25,11 @@ import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
@@ -35,6 +37,8 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -59,8 +63,6 @@ import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 public class PersonalDetailsActivity extends BaseActivity {
 
     private static final String GENDER = "gender";
-    @Bind(R.id.bark)
-    ImageView mBark;
     @Bind(R.id.touxiang)
     ImageView mTouxiang;
     @Bind(R.id.rl_touxiang)
@@ -97,8 +99,10 @@ public class PersonalDetailsActivity extends BaseActivity {
         mPersonalDetailsPresenter = new PersonalDetailsPresenter(this);
         mMgr = new DBManager(this);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.personal_details));
         initInterface();
         MyApp.getInstance().addActivity(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -150,27 +154,33 @@ public class PersonalDetailsActivity extends BaseActivity {
 
     //上傳頭像
     private void upImage(String path) throws UnsupportedEncodingException {
-        File file = new File(path);
-        final String keyCut = UtilTool.getUserId() + UtilTool.createtFileName() + "cut" + UtilTool.getPostfix2(file.getName());
-        final File newFile = new File(Constants.PUBLICDIR + keyCut);
-        Bitmap cutImg = BitmapFactory.decodeFile(path);
-        UtilTool.comp(cutImg, newFile);
-        final Bitmap bitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] bytes = UtilTool.getFileToByte(newFile);
-        String Base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
-        UtilTool.Log("編碼", Base64Image.length() + "");
-        mPersonalDetailsPresenter.upImage(Base64Image, new PersonalDetailsPresenter.CallBack() {
-            @Override
-            public void send() {
-                UtilTool.saveImages(bitmap, UtilTool.getTocoId(), PersonalDetailsActivity.this, mMgr);
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
-                UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this, mTouxiang);
+        try {
+            File file = new File(path);
+            final String keyCut = UtilTool.getUserId() + UtilTool.createtFileName() + "cut" + UtilTool.getPostfix2(file.getName());
+            final File newFile = new File(Constants.PUBLICDIR + keyCut);
+            Bitmap cutImg = BitmapFactory.decodeFile(path);
+            UtilTool.comp(cutImg, newFile);
+            final Bitmap bitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] bytes = UtilTool.getFileToByte(newFile);
+            String Base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+            UtilTool.Log("編碼", Base64Image.length() + "");
+            mPersonalDetailsPresenter.upImage(Base64Image, new PersonalDetailsPresenter.CallBack() {
+                @Override
+                public void send() {
+                    UtilTool.saveImages(bitmap, UtilTool.getTocoId(), PersonalDetailsActivity.this, mMgr);
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
+                    UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this, mTouxiang);
 
-                //                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this));
-            }
-        });
+                    //                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this));
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            ToastShow.showToast2(this,getString(R.string.up_error));
+        }
+
         /*boolean type = XmppConnection.getInstance().changeImage(bytes);
         if (type) {
             List<UserInfo> userInfos = mMgr.queryUser(UtilTool.getTocoId());
@@ -196,8 +206,9 @@ public class PersonalDetailsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.rl_touxiang, R.id.rl_qr_card, R.id.rl_alipay})
+    @OnClick({R.id.bark, R.id.rl_touxiang, R.id.rl_qr_card, R.id.rl_alipay,R.id.rl_referrer,R.id.rl_username})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.bark:
                 finish();
@@ -213,11 +224,28 @@ public class PersonalDetailsActivity extends BaseActivity {
                 showDialog();
                 break;
             case R.id.rl_qr_card:
-                Intent intent = new Intent(this, QRCodeActivity.class);
+                intent = new Intent(this, QRCodeActivity.class);
                 intent.putExtra("user", UtilTool.getTocoId());
                 startActivity(intent);
                 break;
+            case R.id.rl_referrer:
+                intent = new Intent(this, QRCodeActivity.class);
+                intent.putExtra("user", UtilTool.getUser());
+                intent.putExtra("type",1);
+                startActivity(intent);
+                break;
+            case R.id.rl_username:
+                //修改昵称
+                goModificationName();
+                break;
         }
+    }
+
+    private void goModificationName() {
+        Intent intent = new Intent(this, ModificationNameActivity.class);
+        intent.putExtra("type", 4);
+        intent.putExtra("content", mTvUsername.getText().toString());
+        startActivity(intent);
     }
 
     private void alipayAuth() {
@@ -324,5 +352,19 @@ public class PersonalDetailsActivity extends BaseActivity {
                 .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
                 .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
                 .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(EventBusUtil.change_name)) {
+            mTvUsername.setText(UtilTool.getUser());
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

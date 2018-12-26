@@ -36,8 +36,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PublicDetailsActivity extends BaseActivity {
-    @Bind(R.id.iv_else)
-    ImageView mIvElse;
     @Bind(R.id.iv_head)
     ImageView mIvHead;
     @Bind(R.id.tv_name)
@@ -59,6 +57,7 @@ public class PublicDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_public_details);
         ButterKnife.bind(this);
+        setTitle("",R.mipmap.icon_nav_more_selected);
         MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);
         mDBPublicManage=new DBPublicManage(this);
@@ -99,9 +98,9 @@ public class PublicDetailsActivity extends BaseActivity {
 
     private void setIvElse(){
         if(mDBPublicManage.findPublic(id)){
-            mIvElse.setVisibility(View.VISIBLE);
+            mImageView.setVisibility(View.VISIBLE);
         }else{
-            mIvElse.setVisibility(View.GONE);
+            mImageView.setVisibility(View.GONE);
         }
     }
 
@@ -113,13 +112,13 @@ public class PublicDetailsActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.iv_else, R.id.tv_state,R.id.ll_error})
+    @OnClick({R.id.bark, R.id.iv_more, R.id.tv_state,R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.iv_else:
+            case R.id.iv_more:
                 //更多取關
                 showDialog();
                 break;

@@ -1341,7 +1341,7 @@
 
     <string name="guess">guess</string>
 
-    <string name="toast_array">Array cannot be Empty</string>
+    <string name="toast_array">Please enter the full guess number</string>
 
     <string name="bet_array">Bet Array</string>
 
@@ -2295,7 +2295,7 @@ Please reset encryption request</string>
     <string name="alipay_red_bind_hint">Please bind Alipay first</string>
     <string name="send_red_packet_hint2">Unreceived red envelope will be refunded after 48 hours</string>
     <string name="group_red">group red package</string>
-    <string name="red_no">已抢完</string>
+    <string name="red_no">No red envelope</string>
     <string name="search_the_location">search address </string>
     <string name="pleass_input_location">Please enter the address </string>
     <string name="address_not_found">The address was not found </string>
@@ -2355,17 +2355,38 @@ Please reset encryption request</string>
     <string name="twelve_months_deposit">12 months deposit </string>
     <string name="multi_banking">Multiple types of wealth management</string>
     <string name="more_flexible_financial_benefits">Multi-currency, multi-type, more flexible financial benefits </string>
-    <string name="current_rate_return"> current rate of return </string>
+    <string name="current_rate_return"> current annualized rate of return </string>
     <string name="asset_transfer"> asset transfer </string>
     <string name="transfer_assets"> asset transfer </string>
     <string name="input_quantity">Enter the number: </string>
     <string name="quantity_available">Available quantity: </string>
     <string name="transfer_out">transfer </string>
     <string name="available1">available</string>
-    <string name="current_rate_return1">current rate of return: </string>
+    <string name="current_rate_return1">current annualized rate of return: </string>
     <string name="lock_time">Lock time: </string>
     <string name="input_quantity1">Enter the number </string>
     <string name="starting">starting </string>
     <string name="month1">month </string>
     <string name="insufficient_balance_available">Insufficient balance available</string>
+    <string name="up_hu_zhao">Upload passport</string>
+    <string name="join_group_chat">Join group chat</string>
+    <string name="we_already_friends_come_chat_together">We are already friends, come and chat together! </string>
+    <string name="approved">by verifying</string>
+    <string name="view">View</string>
+    <string name="expected">expected revenue</string>
+    <string name="please_enter_referrer_name">Please enter the referrer\'s name</string>
+    <string name="recommendation_code">Recommended code </string>
+    <string name="exchange_FGC">Exchange gc</string>
+    <string name="convertible_to_fgc"> can be redeemed for GC</string>
+    <string name="fgc_gains">USDT gains </string>
+    <string name="gold_exchange">gold exchange </string>
+    <string name="available_fgc">Available GC:</string>
+    <string name="change_username">Modify nickname </string>
+    <string name="no_data">no data </string>
+    <string name="public_open">The system public number has been opened. For individual or business user\n contact </string>
+    <string name="permissions">The developer will get the following permissions after logging in</string>
+    <string name="getting_information">· Get your public token (nickname, avatar) </string>
+    <string name="confirm_login"> confirm login </string>
+    <string name="allow">allow </string>
+    <string name="topperchat_authorization">TopperChat authorization </string>
 </resources>

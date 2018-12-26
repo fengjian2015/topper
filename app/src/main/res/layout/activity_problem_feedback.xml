@@ -3,40 +3,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/app_bg_color">
-
-    <RelativeLayout
-        android:id="@+id/title"
-        style="@style/TopNavigationBarStyle"
-        android:layout_alignParentTop="true">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            android:id="@+id/title_name"
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/probelm_feedback"/>
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/xx"
-        style="@style/HorizontalBoundaryStyle"
-        android:layout_below="@+id/title"/>
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/xx2"
-        android:layout_below="@+id/xx">
+        android:layout_below="@+id/rl_title">
     </android.support.v4.view.ViewPager>
 
     <TextView

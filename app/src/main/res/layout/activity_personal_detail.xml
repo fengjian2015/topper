@@ -5,28 +5,9 @@
               android:layout_height="match_parent"
               android:background="@color/app_bg_color"
               android:orientation="vertical">
-
-    <RelativeLayout
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            style="@style/MainTextShallowStyle36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/personal_details"/>
-
-    </RelativeLayout>
-
-    <TextView
-        style="@style/HorizontalBoundaryStyle"/>
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
 
 
     <RelativeLayout
@@ -208,6 +189,34 @@
 
     </RelativeLayout>
 
+
+    <RelativeLayout
+        android:id="@+id/rl_referrer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@drawable/bg_shallow_shape">
+
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/recommendation_code"/>
+
+        <ImageView
+            android:layout_width="@dimen/x70"
+            android:layout_height="@dimen/y70"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x30"
+            android:src="@mipmap/qr_code"/>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_alipay"

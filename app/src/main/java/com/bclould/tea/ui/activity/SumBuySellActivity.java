@@ -50,10 +50,6 @@ public class SumBuySellActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     @Bind(R.id.iv2)
     ImageView mIv2;
     @Bind(R.id.ll_error)
@@ -74,6 +70,7 @@ public class SumBuySellActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sum_buysell);
         ButterKnife.bind(this);
+        setTitle("");
         MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         mBuySellPresenter = new BuySellPresenter(this);
@@ -92,9 +89,9 @@ public class SumBuySellActivity extends BaseActivity {
         mType = getIntent().getIntExtra("type", 0);
         mCoinName = getIntent().getStringExtra("coin_name");
         if (mType == 1) {
-            mTvTitle.setText(getString(R.string.sum_buy));
+            mTvTitleTop.setText(getString(R.string.sum_buy));
         } else {
-            mTvTitle.setText(getString(R.string.sum_sell));
+            mTvTitleTop.setText(getString(R.string.sum_sell));
         }
     }
 
@@ -163,6 +160,7 @@ public class SumBuySellActivity extends BaseActivity {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(SumBuySellActivity.this)) {
+                    isFinish = true;
                     if (type == PULL_UP) {
                         mRefreshLayout.finishLoadMore();
                     } else {
@@ -176,6 +174,7 @@ public class SumBuySellActivity extends BaseActivity {
 
             @Override
             public void finishRefresh() {
+                isFinish = true;
                 if (type == PULL_UP) {
                     mRefreshLayout.finishLoadMore();
                 } else {

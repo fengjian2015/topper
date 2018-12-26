@@ -34,10 +34,6 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PayDetailsActivity extends BaseActivity {
 
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     @Bind(R.id.tv_who)
     TextView mTvWho;
     @Bind(R.id.tv_name)
@@ -76,6 +72,7 @@ public class PayDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_details);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.payment_details));
         MyApp.getInstance().addActivity(this);
         initData();
     }

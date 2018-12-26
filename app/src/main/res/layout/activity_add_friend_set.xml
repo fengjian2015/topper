@@ -4,29 +4,7 @@
               android:layout_height="match_parent"
               android:background="@color/app_bg_color"
               android:orientation="vertical">
-
-    <RelativeLayout
-        style="@style/TopNavigationBarStyle">
-
-        <ImageView
-            android:id="@+id/bark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/x20"
-            android:src="@mipmap/icon_nav_return"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/add_friend_setting"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
-
-    </RelativeLayout>
-
-    <TextView
-        style="@style/HorizontalBoundaryStyle"/>
+    <include layout="@layout/activity_top"></include>
 
     <TextView
         android:layout_width="wrap_content"

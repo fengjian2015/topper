@@ -53,14 +53,14 @@ import static com.bclould.tea.utils.Constants.ADMINISTRATOR_NAME;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ConversationAdapter extends RecyclerView.Adapter {
 
-    private final Context mContext;
+    private final Activity mContext;
     private final List<ConversationInfo> mConversationList;
     private final DBManager mMgr;
     private RelativeLayout mRlTitle;
     private DBRoomMember mDBRoomMember;
     private DBRoomManage mDBRoomManage;
 
-    public ConversationAdapter(Context context, List<ConversationInfo> ConversationList, DBManager mgr, RelativeLayout mRlTitle, DBRoomMember mDBRoomMember, DBRoomManage mDBRoomManage) {
+    public ConversationAdapter(Activity context, List<ConversationInfo> ConversationList, DBManager mgr, RelativeLayout mRlTitle, DBRoomMember mDBRoomMember, DBRoomManage mDBRoomManage) {
         mContext = context;
         mConversationList = ConversationList;
         mMgr = mgr;
