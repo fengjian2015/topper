@@ -54,7 +54,6 @@ public class WebViewActivity extends BaseActivity {
         setContentView(R.layout.activity_web_view);
         ButterKnife.bind(this);
         setTitle("");
-        MyApp.getInstance().addActivity(this);
         initIntent();
         initWebView();
     }

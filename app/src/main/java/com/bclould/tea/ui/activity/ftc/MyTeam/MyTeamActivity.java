@@ -46,11 +46,10 @@ public class MyTeamActivity extends BaseActivity implements MyTeamContacts.View{
     @Bind(R.id.tv_break)
     TextView mTvBreak;
 
-    private MyTeamPresenter mMyTeamPresenter;
+    private MyTeamContacts.Presenter mMyTeamPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_my_team);
         ButterKnife.bind(this);
         mMyTeamPresenter=new MyTeamPresenter();

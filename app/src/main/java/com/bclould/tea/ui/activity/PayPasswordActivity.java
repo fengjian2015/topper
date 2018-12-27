@@ -51,7 +51,6 @@ public class PayPasswordActivity extends BaseActivity {
         setContentView(R.layout.activity_pay_password);
         ButterKnife.bind(this);
         setTitle(getString(R.string.payment_pw));
-        MyApp.getInstance().addActivity(this);
     }
 
     //提交修改的密码

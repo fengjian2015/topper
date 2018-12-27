@@ -43,7 +43,6 @@ public class SignatureActivity extends BaseActivity {
         setContentView(R.layout.activity_signature);
         ButterKnife.bind(this);
         listenerEditText();
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

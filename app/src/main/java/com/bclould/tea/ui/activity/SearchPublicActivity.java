@@ -47,7 +47,6 @@ public class SearchPublicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_public);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         init();
         initRecyclerView();
     }

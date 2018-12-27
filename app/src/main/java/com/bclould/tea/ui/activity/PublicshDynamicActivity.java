@@ -82,7 +82,6 @@ public class PublicshDynamicActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.publish_dynamic),getString(R.string.push));
         initRecyclerView();
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

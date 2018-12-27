@@ -100,7 +100,6 @@ public class SendQRCodeRedActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_qr_code_red);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket5));
         mRedPacketPresenter = new RedPacketPresenter(this);
         initData();

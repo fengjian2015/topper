@@ -76,7 +76,6 @@ public class CreateGroupRoomActivity extends BaseActivity {
         context=this;
         ButterKnife.bind(this);
         setTitle(getString(R.string.select_friends),getString(R.string.confirm));
-        MyApp.getInstance().addActivity(this);
         initIntent();
         initData();
         initRecylerView();

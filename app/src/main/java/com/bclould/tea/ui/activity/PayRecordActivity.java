@@ -98,7 +98,6 @@ public class PayRecordActivity extends BaseActivity {
         setContentView(R.layout.activity_pay_record);
         ButterKnife.bind(this);
         setTitle(getString(R.string.payment_record),getString(R.string.filtrate));
-        MyApp.getInstance().addActivity(this);
         getOptionData();
         initIntent();
         initRecycler();

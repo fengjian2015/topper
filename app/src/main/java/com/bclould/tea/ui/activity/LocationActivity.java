@@ -482,6 +482,7 @@ public class LocationActivity extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         mapView.onDestroy();
+        MyApp.getInstance().removeActivity(this);
         super.onDestroy();
     }
 

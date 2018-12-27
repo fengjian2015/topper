@@ -47,7 +47,6 @@ public class RemarkActivity extends BaseActivity {
         setContentView(R.layout.activity_remark);
         ButterKnife.bind(this);
         setTitle(getString(R.string.remark),getString(R.string.save));
-        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         init();
     }

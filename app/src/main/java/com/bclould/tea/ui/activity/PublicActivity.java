@@ -68,7 +68,6 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_public);
-        MyApp.getInstance().addActivity(this);
         ButterKnife.bind(this);
         setTitle(getString(R.string.the_pulice),getString(R.string.search));
         EventBus.getDefault().register(this);//初始化EventBus

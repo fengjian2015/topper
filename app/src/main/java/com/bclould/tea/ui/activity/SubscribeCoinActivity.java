@@ -45,7 +45,6 @@ public class SubscribeCoinActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.add),R.mipmap.icon_bg_btc);
         initData();
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

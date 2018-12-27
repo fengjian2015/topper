@@ -67,7 +67,6 @@ public class InCoinActivity extends BaseActivity {
         setContentView(R.layout.activity_in_coin);
         ButterKnife.bind(this);
         setTitle(getString(R.string.in_coin),getString(R.string.record));
-        MyApp.getInstance().addActivity(this);
         initIntent();
         initData();
 

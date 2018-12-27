@@ -43,7 +43,6 @@ public class NickNameActivity extends BaseActivity {
         setContentView(R.layout.activity_nick_name);
         ButterKnife.bind(this);
         listenerEditText();
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

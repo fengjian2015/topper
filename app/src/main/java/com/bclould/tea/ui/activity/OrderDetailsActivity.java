@@ -158,7 +158,6 @@ public class OrderDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_order_details);
         ButterKnife.bind(this);
         setTitle("",getString(R.string.help));
-        MyApp.getInstance().addActivity(this);
         initInterface();
     }
 

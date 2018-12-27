@@ -51,7 +51,6 @@ public class LoginRecordActivity extends BaseActivity {
         setContentView(R.layout.activity_login_record);
         ButterKnife.bind(this);
         setTitle(getString(R.string.login_record));
-        MyApp.getInstance().addActivity(this);
         initRecyler();
         initData();
     }

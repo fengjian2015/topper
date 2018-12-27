@@ -108,7 +108,6 @@ public class GoogleVerificationActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.google_verify),getString(R.string.warm_prompt));
         mRegisterPresenter = new RegisterPresenter(this);
-        MyApp.getInstance().addActivity(this);
         initInterface();
     }
 

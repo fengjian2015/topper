@@ -1277,13 +1277,13 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.NodeActivity"
+            android:name=".ui.activity.ftc.Node.NodeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.UpgradeNodeActivity"
+            android:name=".ui.activity.ftc.UpgradeNode.UpgradeNodeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"

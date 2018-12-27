@@ -58,7 +58,6 @@ public class GrabQRCodeRedActivity extends BaseActivity {
         getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
         setContentView(R.layout.activity_grab_qr_red);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         Intent intent = getIntent();
         mId = intent.getStringExtra("id");

@@ -42,7 +42,6 @@ public class DynamicSetActivity extends BaseActivity {
         setContentView(R.layout.activity_dynamic_set);
         ButterKnife.bind(this);
         initInterface();
-        MyApp.getInstance().addActivity(this);
     }
 
     //初始化界面

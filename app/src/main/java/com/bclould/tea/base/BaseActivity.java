@@ -50,6 +50,7 @@ public class BaseActivity extends SwipeActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyApp.getInstance().addActivity(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             getWindow().setStatusBarColor(getResources().getColor(R.color.app_bg_color));
@@ -187,7 +188,7 @@ public class BaseActivity extends SwipeActivity {
     protected void onDestroy() {
         super.onDestroy();
         this.finish();
-        MyApp.getInstance().mActivityList.remove(this);
+        MyApp.getInstance().removeActivity(this);
         ButterKnife.unbind(this);
     }
 

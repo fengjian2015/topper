@@ -254,5 +254,11 @@ public class CameraActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MyApp.getInstance().removeActivity(this);
+    }
 }
 

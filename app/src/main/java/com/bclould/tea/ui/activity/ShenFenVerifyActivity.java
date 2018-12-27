@@ -40,7 +40,6 @@ public class ShenFenVerifyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shenfen_verify);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

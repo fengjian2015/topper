@@ -81,7 +81,6 @@ public class BankCardActivity extends BaseActivity {
         mBankCardPresenter = new BankCardPresenter(this);
         initRecyclerView();
         initData();
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

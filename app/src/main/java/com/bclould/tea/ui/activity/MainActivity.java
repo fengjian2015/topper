@@ -134,7 +134,6 @@ public class MainActivity extends BaseActivity {
         mDBRoomMember = new DBRoomMember(this);
         initRelogin();
         initInterface();
-        MyApp.getInstance().addActivity(this);
         WsConnection.loginService(this);
         initAddFriendReceiver();
         isGoSelectConversation();

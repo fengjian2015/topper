@@ -75,7 +75,6 @@ public class PersonageDynamicActivity extends BaseActivity {
         setContentView(R.layout.activity_personal_dynamic);
         ButterKnife.bind(this);
         setTitle("");
-        MyApp.getInstance().addActivity(this);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initIntent();

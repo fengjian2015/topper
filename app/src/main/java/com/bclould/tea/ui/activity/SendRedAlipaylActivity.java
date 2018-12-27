@@ -77,7 +77,6 @@ public class SendRedAlipaylActivity extends BaseActivity {
         mMgr = new DBManager(this);
         mRoomId = getIntent().getStringExtra("roomId");
         mRedPacketPresenter = new RedPacketPresenter(this);
-        MyApp.getInstance().addActivity(this);
         setOnClick();
     }
 

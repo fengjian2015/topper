@@ -90,6 +90,12 @@ public class SelectorStateActivity extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MyApp.getInstance().removeActivity(this);
+    }
+
     @OnClick({R.id.bark, R.id.area_number, R.id.banner})
     public void onViewClicked(View view) {
         switch (view.getId()) {

@@ -182,6 +182,7 @@ public class FindPasswordActivity extends SwipeActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        MyApp.getInstance().removeActivity(this);
         if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;

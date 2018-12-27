@@ -65,7 +65,6 @@ public class NewsManagerActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.ad_manager),getString(R.string.filtrate),getString(R.string.empty));
         mTvAdd1.setVisibility(View.GONE);
-        MyApp.getInstance().addActivity(this);
         initFiltrate();
         mViewPager.setCurrentItem(0);
         setSelector(0);

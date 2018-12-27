@@ -122,7 +122,6 @@ public class OtcActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otc);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }

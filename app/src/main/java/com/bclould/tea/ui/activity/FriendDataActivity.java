@@ -72,6 +72,12 @@ public class FriendDataActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MyApp.getInstance().removeActivity(this);
+    }
+
+    @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }

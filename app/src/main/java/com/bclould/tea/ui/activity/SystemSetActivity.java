@@ -102,7 +102,6 @@ public class SystemSetActivity extends BaseActivity {
         setContentView(R.layout.activity_system_set);
         ButterKnife.bind(this);
         setTitle(getString(R.string.system_set));
-        MyApp.getInstance().addActivity(this);
         init();
     }
 

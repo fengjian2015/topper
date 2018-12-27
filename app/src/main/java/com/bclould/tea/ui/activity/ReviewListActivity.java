@@ -39,7 +39,6 @@ public class ReviewListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_review_list);
         ButterKnife.bind(this);
         setTitle(getString(R.string.initation_list));

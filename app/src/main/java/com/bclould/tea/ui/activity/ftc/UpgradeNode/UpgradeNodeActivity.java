@@ -1,4 +1,4 @@
-package com.bclould.tea.ui.activity;
+package com.bclould.tea.ui.activity.ftc.UpgradeNode;
 
 import android.content.Intent;
 import android.os.Build;
@@ -17,6 +17,7 @@ import com.bclould.tea.Presenter.DistributionPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.UpgradeInfo;
+import com.bclould.tea.ui.activity.HistoryActivity;
 import com.bclould.tea.ui.adapter.NodePagerAdapter;
 import com.bclould.tea.ui.fragment.UpgradeFragment;
 import com.bclould.tea.ui.widget.PWDDialog;

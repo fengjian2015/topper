@@ -68,7 +68,6 @@ public class BillDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_bill_details);
         ButterKnife.bind(this);
         setTitle(getString(R.string.detail),getString(R.string.question));
-        MyApp.getInstance().addActivity(this);
         mDillDataPresenter = new DillDataPresenter(this);
         initIntent();
         initRecyclerView();

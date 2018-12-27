@@ -101,7 +101,6 @@ public class RewardActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reward);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         mDynamicPresenter = new DynamicPresenter(this);
         initData();
         initIntent();

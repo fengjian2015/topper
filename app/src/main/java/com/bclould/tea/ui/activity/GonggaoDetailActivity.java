@@ -53,7 +53,6 @@ public class GonggaoDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_news_details);
         ButterKnife.bind(this);
         setTitle(getString(R.string.gongao_details));
-        MyApp.getInstance().addActivity(this);
         initIntent();
     }
 

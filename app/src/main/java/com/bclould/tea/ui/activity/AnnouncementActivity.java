@@ -85,7 +85,6 @@ public class AnnouncementActivity extends BaseActivity {
         setContentView(R.layout.activity_announcement);
         ButterKnife.bind(this);
         setTitle(getString(R.string.gonggao), getString(R.string.edit));
-        MyApp.getInstance().addActivity(this);
         mDBRoomManage = new DBRoomManage(this);
         initGetIntent();
         initView();

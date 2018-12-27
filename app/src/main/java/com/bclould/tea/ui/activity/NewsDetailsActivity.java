@@ -80,7 +80,6 @@ public class NewsDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_news_details);
         ButterKnife.bind(this);
         setTitle(getString(R.string.gongao_details),R.mipmap.ico_news_share);
-        MyApp.getInstance().addActivity(this);
         initIntent();
         initWebView();
         initView();

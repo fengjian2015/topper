@@ -68,7 +68,6 @@ public class PayPwSelectorActivity extends BaseActivity {
             EventBus.getDefault().register(this);
         }
         init();
-        MyApp.getInstance().addActivity(this);
         mUpdateLogPresenter = new UpdateLogPresenter(this);
         initSp();
     }

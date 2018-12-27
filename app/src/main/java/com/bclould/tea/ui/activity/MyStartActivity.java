@@ -93,7 +93,6 @@ public class MyStartActivity extends BaseActivity {
         setContentView(R.layout.activity_my_start);
         ButterKnife.bind(this);
         setTitle(getString(R.string.my_start),getString(R.string.filtrate));
-        MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         init();
     }

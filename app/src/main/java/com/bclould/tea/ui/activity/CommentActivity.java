@@ -54,7 +54,6 @@ public class CommentActivity extends BaseActivity {
         setContentView(R.layout.activity_comment);
         ButterKnife.bind(this);
         initRecyclerView();
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

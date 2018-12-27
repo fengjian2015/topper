@@ -95,7 +95,6 @@ public class ConversationRecordFindActivity extends BaseActivity implements Mess
         setContentView(R.layout.activity_conversation_record_find);
         ButterKnife.bind(this);
         setTitle(getString(R.string.chat_content));
-        MyApp.getInstance().addActivity(this);
         init();
         pullToRefresh();
     }

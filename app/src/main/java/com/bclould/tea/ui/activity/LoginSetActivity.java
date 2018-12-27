@@ -70,7 +70,6 @@ public class LoginSetActivity extends BaseActivity {
         setContentView(R.layout.activity_login_set);
         ButterKnife.bind(this);
         setTitle(getString(R.string.login_set));
-        MyApp.getInstance().addActivity(this);
         mLoginPresenter = new LoginPresenter(this);
         init();
     }

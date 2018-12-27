@@ -60,7 +60,6 @@ public class AuthenticationActivity extends LoginBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_authentication);
         ButterKnife.bind(this);
         setTitle(getString(R.string.security_verification));

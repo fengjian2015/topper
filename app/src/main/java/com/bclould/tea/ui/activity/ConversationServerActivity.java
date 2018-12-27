@@ -67,7 +67,6 @@ public class ConversationServerActivity extends BaseActivity {
         setContentView(R.layout.activity_conversation_server);
         ButterKnife.bind(this);
         setTitle("");
-        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);//初始化数据库管理类
         EventBus.getDefault().register(this);//初始化EventBus
         mMgr.updateNumber(roomId, 0);//更新未读消息条数

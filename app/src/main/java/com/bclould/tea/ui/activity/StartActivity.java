@@ -58,7 +58,6 @@ public class StartActivity extends LoginBaseActivity {
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this);
         setSwipeEnabled(false);
-        MyApp.getInstance().addActivity(this);
         external();
     }
 

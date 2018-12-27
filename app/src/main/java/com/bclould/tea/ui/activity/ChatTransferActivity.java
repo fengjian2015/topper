@@ -95,7 +95,6 @@ public class ChatTransferActivity extends BaseActivity {
         setContentView(R.layout.activity_chat_transfer);
         ButterKnife.bind(this);
         setTitle(getString(R.string.transfer_accounts),getString(R.string.transfer_record));
-        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         mdbRoomManage = new DBRoomManage(this);
         mRedPacketPresenter = new RedPacketPresenter(this);

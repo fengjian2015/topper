@@ -69,7 +69,6 @@ public class SerchImageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serch_image);
-        MyApp.getInstance().addActivity(this);
         ButterKnife.bind(this);
         setTitle(getString(R.string.search));
         init();

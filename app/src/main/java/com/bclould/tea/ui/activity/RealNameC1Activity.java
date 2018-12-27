@@ -113,7 +113,6 @@ public class RealNameC1Activity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.real_name_verify));
         mRealNamePresenter = new RealNamePresenter(this);
-        MyApp.getInstance().addActivity(this);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);//初始化EventBus
         }

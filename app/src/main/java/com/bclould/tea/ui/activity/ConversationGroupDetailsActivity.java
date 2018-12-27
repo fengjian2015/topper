@@ -181,7 +181,6 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_conversation_group_details);
         ButterKnife.bind(this);
         setTitle(getString(R.string.session_details));
-        MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();
         init();

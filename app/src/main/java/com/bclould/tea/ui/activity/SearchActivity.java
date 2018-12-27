@@ -60,7 +60,6 @@ public class SearchActivity extends BaseActivity {
         setContentView(R.layout.activity_search);
         mMgr = new DBManager(this);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         initListener();
         initRecyclerView();
         initData();

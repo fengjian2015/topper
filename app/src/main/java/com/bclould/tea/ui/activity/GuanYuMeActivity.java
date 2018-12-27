@@ -53,7 +53,6 @@ public class GuanYuMeActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.guanyu_me));
         init();
-        MyApp.getInstance().addActivity(this);
     }
 
     private void init() {

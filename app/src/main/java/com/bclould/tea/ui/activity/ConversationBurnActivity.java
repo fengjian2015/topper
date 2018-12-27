@@ -152,7 +152,6 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();//初始化intent事件
         initEmoticonsKeyboard();//初始化功能盘
-        MyApp.getInstance().addActivity(this);//打开添加activity
         initAdapter();//初始化适配器
         initData(null, true);//初始化数据
         setBackgound();

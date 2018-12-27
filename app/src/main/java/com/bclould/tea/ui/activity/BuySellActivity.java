@@ -94,7 +94,6 @@ public class BuySellActivity extends BaseActivity {
         setContentView(R.layout.activity_buy_sell);
         ButterKnife.bind(this);
         setTitle(getString(R.string.buy_btc),getString(R.string.help));
-        MyApp.getInstance().addActivity(this);
         initInterface();
         setListener();
     }

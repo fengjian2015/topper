@@ -44,7 +44,6 @@ public class InitialActivity extends LoginBaseActivity {
         setSwipeEnabled(false);
         setContentView(R.layout.activity_initial);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         init();
     }
 

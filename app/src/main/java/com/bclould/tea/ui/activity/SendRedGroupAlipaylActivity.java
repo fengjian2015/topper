@@ -87,7 +87,6 @@ public class SendRedGroupAlipaylActivity extends BaseActivity {
         getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket5));
         setContentView(R.layout.activity_send_red_alipay_group);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         init();
         setOnClick();
     }

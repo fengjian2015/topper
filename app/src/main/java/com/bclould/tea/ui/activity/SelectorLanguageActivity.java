@@ -59,7 +59,6 @@ public class SelectorLanguageActivity extends BaseActivity {
         setContentView(R.layout.activity_selector_language);
         ButterKnife.bind(this);
         setTitle(getString(R.string.language),getString(R.string.save));
-        MyApp.getInstance().addActivity(this);
         MySharedPreferences.getInstance().getSp().registerOnSharedPreferenceChangeListener(mPreferenceChangeListener);
         init();
     }

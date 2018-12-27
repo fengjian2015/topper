@@ -48,7 +48,6 @@ public class ExpectCoinActivity extends BaseActivity {
         setContentView(R.layout.activity_expect_coin);
         ButterKnife.bind(this);
         setTitle(getString(R.string.expect_coin));
-        MyApp.getInstance().addActivity(this);
         mTvEmail.setText(getString(R.string.email) + " : " + getString(R.string.official_email));
         mCoinPresenter = new CoinPresenter(this);
     }

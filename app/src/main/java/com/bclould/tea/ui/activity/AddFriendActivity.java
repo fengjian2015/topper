@@ -76,7 +76,6 @@ public class AddFriendActivity extends BaseActivity {
         ButterKnife.bind(this);
         mCloudMessagePresenter = new CloudMessagePresenter(this);
         mMgr = new DBManager(this);
-        MyApp.getInstance().addActivity(this);
         initListener();
         initRecyclerView();
         initQR();

@@ -31,7 +31,6 @@ public class ScanQRResultActivty extends BaseActivity {
         setContentView(R.layout.activity_scan_qrresult_activty);
         ButterKnife.bind(this);
         setTitle(getString(R.string.qr_scan_result));
-        MyApp.getInstance().addActivity(this);
         initIntent();
     }
 

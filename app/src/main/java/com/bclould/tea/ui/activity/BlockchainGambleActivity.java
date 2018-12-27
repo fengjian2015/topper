@@ -71,7 +71,6 @@ public class BlockchainGambleActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.insert_coins_guess),R.mipmap.icon_nav_add);
         EventBus.getDefault().register(this);//初始化EventBus
-        MyApp.getInstance().addActivity(this);
         getPhoneSize();
         mViewPager.setCurrentItem(0);
         setSelector(0);

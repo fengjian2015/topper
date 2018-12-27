@@ -63,7 +63,6 @@ public class GuessShareDynamicActivity extends BaseActivity {
         setContentView(R.layout.activity_guess_share_dynamic);
         ButterKnife.bind(this);
         setTitle(getString(R.string.share),getString(R.string.share));
-        MyApp.getInstance().addActivity(this);
         mDynamicPresenter = new DynamicPresenter(this);
         initIntent();
     }

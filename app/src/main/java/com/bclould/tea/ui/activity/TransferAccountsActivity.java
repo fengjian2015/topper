@@ -62,7 +62,6 @@ public class TransferAccountsActivity extends BaseActivity {
         setContentView(R.layout.activity_transfer_accounts);
         ButterKnife.bind(this);
         setTitle(getString(R.string.transfer),getString(R.string.record));
-        MyApp.getInstance().addActivity(this);
         initIntent();
     }
 

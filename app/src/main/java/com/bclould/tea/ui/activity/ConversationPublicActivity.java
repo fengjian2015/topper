@@ -52,7 +52,6 @@ public class ConversationPublicActivity extends BaseActivity {
         setContentView(R.layout.activity_conversation_public);
         ButterKnife.bind(this);
         setTitle("",R.mipmap.icon_nav_more_selected);
-        MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         mDBPublicManage=new DBPublicManage(this);
         initGetintent();

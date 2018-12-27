@@ -41,7 +41,6 @@ public class ProblemFeedBackActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.probelm_feedback));
         initInterface();
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

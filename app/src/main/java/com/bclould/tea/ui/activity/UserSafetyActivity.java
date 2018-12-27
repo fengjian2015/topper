@@ -52,7 +52,6 @@ public class UserSafetyActivity extends BaseActivity {
         setContentView(R.layout.activity_user_safety);
         ButterKnife.bind(this);
         setTitle(getString(R.string.user_safety));
-        MyApp.getInstance().addActivity(this);
         if (!MySharedPreferences.getInstance().getString(STATE).isEmpty()) {
             mTvStatus.setText(getString(R.string.authenticated));
         }

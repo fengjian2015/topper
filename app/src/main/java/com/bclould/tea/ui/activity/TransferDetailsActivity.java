@@ -47,7 +47,6 @@ public class TransferDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_transfer_details);
         ButterKnife.bind(this);
         setTitle(getString(R.string.transfer_details),getString(R.string.record));
-        MyApp.getInstance().addActivity(this);
         initIntent();
     }
 

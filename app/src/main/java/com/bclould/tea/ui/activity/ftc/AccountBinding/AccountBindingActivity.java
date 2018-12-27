@@ -28,12 +28,11 @@ public class AccountBindingActivity extends BaseActivity implements AccountBindi
     @Bind(R.id.tv_desc)
     TextView mTvDesc;
 
-    private AccountBindingPresenter mAuthorizationPresenter;
+    private AccountBindingContacts.Presenter mAuthorizationPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_account_binding);
         ButterKnife.bind(this);
         mAuthorizationPresenter=new AccountBindingPresenter();

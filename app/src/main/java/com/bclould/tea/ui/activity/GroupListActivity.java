@@ -71,7 +71,6 @@ public class GroupListActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.my_group));
         EventBus.getDefault().register(this);//初始化EventBus
-        MyApp.getInstance().addActivity(this);
         initData();
         initRecyclerView();
     }

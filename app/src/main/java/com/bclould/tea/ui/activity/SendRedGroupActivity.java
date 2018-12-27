@@ -107,7 +107,6 @@ public class SendRedGroupActivity extends BaseActivity {
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
         mDBRoomMember = new DBRoomMember(this);
-        MyApp.getInstance().addActivity(this);
         init();
         initData();
         setOnClick();

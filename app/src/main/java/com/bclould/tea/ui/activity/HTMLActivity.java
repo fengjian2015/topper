@@ -58,7 +58,6 @@ public class HTMLActivity extends BaseActivity {
         setContentView(R.layout.activity_html);
         ButterKnife.bind(this);
         setHtmlTitle("");
-        MyApp.getInstance().app().addActivity(this);
         init();
     }
 

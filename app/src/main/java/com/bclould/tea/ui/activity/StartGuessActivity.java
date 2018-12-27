@@ -116,7 +116,6 @@ public class StartGuessActivity extends BaseActivity {
         setContentView(R.layout.activity_start_guess);
         ButterKnife.bind(this);
         setTitle(getString(R.string.start_guess));
-        MyApp.getInstance().addActivity(this);
         mEtSingleInsertCount.setKeyListener(null);
         EventBus.getDefault().register(this);//初始化EventBus
         setData();

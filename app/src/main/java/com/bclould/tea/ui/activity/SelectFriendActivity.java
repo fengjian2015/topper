@@ -97,7 +97,6 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         setContentView(R.layout.activity_select_friend);
         ButterKnife.bind(this);
         setTitle(getString(R.string.select_friends));
-        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         initRecylerView();
         type = getIntent().getIntExtra("type", 0);

@@ -70,7 +70,6 @@ public class OutCoinSiteActivity extends BaseActivity {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initInterface();
-        MyApp.getInstance().addActivity(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

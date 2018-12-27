@@ -53,7 +53,6 @@ public class QRGroupActivity extends BaseActivity {
         setContentView(R.layout.activity_qrgroup);
         ButterKnife.bind(this);
         setTitle(getString(R.string.qr_code),R.mipmap.icon_nav_more_selected);
-        MyApp.getInstance().addActivity(this);
         mDBRoomManage=new DBRoomManage(this);
         getInitent();
         init();

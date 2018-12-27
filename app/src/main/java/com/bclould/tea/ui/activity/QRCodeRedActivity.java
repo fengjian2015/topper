@@ -57,7 +57,6 @@ public class QRCodeRedActivity extends BaseActivity {
         setContentView(R.layout.activity_qr_code_red);
         getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket5));
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         mDBManager=new DBManager(this);
         init();
     }

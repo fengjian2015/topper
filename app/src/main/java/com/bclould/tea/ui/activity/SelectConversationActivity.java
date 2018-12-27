@@ -141,7 +141,6 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         if (!ActivityUtil.isGoStartActivity(this, uri, text, shareType, shareText, isFinish)) {
             MySharedPreferences.getInstance().setBoolean("SHARE", false);
         }
-        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         mDBRoomMember = new DBRoomMember(this);
         mDBRoomManage = new DBRoomManage(this);

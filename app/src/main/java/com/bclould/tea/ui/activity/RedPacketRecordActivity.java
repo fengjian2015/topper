@@ -116,7 +116,6 @@ public class RedPacketRecordActivity extends BaseActivity {
         getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
         setContentView(R.layout.activity_red_packet_record);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         init();
     }
 

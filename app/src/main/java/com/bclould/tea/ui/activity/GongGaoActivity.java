@@ -48,7 +48,6 @@ public class GongGaoActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.gonggao_manager));
         initListView();
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

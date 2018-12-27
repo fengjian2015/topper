@@ -321,7 +321,6 @@ public class GuessDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.coin_quiz_detail),R.mipmap.ico_news_share);
         mImageView.setVisibility(View.GONE);
-        MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();
         initRecylerView();

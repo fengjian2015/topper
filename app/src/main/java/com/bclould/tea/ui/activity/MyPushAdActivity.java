@@ -120,7 +120,6 @@ public class MyPushAdActivity extends BaseActivity {
         setContentView(R.layout.activity_my_push_ad);
         ButterKnife.bind(this);
         setTitle(getString(R.string.my_publish),getString(R.string.filtrate));
-        MyApp.getInstance().addActivity(this);
         mMap.put(getString(R.string.filtrate), 0);
         mFiltrateList.add(getString(R.string.all));
         mFiltrateList.add(getString(R.string.yi_sold_out));

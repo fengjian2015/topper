@@ -103,7 +103,6 @@ public class SendRedPacketActivity extends BaseActivity {
         setContentView(R.layout.activity_send_red_packet);
         mUser = getIntent().getStringExtra("user");
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         initData();
         setOnClick();
     }

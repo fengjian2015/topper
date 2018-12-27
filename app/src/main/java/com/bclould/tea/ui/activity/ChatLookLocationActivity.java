@@ -231,6 +231,7 @@ public class ChatLookLocationActivity extends AppCompatActivity implements
     protected void onDestroy() {
         mapview.onDestroy();
         super.onDestroy();
+        MyApp.getInstance().removeActivity(this);
     }
 
     @Override

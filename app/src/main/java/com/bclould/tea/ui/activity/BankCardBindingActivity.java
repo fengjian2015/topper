@@ -92,7 +92,6 @@ public class BankCardBindingActivity extends BaseActivity {
         setContentView(R.layout.activity_bank_card_binding);
         ButterKnife.bind(this);
         setTitle(getString(R.string.add_bank_card));
-        MyApp.getInstance().addActivity(this);
         mBankCardPresenter = new BankCardPresenter(this);
         initData();
         initORC();

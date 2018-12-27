@@ -102,7 +102,6 @@ public class UpIdCardActivity extends BaseActivity {
         setContentView(R.layout.activity_up_idcard);
         ButterKnife.bind(this);
         setTitle(getString(R.string.up_id_card));
-        MyApp.getInstance().addActivity(this);
         initIntent();
         initMap();
     }

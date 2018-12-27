@@ -101,7 +101,6 @@ public class PersonalDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.personal_details));
         initInterface();
-        MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);
     }
 

@@ -96,7 +96,6 @@ public class OrderCloseActivity extends BaseActivity {
         setContentView(R.layout.activity_order_close);
         ButterKnife.bind(this);
         setTitle("",getString(R.string.help));
-        MyApp.getInstance().addActivity(this);
         mOrderDetailsPresenter = new OrderDetailsPresenter(this);
         initIntent();
         initData();

@@ -33,7 +33,6 @@ public class LargerImageActivity extends BaseActivity {
         getWindow().setStatusBarColor(getResources().getColor(R.color.black));
         setContentView(R.layout.activity_larger_image);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         initgetIntent();
         init();
     }

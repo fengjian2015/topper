@@ -97,7 +97,6 @@ public class ConversationDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_conversation_details);
         ButterKnife.bind(this);
         setTitle(getString(R.string.session_details));
-        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);//初始化数据库管理类
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();

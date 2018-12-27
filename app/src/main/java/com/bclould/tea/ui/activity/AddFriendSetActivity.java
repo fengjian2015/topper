@@ -56,7 +56,6 @@ public class AddFriendSetActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.add_friend_setting));
         initInterface();
-        MyApp.getInstance().addActivity(this);
 
     }
 

@@ -130,6 +130,7 @@ public class PreviewImgActivity extends SwipeActivity {
 
     @Override
     protected void onDestroy() {
+        MyApp.getInstance().removeActivity(this);
         if (mFragmentList.size() > 0) {
             for (Fragment fragment : mFragmentList)
                 fragment.onDestroy();

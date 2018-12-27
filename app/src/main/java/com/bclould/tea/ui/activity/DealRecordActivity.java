@@ -40,7 +40,6 @@ public class DealRecordActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.transaction_history));
         initRecyclerView();
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

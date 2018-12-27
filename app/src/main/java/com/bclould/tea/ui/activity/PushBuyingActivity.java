@@ -198,7 +198,6 @@ public class PushBuyingActivity extends BaseActivity {
         }*/
         setData();
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         init();
     }
 

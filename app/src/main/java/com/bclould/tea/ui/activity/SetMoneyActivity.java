@@ -39,7 +39,6 @@ public class SetMoneyActivity extends BaseActivity {
         setContentView(R.layout.activity_set_money);
         ButterKnife.bind(this);
         setTitle(getString(R.string.set_money));
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

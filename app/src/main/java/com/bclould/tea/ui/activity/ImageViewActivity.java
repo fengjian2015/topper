@@ -147,6 +147,7 @@ public class ImageViewActivity extends SwipeActivity {
             for (Fragment fragment : fragList)
                 fragment.onDestroy();
         }
+        MyApp.getInstance().removeActivity(this);
         super.onDestroy();
     }
 }

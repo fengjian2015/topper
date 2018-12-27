@@ -83,7 +83,6 @@ public class RedPacketActivity extends BaseActivity {
         mMgr = new DBManager(this);
         mDBRoomMember = new DBRoomMember(this);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         initData();
     }
 

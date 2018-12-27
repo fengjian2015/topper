@@ -126,7 +126,6 @@ public class IndividualDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_individual_details);
         ButterKnife.bind(this);
         setTitle(getString(R.string.detailed_information));
-        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);//初始化数据库管理类
         initIntent();
         init();

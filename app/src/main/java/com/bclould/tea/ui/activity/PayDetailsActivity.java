@@ -73,7 +73,6 @@ public class PayDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_pay_details);
         ButterKnife.bind(this);
         setTitle(getString(R.string.payment_details));
-        MyApp.getInstance().addActivity(this);
         initData();
     }
 

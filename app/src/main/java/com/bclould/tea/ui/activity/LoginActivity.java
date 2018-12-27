@@ -89,7 +89,6 @@ public class LoginActivity extends LoginBaseActivity {
             mEtPassword.setText(logPW);
         }
 
-        MyApp.getInstance().addActivity(this);
         if (WsConnection.getInstance().ws != null) {
             UtilTool.Log("fengjian", WsConnection.getInstance().ws.isOpen() + "   ");
         }

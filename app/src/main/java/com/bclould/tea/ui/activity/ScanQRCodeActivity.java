@@ -97,6 +97,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
     @Override
     protected void onDestroy() {
         mZxingview.onDestroy();
+        MyApp.getInstance().removeActivity(this);
         super.onDestroy();
     }
 

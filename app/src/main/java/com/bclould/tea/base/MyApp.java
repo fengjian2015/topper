@@ -126,6 +126,11 @@ public class MyApp extends Application {
         mActivityList.add(activity);
     }
 
+    // 添加Activity到容器中
+    public void removeActivity(Activity activity) {
+        mActivityList.remove(activity);
+    }
+
     // 遍历所有Activity并finish
     public void exit() {
         for (int i = 0; i < mActivityList.size(); i++) {

@@ -71,7 +71,6 @@ public class SumBuySellActivity extends BaseActivity {
         setContentView(R.layout.activity_sum_buysell);
         ButterKnife.bind(this);
         setTitle("");
-        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         mBuySellPresenter = new BuySellPresenter(this);
         initIntent();

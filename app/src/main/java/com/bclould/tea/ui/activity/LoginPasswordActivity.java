@@ -50,7 +50,6 @@ public class LoginPasswordActivity extends BaseActivity {
         setContentView(R.layout.activity_login_password);
         ButterKnife.bind(this);
         setTitle(getString(R.string.login_pw));
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

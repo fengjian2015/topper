@@ -51,7 +51,6 @@ public class ServiceAgreementActivity extends LoginBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_agreement);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         initWebView();
         initIntent();
     }

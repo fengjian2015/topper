@@ -105,7 +105,6 @@ public class PaymentActivity extends BaseActivity {
         setContentView(R.layout.activity_payment);
         ButterKnife.bind(this);
         setTitle(getString(R.string.payment));
-        MyApp.getInstance().addActivity(this);
         mPersonalDetailsPresenter = new PersonalDetailsPresenter(this);
         initIntent();
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);

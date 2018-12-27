@@ -61,7 +61,6 @@ public class RegisterActivity extends LoginBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         mRegisterPresenter = new RegisterPresenter(this);
     }
 

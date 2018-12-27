@@ -51,7 +51,6 @@ public class UpdateLogActivity extends BaseActivity {
         setContentView(R.layout.activity_update_log);
         ButterKnife.bind(this);
         setTitle(getString(R.string.update_log));
-        MyApp.getInstance().addActivity(this);
         initRecyclerView();
         initData();
     }

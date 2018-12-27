@@ -49,7 +49,6 @@ public class GroupMemberActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_member);
-        MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         ButterKnife.bind(this);
         setTitle(getString(R.string.group_member_manage));

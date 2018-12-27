@@ -51,7 +51,6 @@ public class PayReceiptResultActivity extends BaseActivity {
         setContentView(R.layout.activity_pay_receipt_result);
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
-        MyApp.getInstance().addActivity(this);
         initIntent();
     }
 

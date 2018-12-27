@@ -97,7 +97,6 @@ public class NewsEditActivity extends BaseActivity {
         setContentView(R.layout.activity_news_edit2);
         ButterKnife.bind(this);
         setTitle(getString(R.string.ad_edit),getString(R.string.push));
-        MyApp.getInstance().addActivity(this);
         initData();
         initIntent();
         initWebView();

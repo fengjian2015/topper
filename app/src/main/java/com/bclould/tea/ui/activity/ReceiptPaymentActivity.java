@@ -97,7 +97,6 @@ public class ReceiptPaymentActivity extends BaseActivity {
         setTitle(getString(R.string.receipt_payment),getString(R.string.receipt));
         mTvAdd.setCompoundDrawablePadding(20);
         mTvAdd.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.iocn_two_c), null);
-        MyApp.getInstance().addActivity(this);
         getPhoneSize();
         moneyIn();
     }

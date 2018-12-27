@@ -58,7 +58,6 @@ public class PublicDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_public_details);
         ButterKnife.bind(this);
         setTitle("",R.mipmap.icon_nav_more_selected);
-        MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);
         mDBPublicManage=new DBPublicManage(this);
         initGetintent();

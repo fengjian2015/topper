@@ -48,7 +48,6 @@ public class SetGesturePWActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_set_gesture);
         ButterKnife.bind(this);
         setTitle(getString(R.string.set_gesture));

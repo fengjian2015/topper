@@ -39,7 +39,6 @@ public class MyBindingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_my_binding);
         ButterKnife.bind(this);
         setTitle(getString(R.string.my_binding));

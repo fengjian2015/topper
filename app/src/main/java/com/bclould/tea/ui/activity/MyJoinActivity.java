@@ -92,7 +92,6 @@ public class MyJoinActivity extends BaseActivity {
         setContentView(R.layout.activity_my_join);
         ButterKnife.bind(this);
         setTitle(getString(R.string.my_join),getString(R.string.filtrate));
-        MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         init();
     }

@@ -976,6 +976,9 @@ public class UtilTool {
     }
 
     public static void setCircleImg(Context context, Object url, ImageView imageView) {
+        if(context instanceof Activity&&((Activity)context).isFinishing()){
+            return;
+        }
         if (Util.isOnMainThread() && context != null) {
             if (url != null && url instanceof String && !((String) url).isEmpty()) {
                 Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
@@ -989,6 +992,9 @@ public class UtilTool {
 
     public static Bitmap getImage(DBManager mgr, String myUser, Context context, ImageView imageView) {
         Bitmap bitmap = null;
+        if(context instanceof Activity&&((Activity)context).isFinishing()){
+            return null;
+        }
         if (mgr.findUser(myUser)) {
             UserInfo info = mgr.queryUser(myUser);
             if (!StringUtils.isEmpty(info.getPath())) {
@@ -1056,6 +1062,9 @@ public class UtilTool {
     }
 
     public static Bitmap getImage(Context context, ImageView imageView, DBRoomMember mDBRoomMember, DBManager dbManager, String user) {
+        if(context instanceof Activity&&((Activity)context).isFinishing()){
+            return null;
+        }
         String url = mDBRoomMember.findMemberUrl(user);
         if (StringUtils.isEmpty(url) && dbManager.findUser(user)) {
             UserInfo info = dbManager.queryUser(user);

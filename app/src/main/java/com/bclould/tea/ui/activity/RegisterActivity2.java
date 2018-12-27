@@ -158,6 +158,7 @@ public class RegisterActivity2 extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        MyApp.getInstance().removeActivity(this);
         if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;

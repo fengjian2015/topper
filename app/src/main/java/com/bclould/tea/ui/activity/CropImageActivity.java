@@ -40,7 +40,6 @@ public class CropImageActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_crop_image);
         ButterKnife.bind(this);
         setTitle(getString(R.string.crop),getString(R.string.finish));

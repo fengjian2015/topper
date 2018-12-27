@@ -97,7 +97,6 @@ public class MyAssetsActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.assets),getString(R.string.expect_coin));
         mSubscribeCoinPresenter = new SubscribeCoinPresenter(this);
-        MyApp.getInstance().addActivity(this);
         getTotal();
         initRecyclerView();
         initData();

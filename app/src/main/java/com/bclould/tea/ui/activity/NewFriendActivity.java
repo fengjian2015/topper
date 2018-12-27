@@ -62,7 +62,6 @@ public class NewFriendActivity extends BaseActivity {
         mMgr = new DBManager(this);
         initRecyclerView();
         initData();
-        MyApp.getInstance().addActivity(this);
     }
 
     @Override

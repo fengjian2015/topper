@@ -78,7 +78,6 @@ public class GuessRecordActivity extends BaseActivity {
         setContentView(R.layout.activity_guess_record);
         ButterKnife.bind(this);
         setTitle(getString(R.string.guess_record));
-        MyApp.getInstance().addActivity(this);
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(this);
         EventBus.getDefault().register(this);//初始化EventBus
         initRecylerView();

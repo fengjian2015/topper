@@ -112,7 +112,6 @@ public class CoinExchangeActivity extends BaseActivity {
         setContentView(R.layout.activity_coin_exchange);
         ButterKnife.bind(this);
         setTitle(getString(R.string.lrwmzpm),getString(R.string.question));
-        MyApp.getInstance().addActivity(this);
         initListener();
         initRecylerView();
         initData();

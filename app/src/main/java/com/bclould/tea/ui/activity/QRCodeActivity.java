@@ -58,7 +58,6 @@ public class QRCodeActivity extends BaseActivity {
         setContentView(R.layout.activity_qr_code);
         ButterKnife.bind(this);
         setTitle(getString(R.string.qr_code),getString(R.string.share));
-        MyApp.getInstance().addActivity(this);
         initIntent();
         init();
     }
