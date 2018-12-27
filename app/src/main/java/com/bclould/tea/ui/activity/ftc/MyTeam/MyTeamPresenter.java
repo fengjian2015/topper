@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity.ftc.MyTeam;
 
 import android.app.Activity;
+import android.content.Context;
 import android.mtp.MtpConstants;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -32,8 +33,8 @@ public class MyTeamPresenter implements MyTeamContacts.Presenter{
     }
 
     @Override
-    public void start(Activity context) {
-        mActivity=context;
+    public <T extends Context> void start(T context) {
+        mActivity= (Activity) context;
         mView.initView();
         initHttp(true,1);
     }

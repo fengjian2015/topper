@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity.ftc.AccountBinding;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -30,8 +31,8 @@ public class AccountBindingPresenter implements AccountBindingContacts.Presenter
     }
 
     @Override
-    public void start(Activity context) {
-        mActivity=context;
+    public <T extends Context> void start(T context) {
+        mActivity= (Activity) context;
         desc();
     }
 

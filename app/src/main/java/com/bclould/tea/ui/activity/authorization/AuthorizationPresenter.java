@@ -37,8 +37,8 @@ public class AuthorizationPresenter implements AuthorizationContacts.Presenter{
     }
 
     @Override
-    public void start(Activity context) {
-        mContext=context;
+    public <T extends Context> void start(T context) {
+        mContext= (Activity) context;
         MySharedPreferences.getInstance().setBoolean(SharedPreferencesUtil.IS_EXTERNAL, false);
         mExternalInfo = JSONObject.parseObject(MySharedPreferences.getInstance().getString(SharedPreferencesUtil.EXTERNAL_CONTENT), ExternalInfo.class);
         initHttp();

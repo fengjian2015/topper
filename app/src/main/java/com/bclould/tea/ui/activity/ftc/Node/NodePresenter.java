@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity.ftc.Node;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -31,7 +32,6 @@ public class NodePresenter implements NodeContacts.Presenter{
     private NodeContacts.View mView;
     private Activity mActivity;
 
-
     FreedFragment releaseFragment;
     FreedFragment earningsFragment;
     FreedFragment participationFragment;
@@ -48,8 +48,8 @@ public class NodePresenter implements NodeContacts.Presenter{
     }
 
     @Override
-    public void start(Activity context) {
-        mActivity=context;
+    public <T extends Context> void start(T context) {
+        mActivity= (Activity) context;
         initData();
         mView.initView();
         mView.setAdapter();

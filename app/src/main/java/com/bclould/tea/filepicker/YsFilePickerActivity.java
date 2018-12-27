@@ -2,10 +2,7 @@ package com.bclould.tea.filepicker;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -49,18 +46,12 @@ import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.model.MessageInfo;
-import com.bclould.tea.ui.activity.AddCollectActivity;
-import com.bclould.tea.ui.activity.SelectConversationActivity;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.PoppyViewHelper;
 import com.bclould.tea.ui.widget.TextViewDoubleClickable;
 import com.bclould.tea.utils.Constants;
-import com.bclould.tea.utils.HyperLinkUtil;
-import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
-import com.bclould.tea.xmpp.RoomManage;
 
 import java.io.File;
 import java.lang.ref.WeakReference;

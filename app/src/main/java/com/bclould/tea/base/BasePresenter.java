@@ -9,7 +9,7 @@ import android.content.Context;
 public interface BasePresenter {
     void bindView(BaseView view);
 
-    void start(Activity context);
+    <T extends Context> void start (T context);
 
     void release();
 }

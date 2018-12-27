@@ -40,7 +40,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.SerMap;
-import com.bclould.tea.ui.activity.AddCollectActivity;
+import com.bclould.tea.ui.activity.my.AddCollect.AddCollectActivity;
 import com.bclould.tea.ui.activity.ChatLookLocationActivity;
 import com.bclould.tea.ui.activity.ConversationBurnActivity;
 import com.bclould.tea.ui.activity.FileOpenActivity;

@@ -28,6 +28,7 @@ import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.MessageInfo;
+import com.bclould.tea.ui.activity.my.AddCollect.AddCollectActivity;
 import com.bclould.tea.ui.adapter.SelectConversationAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;

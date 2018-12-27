@@ -1134,7 +1134,7 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.AddCollectActivity"
+            android:name=".ui.activity.my.AddCollect.AddCollectActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"

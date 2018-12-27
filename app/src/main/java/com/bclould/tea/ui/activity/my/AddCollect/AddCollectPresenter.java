@@ -1,28 +1,21 @@
-package com.bclould.tea.ui.activity;
+package com.bclould.tea.ui.activity.my.AddCollect;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bclould.tea.Presenter.CollectPresenter;
 import com.bclould.tea.R;
-import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.BaseView;
 import com.bclould.tea.model.TitleIConInfo;
-import com.bclould.tea.ui.widget.ClearEditText;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 
@@ -32,81 +25,69 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
- * Created by GA on 2018/7/13.
+ * Created by fengjian on 2018/12/27.
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class AddCollectActivity extends BaseActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.et_titles)
-    ClearEditText mEtTitles;
-    @Bind(R.id.et_url)
-    ClearEditText mEtUrl;
+public class AddCollectPresenter implements AddCollectContacts.Presenter{
+    private AddCollectContacts.View mView;
+    private Activity mActivity;
+
     private CollectPresenter mCollectPresenter;
     private String mUrl;
     private LoadingProgressDialog mProgressDialog;
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_collect);
-        ButterKnife.bind(this);
-        setTitle(getString(R.string.add_collect),getString(R.string.save));
-        mCollectPresenter = new CollectPresenter(this);
-        initIntent();
+    public void bindView(BaseView view) {
+        mView= (AddCollectContacts.View) view;
     }
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
+    public <T extends Context> void start(T context) {
+        mActivity= (Activity) context;
+        initIntent();
+        mCollectPresenter=new CollectPresenter(mActivity);
+    }
+
+    @Override
+    public void release() {
+
     }
 
     private void initIntent() {
-        mUrl = getIntent().getStringExtra("url");
+        mUrl = mActivity.getIntent().getStringExtra("url");
         if (mUrl != null) {
-            mEtUrl.setText(mUrl);
-        }
-    }
-
-    @OnClick({R.id.bark, R.id.tv_add})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.bark:
-                finish();
-                break;
-            case R.id.tv_add:
-                if (checkEdit()) {
-                    checkUrl();
-                }
-                break;
+            mView.setEtUrl(mUrl);
         }
     }
 
     private boolean checkEdit() {
-        if (mEtUrl.getText().toString().trim().isEmpty()) {
-            ToastShow.showToast2(this, getString(R.string.toast_url));
-            AnimatorTool.getInstance().editTextAnimator(mEtUrl);
+        if (StringUtils.isEmpty(mView.getEtUrl())) {
+            ToastShow.showToast2(mActivity, mActivity.getString(R.string.toast_url));
+            mView.animatorEtUrl();
             return false;
         }
         return true;
     }
 
+
     private void checkUrl() {
-        mUrl = mEtUrl.getText().toString();
+        mUrl =mView.getEtUrl();
         if (!UtilTool.checkLinkedExe(mUrl)) {
             mUrl = "http://" + mUrl;
         }
-        final String title = mEtTitles.getText().toString();
+        final String title = mView.getEtTitles();
         if (title.isEmpty()) {
             startCheck("");
         } else {
             startCheck(title);
+        }
+    }
+
+    @Override
+    public void tvAddOnClick() {
+        if(checkEdit()){
+            checkUrl();
         }
     }
 
@@ -171,24 +152,26 @@ public class AddCollectActivity extends BaseActivity {
                     addCollect(info.getTitle(), info.getIconUrl());
                     break;
                 case 1:
-                    ToastShow.showToast2(AddCollectActivity.this, getString(R.string.check_url_error));
+                    ToastShow.showToast2(mActivity, mActivity.getString(R.string.check_url_error));
                     break;
             }
         }
     };
 
+
     private void showDialog() {
-        if (ActivityUtil.isActivityOnTop(this)) {
+        if (ActivityUtil.isActivityOnTop(mActivity)) {
             if (mProgressDialog == null) {
-                mProgressDialog = LoadingProgressDialog.createDialog(this);
-                mProgressDialog.setMessage(getString(R.string.loading));
+                mProgressDialog = LoadingProgressDialog.createDialog(mActivity);
+                mProgressDialog.setMessage(mActivity.getString(R.string.loading));
             }
             mProgressDialog.show();
         }
     }
 
+    @Override
     public void hideDialog() {
-        if (ActivityUtil.isActivityOnTop(this)) {
+        if (ActivityUtil.isActivityOnTop(mActivity)) {
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
                 mProgressDialog = null;
@@ -200,8 +183,8 @@ public class AddCollectActivity extends BaseActivity {
         mCollectPresenter.addCollect(title, mUrl, iconUrl, new CollectPresenter.CallBack2() {
             @Override
             public void send() {
-                finish();
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.add_collect)));
+                mActivity.finish();
+                EventBus.getDefault().post(new MessageEvent(mActivity.getString(R.string.add_collect)));
             }
         });
     }
