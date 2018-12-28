@@ -53,11 +53,6 @@ public class CropImageActivity extends BaseActivity {
         adjustImage(url);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void adjustImage(String absolutePath) {
         Bitmap bm;
         BitmapFactory.Options opt = new BitmapFactory.Options();

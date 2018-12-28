@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseNormalActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.CenterIcon;
 import com.bclould.tea.ui.widget.OpenMapFromBottomPopup;
@@ -40,7 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ChatLookLocationActivity extends AppCompatActivity implements
+public class ChatLookLocationActivity extends BaseNormalActivity implements
         TencentLocationListener, TencentMap.OnMapCameraChangeListener {
 
     @Bind(R.id.bark)
@@ -77,15 +78,9 @@ public class ChatLookLocationActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_chat_look_location);
         ButterKnife.bind(this);
         setTitle(getString(R.string.location));
-        MyApp.getInstance().addActivity(this);
         initIntent();
         checkSelf();
         initMap();
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @Override
@@ -225,13 +220,6 @@ public class ChatLookLocationActivity extends AppCompatActivity implements
     @Override
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        mapview.onDestroy();
-        super.onDestroy();
-        MyApp.getInstance().removeActivity(this);
     }
 
     @Override

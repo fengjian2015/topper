@@ -50,11 +50,6 @@ public class PayOutsideCallsActivity extends BaseActivity {
         pwdDialog.showDialog(UtilTool.removeZero(mCount + ""),coins,coins + getString(R.string.pay),null,null);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void sendHttp(){
         Intent intent=new Intent(PayOutsideCallsActivity.this,PayReceiptResultActivity.class);
         startActivity(intent);

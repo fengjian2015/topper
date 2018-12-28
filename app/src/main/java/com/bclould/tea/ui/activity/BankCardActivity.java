@@ -90,11 +90,6 @@ public class BankCardActivity extends BaseActivity {
         ButterKnife.unbind(this);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initData() {
         mCardList.clear();
         mBankCardPresenter.bankCardList(new BankCardPresenter.CallBack2() {

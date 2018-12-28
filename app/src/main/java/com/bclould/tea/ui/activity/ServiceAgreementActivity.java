@@ -68,11 +68,6 @@ public class ServiceAgreementActivity extends LoginBaseActivity {
         mPassword = intent.getStringExtra("password");
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     @OnClick(R.id.tv_consent)
     public void onViewClicked() {
         RegisterPresenter registerPresenter = new RegisterPresenter(this);

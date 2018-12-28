@@ -73,11 +73,6 @@ public class SelectFriendGetActivity extends BaseActivity implements FriendListR
         mRecyclerView.setNestedScrollingEnabled(false);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     Map<String, Integer> mMap = new HashMap<>();
     private void updateData() {
         if (mFriendListRVAdapter == null) {

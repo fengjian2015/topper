@@ -27,7 +27,7 @@ import com.bclould.tea.ui.activity.ftc.MyTeam.MyTeamActivity;
 import com.bclould.tea.ui.activity.ftc.Node.NodeActivity;
 import com.bclould.tea.ui.activity.PersonalDetailsActivity;
 import com.bclould.tea.ui.activity.SystemSetActivity;
-import com.bclould.tea.ui.activity.UserSafetyActivity;
+import com.bclould.tea.ui.activity.my.UserSafety.UserSafetyActivity;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;

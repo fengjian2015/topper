@@ -109,10 +109,6 @@ public class AuthenticationActivity extends LoginBaseActivity {
         });
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
-    }
 
     private void result() {
         String coordinate = "0-" + (mWidthPixels - mTargetWidth) + "," + (mHeightPixels - oldbottom - mTargetHeight) + "-" + (mHeightPixels - mTargetHeight * 2);

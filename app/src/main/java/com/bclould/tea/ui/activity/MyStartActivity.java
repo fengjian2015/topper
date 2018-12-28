@@ -133,12 +133,6 @@ public class MyStartActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);//初始化EventBus
     }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void init() {
         initListener();
         mMap.put(getString(R.string.filtrate), 0);

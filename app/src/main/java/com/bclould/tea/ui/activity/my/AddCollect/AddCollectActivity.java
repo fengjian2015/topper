@@ -48,11 +48,6 @@ public class AddCollectActivity extends BaseActivity implements AddCollectContac
         setTitle(getString(R.string.add_collect),getString(R.string.save));
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     @OnClick({R.id.bark, R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {

@@ -21,6 +21,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.model.MessageInfo;
@@ -54,7 +55,7 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class VideoActivity extends SwipeActivity {
+public class VideoActivity extends BaseActivity {
 
 
     Handler UIhandler = new Handler() {
@@ -227,10 +228,6 @@ public class VideoActivity extends SwipeActivity {
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
 
     public void changeTime(TextView tv, int time) {
         int second = time / 1000;
@@ -245,13 +242,13 @@ public class VideoActivity extends SwipeActivity {
 
     //videoview在退到后台或者被覆盖时记录播放时间，回来继续播放
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         mVideoPlayer.seekTo(currentTime);
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         currentTime = mVideoPlayer.getCurrentPosition();
         mVideoPlayer.pause();

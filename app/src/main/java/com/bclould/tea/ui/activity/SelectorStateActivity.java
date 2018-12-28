@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseNormalActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -24,7 +25,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/29.
  */
 
-public class SelectorStateActivity extends AppCompatActivity {
+public class SelectorStateActivity extends BaseNormalActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
@@ -42,12 +43,6 @@ public class SelectorStateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selector_state);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @Override
@@ -88,12 +83,6 @@ public class SelectorStateActivity extends AppCompatActivity {
             }
         }
         return false;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        MyApp.getInstance().removeActivity(this);
     }
 
     @OnClick({R.id.bark, R.id.area_number, R.id.banner})

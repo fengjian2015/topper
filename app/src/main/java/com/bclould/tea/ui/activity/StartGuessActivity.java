@@ -159,11 +159,6 @@ public class StartGuessActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);//初始化EventBus
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initData() {
         MyApp.getInstance().mBetCoinList.clear();
         if (MyApp.getInstance().mBetCoinList.size() == 0) {

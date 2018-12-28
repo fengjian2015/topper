@@ -88,11 +88,6 @@ public class CreateGroupRoomActivity extends BaseActivity {
         tocoId=getIntent().getStringExtra("tocoId");
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initData() {
         mgr = new DBManager(this);
         mDBRoomMember=new DBRoomMember(this);

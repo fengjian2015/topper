@@ -107,11 +107,6 @@ public class SendRedPacketActivity extends BaseActivity {
         setOnClick();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initData() {
         MyApp.getInstance().mRedCoinList.clear();
         if (MyApp.getInstance().mRedCoinList.size() == 0) {

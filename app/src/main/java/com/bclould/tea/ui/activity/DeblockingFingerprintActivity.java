@@ -183,11 +183,6 @@ public class DeblockingFingerprintActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     @OnClick(R.id.tv_cancel)
     public void onViewClicked() {
         finish();

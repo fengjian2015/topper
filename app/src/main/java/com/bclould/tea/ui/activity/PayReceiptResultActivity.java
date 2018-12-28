@@ -54,10 +54,6 @@ public class PayReceiptResultActivity extends BaseActivity {
         initIntent();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
 
     private void initIntent() {
         Bundle bundle = getIntent().getExtras();

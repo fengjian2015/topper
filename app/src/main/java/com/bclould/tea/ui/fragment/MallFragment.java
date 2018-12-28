@@ -27,7 +27,6 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.H5AuthrizationInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.InitialActivity;
-import com.bclould.tea.ui.activity.UserSafetyActivity;
 import com.bclould.tea.ui.widget.AuthorizationDialog;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;

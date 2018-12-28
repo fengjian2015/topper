@@ -162,11 +162,6 @@ public class StartActivity extends LoginBaseActivity {
         }.sendEmptyMessageDelayed(0, 2000);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void startMain(){
         Intent intent=new Intent(StartActivity.this,MainActivity.class);
         Bundle bundle=getIntent().getExtras();

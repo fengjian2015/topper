@@ -81,11 +81,6 @@ public class PayPasswordActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     //输入框的文本显示和隐藏
     private void eyeShowHidden(boolean isEye) {
         if (isEye) {

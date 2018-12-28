@@ -40,7 +40,6 @@ import java.util.Stack;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MyApp extends Application {
 
-    private static MyApp context;
     public static MyApp instance = null;
     public Stack mActivityList = new Stack<Activity>();//储存打开的Activity
     public List<CoinListInfo.DataBean> mCoinList = new ArrayList<>();
@@ -53,8 +52,8 @@ public class MyApp extends Application {
 
     //单例
     public static MyApp getInstance() {
-        if (instance == null) {
-            instance = new MyApp();
+        if(instance==null){
+            instance=new MyApp();
         }
         return instance;
     }
@@ -62,8 +61,7 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        context = this;
+        instance = this;
 
         new MyHostnameVerifier();
 
@@ -169,7 +167,7 @@ public class MyApp extends Application {
     }
 
     public MyApp app() {
-        return context;
+        return instance;
     }
 
     @Override

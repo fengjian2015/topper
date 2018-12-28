@@ -180,11 +180,6 @@ public class SendRedGroupAlipaylActivity extends BaseActivity {
         mTvAllmoney.setText(UtilTool.removeZero(mCount + "CNY"));
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     @OnClick({R.id.bark, R.id.btn_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {

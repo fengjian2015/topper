@@ -12,7 +12,7 @@ public class ToastShow {
 	private static long MAX_SHOW_TIME = 3 * 1000;
 
 	public static void showToast(final Activity act, final String message, boolean isShowToast) {
-		if(act==null)return;
+		if(act==null||act.isFinishing())return;
 		if(!isShowToast){
 			return;
 		}
@@ -25,7 +25,7 @@ public class ToastShow {
 	}
 
 	public static void showToast(final Activity act, final String message) {
-		if(act==null)return;
+		if(act==null||act.isFinishing())return;
 		act.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -35,7 +35,7 @@ public class ToastShow {
 	}
 
 	public static void showToastLength(final Activity act, final String message) {
-		if(act==null)return;
+		if(act==null||act.isFinishing())return;
 		act.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -44,7 +44,7 @@ public class ToastShow {
 		});
 	}
 	public static void showToast2(final Activity act, final String message) {
-		if(act==null)return;
+		if(act==null||act.isFinishing())return;
 		act.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -53,7 +53,7 @@ public class ToastShow {
 		});
 	}
 	public static void showToastShowCenter(final Activity act, final String message) {
-		if(act==null)return;
+		if(act==null||act.isFinishing())return;
 		act.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {

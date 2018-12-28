@@ -161,11 +161,6 @@ public class OrderDetailsActivity extends BaseActivity {
         initInterface();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
-    }
-
     private void initInterface() {
         mOrderDetailsPresenter = new OrderDetailsPresenter(this);
         Intent intent = getIntent();

@@ -56,10 +56,6 @@ public class FileUploadingActivity extends BaseActivity {
         mProgressBar.setMax(100);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
 
     FileUploadingPresenter.UploadingCallback mUploadingCallback = new FileUploadingPresenter.UploadingCallback() {
 

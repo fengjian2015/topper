@@ -75,11 +75,6 @@ public class SerchImageActivity extends BaseActivity {
         initAdapter();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void init() {
         type=getIntent().getIntExtra("type",0);
         mEtContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {

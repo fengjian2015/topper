@@ -50,10 +50,6 @@ public class GongGaoActivity extends BaseActivity {
         initListView();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
 
     //初始化条目
     private void initListView() {

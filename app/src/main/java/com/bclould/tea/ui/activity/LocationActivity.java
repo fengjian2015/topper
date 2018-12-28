@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseNormalActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.LocationInfo;
 import com.bclould.tea.ui.adapter.LocationListAdapter;
@@ -81,7 +82,7 @@ import okhttp3.Response;
  * Created by wushange on 2016/07/13.
  */
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class LocationActivity extends AppCompatActivity implements
+public class LocationActivity extends BaseNormalActivity implements
         TencentLocationListener, TencentMap.OnMapCameraChangeListener {
     @ViewInject(R.id.apptitle)
     AppTitle appTitle;
@@ -130,18 +131,12 @@ public class LocationActivity extends AppCompatActivity implements
         x.Ext.init(this.getApplication());
         x.Ext.setDebug(true);
         x.view().inject(this);
-        MyApp.getInstance().addActivity(this);
 
         context = this;
         checkSelf();
         initView();
         iniRecycerView();
 
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @Override
@@ -482,7 +477,6 @@ public class LocationActivity extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         mapView.onDestroy();
-        MyApp.getInstance().removeActivity(this);
         super.onDestroy();
     }
 

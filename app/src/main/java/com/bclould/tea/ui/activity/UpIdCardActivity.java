@@ -106,11 +106,6 @@ public class UpIdCardActivity extends BaseActivity {
         initMap();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initMap() {
         mShenfenMap.put(ZHENGMIAN, null);
         mShenfenMap.put(FANMIAN, null);

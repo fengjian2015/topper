@@ -69,12 +69,6 @@ public class GrabQRCodeRedActivity extends BaseActivity {
         }
         initData();
     }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initData() {
         RedPacketPresenter redPacketPresenter = new RedPacketPresenter(this);
         redPacketPresenter.grabQrRed(Integer.parseInt(mId), new RedPacketPresenter.CallBack3() {

@@ -52,10 +52,6 @@ public class LoginPasswordActivity extends BaseActivity {
         setTitle(getString(R.string.login_pw));
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
 
     //提交修改的密码
     private void submit() {

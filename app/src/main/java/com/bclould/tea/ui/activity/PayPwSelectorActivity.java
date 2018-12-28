@@ -72,11 +72,6 @@ public class PayPwSelectorActivity extends BaseActivity {
         initSp();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void init() {
         mCode = getIntent().getIntExtra("code", 0);
         FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(MyApp.getInstance().app());

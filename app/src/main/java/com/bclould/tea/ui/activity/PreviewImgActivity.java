@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.ui.fragment.PreviewImgFragment;
@@ -29,7 +30,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/5/15.
  */
 
-public class PreviewImgActivity extends SwipeActivity {
+public class PreviewImgActivity extends BaseActivity {
     @Bind(R.id.images_vp)
     ViewPager mImagesVp;
     @Bind(R.id.tv_number)
@@ -44,14 +45,8 @@ public class PreviewImgActivity extends SwipeActivity {
         setContentView(R.layout.activity_images_view);
         ButterKnife.bind(this);
         mTvNumber.setVisibility(View.VISIBLE);
-        MyApp.getInstance().addActivity(this);
         initIntent();
         init();
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void initIntent() {
@@ -130,7 +125,6 @@ public class PreviewImgActivity extends SwipeActivity {
 
     @Override
     protected void onDestroy() {
-        MyApp.getInstance().removeActivity(this);
         if (mFragmentList.size() > 0) {
             for (Fragment fragment : mFragmentList)
                 fragment.onDestroy();

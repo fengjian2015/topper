@@ -109,11 +109,6 @@ public class ReceiptPaymentActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void moneyIn() {
         mType = false;
         mTvSet.setText(getString(R.string.set_money_coin));

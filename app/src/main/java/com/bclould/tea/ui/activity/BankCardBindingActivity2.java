@@ -66,11 +66,6 @@ public class BankCardBindingActivity2 extends BaseActivity {
         mBankCardPresenter = new BankCardPresenter(this);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initIntent() {
         Intent intent = getIntent();
         boolean type = intent.getBooleanExtra("type", false);

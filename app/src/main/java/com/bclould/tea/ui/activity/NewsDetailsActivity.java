@@ -85,11 +85,6 @@ public class NewsDetailsActivity extends BaseActivity {
         initView();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initView() {
         mLlLoadError.setOnClickListener(new View.OnClickListener() {
             @Override

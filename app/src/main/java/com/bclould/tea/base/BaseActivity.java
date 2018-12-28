@@ -18,6 +18,7 @@ import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.DeblockingFingerprintActivity;
 import com.bclould.tea.ui.activity.DeblockingGestureActivity;
 import com.bclould.tea.ui.widget.GestureLockViewGroup;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -75,6 +76,12 @@ public class BaseActivity extends SwipeActivity {
         mTvAdd.setText(rightContent);
         mTvAdd.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
+    }
+
     /**
      * rightContent1红色右边字体
      * @param content

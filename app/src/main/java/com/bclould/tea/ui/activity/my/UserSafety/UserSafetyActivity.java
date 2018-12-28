@@ -1,4 +1,4 @@
-package com.bclould.tea.ui.activity;
+package com.bclould.tea.ui.activity.my.UserSafety;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,13 +7,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
+import com.bclould.tea.ui.activity.GoogleVerificationActivity;
+import com.bclould.tea.ui.activity.LoginPasswordActivity;
+import com.bclould.tea.ui.activity.LoginRecordActivity;
+import com.bclould.tea.ui.activity.LoginSetActivity;
+import com.bclould.tea.ui.activity.PayPasswordActivity;
+import com.bclould.tea.ui.activity.PayPwSelectorActivity;
+import com.bclould.tea.ui.activity.RealNameC1Activity;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 
@@ -29,20 +32,6 @@ import static com.bclould.tea.Presenter.LoginPresenter.STATE;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class UserSafetyActivity extends BaseActivity {
-    @Bind(R.id.rl_autonym_attestation)
-    RelativeLayout mRlAutonymAttestation;
-    @Bind(R.id.rl_login_password)
-    RelativeLayout mRlLoginPassword;
-    @Bind(R.id.rl_login_set)
-    RelativeLayout mRlLoginSet;
-    @Bind(R.id.rl_login_record)
-    RelativeLayout mRlLoginRecord;
-    @Bind(R.id.rl_pay_password)
-    RelativeLayout mRlPayPassword;
-    @Bind(R.id.rl_app_look)
-    RelativeLayout mRlAppLook;
-    @Bind(R.id.rl_google)
-    RelativeLayout mRlGoogle;
     @Bind(R.id.tv_status)
     TextView mTvStatus;
 
@@ -55,11 +44,6 @@ public class UserSafetyActivity extends BaseActivity {
         if (!MySharedPreferences.getInstance().getString(STATE).isEmpty()) {
             mTvStatus.setText(getString(R.string.authenticated));
         }
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @OnClick({R.id.rl_app_look, R.id.rl_autonym_attestation, R.id.bark, R.id.rl_login_password, R.id.rl_pay_password, R.id.rl_google, R.id.rl_login_set, R.id.rl_login_record})

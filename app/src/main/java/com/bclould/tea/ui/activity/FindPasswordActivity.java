@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.FindPasswordPresenter;
 import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.utils.AnimatorTool;
@@ -37,7 +38,7 @@ import butterknife.OnClick;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class FindPasswordActivity extends SwipeActivity {
+public class FindPasswordActivity extends LoginBaseActivity {
 
 
     @Bind(R.id.iv_back)
@@ -64,14 +65,8 @@ public class FindPasswordActivity extends SwipeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_password);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         mFindPasswordPresenter = new FindPasswordPresenter(this);
         mRegisterPresenter = new RegisterPresenter(this);
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     //监听返回键
@@ -182,7 +177,6 @@ public class FindPasswordActivity extends SwipeActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MyApp.getInstance().removeActivity(this);
         if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;

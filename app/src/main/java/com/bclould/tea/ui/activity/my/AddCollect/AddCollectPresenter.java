@@ -44,6 +44,7 @@ public class AddCollectPresenter implements AddCollectContacts.Presenter{
 
     @Override
     public <T extends Context> void start(T context) {
+        mView.initView();
         mActivity= (Activity) context;
         initIntent();
         mCollectPresenter=new CollectPresenter(mActivity);

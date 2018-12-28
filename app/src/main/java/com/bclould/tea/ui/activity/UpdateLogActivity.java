@@ -55,11 +55,6 @@ public class UpdateLogActivity extends BaseActivity {
         initData();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     List<UpdateLogInfo.DataBean> mDataList = new ArrayList<>();
     private void initData() {
         mUpdateLogPresenter = new UpdateLogPresenter(this);

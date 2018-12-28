@@ -56,11 +56,6 @@ public class GonggaoDetailActivity extends BaseActivity {
         initIntent();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initIntent() {
         int id = getIntent().getIntExtra("id", 0);
         mWebView.loadUrl(Constants.BASE_URL + Constants.GONGGAO_WEB_URL + id);

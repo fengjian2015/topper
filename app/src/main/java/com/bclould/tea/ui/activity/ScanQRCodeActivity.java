@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseNormalActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.topperchat.WsConnection;
@@ -36,7 +37,7 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.Delegate {
+public class ScanQRCodeActivity extends BaseNormalActivity implements QRCodeView.Delegate {
 
     @Bind(R.id.zxingview)
     ZXingView mZxingview;
@@ -60,7 +61,6 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
         initView();
         mMgr = new DBManager(this);
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
-        MyApp.getInstance().addActivity(this);
     }
 
     private void initIntent() {
@@ -73,10 +73,6 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
 
     @Override
     protected void onStart() {
@@ -97,7 +93,6 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
     @Override
     protected void onDestroy() {
         mZxingview.onDestroy();
-        MyApp.getInstance().removeActivity(this);
         super.onDestroy();
     }
 

@@ -104,11 +104,6 @@ public class PersonalDetailsActivity extends BaseActivity {
         EventBus.getDefault().register(this);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     //初始化界面
     private boolean isAlipay = false;
 

@@ -41,10 +41,6 @@ public class SetMoneyActivity extends BaseActivity {
         setTitle(getString(R.string.set_money));
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
 
     @OnClick({R.id.bark, R.id.btn_finish})
     public void onViewClicked(View view) {

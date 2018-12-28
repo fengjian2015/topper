@@ -201,11 +201,6 @@ public class PushBuyingActivity extends BaseActivity {
         init();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void setData() {
         mTimeList.add(getString(R.string.time_bar));
         mTimeList.add(getString(R.string.time_bar2));
@@ -239,9 +234,7 @@ public class PushBuyingActivity extends BaseActivity {
         mState_id = MySharedPreferences.getInstance().getInteger(STATE_ID);
         mTvCurrency.setText(mCoinName);
         mTvState.setText(mState);
-        if (!mCoinName.isEmpty()) {
-            initData(mCoinName);
-        }
+        initData(mCoinName);
         /*mEtMinLimit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseNormalActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.adapter.FriendDataVPAdapter;
 import com.bclould.tea.utils.AppLanguageUtils;
@@ -31,7 +32,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/27.
  */
 
-public class FriendDataActivity extends AppCompatActivity {
+public class FriendDataActivity extends BaseNormalActivity {
 
     private static final String ISEDIT = "is_edit";
     @Bind(R.id.touxiang)
@@ -68,18 +69,6 @@ public class FriendDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friend_data);
         ButterKnife.bind(this);
         initInterface();
-        MyApp.getInstance().addActivity(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        MyApp.getInstance().removeActivity(this);
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     //初始化界面

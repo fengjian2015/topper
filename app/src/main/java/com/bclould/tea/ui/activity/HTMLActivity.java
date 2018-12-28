@@ -61,11 +61,6 @@ public class HTMLActivity extends BaseActivity {
         init();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void init() {
         mProgressBar.setMax(100);
         html5Url = getIntent().getStringExtra("html5Url");

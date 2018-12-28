@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.history.DBManager;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ImageViewActivity extends SwipeActivity {
+public class ImageViewActivity extends BaseActivity {
     private ArrayList<String> imageList;
     private List<Fragment> fragList;
     private ViewPager imageVp;
@@ -63,11 +64,6 @@ public class ImageViewActivity extends SwipeActivity {
         setContentView(R.layout.activity_images_view);
         findView();
         init();
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void init() {

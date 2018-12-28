@@ -45,10 +45,6 @@ public class NickNameActivity extends BaseActivity {
         listenerEditText();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
 
     //监听输入框
     private void listenerEditText() {

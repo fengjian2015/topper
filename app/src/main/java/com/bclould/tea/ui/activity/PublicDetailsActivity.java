@@ -70,11 +70,6 @@ public class PublicDetailsActivity extends BaseActivity {
         mTvDesc.setText(publicDetailsInfo.getData().getDesc());
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void init() {
         setIvElse();
         setTvState();

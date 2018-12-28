@@ -86,11 +86,6 @@ public class RedPacketActivity extends BaseActivity {
         initData();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initData() {
         Intent intent = getIntent();
         boolean from = intent.getBooleanExtra("from", false);

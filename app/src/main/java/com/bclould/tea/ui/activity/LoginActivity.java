@@ -94,12 +94,6 @@ public class LoginActivity extends LoginBaseActivity {
         }
         UtilTool.Log("fengjian", WsConnection.getInstance().ws + "   ");
     }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initUserCodeList() {
         mDBUserCode = new DBUserCode(this);
         userCodeList = mDBUserCode.selectAllEmily();

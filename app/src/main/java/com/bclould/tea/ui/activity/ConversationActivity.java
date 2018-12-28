@@ -201,11 +201,6 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     }
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
-    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         MessageInfo messageInfo = (MessageInfo) intent.getSerializableExtra("MessageInfo");

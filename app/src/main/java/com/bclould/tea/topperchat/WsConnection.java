@@ -22,6 +22,7 @@ import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.service.IMService;
 import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.ContextUtil;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -421,9 +422,7 @@ public class WsConnection {
      * 通过广播去关闭service
      */
     public static void stopAllIMCoreService(Context context) {
-        if(context==null){
-            return;
-        }
+        if(!ContextUtil.isExist(context))return;
         Intent intent = new Intent();
         intent.setAction(IMCoreService.ACTION_LOGOUT);
         context.sendBroadcast(intent);

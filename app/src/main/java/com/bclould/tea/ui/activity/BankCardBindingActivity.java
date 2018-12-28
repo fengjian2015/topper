@@ -111,11 +111,6 @@ public class BankCardBindingActivity extends BaseActivity {
         }, getApplicationContext(), Constants.ORC_AK, Constants.ORC_SK);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initData() {
         RealNamePresenter realNamePresenter = new RealNamePresenter(this);
         realNamePresenter.realNameInfo(new RealNamePresenter.CallBack2() {

@@ -42,10 +42,6 @@ public class ShenFenVerifyActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
 
     //跳转事件的处理
     private void setSkip(Class clazz) {

@@ -63,10 +63,6 @@ public class GroupConfirmActivity extends BaseActivity {
         init();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
 
     private void init() {
         mName.setText(roomName);

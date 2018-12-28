@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseNormalActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -28,7 +29,7 @@ import java.text.DecimalFormat;
 
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class CameraActivity extends AppCompatActivity {
+public class CameraActivity extends BaseNormalActivity {
     private final int GET_PERMISSION_REQUEST = 100; //权限申请自定义码
     private JCameraView jCameraView;
     private boolean granted = false;
@@ -36,7 +37,6 @@ public class CameraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        MyApp.getInstance().addActivity(this);
         jCameraView = (JCameraView) findViewById(R.id.jcameraview);
 
         //设置视频保存路径
@@ -93,11 +93,6 @@ public class CameraActivity extends AppCompatActivity {
             file.createNewFile();
         }
         return size;
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     /**
@@ -258,7 +253,6 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MyApp.getInstance().removeActivity(this);
     }
 }
 

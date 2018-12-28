@@ -105,10 +105,7 @@ public class SystemSetActivity extends BaseActivity {
         init();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
+
 
     @Override
     protected void onNewIntent(Intent intent) {

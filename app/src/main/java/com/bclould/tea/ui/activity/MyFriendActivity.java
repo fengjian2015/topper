@@ -169,11 +169,6 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
         showNumber();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     //获取屏幕高度
     private void getPhoneSize() {
         mSideBar.setIndexItems();

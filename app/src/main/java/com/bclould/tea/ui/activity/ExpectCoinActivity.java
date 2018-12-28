@@ -52,11 +52,6 @@ public class ExpectCoinActivity extends BaseActivity {
         mCoinPresenter = new CoinPresenter(this);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     @OnClick({R.id.bark, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {

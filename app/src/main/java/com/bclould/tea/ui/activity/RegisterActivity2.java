@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseNormalActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
@@ -35,7 +36,7 @@ import butterknife.OnClick;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class RegisterActivity2 extends AppCompatActivity {
+public class RegisterActivity2 extends BaseNormalActivity {
     @Bind(R.id.iv_back)
     ImageView mIvBack;
     @Bind(R.id.tv_login)
@@ -85,15 +86,10 @@ public class RegisterActivity2 extends AppCompatActivity {
                 });
             }
         }, 1000, 1000);*/
-        MyApp.getInstance().addActivity(this);
         mRegisterPresenter = new RegisterPresenter(this);
         initIntent();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
 
     private void initIntent() {
         mUsername = getIntent().getStringExtra("username");
@@ -158,7 +154,6 @@ public class RegisterActivity2 extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MyApp.getInstance().removeActivity(this);
         if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;

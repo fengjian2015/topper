@@ -115,12 +115,6 @@ public class BlockchainGambleActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);//初始化EventBus
     }
 
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initTopMenu() {
         for (int i = 0; i < mLlMenu.getChildCount(); i++) {
             View childAt = mLlMenu.getChildAt(i);

@@ -76,11 +76,6 @@ public class PayDetailsActivity extends BaseActivity {
         initData();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
     private void initData() {
         String id = getIntent().getStringExtra("id");
         String log_id = getIntent().getStringExtra("log_id");

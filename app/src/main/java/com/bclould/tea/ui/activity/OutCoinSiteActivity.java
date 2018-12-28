@@ -80,10 +80,6 @@ public class OutCoinSiteActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
 
     //初始化界面
     private void initInterface() {

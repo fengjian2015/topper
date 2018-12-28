@@ -63,18 +63,6 @@ public class GuanYuMeActivity extends BaseActivity {
         mTvLog.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
         mTvEmail.setText(Constants.CUSTOMER_SERVICE_EMAIL);
     }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ButterKnife.unbind(this);
-    }
-
     @OnClick({R.id.bark, R.id.tv_url, R.id.btn_check_update, R.id.tv_log})
     public void onViewClicked(View view) {
         switch (view.getId()) {
