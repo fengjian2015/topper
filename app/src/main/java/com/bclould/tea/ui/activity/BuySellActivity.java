@@ -316,9 +316,9 @@ public class BuySellActivity extends BaseActivity {
             mEtCoin.setHint(getString(R.string.sell_count));
             mTvTitleTop.setText(getString(R.string.work_off) + mData.getCoin_name());
             mEtCoin.setBackground(getResources().getDrawable(R.drawable.bg_blue_border2));
-            mEtCoin.setTextColor(getColor(R.color.app_bg_color));
+            mEtCoin.setTextColor(getResources().getColor(R.color.app_bg_color));
             mEtCny.setBackground(getResources().getDrawable(R.drawable.bg_blue_border2));
-            mEtCny.setTextColor(getColor(R.color.app_bg_color));
+            mEtCny.setTextColor(getResources().getColor(R.color.app_bg_color));
             mBtnSellBuy.setBackground(getResources().getDrawable(R.drawable.bg_green_shape2));
         }
     }
