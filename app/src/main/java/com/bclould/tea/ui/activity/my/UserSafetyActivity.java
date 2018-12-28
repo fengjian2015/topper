@@ -1,4 +1,4 @@
-package com.bclould.tea.ui.activity.my.UserSafety;
+package com.bclould.tea.ui.activity.my;
 
 import android.content.Context;
 import android.content.Intent;

@@ -406,7 +406,7 @@
 
         <!-- 账号安全页面 -->
         <activity
-            android:name=".ui.activity.my.UserSafety.UserSafetyActivity"
+            android:name=".ui.activity.my.UserSafetyActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent" />
