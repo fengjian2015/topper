@@ -12,6 +12,7 @@ import com.bclould.tea.model.GuessInfo;
 import com.bclould.tea.model.GuessListInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.List;
@@ -64,6 +65,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onNext(GuessListInfo guessListInfo) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         if (guessListInfo.getStatus() == 1) {
                             callBack.send(guessListInfo.getData());
                         }else{
@@ -73,6 +75,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         callBack.error();
                     }
 
@@ -97,6 +100,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onNext(GuessListInfo guessListInfo) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         if (guessListInfo.getStatus() == 1) {
                             callBack.send(guessListInfo.getData());
                         }else{
@@ -106,6 +110,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         callBack.error();
                     }
 
@@ -131,18 +136,18 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onNext(BaseInfo baseInfo) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         hideDialog();
                         if (baseInfo.getStatus() == 1) {
                             callBack2.send();
                         } else {
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                        UtilTool.Log("發佈競猜", baseInfo.getMessage());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        UtilTool.Log("發佈競猜", e.getMessage());
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         hideDialog();
                     }
 
@@ -168,6 +173,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onNext(GuessInfo guessInfo) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         hideDialog();
                         if (guessInfo.getStatus() == 1) {
                             callBack3.send(guessInfo.getData());
@@ -177,6 +183,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         UtilTool.Log("發佈競猜", e.getMessage());
                         hideDialog();
                         callBack3.error();
@@ -203,6 +210,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onNext(BaseInfo baseInfo) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         hideDialog();
                         if (baseInfo.getStatus() == 1) {
                             callBack4.send(baseInfo.getData().getBet_coin());
@@ -213,6 +221,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         UtilTool.Log("發佈競猜", e.getMessage());
                         hideDialog();
                     }
@@ -239,6 +248,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onNext(BetInfo betInfo) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         hideDialog();
                         if (betInfo.getStatus() == 1) {
                             callBack5.send(betInfo.getData());
@@ -250,6 +260,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         UtilTool.Log("發佈競猜", e.getMessage());
                         hideDialog();
                     }
@@ -275,6 +286,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onNext(GuessListInfo guessListInfo) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         hideDialog();
                         if (guessListInfo.getStatus() == 1) {
                             callBack.send(guessListInfo.getData());
@@ -286,6 +298,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         UtilTool.Log("發佈競猜", e.getMessage());
                         hideDialog();
                         callBack.error();
@@ -312,6 +325,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onNext(GuessListInfo guessListInfo) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         hideDialog();
                         if (guessListInfo.getStatus() == 1) {
                             callBack.send(guessListInfo.getData());
@@ -323,6 +337,7 @@ public class BlockchainGuessPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        if(!ActivityUtil.isActivityOnTop(mContext))return;
                         UtilTool.Log("發佈競猜", e.getMessage());
                         hideDialog();
                         callBack.error();
