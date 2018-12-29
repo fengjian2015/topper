@@ -1335,7 +1335,7 @@ public class UtilTool {
         boolean isRunning = false;
         ActivityManager activityManager = (ActivityManager)
                 mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(30);
+        List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(150);
 
         if (!(serviceList.size() > 0)) {
             return false;
@@ -1526,7 +1526,12 @@ public class UtilTool {
             context.startActivity(install);
         } else {
             String path = file.getAbsolutePath();
-            Uri uri =Uri.parse("file://" + path);
+            Uri uri;
+            if(!path.contains("file://")) {
+                uri = Uri.parse("file://" + path);
+            }else{
+                uri = Uri.parse(path);
+            }
             Intent install = new Intent(Intent.ACTION_VIEW);
             install.setDataAndType(uri, "application/vnd.android.package-archive");
             install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -125,13 +125,13 @@ public class IMCoreService extends Service {
                 case 0:
                     if (!startService) {
                         UtilTool.Log("fengjian","service-- 没登录");
-                        if (WsConnection.isServiceWork(IMCoreService.this, SERVICE_NAME)) {
+                        if (UtilTool.isServiceRunning(IMCoreService.this, SERVICE_NAME)) {
                             IMCoreService.this.stopService(new Intent(IMCoreService.this, IMService.class));
                         }
                         this.sendEmptyMessageDelayed(0, time);
                         return;
                     }
-                    if (WsConnection.isServiceWork(IMCoreService.this, SERVICE_NAME)) {
+                    if (UtilTool.isServiceRunning(IMCoreService.this, SERVICE_NAME)) {
                         UtilTool.Log("fengjian","service-- 打开了！");
                         if (WsConnection.getInstance().getOutConnection()) {
                             startService = false;
@@ -200,7 +200,7 @@ public class IMCoreService extends Service {
                 startService = false;
             }else if(intent.getAction().equals(ACTION_START_IMSERVICE)){
                 UtilTool.Log("fengjian","---收到打开IMService的广播");
-                if (WsConnection.isServiceWork(context, "com.bclould.tea.service.IMService")) {
+                if (UtilTool.isServiceRunning(context, "com.bclould.tea.service.IMService")) {
                     return;
                 }
                 Intent startIntent = new Intent(context, IMService.class);

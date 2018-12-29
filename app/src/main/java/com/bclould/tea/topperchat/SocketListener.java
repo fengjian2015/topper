@@ -60,7 +60,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.bclould.tea.Presenter.LoginPresenter.CURRENCY;
@@ -103,7 +102,7 @@ import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER_RESULT;
 import static com.bclould.tea.topperchat.WsContans.MSG_STEANGER;
 import static com.bclould.tea.topperchat.WsContans.TYPE;
 import static com.bclould.tea.topperchat.WsContans.VIDEO_THUMBNAIL;
-import static com.bclould.tea.ui.activity.SystemSetActivity.INFORM;
+import static com.bclould.tea.ui.activity.my.systemxet.SystemSetActivity.INFORM;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
@@ -164,7 +163,6 @@ public class SocketListener {
     private PingThread mPingThread;
     private PingThreadRequest mPingThreadRequest;
     public static int pingNumber = 0;
-    ExecutorService executorService;//以後用於群聊功能
     private static SocketListener mInstance;
 
     public static SocketListener getInstance(Context context) {
@@ -184,7 +182,6 @@ public class SocketListener {
 
     private SocketListener(Context context) {
         this.context = context;
-        executorService = Executors.newFixedThreadPool(5);
         mgr = new DBManager(context);
         mdbRoomManage = new DBRoomManage(context);
         mdbRoomMember = new DBRoomMember(context);
@@ -879,7 +876,7 @@ public class SocketListener {
      * @param messageMap
      */
     private void offlineNew(Map<Object, Object> messageMap) {
-        if (!WsConnection.isServiceWork(context, IMCoreService.CORE_SERVICE_NAME)) {
+        if (!UtilTool.isServiceRunning(context, IMCoreService.CORE_SERVICE_NAME)) {
             Intent intent1 = new Intent(context, IMCoreService.class);
             context.startService(intent1);
 

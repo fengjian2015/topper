@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity {
         if (!WsConnection.getInstance().getOutConnection()) {
             ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
             Intent intent = new Intent(this, IMCoreService.class);
-            if (WsConnection.isServiceWork(this, IMCoreService.CORE_SERVICE_NAME)) {
+            if (UtilTool.isServiceRunning(this, IMCoreService.CORE_SERVICE_NAME)) {
                 WsConnection.stopAllIMCoreService(this);
                 stopService(intent);
             }
@@ -162,11 +162,11 @@ public class MainActivity extends BaseActivity {
 
     private void resumeRelogin() {
         if (!WsConnection.getInstance().getOutConnection()) {
-            if (!WsConnection.isServiceWork(this, IMCoreService.CORE_SERVICE_NAME)) {
+            if (!UtilTool.isServiceRunning(this, IMCoreService.CORE_SERVICE_NAME)) {
                 ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
                 Intent intent1 = new Intent(this, IMCoreService.class);
                 startService(intent1);
-            } else if (!WsConnection.isServiceWork(this, IMCoreService.SERVICE_NAME)) {
+            } else if (!UtilTool.isServiceRunning(this, IMCoreService.SERVICE_NAME)) {
                 ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
                 stopService(new Intent(this, IMService.class));
                 Intent intent = new Intent();

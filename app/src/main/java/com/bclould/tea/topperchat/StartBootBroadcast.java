@@ -17,7 +17,7 @@ public class StartBootBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         UtilTool.Log("fengjian","開機廣播");
-        if (!WsConnection.isServiceWork(context, IMCoreService.CORE_SERVICE_NAME)) {
+        if (!UtilTool.isServiceRunning(context, IMCoreService.CORE_SERVICE_NAME)) {
             Intent intent1 = new Intent(context, IMCoreService.class);
             context.startService(intent1);
         }

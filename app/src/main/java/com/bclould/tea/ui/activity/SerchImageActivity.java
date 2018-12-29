@@ -1,6 +1,5 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -22,11 +20,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
+import com.bclould.tea.ui.activity.my.systemxet.SystemSetActivity;
 import com.bclould.tea.ui.adapter.SearchImageRVAdapter;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;

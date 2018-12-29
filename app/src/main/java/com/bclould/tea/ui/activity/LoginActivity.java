@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +21,12 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.LoginBaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBUserCode;
 import com.bclould.tea.model.UserCodeInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.adapter.EmailCodeAdapter;
 import com.bclould.tea.ui.widget.MyAutoCompleteTextView;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
@@ -43,7 +40,7 @@ import butterknife.OnClick;
 
 import static com.bclould.tea.Presenter.LoginPresenter.EMAIL;
 import static com.bclould.tea.Presenter.LoginPresenter.LOGINPW;
-import static com.bclould.tea.ui.activity.SystemSetActivity.PRIVATE;
+import static com.bclould.tea.ui.activity.my.systemxet.SystemSetActivity.PRIVATE;
 
 /**
  * Created by GA on 2017/9/20.

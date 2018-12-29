@@ -9,7 +9,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.network.RetrofitUtil;
-import com.bclould.tea.ui.activity.my.AddCollect.AddCollectActivity;
+import com.bclould.tea.ui.activity.my.addcollect.AddCollectActivity;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MySharedPreferences;

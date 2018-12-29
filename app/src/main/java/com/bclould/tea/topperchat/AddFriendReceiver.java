@@ -3,13 +3,11 @@ package com.bclould.tea.topperchat;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 
@@ -18,7 +16,6 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.UserInfo;
-import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.EventBusUtil;
@@ -29,7 +26,7 @@ import com.bclould.tea.xmpp.RoomManage;
 
 import org.greenrobot.eventbus.EventBus;
 
-import static com.bclould.tea.ui.activity.SystemSetActivity.INFORM;
+import static com.bclould.tea.ui.activity.my.systemxet.SystemSetActivity.INFORM;
 import static com.bclould.tea.ui.fragment.FriendListFragment.NEWFRIEND;
 import static com.bclould.tea.utils.MySharedPreferences.SETTING;
 

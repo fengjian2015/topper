@@ -40,7 +40,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.SerMap;
-import com.bclould.tea.ui.activity.my.AddCollect.AddCollectActivity;
+import com.bclould.tea.ui.activity.my.addcollect.AddCollectActivity;
 import com.bclould.tea.ui.activity.ChatLookLocationActivity;
 import com.bclould.tea.ui.activity.ConversationBurnActivity;
 import com.bclould.tea.ui.activity.FileOpenActivity;
@@ -99,7 +99,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.rockerhieu.emojicon.EmojiconTextView;
 
-import static com.bclould.tea.ui.activity.SystemSetActivity.AUTOMATICALLY_DOWNLOA;
+import static com.bclould.tea.ui.activity.my.systemxet.SystemSetActivity.AUTOMATICALLY_DOWNLOA;
 import static com.bclould.tea.utils.UtilTool.Log;
 
 /**

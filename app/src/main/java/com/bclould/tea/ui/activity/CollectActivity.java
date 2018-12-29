@@ -1,6 +1,5 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -23,10 +22,9 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.model.MessageInfo;
-import com.bclould.tea.ui.activity.my.AddCollect.AddCollectActivity;
+import com.bclould.tea.ui.activity.my.addcollect.AddCollectActivity;
 import com.bclould.tea.ui.adapter.CollectRVAdapter;
 import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;

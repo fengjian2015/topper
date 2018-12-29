@@ -160,14 +160,14 @@
 
         <!-- 系统设置页面 -->
         <activity
-            android:name=".ui.activity.SystemSetActivity"
+            android:name=".ui.activity.my.systemxet.SystemSetActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent" />
 
         <!-- 关于我们页面 -->
         <activity
-            android:name=".ui.activity.GuanYuMeActivity"
+            android:name=".ui.activity.my.GuanYuMeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent" />
@@ -1134,7 +1134,7 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.my.AddCollect.AddCollectActivity"
+            android:name=".ui.activity.my.addcollect.AddCollectActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
@@ -1201,7 +1201,7 @@
 
         <!-- 朋友圈页 -->
         <activity
-            android:name=".ui.activity.DynamicActivity"
+            android:name=".ui.activity.my.dynamic.DynamicActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
@@ -1271,25 +1271,25 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.ftc.MyTeam.MyTeamActivity"
+            android:name=".ui.activity.ftc.myteam.MyTeamActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.ftc.Node.NodeActivity"
+            android:name=".ui.activity.ftc.node.NodeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.ftc.UpgradeNode.UpgradeNodeActivity"
+            android:name=".ui.activity.ftc.upgradenode.UpgradeNodeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.ftc.AccountBinding.AccountBindingActivity"
+            android:name=".ui.activity.ftc.acccountbinding.AccountBindingActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
