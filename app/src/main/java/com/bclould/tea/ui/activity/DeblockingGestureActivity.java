@@ -108,7 +108,7 @@ public class DeblockingGestureActivity extends BaseActivity {
                 public void onClick(View view) {
                     deleteCacheDialog.dismiss();
                     finish();
-                    WsConnection.getInstance().goMainActivity();
+                    WsConnection.getInstance().goMainActivity(2);
                 }
             });
             confirm.setOnClickListener(new View.OnClickListener() {

@@ -94,7 +94,7 @@ public class IMService extends Service{
                             MySharedPreferences.getInstance().setLong(IMSERVEICE_TIME,System.currentTimeMillis());
                             if (WsConnection.getInstance().getOutConnection()) {
                                 UtilTool.Log("fengjian","检测到未登录");
-                                WsConnection.getInstance().goMainActivity();
+                                WsConnection.getInstance().goMainActivity(2);
                                 break;
                             }
                             WsOfflineConnection.getInstance().get(IMService.this);
@@ -182,7 +182,7 @@ public class IMService extends Service{
         synchronized (this) {
             if (WsConnection.getInstance().getOutConnection()) {
                 UtilTool.Log("fengjian","检测到未登录");
-                WsConnection.getInstance().goMainActivity();
+                WsConnection.getInstance().goMainActivity(2);
 //                WsConnection.getInstance().close();
 //                WsOfflineConnection.getInstance().closeConnection();
 //                this.stopService(new Intent(this, IMService.class));

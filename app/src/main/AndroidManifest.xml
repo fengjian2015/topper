@@ -107,9 +107,12 @@
                     android:host="topper_chat"
                     android:path="/main"
                     android:scheme="csd" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
@@ -127,9 +130,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
-            android:windowSoftInputMode="stateHidden|adjustPan" >
-
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
 
         <!-- 注册页面 -->
         <activity
@@ -1342,8 +1343,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
-        <activity android:name=".ui.activity.authorization.AuthorizationActivity"
+        <activity
+            android:name=".ui.activity.authorization.AuthorizationActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.activity.TickRecordActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"

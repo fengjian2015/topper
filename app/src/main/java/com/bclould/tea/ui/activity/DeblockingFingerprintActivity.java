@@ -112,7 +112,7 @@ public class DeblockingFingerprintActivity extends BaseActivity {
                         AnimatorTool.getInstance().editTextAnimator(mTvCheck);
                     } else {
                         finish();
-                        WsConnection.getInstance().goMainActivity();
+                        WsConnection.getInstance().goMainActivity(2);
                         mCount = 5;
                     }
                 }
@@ -134,7 +134,7 @@ public class DeblockingFingerprintActivity extends BaseActivity {
                     AnimatorTool.getInstance().editTextAnimator(mTvCheck);
                 } else {
                     finish();
-                    WsConnection.getInstance().goMainActivity();
+                    WsConnection.getInstance().goMainActivity(2);
                     mCount = 5;
                 }
             }

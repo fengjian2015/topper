@@ -91,7 +91,7 @@ public class BillDetailsActivity extends BaseActivity {
         if (mType == 0) {
             mTvHint.setText(getString(R.string.no_receipt_in_coin_record));
             String coinId = getIntent().getStringExtra("coin_id");
-            mDillDataPresenter.getInOutData("1", coinId, new DillDataPresenter.CallBack2() {
+            mDillDataPresenter.getInOutData("1", coinId,1,"","", new DillDataPresenter.CallBack2() {
                 @Override
                 public void send(List<InOutInfo.DataBean> data) {
                     if (ActivityUtil.isActivityOnTop(BillDetailsActivity.this)) {
@@ -123,7 +123,7 @@ public class BillDetailsActivity extends BaseActivity {
         } else if (mType == 1) {
             mTvHint.setText(getString(R.string.no_receipt_out_coin_record));
             String coinId = getIntent().getStringExtra("coin_id");
-            mDillDataPresenter.getInOutData("2", coinId, new DillDataPresenter.CallBack2() {
+            mDillDataPresenter.getInOutData("2", coinId,1,"","", new DillDataPresenter.CallBack2() {
                 @Override
                 public void send(List<InOutInfo.DataBean> data) {
                     UtilTool.Log("充提幣", data.size() + "");

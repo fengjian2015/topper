@@ -203,7 +203,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     private void initRelogin() {
         ConnectStateChangeListenerManager.get().registerStateChangeListener(this);
-        if ((WsConnection.getInstance().get(getContext()) != null && WsConnection.getInstance().get(getContext()).isOpen()) || WsConnection.getInstance().isLogin()) {
+        if ((WsConnection.getInstance().get(getActivity()) != null && WsConnection.getInstance().get(getActivity()).isOpen()) || WsConnection.getInstance().isLogin()) {
             ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTED);
         } else {
             ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);

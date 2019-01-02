@@ -493,7 +493,10 @@ public interface MyService {
     Observable<InOutInfo> coinOutLog(
             @Header("Authorization") String token,
             @Field("opt_type") String opt_type,
-            @Field("coin_id") String coin_id
+            @Field("coin_id") String coin_id,
+            @Field("page") int page,
+            @Field("keyword") String keyword,
+            @Field("date") String date
     );
 
     //实名认证

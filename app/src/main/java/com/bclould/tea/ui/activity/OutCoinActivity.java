@@ -165,7 +165,7 @@ public class OutCoinActivity extends BaseActivity {
     }
 
     private void skipRecord() {
-        Intent intent = new Intent(this, BillDetailsActivity.class);
+        Intent intent = new Intent(this, TickRecordActivity.class);
         intent.putExtra("type", 1);
         intent.putExtra("coin_id", mId + "");
         intent.putExtra("coin_name", mCoinName);

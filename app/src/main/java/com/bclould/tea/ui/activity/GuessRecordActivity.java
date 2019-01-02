@@ -71,6 +71,7 @@ public class GuessRecordActivity extends BaseActivity {
     private int mPageSize = 10;
 
     private WinningPopWindow mWinningPopWindow;
+    private boolean hasFocus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,6 +106,14 @@ public class GuessRecordActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // TODO Auto-generated method stub
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            this.hasFocus = hasFocus;
+        }
+    }
 
     //接受通知
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -118,12 +127,14 @@ public class GuessRecordActivity extends BaseActivity {
     }
 
     private void show(final String content) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mWinningPopWindow = new WinningPopWindow(GuessRecordActivity.this, content, mRlTitle);
-            }
-        });
+        if(hasFocus) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mWinningPopWindow = new WinningPopWindow(GuessRecordActivity.this, content, mRlTitle);
+                }
+            });
+        }
     }
 
     private void shutDown() {

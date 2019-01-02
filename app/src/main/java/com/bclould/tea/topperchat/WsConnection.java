@@ -30,6 +30,7 @@ import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.LoginThread;
+import com.bclould.tea.xmpp.RoomManage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.koushikdutta.async.ByteBufferList;
@@ -92,9 +93,9 @@ public class WsConnection {
 
     public WebSocket get(Context context) {
         synchronized (lock) {
-            mContext = context;
             try {
                 if ((ws == null || !ws.isOpen()) && !isConnection && !isOutConnection) {
+                    mContext = context;
                     setIsConnection(true);
                     if (ws != null) {
                         UtilTool.Log("fengjian", "進入打開websocket-------------" + ws.isOpen());
@@ -195,18 +196,18 @@ public class WsConnection {
 
     public synchronized void login() throws Exception {
         if (StringUtils.isEmpty(UtilTool.getTocoId())) {
-            goMainActivity();
+            goMainActivity(2);
             return;
         }
-        if(UtilTool.compareTokenTime(MySharedPreferences.getInstance().getLong(TOKEN_TIME))&&!isOutConnection){
-            UtilTool.Log("fengjiantoken","登錄token過期");
-            new Handler(Looper.getMainLooper()){
+        if (UtilTool.compareTokenTime(MySharedPreferences.getInstance().getLong(TOKEN_TIME)) && !isOutConnection) {
+            UtilTool.Log("fengjiantoken", "登錄token過期");
+            new Handler(Looper.getMainLooper()) {
                 @Override
                 public void handleMessage(Message msg) {
-                    Toast.makeText(mContext,mContext.getString(R.string.token_stale_dated), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, mContext.getString(R.string.token_stale_dated), Toast.LENGTH_SHORT).show();
                 }
             }.sendEmptyMessage(0);
-            goMainActivity();
+            goMainActivity(2);
             return;
         }
         if (isLogin || isOutConnection || isLoginConnection) {
@@ -341,7 +342,7 @@ public class WsConnection {
             for (MessageInfo messageInfo : list) {
                 mManager.updateMessageStatus(messageInfo.getMsgId(), 2);
                 if (!StringUtils.isEmpty(messageInfo.getRoomId())) {
-                    mManager.deleteSingleMessageMsgId(messageInfo.getMsgId(),0);
+                    mManager.deleteSingleMessageMsgId(messageInfo.getMsgId(), 0);
                 }
             }
             EventBus.getDefault().post(new MessageEvent(EventBusUtil.msg_database_update));
@@ -377,7 +378,7 @@ public class WsConnection {
         setLoginConnection(false);
     }
 
-    public void goMainActivity() {
+    public void goMainActivity(final int whence) {
         MySharedPreferences.getInstance().setString(TOKEN, "");
         MySharedPreferences.getInstance().setString(LoginPresenter.TOCOID, "");
         logoutService(mContext);
@@ -395,7 +396,7 @@ public class WsConnection {
             }
             Intent intent = new Intent(mContext, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra("whence", 2);
+            intent.putExtra("whence", whence);
             mContext.startActivity(intent);
             setIsCheckActvity(false);
         }
@@ -411,6 +412,7 @@ public class WsConnection {
         }
         LoginThread.isStartExReconnect = false;
         WsOfflineConnection.getInstance().closeConnection();
+        RoomManage.getInstance().reoveAllRoom();
         UtilTool.Log("fengjian", "关闭连接");
         XGManage.getInstance().deleteAlias();
         setOutConnection(true);
@@ -422,7 +424,7 @@ public class WsConnection {
      * 通过广播去关闭service
      */
     public static void stopAllIMCoreService(Context context) {
-        if(!ContextUtil.isExist(context))return;
+        if (!ContextUtil.isExist(context)) return;
         Intent intent = new Intent();
         intent.setAction(IMCoreService.ACTION_LOGOUT);
         context.sendBroadcast(intent);

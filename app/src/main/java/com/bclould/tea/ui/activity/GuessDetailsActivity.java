@@ -313,13 +313,14 @@ public class GuessDetailsActivity extends BaseActivity {
     private String mGuess_pw = "";
     private PWDDialog pwdDialog;
     private WinningPopWindow mWinningPopWindow;
+    private boolean hasFocus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess_details);
         ButterKnife.bind(this);
-        setTitle(getString(R.string.coin_quiz_detail),R.mipmap.ico_news_share);
+        setTitle(getString(R.string.coin_quiz_detail), R.mipmap.ico_news_share);
         mImageView.setVisibility(View.GONE);
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();
@@ -328,37 +329,47 @@ public class GuessDetailsActivity extends BaseActivity {
         initEidt();
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // TODO Auto-generated method stub
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            this.hasFocus = hasFocus;
+        }
+    }
+
     //接受通知
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(EventBusUtil.winning_show)) {
             show(event.getContent());
-        }else if (msg.equals(EventBusUtil.winning_shut_down)) {
+        } else if (msg.equals(EventBusUtil.winning_shut_down)) {
             shutDown();
         }
     }
 
-    private void show(final String content){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mWinningPopWindow=new WinningPopWindow(GuessDetailsActivity.this,content,mRlTitle);
-            }
-        });
+    private void show(final String content) {
+        if (hasFocus) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mWinningPopWindow = new WinningPopWindow(GuessDetailsActivity.this, content, mRlTitle);
+                }
+            });
+        }
     }
 
-    private void shutDown(){
+    private void shutDown() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(mWinningPopWindow!= null){
+                if (mWinningPopWindow != null) {
                     mWinningPopWindow.dismiss();
                 }
             }
         });
     }
-
 
 
     @Override
@@ -1078,13 +1089,13 @@ public class GuessDetailsActivity extends BaseActivity {
 
             }
         });
-        if(mIndexArr!=null&&mIndexArr.length>=4) {
+        if (mIndexArr != null && mIndexArr.length >= 4) {
             number.setText(mTvNumber.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[0] + getString(R.string.hash_value));
             number2.setText(mTvNumber2.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[1] + getString(R.string.hash_value));
             number3.setText(mTvNumber3.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[2] + getString(R.string.hash_value));
             number4.setText(mTvNumber4.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[3] + getString(R.string.hash_value));
         }
-        if(mHashArr!=null&&mHashArr.length>=4){
+        if (mHashArr != null && mHashArr.length >= 4) {
             hash.setText(mHashArr[0]);
             hash2.setText(mHashArr[1]);
             hash3.setText(mHashArr[2]);
@@ -1323,7 +1334,7 @@ public class GuessDetailsActivity extends BaseActivity {
     }
 
     private void bet(String password, final int count) {
-        if(!ActivityUtil.isActivityOnTop(this))return;
+        if (!ActivityUtil.isActivityOnTop(this)) return;
         UtilTool.Log("數組", mRandomSumArr);
         mBlockchainGuessPresenter.bet(mBet_id, mPeriod_qty, mCoin_id, mRandomSumArr, password, new BlockchainGuessPresenter.CallBack5() {
             @Override

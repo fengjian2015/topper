@@ -86,6 +86,7 @@ public class MyStartActivity extends BaseActivity {
     private int mType;
 
     private WinningPopWindow mWinningPopWindow;
+    private boolean hasFocus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,6 +96,15 @@ public class MyStartActivity extends BaseActivity {
         setTitle(getString(R.string.my_start),getString(R.string.filtrate));
         EventBus.getDefault().register(this);//初始化EventBus
         init();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // TODO Auto-generated method stub
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            this.hasFocus = hasFocus;
+        }
     }
 
     //接受通知
@@ -109,12 +119,14 @@ public class MyStartActivity extends BaseActivity {
     }
 
     private void show(final String content) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mWinningPopWindow = new WinningPopWindow(MyStartActivity.this, content, mRlTitle);
-            }
-        });
+        if(hasFocus) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mWinningPopWindow = new WinningPopWindow(MyStartActivity.this, content, mRlTitle);
+                }
+            });
+        }
     }
 
     private void shutDown() {

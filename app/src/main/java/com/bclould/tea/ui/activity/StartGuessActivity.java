@@ -109,6 +109,7 @@ public class StartGuessActivity extends BaseActivity {
     private int timePosition = 0;
 
     private WinningPopWindow mWinningPopWindow;
+    private boolean hasFocus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,6 +121,15 @@ public class StartGuessActivity extends BaseActivity {
         EventBus.getDefault().register(this);//初始化EventBus
         setData();
         initData();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // TODO Auto-generated method stub
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            this.hasFocus = hasFocus;
+        }
     }
 
     //接受通知
@@ -134,12 +144,14 @@ public class StartGuessActivity extends BaseActivity {
     }
 
     private void show(final String content) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mWinningPopWindow = new WinningPopWindow(StartGuessActivity.this, content, mRlTitle);
-            }
-        });
+        if(hasFocus) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mWinningPopWindow = new WinningPopWindow(StartGuessActivity.this, content, mRlTitle);
+                }
+            });
+        }
     }
 
     private void shutDown() {

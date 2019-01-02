@@ -45,10 +45,10 @@ public class RedRecordPresenter {
         }
     }
 
-    public void log(String type, int page_id, int pageSize, String year, final CallBack callBack) {
+    public void log(String type, int page, int pageSize, String year, final CallBack callBack) {
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .redPacketLog(UtilTool.getToken(), type, page_id, pageSize, year)
+                .redPacketLog(UtilTool.getToken(), type, page, pageSize, year)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<RpRecordInfo>() {

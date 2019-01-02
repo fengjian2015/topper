@@ -45,6 +45,7 @@ import com.bclould.tea.service.IMService;
 import com.bclould.tea.topperchat.AddFriendReceiver;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.authorization.AuthorizationActivity;
+import com.bclould.tea.ui.fragment.ConversationFragment;
 import com.bclould.tea.ui.fragment.DiscoverFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.Constants;
@@ -188,9 +189,9 @@ public class MainActivity extends BaseActivity {
     /**
      * 第三方授权根据IS_EXTERNAL判断是否跳转到授权页面
      */
-    private void goAuthorization(){
-        boolean isExternal=MySharedPreferences.getInstance().getBoolean(SharedPreferencesUtil.IS_EXTERNAL);
-        if(isExternal){
+    private void goAuthorization() {
+        boolean isExternal = MySharedPreferences.getInstance().getBoolean(SharedPreferencesUtil.IS_EXTERNAL);
+        if (isExternal) {
             Intent intentResult = new Intent(MyApp.getInstance().getTopActivity(), AuthorizationActivity.class);
             startActivity(intentResult);
         }
@@ -207,7 +208,7 @@ public class MainActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         //whence =1 登錄   2 退出登錄  3強制退出
-        int whence = intent.getIntExtra("whence", 0);
+        final int whence = intent.getIntExtra("whence", 0);
         initRelogin();
         refreshNumber();
         isGoSelectConversation();
@@ -228,8 +229,8 @@ public class MainActivity extends BaseActivity {
             getChatBackGround();
             mallLogin();
         } else if (2 == whence || 3 == whence) {
-            DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
-            discoverFragment.initInterface();
+            ConversationFragment discoverFragment = ConversationFragment.getInstance();
+            discoverFragment.onStateChange(ConnectStateChangeListenerManager.CONNECTING);
             setSelector(0);
             //切换Fragment
             changeFragment(0);
@@ -250,11 +251,11 @@ public class MainActivity extends BaseActivity {
     /**
      * 判断是否跳转到商城登录
      */
-    private void mallLogin(){
-        String mallUrl=MySharedPreferences.getInstance().getString(SharedPreferencesUtil.WEB_LOGIN);
-        if(!StringUtils.isEmpty(mallUrl)){
-            Intent intent=new Intent(this,HTMLActivity.class);
-            intent.putExtra("html5Url",mallUrl);
+    private void mallLogin() {
+        String mallUrl = MySharedPreferences.getInstance().getString(SharedPreferencesUtil.WEB_LOGIN);
+        if (!StringUtils.isEmpty(mallUrl)) {
+            Intent intent = new Intent(this, HTMLActivity.class);
+            intent.putExtra("html5Url", mallUrl);
             startActivity(intent);
         }
     }
@@ -582,7 +583,7 @@ public class MainActivity extends BaseActivity {
             mSupportFragmentManager.beginTransaction().remove(map.get(i));
             mSupportFragmentManager.beginTransaction().hide(map.get(i));
         }
-        MySharedPreferences.getInstance().setBoolean(SharedPreferencesUtil.IS_EXTERNAL,false);
+        MySharedPreferences.getInstance().setBoolean(SharedPreferencesUtil.IS_EXTERNAL, false);
         unregisterReceiver(mReceiver);
     }
 
@@ -594,9 +595,9 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void onClick(View view) {
                     int index = mMainBottomMenu.indexOfChild(childAt);
-                    if(index==2){
-                        Intent intent=new Intent(MainActivity.this,HTMLActivity.class);
-                        intent.putExtra("html5Url",Constants.WEB_MALL);
+                    if (index == 2) {
+                        Intent intent = new Intent(MainActivity.this, HTMLActivity.class);
+                        intent.putExtra("html5Url", Constants.WEB_MALL);
                         startActivity(intent);
                         return;
                     }
@@ -645,7 +646,7 @@ public class MainActivity extends BaseActivity {
                     mSupportFragmentManager.executePendingTransactions();
             }
             lastIndex = index;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -708,7 +709,7 @@ public class MainActivity extends BaseActivity {
                 home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 home.addCategory(Intent.CATEGORY_HOME);
                 startActivity(home);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

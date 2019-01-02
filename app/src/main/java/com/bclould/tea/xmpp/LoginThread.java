@@ -23,7 +23,7 @@ public class LoginThread extends Thread {
 		while (true&&loginNumber==WsConnection.loginNumber) {
 			if (WsConnection.getInstance().getOutConnection()) {
 				UtilTool.Log("fengjian","關閉連接");
-				WsConnection.getInstance().goMainActivity();
+				WsConnection.getInstance().goMainActivity(2);
 				break;
 			}
 			if (IMLogin.loginServer(context)) {

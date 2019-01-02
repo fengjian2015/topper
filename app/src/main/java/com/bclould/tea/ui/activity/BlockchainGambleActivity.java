@@ -63,6 +63,7 @@ public class BlockchainGambleActivity extends BaseActivity {
     private int mHeightPixels;
     private PopupWindow mPopupWindow;
     private WinningPopWindow mWinningPopWindow;
+    private boolean hasFocus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,13 +90,24 @@ public class BlockchainGambleActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // TODO Auto-generated method stub
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus){
+            this.hasFocus=hasFocus;
+        }
+    }
+
     private void show(final String content){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mWinningPopWindow=new WinningPopWindow(BlockchainGambleActivity.this,content,mRlTitle);
-            }
-        });
+        if(hasFocus){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mWinningPopWindow=new WinningPopWindow(BlockchainGambleActivity.this,content,mRlTitle);
+                }
+            });
+        }
     }
 
     private void shutDown(){

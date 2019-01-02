@@ -2373,4 +2373,8 @@
 
     <string name="error">出错了</string>
     <string name="mall">商城</string>
+    <string name="miner_cost">矿工费用：</string>
+    <string name="block">区块TXID：</string>
+    <string name="address1">地址：</string>
+    <string name="input_address_name_email">输入地址、用户名或邮箱进行搜索</string>
 </resources>

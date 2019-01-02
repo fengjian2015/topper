@@ -101,11 +101,8 @@ public class LogoutPresenter {
         new Thread(){
             @Override
             public void run() {
-                WsConnection.getInstance().goMainActivity();
+                WsConnection.getInstance().goMainActivity(2);
             }
         }.start();
-//            MyApp.getInstance().exit();
     }
-
-
 }

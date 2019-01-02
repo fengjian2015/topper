@@ -85,6 +85,7 @@ public class MyJoinActivity extends BaseActivity {
     private HashMap<String, Integer> mMap = new HashMap<>();
 
     private WinningPopWindow mWinningPopWindow;
+    private boolean hasFocus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,6 +106,15 @@ public class MyJoinActivity extends BaseActivity {
         initData(mType, PULL_DOWN);
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // TODO Auto-generated method stub
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            this.hasFocus = hasFocus;
+        }
+    }
+
     //接受通知
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
@@ -117,12 +127,14 @@ public class MyJoinActivity extends BaseActivity {
     }
 
     private void show(final String content) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mWinningPopWindow = new WinningPopWindow(MyJoinActivity.this, content, mRlTitle);
-            }
-        });
+        if(hasFocus) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mWinningPopWindow = new WinningPopWindow(MyJoinActivity.this, content, mRlTitle);
+                }
+            });
+        }
     }
 
     private void shutDown() {

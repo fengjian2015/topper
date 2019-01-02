@@ -58,6 +58,33 @@ public class InOutInfo {
         private String number_u;
         private String created_at;
         private String txid;
+        private String address;
+        private String status;
+        private String fee;
+
+        public String getFee() {
+            return fee;
+        }
+
+        public void setFee(String fee) {
+            this.fee = fee;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
 
         public int getUser_id() {
             return user_id;

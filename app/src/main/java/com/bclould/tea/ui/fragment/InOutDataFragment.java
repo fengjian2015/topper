@@ -58,26 +58,26 @@ public class InOutDataFragment extends Fragment {
 
     private void initData() {
         DillDataPresenter dillDataPresenter = new DillDataPresenter(getContext());
-        dillDataPresenter.getInOutData(getString(R.string.out_coin),"1", new DillDataPresenter.CallBack2() {
-            @Override
-            public void send(List<InOutInfo.DataBean> data) {
-                if (mRecyclerView != null) {
-                    if (data.size() == 0) {
-                        mLlNoData.setVisibility(View.VISIBLE);
-                        mRecyclerView.setVisibility(View.GONE);
-                    } else {
-                        mLlNoData.setVisibility(View.GONE);
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                    }
-                    initListView(data);
-                }
-            }
-
-            @Override
-            public void error() {
-
-            }
-        });
+//        dillDataPresenter.getInOutData(getString(R.string.out_coin),"1", new DillDataPresenter.CallBack2() {
+//            @Override
+//            public void send(List<InOutInfo.DataBean> data) {
+//                if (mRecyclerView != null) {
+//                    if (data.size() == 0) {
+//                        mLlNoData.setVisibility(View.VISIBLE);
+//                        mRecyclerView.setVisibility(View.GONE);
+//                    } else {
+//                        mLlNoData.setVisibility(View.GONE);
+//                        mRecyclerView.setVisibility(View.VISIBLE);
+//                    }
+//                    initListView(data);
+//                }
+//            }
+//
+//            @Override
+//            public void error() {
+//
+//            }
+//        });
     }
 
     //初始化条目

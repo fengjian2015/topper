@@ -32,6 +32,7 @@ import com.bclould.tea.ui.adapter.PayRecordRVAdapter;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.TimeSelectUtil;
 import com.bclould.tea.utils.UtilTool;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -59,7 +60,7 @@ import static com.bclould.tea.R.style.BottomDialog;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class PayRecordActivity extends BaseActivity {
+public class PayRecordActivity extends BaseActivity implements TimeSelectUtil.OnTimeReturnListener {
     @Bind(R.id.tv_date)
     TextView mTvDate;
     @Bind(R.id.rl_date_selector)
@@ -90,20 +91,27 @@ public class PayRecordActivity extends BaseActivity {
     private Map<String, Integer> mMap = new HashMap<>();
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private List<String> mFiltrateList = new ArrayList<>();
-    private SimpleDateFormat mSimpleDateFormat;
 
+    private TimeSelectUtil mTimeSelectUtil;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_record);
         ButterKnife.bind(this);
         setTitle(getString(R.string.payment_record),getString(R.string.filtrate));
-        getOptionData();
+        initTime();
         initIntent();
         initRecycler();
         initMap();
         initData(PULL_DOWN,1);
         initListener();
+    }
+
+    private void initTime(){
+        mTimeSelectUtil=new TimeSelectUtil(this,3);
+        mTimeSelectUtil.setOnTimeReturnListener(this);
+        mDate=mTimeSelectUtil.getDate();
+        mTvDate.setText(mDate);
     }
 
     private void initListener() {
@@ -216,7 +224,7 @@ public class PayRecordActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.rl_date_selector:
-                initOptionPicker();
+                mTimeSelectUtil.initOptionPicker();
                 break;
             case R.id.tv_add:
                 showFiltrateDialog();
@@ -227,95 +235,6 @@ public class PayRecordActivity extends BaseActivity {
         }
     }
 
-    private OptionsPickerView pvOptions;
-    private ArrayList<ProvinceBean> options1Items = new ArrayList<>();
-    private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
-    private String[] mDateArr = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
-
-    private void initOptionPicker() {
-        if (pvOptions == null) {
-            pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
-                @Override
-                public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                    //返回的分别是三个级别的选中位置
-                    if (options2 >= 0) {
-                        mDate = options1Items.get(options1).getPickerViewText()
-                                + "-" + options2Items.get(options1).get(options2);
-                        mTvDate.setText(mDate);
-                        initData(PULL_DOWN,1);
-                    }
-                }
-            })
-                    .setContentTextSize(20)//设置滚轮文字大小
-                    .setDividerColor(Color.LTGRAY)//设置分割线的颜色
-                    .setSelectOptions(0, 0)//默认选中项
-                    .setBgColor(getResources().getColor(R.color.white))
-                    .setTitleBgColor(getResources().getColor(R.color.gray2))
-                    .setCancelColor(Color.BLACK)
-                    .setSubmitColor(getResources().getColor(R.color.blue2))
-                    .setTextColorCenter(Color.BLACK)
-                    .isRestoreItem(true)//切换时是否还原，设置默认选中第一项。
-                    .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-                    .setLabels(getString(R.string.year), getString(R.string.month), getString(R.string.day))
-                    .setBackgroundId(0x00000000) //设置外部遮罩颜色
-                    .build();
-            pvOptions.setPicker(options1Items, options2Items);//二级选择器
-        }
-        pvOptions.show();
-    }
-
-    private void getOptionData() {
-        mSimpleDateFormat = new SimpleDateFormat("yyyy-MM");
-        Date date = new Date(System.currentTimeMillis());
-        mDate = mSimpleDateFormat.format(date);
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("MM");
-        Date date2 = new Date(System.currentTimeMillis());
-        int month = Integer.parseInt(simpleDateFormat2.format(date2));
-        //选项1
-        options1Items.add(new ProvinceBean(0, "2018", "描述部分", "其他数据"));
-        options1Items.add(new ProvinceBean(1, "2017", "描述部分", "其他数据"));
-
-        //选项2
-        ArrayList<String> options2Items_01 = new ArrayList<>();
-        for (String s : mDateArr) {
-            if (month >= Integer.parseInt(s)) {
-                options2Items_01.add(s);
-            }
-        }
-        Collections.reverse(options2Items_01);
-        UtilTool.Log("時間", options2Items_01.size() + "");
-        ArrayList<String> options2Items_02 = new ArrayList<>();
-        options2Items_02.add("12");
-        options2Items_02.add("11");
-        options2Items_02.add("10");
-        options2Items_02.add("09");
-        options2Items_02.add("08");
-        options2Items_02.add("07");
-        options2Items_02.add("06");
-        options2Items_02.add("05");
-        options2Items_02.add("04");
-        options2Items_02.add("03");
-        options2Items_02.add("02");
-        options2Items_02.add("01");
-        ArrayList<String> options2Items_03 = new ArrayList<>();
-        options2Items_02.add("12");
-        options2Items_02.add("11");
-        options2Items_02.add("10");
-        options2Items_02.add("09");
-        options2Items_02.add("08");
-        options2Items_02.add("07");
-        options2Items_02.add("06");
-        options2Items_02.add("05");
-        options2Items_02.add("04");
-        options2Items_02.add("03");
-        options2Items_02.add("02");
-        options2Items_02.add("01");
-        options2Items.add(options2Items_01);
-        options2Items.add(options2Items_02);
-//        options2Items.add(options2Items_03);
-
-        /*--------数据源添加完毕---------*/
-    }
 
     //显示账单筛选dialog
 
@@ -379,7 +298,13 @@ public class PayRecordActivity extends BaseActivity {
         super.onDestroy();
         if (mBottomDialog != null)
             mBottomDialog.dismiss();
-        if (pvOptions != null)
-            pvOptions.dismiss();
+        mTimeSelectUtil.dismiss();
+    }
+
+    @Override
+    public void getTime(String time) {
+        mDate=time;
+        mTvDate.setText(mDate);
+        initData(PULL_DOWN,1);
     }
 }

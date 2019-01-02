@@ -84,12 +84,12 @@ public class DillDataPresenter {
                 });
     }
 
-    public void getInOutData(String type, String id, final CallBack2 callBack) {
+    public void getInOutData(String type, String id,int page,String keyword,String date, final CallBack2 callBack) {
         UtilTool.Log("充提幣", id);
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .coinOutLog(UtilTool.getToken(), type, id)
+                .coinOutLog(UtilTool.getToken(), type, id,page,keyword,date)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<InOutInfo>() {
