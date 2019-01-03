@@ -58,7 +58,7 @@ public class AccountBindingPresenter implements AccountBindingContacts.Presenter
     @Override
     public void bind(String email,String password) {
         if (StringUtils.isEmpty(email)) {
-            ToastShow.showToast(mActivity, mActivity.getString(R.string.toast_email));
+            ToastShow.showToast(mActivity, mActivity.getString(R.string.toast_email_or_phone));
         }
         if (StringUtils.isEmpty(password)) {
             ToastShow.showToast(mActivity, mActivity.getString(R.string.toast_password));

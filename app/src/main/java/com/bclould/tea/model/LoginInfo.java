@@ -68,6 +68,8 @@ public class LoginInfo {
         private int country_id;
         private String alipay_uuid;
         private boolean bind_ftc;
+        private String email;
+        private String mobile;
 
         public boolean isBind_ftc() {
             return bind_ftc;

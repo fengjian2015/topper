@@ -41,7 +41,7 @@ public class MySharedPreferences {
 
     //存储布尔值sp
     public void setBoolean(String value, boolean key) {
-        if(mContext==null){
+        if(!ContextUtil.isExist(mContext)){
             MyApp.getInstance().initSharedPreferences();
             return;
         }
@@ -57,7 +57,7 @@ public class MySharedPreferences {
 
     //取出布尔值sp
     public boolean getBoolean(String value) {
-        if(mContext==null){
+        if(!ContextUtil.isExist(mContext)){
             MyApp.getInstance().initSharedPreferences();
             return false;
         }
@@ -71,7 +71,7 @@ public class MySharedPreferences {
 
     //存储字符串sp
     public void setString(String key, String value) {
-        if(mContext==null){
+        if(!ContextUtil.isExist(mContext)){
             MyApp.getInstance().initSharedPreferences();
             return;
         }
@@ -87,7 +87,7 @@ public class MySharedPreferences {
 
     //取出字符串sp
     public String getString(String value) {
-        if(mContext==null){
+        if(!ContextUtil.isExist(mContext)){
             MyApp.getInstance().initSharedPreferences();
             return "";
         }
@@ -101,7 +101,7 @@ public class MySharedPreferences {
 
     //存储整数sp
     public void setInteger(String value, int key) {
-        if(mContext==null){
+        if(!ContextUtil.isExist(mContext)){
             MyApp.getInstance().initSharedPreferences();
             return;
         }
@@ -117,7 +117,7 @@ public class MySharedPreferences {
 
     //取出字符串sp
     public int getInteger(String value) {
-        if(mContext==null){
+        if(!ContextUtil.isExist(mContext)){
             MyApp.getInstance().initSharedPreferences();
             return 0;
         }
@@ -131,7 +131,7 @@ public class MySharedPreferences {
 
     //存储整数sp
     public void setLong(String value, long key) {
-        if(mContext==null){
+        if(!ContextUtil.isExist(mContext)){
             MyApp.getInstance().initSharedPreferences();
             return;
         }
@@ -147,7 +147,7 @@ public class MySharedPreferences {
 
     //取出字符串sp
     public long getLong(String value) {
-        if(mContext==null){
+        if(!ContextUtil.isExist(mContext)){
             MyApp.getInstance().initSharedPreferences();
             return 0;
         }

@@ -26,7 +26,7 @@
         
     <string name="et_username">请输入用户名</string>
         
-    <string name="et_vcode">输入电邮验证码</string>
+    <string name="et_vcode">输入验证码</string>
         
     <string name="agreement">同意服务协议</string>
         
@@ -365,7 +365,7 @@
         
     <string name="hint_unfinished">开发当中，敬请期待</string>
         
-    <string name="vcode">电邮验证码</string>
+    <string name="vcode">验证码</string>
         
     <string name="last_step">上一步</string>
         
@@ -2380,4 +2380,5 @@
     <string name="et_emily_or_phone">请输入电邮号或手机号</string>
     <string name="please_enter_code">请输入验证码</string>
     <string name="toast_email_or_phone">电邮号或手机号不能为空</string>
+    <string name="email_or_phone">电邮/手机</string>
 </resources>

@@ -44,7 +44,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.bclould.tea.Presenter.LoginPresenter.EMAIL;
 
 /**
  * Created by GA on 2017/11/29.
@@ -112,7 +111,7 @@ public class GoogleVerificationActivity extends BaseActivity {
     }
 
     private void initInterface() {
-        mEmail = MySharedPreferences.getInstance().getString(EMAIL);
+        mEmail = UtilTool.getEmail();
         mTvEmail.setText(mEmail);
         mTvEmail2.setText(mEmail);
         getGoogleKey();

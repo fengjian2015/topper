@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
-                android:text="@string/email"/>
+                android:text="@string/email_or_phone"/>
 
             <TextView
                 android:id="@+id/tv_email"

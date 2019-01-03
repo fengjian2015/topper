@@ -379,9 +379,9 @@ public class WsConnection {
     }
 
     public void goMainActivity(final int whence) {
+        logoutService(mContext);
         MySharedPreferences.getInstance().setString(TOKEN, "");
         MySharedPreferences.getInstance().setString(LoginPresenter.TOCOID, "");
-        logoutService(mContext);
         MyApp.getInstance().mCoinList.clear();
         MyApp.getInstance().mPayCoinList.clear();
         MyApp.getInstance().mOtcCoinList.clear();

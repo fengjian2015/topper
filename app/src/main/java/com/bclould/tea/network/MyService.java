@@ -315,7 +315,7 @@ public interface MyService {
     Observable<RpRecordInfo> redPacketLog(
             @Header("Authorization") String token,
             @Field("type") String type,
-            @Field("page_id") int page_id,
+            @Field("page") int page,
             @Field("page_size") int page_size,
             @Field("year") String year
     );

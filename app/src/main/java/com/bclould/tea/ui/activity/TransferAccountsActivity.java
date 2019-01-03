@@ -139,7 +139,7 @@ public class TransferAccountsActivity extends BaseActivity {
 
     private boolean editCheck() {
         if (mEtEmail.getText().toString().isEmpty()) {
-            Toast.makeText(this, getString(R.string.toast_address), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_email_or_phone), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtEmail);
         } else if (mEtCoinCount.getText().toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_count), Toast.LENGTH_SHORT).show();

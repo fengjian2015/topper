@@ -28,7 +28,7 @@
         android:layout_marginTop="@dimen/y15"
         android:layout_toLeftOf="@+id/tv_yu_e"
         android:background="@drawable/bg_shallow_shape"
-        android:hint="@string/et_emily"
+        android:hint="@string/et_emily_or_phone"
         android:paddingLeft="@dimen/x20"
         android:paddingRight="@dimen/x20"
         android:singleLine="true"

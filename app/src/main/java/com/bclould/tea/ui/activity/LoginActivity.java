@@ -38,7 +38,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.bclould.tea.Presenter.LoginPresenter.EMAIL;
 import static com.bclould.tea.Presenter.LoginPresenter.LOGINPW;
 import static com.bclould.tea.ui.activity.my.systemxet.SystemSetActivity.PRIVATE;
 
@@ -81,7 +80,7 @@ public class LoginActivity extends LoginBaseActivity {
         ButterKnife.bind(this);
         initUserCodeList();
         if (MySharedPreferences.getInstance().getBoolean(PRIVATE)) {
-            String email = MySharedPreferences.getInstance().getString(EMAIL);
+            String email = UtilTool.getEmail();
             String logPW = MySharedPreferences.getInstance().getString(LOGINPW);
             mEtEmily.setText(email);
             mEtPassword.setText(logPW);

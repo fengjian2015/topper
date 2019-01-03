@@ -37,6 +37,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -104,7 +105,7 @@ public class RedPacketRecordActivity extends BaseActivity {
     private RPCoinsRVAdatper mRpCoinsRVAdatper;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int mPage_id = 0;
+    private int mPage = 1;
     private int mPageSize = 10;
     boolean isFinish = true;
     private String mType = "get";
@@ -134,11 +135,14 @@ public class RedPacketRecordActivity extends BaseActivity {
         UtilTool.getImage(new DBManager(this), UtilTool.getTocoId(), this, mIvTouxiang);
         mTypeList.add(getString(R.string.sum_rceive));
         mTypeList.add(getString(R.string.sum_send));
-        mTimeList.add("2018");
-        mTimeList.add("2017");
+        Calendar calendar = Calendar.getInstance();  //获取当前时间，作为图标的名字
+        int year = calendar.get(Calendar.YEAR);
+        mTimeList.add(year+"");
+        mTimeList.add(year-1+"");
+        mTimeList.add(year-2+"");
         initListener();
         initRecyclerView();
-        initData(PULL_DOWN);
+        initData(PULL_DOWN,1);
     }
 
     private void initRecyclerView() {
@@ -159,7 +163,7 @@ public class RedPacketRecordActivity extends BaseActivity {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 if (isFinish) {
-                    initData(PULL_UP);
+                    initData(PULL_UP,mPage+1);
                 }
             }
         });
@@ -167,16 +171,13 @@ public class RedPacketRecordActivity extends BaseActivity {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 if (isFinish) {
-                    initData(PULL_DOWN);
+                    initData(PULL_DOWN,1);
                 }
             }
         });
     }
 
-    private void initData(final int type) {
-        if (type == PULL_DOWN) {
-            mPage_id = 0;
-        }
+    private void initData(final int type,int page) {
         if (mType2 != null) {
             if (!mType2.equals(mType)) {
                 mTvLookAll.setText(getString(R.string.look_more_coin_red));
@@ -187,7 +188,7 @@ public class RedPacketRecordActivity extends BaseActivity {
         }
         mType2 = mType;
         isFinish = false;
-        mRedRecordPresenter.log(mType, mPage_id, mPageSize, mYear, new RedRecordPresenter.CallBack() {
+        mRedRecordPresenter.log(mType, page, mPageSize, mYear, new RedRecordPresenter.CallBack() {
 
             @Override
             public void send(RpRecordInfo.DataBean data) {
@@ -198,6 +199,7 @@ public class RedPacketRecordActivity extends BaseActivity {
                     } else {
                         mRefreshLayout.finishRefresh();
                     }
+                    mPage=mPageSize;
                     isFinish = true;
                     if (mDataList.size() != 0 || data.getLog().size() != 0) {
                         mLlData.setVisibility(View.VISIBLE);
@@ -232,9 +234,6 @@ public class RedPacketRecordActivity extends BaseActivity {
                             }
                         }
                         mDataList.addAll(data.getLog());
-                        if (mDataList.size() != 0) {
-                            mPage_id = mDataList.get(mDataList.size() - 1).getId();
-                        }
                         if (type == PULL_DOWN) {
                             mRpCoinsRVAdatper.notifyDataSetChanged();
                         }
@@ -336,11 +335,11 @@ public class RedPacketRecordActivity extends BaseActivity {
             } else {
                 mType = "get";
             }
-            initData(PULL_DOWN);
+            initData(PULL_DOWN,1);
         } else if (sign == TIME) {
             mTvTime.setText(name + getString(R.string.year));
             mYear = name;
-            initData(PULL_DOWN);
+            initData(PULL_DOWN,1);
         }
     }
 }

@@ -26,7 +26,7 @@
 
     <string name="et_username">Enter Username</string>
 
-    <string name="et_vcode">Email CAPTCHA</string>
+    <string name="et_vcode"> CAPTCHA</string>
 
     <string name="agreement">Agree to the Service Agreement</string>
 
@@ -365,7 +365,7 @@
 
     <string name="hint_unfinished">In the Development, Please Wait</string>
 
-    <string name="vcode">Email Code</string>
+    <string name="vcode">Code</string>
 
     <string name="last_step">Last Step</string>
 

@@ -12,7 +12,7 @@
     <string name="username">用戶名</string>
     <string name="send_regcode">發送驗證碼</string>
     <string name="et_username">請輸入用戶名</string>
-    <string name="et_vcode">輸入電郵驗證碼</string>
+    <string name="et_vcode">輸入驗證碼</string>
     <string name="agreement">同意服務協議</string>
     <string name="submit">提交</string>
     <string name="add">添加</string>
@@ -182,7 +182,7 @@
     <string name="et_expect_coin">請輸入期望添加的幣種</string>
     <string name="contact_information">聯繫方式</string>
     <string name="hint_unfinished">開發當中，敬請期待</string>
-    <string name="vcode">電郵驗證碼</string>
+    <string name="vcode">驗證碼</string>
     <string name="last_step">上一步</string>
     <string name="google_Authenticator">谷歌身份驗證器</string>
     <string name="download">下載</string>
