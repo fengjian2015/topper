@@ -40,7 +40,7 @@
 
     <string name="toast_captcha">CAPTCHACannot be Vacant</string>
 
-    <string name="toast_vcode">E-mail CAPTCHACannot be Vacant</string>
+    <string name="toast_vcode">CAPTCHACannot be Vacant</string>
 
     <string name="toast_agreement">Please Agree to the Service Agreement</string>
 

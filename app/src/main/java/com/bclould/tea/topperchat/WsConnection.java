@@ -394,10 +394,12 @@ public class WsConnection {
                     mContext = MyApp.getInstance();
                 }
             }
+
             Intent intent = new Intent(mContext, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("whence", whence);
             mContext.startActivity(intent);
+            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_the_interface)));
             setIsCheckActvity(false);
         }
     }

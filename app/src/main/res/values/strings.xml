@@ -34,13 +34,13 @@
         
     <string name="add">添加</string>
         
-    <string name="toast_email">电邮不能为空</string>
+    <string name="toast_email">电邮号不能为空</string>
         
     <string name="toast_password">密码不能为空</string>
         
     <string name="toast_captcha">图形验证码不能为空</string>
         
-    <string name="toast_vcode">电邮验证码不能为空</string>
+    <string name="toast_vcode">验证码不能为空</string>
         
     <string name="toast_agreement">请同意服务协议</string>
         
@@ -2377,4 +2377,7 @@
     <string name="block">区块TXID：</string>
     <string name="address1">地址：</string>
     <string name="input_address_name_email">输入地址、用户名或邮箱进行搜索</string>
+    <string name="et_emily_or_phone">请输入电邮号或手机号</string>
+    <string name="please_enter_code">请输入验证码</string>
+    <string name="toast_email_or_phone">电邮号或手机号不能为空</string>
 </resources>

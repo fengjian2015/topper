@@ -108,13 +108,10 @@ public class RegisterActivity extends LoginBaseActivity {
     //验证邮箱和图形验证码
     private boolean checkEdit() {
         if (mEtEmail.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.toast_email_or_phone), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtEmail);
         } else if (mEtUsername.getText().toString().trim().equals("")) {
             Toast.makeText(this, getResources().getString(R.string.toast_username), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtUsername);
-        } else if (!mEtEmail.getText().toString().contains("@")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_email_format), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtUsername);
         } else if (mEtUsername.getText().toString().length() < 6) {
             Toast.makeText(this, getResources().getString(R.string.toast_username_min), Toast.LENGTH_SHORT).show();

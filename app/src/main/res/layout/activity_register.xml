@@ -50,7 +50,7 @@
                 android:id="@+id/et_email"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y120"
-                android:hint="@string/et_emily"
+                android:hint="@string/et_emily_or_phone"
                 android:lines="1"
                 android:maxLength="28"
                 android:maxLines="1"

@@ -301,6 +301,7 @@ public class IndividualDetailsActivity extends BaseActivity {
     }
 
     private void lookLargerImage() {
+        if(individualInfo==null)return;
         Intent intent = new Intent(this, LargerImageActivity.class);
         intent.putExtra("url", individualInfo.getAvatar());
         startActivity(intent);

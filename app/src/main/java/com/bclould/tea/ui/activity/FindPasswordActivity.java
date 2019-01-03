@@ -113,7 +113,7 @@ public class FindPasswordActivity extends LoginBaseActivity {
     //验证手机号和密码
     private boolean checkEdit() {
         if (mEtEmail.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.toast_email_or_phone), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtEmail);
         } else if (mEtVcode.getText().toString().trim().equals("")) {
             Toast.makeText(this, getResources().getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
@@ -121,9 +121,6 @@ public class FindPasswordActivity extends LoginBaseActivity {
         } else if (mEtPassword.getText().toString().trim().equals("")) {
             Toast.makeText(this, getResources().getString(R.string.toast_password), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtPassword);
-        } else if (!mEtEmail.getText().toString().contains("@")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_email_format), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtEmail);
         } else {
             return true;
         }
@@ -153,10 +150,7 @@ public class FindPasswordActivity extends LoginBaseActivity {
                 break;
             case R.id.tv_send:
                 if (mEtEmail.getText().toString().isEmpty()) {
-                    Toast.makeText(this, getResources().getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
-                    AnimatorTool.getInstance().editTextAnimator(mEtEmail);
-                } else if (!mEtEmail.getText().toString().contains("@")) {
-                    Toast.makeText(this, getResources().getString(R.string.toast_email_format), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.toast_email_or_phone), Toast.LENGTH_SHORT).show();
                     AnimatorTool.getInstance().editTextAnimator(mEtEmail);
                 } else {
                     sendVcode();

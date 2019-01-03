@@ -217,8 +217,8 @@ public class MainActivity extends BaseActivity {
             checkVersion();
         }
         if (1 == whence) {
-            DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
-            discoverFragment.initInterface();
+            ConversationFragment conversationFragment = ConversationFragment.getInstance();
+            conversationFragment.initInterface();
             setSelector(0);
             //切换Fragment
             changeFragment(0);
@@ -229,8 +229,8 @@ public class MainActivity extends BaseActivity {
             getChatBackGround();
             mallLogin();
         } else if (2 == whence || 3 == whence) {
-            ConversationFragment discoverFragment = ConversationFragment.getInstance();
-            discoverFragment.onStateChange(ConnectStateChangeListenerManager.CONNECTING);
+            ConversationFragment conversationFragment = ConversationFragment.getInstance();
+            conversationFragment.initInterface();
             setSelector(0);
             //切换Fragment
             changeFragment(0);

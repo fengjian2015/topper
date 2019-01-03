@@ -70,6 +70,7 @@ public class LoginActivity extends LoginBaseActivity {
     private EmailCodeAdapter mAdapter;
     private String mCoordinate;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -239,14 +240,11 @@ public class LoginActivity extends LoginBaseActivity {
     //验证手机号和密码
     private boolean checkEdit() {
         if (mEtEmily.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.toast_email_or_phone), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtEmily);
         } else if (mEtPassword.getText().toString().trim().equals("")) {
             Toast.makeText(this, getResources().getString(R.string.toast_password), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtPassword);
-        } else if (!mEtEmily.getText().toString().contains("@")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_email_format), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtEmily);
         } else {
             return true;
         }

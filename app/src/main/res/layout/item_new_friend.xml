@@ -30,7 +30,7 @@
         android:layout_height="@dimen/y70"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/x20"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/bg_blue_shape5"
         android:gravity="center"
         android:text="@string/consent"
         android:textColor="@color/white"
@@ -43,10 +43,10 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/x20"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/bg_white_shape"
         android:gravity="center"
         android:text="@string/reject"
-        android:textColor="@color/white"
+        android:textColor="@color/red"
         android:textSize="@dimen/x26"/>
     <TextView
         style="@style/HorizontalBoundaryStyle"

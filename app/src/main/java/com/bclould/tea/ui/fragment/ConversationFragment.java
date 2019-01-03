@@ -142,13 +142,29 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         ButterKnife.bind(this, view);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
+        initInterface();
+        return view;
+    }
+
+    public void initInterface() {
         mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));
         mgr = new DBManager(getActivity());
         mDBRoomMember = new DBRoomMember(getActivity());
         mDBRoomManage = new DBRoomManage(getActivity());
         mRefreshList = new RefreshList();
         createFile();
-        return view;
+
+        getPhoneSize();
+        initRecyclerView();
+        if (!WsConnection.getInstance().getOutConnection()) {
+            initRelogin();
+            initData();
+        } else {
+            mTvTitle.setText(getString(R.string.talk));
+            mLlNoData.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.GONE);
+            mLlNoLogin.setVisibility(View.VISIBLE);
+        }
     }
 
     private void createFile() {
@@ -156,21 +172,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         UtilTool.createNomedia(Constants.PUBLICDIR);
         UtilTool.createNomedia(Constants.VIDEO);
         UtilTool.createNomedia(getActivity().getFilesDir().getAbsolutePath() + "/images");
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getPhoneSize();
-        initRecyclerView();
-        if (!WsConnection.getInstance().getOutConnection()) {
-            initRelogin();
-            initData();
-        } else {
-            mLlNoData.setVisibility(View.GONE);
-            mRecyclerView.setVisibility(View.GONE);
-            mLlNoLogin.setVisibility(View.VISIBLE);
-        }
     }
 
     @SuppressLint("HandlerLeak")
@@ -239,7 +240,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     @Override
     public void onStateChange(int serviceState) {
-        if (serviceState == -1 || mTvTitle == null || mTitleProgress == null) return;
+        if (serviceState == -1 || mTvTitle == null || mTitleProgress == null||WsConnection.getInstance().getOutConnection()) return;
         onChangeChatState(serviceState);
         if (imState == serviceState) {
             return;
@@ -429,7 +430,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         } else if (msg.equals(getString(R.string.refresh_the_interface))) {
             mLlNoLogin.setVisibility(View.GONE);
             mTitleProgress.setVisibility(View.GONE);
-            initData();
+            initInterface();
         } else if (msg.equals(getString(R.string.modify_group_name))) {
             initData();
         } else if (msg.equals(EventBusUtil.refresh_group_room)) {

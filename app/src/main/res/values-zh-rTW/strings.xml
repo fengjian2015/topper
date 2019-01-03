@@ -19,7 +19,7 @@
     <string name="toast_email">電郵不能為空</string>
     <string name="toast_password">密碼不能為空</string>
     <string name="toast_captcha">圖形驗證碼不能為空</string>
-    <string name="toast_vcode">電郵驗證碼不能為空</string>
+    <string name="toast_vcode">驗證碼不能為空</string>
     <string name="toast_agreement">請同意服務協議</string>
     <string name="toast_succeed">登錄成功</string>
     <string name="toast_pay_password">PIN密碼不能為空</string>

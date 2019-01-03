@@ -53,7 +53,7 @@
                     android:id="@+id/et_vcode"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/et_vcode"
+                    android:hint="@string/please_enter_code"
                     android:inputType="number"
                     android:lines="1"
                     android:maxLength="6"

@@ -91,10 +91,32 @@ public class ReviewListAdapter extends RecyclerView.Adapter {
                             @Override
                             public void send() {
                                 //同意操作
-                                mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                                mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
-                                mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
-                                mBtnConsent.setEnabled(false);
+                                mBtnConsent.setVisibility(View.GONE);
+                                btn_reject.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                                btn_reject.setText(mContext.getString(R.string.agrd_agreed));
+                                btn_reject.setTextColor(mContext.getResources().getColor(R.color.gray));
+                                btn_reject.setEnabled(false);
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            btn_reject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        // TODO: 2019/1/3 拒绝接口
+                        new GroupPresenter(mContext).setReview(mAddRequestInfo.getGroup_id(),3 , mAddRequestInfo.getTo_toco_id(), new GroupPresenter.CallBack() {
+                            @Override
+                            public void send() {
+                                mBtnConsent.setVisibility(View.GONE);
+                                //拒绝操作
+                                btn_reject.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                                btn_reject.setText(mContext.getString(R.string.denied));
+                                btn_reject.setTextColor(mContext.getResources().getColor(R.color.gray));
+                                btn_reject.setEnabled(false);
                             }
                         });
                     } catch (Exception e) {
@@ -122,15 +144,25 @@ public class ReviewListAdapter extends RecyclerView.Adapter {
             }
             mName.setText(addRequestInfo.getTo_name());
             if (addRequestInfo.getStatus() == 1) {
+                btn_reject.setEnabled(true);
+                btn_reject.setBackground(mContext.getResources().getDrawable(R.drawable.bg_white_shape));
+                btn_reject.setText(mContext.getString(R.string.reject));
+                btn_reject.setTextColor(mContext.getResources().getColor(R.color.red));
+
+                mBtnConsent.setVisibility(View.VISIBLE);
                 mBtnConsent.setEnabled(true);
-                mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-                mBtnConsent.setText(mContext.getString(R.string.consent));
-                mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.white));
             }else if(addRequestInfo.getStatus() == 2){
-                mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
-                mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
-                mBtnConsent.setEnabled(false);
+                mBtnConsent.setVisibility(View.GONE);
+                btn_reject.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                btn_reject.setText(mContext.getString(R.string.agrd_agreed));
+                btn_reject.setTextColor(mContext.getResources().getColor(R.color.gray));
+                btn_reject.setEnabled(false);
+            }else if(addRequestInfo.getStatus() == 3){
+                mBtnConsent.setVisibility(View.GONE);
+                btn_reject.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                btn_reject.setText(mContext.getString(R.string.denied));
+                btn_reject.setTextColor(mContext.getResources().getColor(R.color.gray));
+                btn_reject.setEnabled(false);
             }
         }
     }
