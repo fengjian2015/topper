@@ -68,6 +68,8 @@ public class ReviewListAdapter extends RecyclerView.Adapter {
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.btn_reject)
+        Button btn_reject;
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
         @Bind(R.id.name)

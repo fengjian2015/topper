@@ -28,16 +28,26 @@
         android:id="@+id/btn_consent"
         android:layout_width="@dimen/x120"
         android:layout_height="@dimen/y70"
-        android:visibility="gone"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/x20"
         android:background="@color/colorPrimary"
         android:gravity="center"
         android:text="@string/consent"
         android:textColor="@color/white"
+        android:layout_toLeftOf="@+id/btn_reject"
         android:textSize="@dimen/x26"/>
-
+    <Button
+        android:id="@+id/btn_reject"
+        android:layout_width="@dimen/x120"
+        android:layout_height="@dimen/y70"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/x20"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="@string/reject"
+        android:textColor="@color/white"
+        android:textSize="@dimen/x26"/>
     <TextView
         style="@style/HorizontalBoundaryStyle"
         android:layout_alignParentBottom="true"/>
