@@ -2,10 +2,8 @@ package com.bclould.tea.ui.activity.my;
 
 import android.content.Intent;
 import android.graphics.Paint;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,7 +25,6 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/22.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class GuanYuMeActivity extends BaseActivity {
 
     @Bind(R.id.bark)

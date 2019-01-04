@@ -18,7 +18,6 @@ import java.util.List;
  * Created by GIjia on 2018/8/6.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DBConversationBurnManage {
 
     private Object lock=new Object();

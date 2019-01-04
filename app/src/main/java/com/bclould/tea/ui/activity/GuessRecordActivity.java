@@ -1,42 +1,30 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.bclould.tea.Presenter.BlockchainGuessPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.GuessListInfo;
 import com.bclould.tea.ui.adapter.GuessListRVAdapter;
 import com.bclould.tea.ui.widget.WinningPopWindow;
 import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,7 +33,6 @@ import butterknife.OnClick;
  * Created by GA on 2018/4/23.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class GuessRecordActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;

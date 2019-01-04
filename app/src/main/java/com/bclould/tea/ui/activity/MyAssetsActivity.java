@@ -1,12 +1,9 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,29 +21,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.SubscribeCoinPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.MyAssetsInfo;
 import com.bclould.tea.ui.adapter.MyWalletRVAapter;
 import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.SpaceItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -56,7 +46,6 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/22.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MyAssetsActivity extends BaseActivity {
 
     @Bind(R.id.et_coin_name)
@@ -119,7 +108,7 @@ public class MyAssetsActivity extends BaseActivity {
         mSubscribeCoinPresenter.getTotal(new SubscribeCoinPresenter.CallBack3() {
             @Override
             public void send(String data) {
-                if (data != null && !MyAssetsActivity.this.isDestroyed()) {
+                if (data != null && ActivityUtil.isActivityOnTop(MyAssetsActivity.this)) {
                     mCount++;
                     if (mCount == 2) {
                         mLlData.setVisibility(View.VISIBLE);
@@ -186,7 +175,7 @@ public class MyAssetsActivity extends BaseActivity {
         mSubscribeCoinPresenter.getMyAssets(new SubscribeCoinPresenter.CallBack() {
             @Override
             public void send(List<MyAssetsInfo.DataBean> info) {
-                if (!MyAssetsActivity.this.isDestroyed() && info.size() != 0) {
+                if (ActivityUtil.isActivityOnTop(MyAssetsActivity.this) && info.size() != 0) {
                     mCount++;
                     if (mCount == 2) {
                         mLlData.setVisibility(View.VISIBLE);

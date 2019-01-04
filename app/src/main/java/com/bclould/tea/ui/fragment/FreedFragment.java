@@ -1,10 +1,8 @@
 package com.bclould.tea.ui.fragment;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,7 +31,6 @@ import butterknife.ButterKnife;
 /**
  * Created by GIjia on 2018/8/22.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FreedFragment extends LazyFragment {
     private View view;
     // 标志位，标志已经初始化完成。

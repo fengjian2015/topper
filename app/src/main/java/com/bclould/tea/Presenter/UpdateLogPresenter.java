@@ -33,7 +33,6 @@ import static com.bclould.tea.ui.activity.PayPwSelectorActivity.GESTURE_PW_SELE;
  * Created by GA on 2018/5/28.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class UpdateLogPresenter {
 
     private final Context mContext;

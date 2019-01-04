@@ -40,7 +40,6 @@ import static com.bclould.tea.Presenter.LoginPresenter.TOKEN_TIME;
  */
 
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class RetrofitUtil {
 
     private static final long DEFAULT_DIR_CACHE = 2000;

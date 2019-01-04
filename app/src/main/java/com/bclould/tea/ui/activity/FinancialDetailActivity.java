@@ -2,9 +2,7 @@ package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -45,7 +43,6 @@ import butterknife.OnClick;
 
 import static com.bclould.tea.R.style.BottomDialog;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FinancialDetailActivity extends BaseActivity {
 
     @Bind(R.id.tv_coin)

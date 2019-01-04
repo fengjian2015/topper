@@ -1,34 +1,25 @@
 package com.bclould.tea.ui.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseNormalActivity;
-import com.bclould.tea.base.MyApp;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.cjt2325.cameralibrary.JCameraView;
 import com.cjt2325.cameralibrary.listener.JCameraListener;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
 
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CameraActivity extends BaseNormalActivity {
     private final int GET_PERMISSION_REQUEST = 100; //权限申请自定义码
     private JCameraView jCameraView;

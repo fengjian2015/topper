@@ -1,26 +1,19 @@
 package com.bclould.tea.ui.activity;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-
 import com.bclould.tea.Presenter.DistributionPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.BindingInfo;
 import com.bclould.tea.utils.UtilTool;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MyBindingActivity extends BaseActivity {
 
     @Bind(R.id.touxiang)

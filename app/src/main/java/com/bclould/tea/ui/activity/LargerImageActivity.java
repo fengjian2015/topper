@@ -3,25 +3,18 @@ package com.bclould.tea.ui.activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.WindowManager;
-
 import com.andy6804tw.zoomimageviewlibrary.ZoomImageView;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.QRDiscernUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class LargerImageActivity extends BaseActivity {
     @Bind(R.id.image)
     ZoomImageView mImage;
@@ -30,7 +23,9 @@ public class LargerImageActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(getResources().getColor(R.color.black));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.black));
+        }
         setContentView(R.layout.activity_larger_image);
         ButterKnife.bind(this);
         initgetIntent();

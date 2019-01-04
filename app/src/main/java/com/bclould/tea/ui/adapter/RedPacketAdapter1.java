@@ -1,24 +1,17 @@
 package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
-import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.utils.UtilTool;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -26,7 +19,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/1/17.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class RedPacketAdapter1 extends BaseAdapter {
 
     private final List<GrabRedInfo.DataBean.LogBean> mLogBeanList;

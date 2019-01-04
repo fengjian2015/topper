@@ -1,30 +1,21 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseNormalActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.fragment.FriendListFragment;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.QRDiscernUtil;
 import com.bclould.tea.utils.UtilTool;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,7 +27,6 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
  * Created by GA on 2017/9/15.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ScanQRCodeActivity extends BaseNormalActivity implements QRCodeView.Delegate {
 
     @Bind(R.id.zxingview)

@@ -1,8 +1,6 @@
 package com.bclould.tea.utils;
 
 import android.app.KeyguardManager;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
 
@@ -12,7 +10,6 @@ import com.bclould.tea.base.MyApp;
  * Created by GA on 2018/5/17.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FingerprintUtil {
     public static CancellationSignal cancellationSignal;
 

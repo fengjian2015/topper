@@ -3,8 +3,6 @@ package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +31,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/3/9.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ChatServerAdapter extends RecyclerView.Adapter {
     public static final int ADMINISTRATOR_OTC_ORDER_MSG = 14;//管理員otc訂單消息
     public static final int ADMINISTRATOR_RED_PACKET_EXPIRED_MSG = 15;//管理員紅包過期消息

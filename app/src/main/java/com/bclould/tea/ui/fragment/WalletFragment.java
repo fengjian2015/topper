@@ -1,10 +1,8 @@
 package com.bclould.tea.ui.fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
@@ -15,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.model.CardInfo;
 import com.bclould.tea.topperchat.WsConnection;
@@ -43,7 +40,6 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/19.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class WalletFragment extends Fragment {
 
     public static WalletFragment instance = null;

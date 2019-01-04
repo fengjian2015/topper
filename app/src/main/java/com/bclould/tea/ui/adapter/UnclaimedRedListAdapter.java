@@ -2,9 +2,7 @@ package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,27 +13,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bclould.tea.Presenter.GrabRedPresenter;
-import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.GrabRedInfo;
-import com.bclould.tea.model.MessageInfo;
-import com.bclould.tea.model.ReviewInfo;
 import com.bclould.tea.model.UnclaimedRedInfo;
 import com.bclould.tea.ui.activity.RedPacketActivity;
-import com.bclould.tea.ui.activity.UnclaimedRedActivity;
 import com.bclould.tea.ui.widget.CurrencyDialog;
 import com.bclould.tea.ui.widget.MyYAnimation;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
-
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -43,7 +34,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/10/12.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class UnclaimedRedListAdapter extends RecyclerView.Adapter {
 
     private  Context mContext;

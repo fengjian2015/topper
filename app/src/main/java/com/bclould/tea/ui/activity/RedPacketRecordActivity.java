@@ -1,6 +1,5 @@
 package com.bclould.tea.ui.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,11 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.RedRecordPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.RpRecordInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter;
@@ -34,13 +31,11 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -51,7 +46,6 @@ import static com.bclould.tea.R.style.BottomDialog;
  * Created by GA on 2018/1/3.
  */
 
-@SuppressLint("NewApi")
 public class RedPacketRecordActivity extends BaseActivity {
 
     private static final int TIME = 0;

@@ -152,7 +152,6 @@ import static com.bclould.tea.utils.MySharedPreferences.SETTING;
  * Created by GIjia on 2018/6/5.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SocketListener {
     private ObjectMapper objectMapper = new ObjectMapper(new MessagePackFactory());
     private Context context;

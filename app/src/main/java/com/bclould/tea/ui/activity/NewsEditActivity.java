@@ -1,14 +1,12 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.Base64;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -20,47 +18,35 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bclould.tea.Presenter.NewsNoticePresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 
 /**
  * Created by GA on 2018/5/8.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsEditActivity extends BaseActivity {
 
     @Bind(R.id.progressBar)
@@ -153,11 +139,13 @@ public class NewsEditActivity extends BaseActivity {
             json.put("is_draft", isDraft);
             json.put("user_id", UtilTool.getUserId());
             UtilTool.Log("新聞", json.toString());
-            mWebView.evaluateJavascript("javascript:publish('" + json.toString() + "')", new ValueCallback<String>() {
-                @Override
-                public void onReceiveValue(String value) {
-                }
-            });
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                mWebView.evaluateJavascript("javascript:publish('" + json.toString() + "')", new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String value) {
+                    }
+                });
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -351,12 +339,14 @@ public class NewsEditActivity extends BaseActivity {
         try {
             JSONObject json = new JSONObject();
             json.put("img", "data:image/png;base64," + base64Str);
-            mWebView.evaluateJavascript("javascript:insertImg('" + json.toString() + "')", new ValueCallback<String>() {
-                @Override
-                public void onReceiveValue(String value) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                mWebView.evaluateJavascript("javascript:insertImg('" + json.toString() + "')", new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String value) {
 
-                }
-            });
+                    }
+                });
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

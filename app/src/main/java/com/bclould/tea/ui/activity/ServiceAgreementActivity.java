@@ -1,23 +1,15 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.webkit.WebView;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.LoginBaseActivity;
-import com.bclould.tea.base.MyApp;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,7 +18,6 @@ import butterknife.OnClick;
  * Created by GA on 2018/4/13.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ServiceAgreementActivity extends LoginBaseActivity {
 
 

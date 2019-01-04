@@ -1,26 +1,18 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.SerMap;
 import com.bclould.tea.ui.fragment.ImageViewFragment;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +21,6 @@ import java.util.List;
  * Created by GA on 2018/3/7.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ImageViewActivity extends BaseActivity {
     private ArrayList<String> imageList;
     private List<Fragment> fragList;

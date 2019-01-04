@@ -1,11 +1,8 @@
 package com.bclould.tea.ui.activity.my;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.TextView;
 import com.bclould.tea.R;
@@ -17,7 +14,6 @@ import com.bclould.tea.ui.activity.LoginSetActivity;
 import com.bclould.tea.ui.activity.PayPasswordActivity;
 import com.bclould.tea.ui.activity.PayPwSelectorActivity;
 import com.bclould.tea.ui.activity.RealNameC1Activity;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 
 import butterknife.Bind;
@@ -30,7 +26,6 @@ import static com.bclould.tea.Presenter.LoginPresenter.STATE;
  * Created by GA on 2017/10/11.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class UserSafetyActivity extends BaseActivity {
     @Bind(R.id.tv_status)
     TextView mTvStatus;

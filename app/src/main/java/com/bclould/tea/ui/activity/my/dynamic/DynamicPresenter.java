@@ -5,16 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseView;
 import com.bclould.tea.history.DBManager;
@@ -47,7 +42,6 @@ import static com.luck.picture.lib.config.PictureMimeType.ofImage;
  * Created by fengjian on 2018/12/29.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DynamicPresenter implements DynamicContacts.Presenter{
     private DynamicContacts.View mView;
     private Activity mActivity;

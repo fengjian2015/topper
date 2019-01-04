@@ -1,61 +1,24 @@
 package com.bclould.tea.ui.activity.my.systemxet;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.bclould.tea.Presenter.GroupPresenter;
-import com.bclould.tea.Presenter.LogoutPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.ui.activity.ProblemFeedBackActivity;
-import com.bclould.tea.ui.activity.SelectorLanguageActivity;
-import com.bclould.tea.ui.activity.SerchImageActivity;
-import com.bclould.tea.ui.widget.DeleteCacheDialog;
-import com.bclould.tea.ui.widget.MenuListPopWindow;
-import com.bclould.tea.utils.Constants;
-import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.MySharedPreferences;
-import com.bclould.tea.utils.StringUtils;
-import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.compress.Luban;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.entity.LocalMedia;
-
-import org.greenrobot.eventbus.EventBus;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.bclould.tea.ui.activity.SerchImageActivity.TYPE_BACKGROUND;
-import static com.bclould.tea.utils.MySharedPreferences.SETTING;
-import static com.luck.picture.lib.config.PictureMimeType.ofImage;
-
 /**
  * Created by GA on 2017/9/22.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SystemSetActivity extends BaseActivity implements SystemSetContacts.View{
     public static final String INFORM = "inform";
     public static final String PRIVATE = UtilTool.getUserId() + "private";

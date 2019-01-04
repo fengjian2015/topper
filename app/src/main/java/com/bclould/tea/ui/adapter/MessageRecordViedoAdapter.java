@@ -2,12 +2,9 @@ package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +39,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
  * Created by GIjia on 2018/5/15.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MessageRecordViedoAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<MessageInfo> messageInfoList;

@@ -1,21 +1,16 @@
 package com.bclould.tea.base;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
-
 import butterknife.ButterKnife;
 
 /**
@@ -23,7 +18,6 @@ import butterknife.ButterKnife;
  */
 
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class BaseNormalActivity extends AppCompatActivity {
     protected TextView mTvTitleTop;
     protected TextView mTvAdd;

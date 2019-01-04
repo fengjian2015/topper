@@ -18,12 +18,10 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.bclould.tea.R;
-import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBConversationBurnManage;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.MessageInfo;
-import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.topperchat.MessageManage;
 import com.bclould.tea.topperchat.WsConnection;
@@ -34,17 +32,12 @@ import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -69,7 +62,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_WITHDRAW_MSG;
  * Created by GIjia on 2018/5/17.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SingleManage implements Room {
     private DBManager mMgr;
     private DBConversationBurnManage mDBConversationBurnManage;

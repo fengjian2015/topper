@@ -2,9 +2,6 @@ package com.bclould.tea.Presenter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.CollectInfo;
@@ -30,7 +27,6 @@ import static com.bclould.tea.ui.activity.CollectActivity.COLLECT_JOSN;
  * Created by GA on 2018/7/13.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CollectPresenter {
 
     private final Context mContext;

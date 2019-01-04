@@ -1,8 +1,6 @@
 package com.bclould.tea.ui.activity.ftc.myteam;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,7 +19,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MyTeamActivity extends BaseActivity implements MyTeamContacts.View{
 
 

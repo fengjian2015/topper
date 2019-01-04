@@ -34,7 +34,6 @@ import static com.bclould.tea.ui.activity.PayPwSelectorActivity.GESTURE_PW_SELE;
  * Created by GA on 2017/9/22.
  */
 
-@android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
 public class BaseActivity extends SwipeActivity {
 
     private static boolean isActive;

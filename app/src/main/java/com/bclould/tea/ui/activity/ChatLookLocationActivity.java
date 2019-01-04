@@ -1,24 +1,17 @@
 package com.bclould.tea.ui.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseNormalActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.CenterIcon;
 import com.bclould.tea.ui.widget.OpenMapFromBottomPopup;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.tencent.map.geolocation.TencentLocation;
@@ -33,14 +26,11 @@ import com.tencent.mapsdk.raster.model.MarkerOptions;
 import com.tencent.tencentmap.mapsdk.map.MapView;
 import com.tencent.tencentmap.mapsdk.map.TencentMap;
 import com.tencent.tencentmap.mapsdk.map.UiSettings;
-
 import org.xutils.common.util.LogUtil;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ChatLookLocationActivity extends BaseNormalActivity implements
         TencentLocationListener, TencentMap.OnMapCameraChangeListener {
 

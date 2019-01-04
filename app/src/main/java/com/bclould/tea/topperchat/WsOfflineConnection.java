@@ -37,7 +37,6 @@ import static com.bclould.tea.topperchat.WsContans.TYPE;
 /**
  * Created by GIjia on 2018/6/11.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class WsOfflineConnection {
     private static WsOfflineConnection mInstance;
     private static Context mContext;

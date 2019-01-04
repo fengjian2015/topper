@@ -1,12 +1,9 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -16,7 +13,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -27,7 +23,6 @@ import com.bclould.tea.Presenter.PushBuyingPresenter;
 import com.bclould.tea.Presenter.SubscribeCoinPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.ModeOfPaymentInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter;
@@ -35,21 +30,16 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
-
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.bclould.tea.Presenter.LoginPresenter.CURRENCY;
 import static com.bclould.tea.Presenter.LoginPresenter.STATE;
 import static com.bclould.tea.Presenter.LoginPresenter.STATE_ID;
 import static com.bclould.tea.R.style.BottomDialog;
@@ -58,7 +48,6 @@ import static com.bclould.tea.R.style.BottomDialog;
  * Created by GA on 2017/11/2.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PushBuyingActivity extends BaseActivity {
 
     private static final int COINSIGN = 0;

@@ -1,16 +1,12 @@
 package com.bclould.tea.Presenter;
 
 import android.app.Activity;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import com.bclould.tea.R;
 import com.bclould.tea.model.MyAssetsInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.fragment.WalletFragment;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.UtilTool;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -21,7 +17,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2017/11/15.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CloudCoinPresenter {
 
     private final WalletFragment mWalletFragment;

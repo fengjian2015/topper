@@ -3,8 +3,6 @@ package com.bclould.tea.ui.activity.ftc.upgradenode;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 
 import com.bclould.tea.Presenter.DistributionPresenter;
@@ -28,7 +26,6 @@ import java.util.List;
  * Created by GIjia on 2018/12/27.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class UpgradeNodePresenter implements UpgradeNodeContacts.Presenter{
     private Activity mActivity;
     private UpgradeNodeContacts.View mView;

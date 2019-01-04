@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -18,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.FileDownloadPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
@@ -26,16 +24,13 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.DownloadInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +41,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FileOpenActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;

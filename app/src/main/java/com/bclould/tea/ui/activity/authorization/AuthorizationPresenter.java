@@ -22,7 +22,6 @@ import com.bclould.tea.utils.StringUtils;
  * Created by GIjia on 2018/12/25.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AuthorizationPresenter implements AuthorizationContacts.Presenter{
     private AuthorizationContacts.View mView;
     private Activity mContext;

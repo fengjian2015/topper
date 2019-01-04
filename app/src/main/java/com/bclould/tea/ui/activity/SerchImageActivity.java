@@ -1,11 +1,9 @@
 package com.bclould.tea.ui.activity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -39,7 +37,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SerchImageActivity extends BaseActivity {
     @Bind(R.id.et_content)
     EditText mEtContent;
@@ -60,6 +57,7 @@ public class SerchImageActivity extends BaseActivity {
     private LoadingProgressDialog mProgressDialog;
 
     private int type=0;
+    Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +70,7 @@ public class SerchImageActivity extends BaseActivity {
     }
 
     private void init() {
+        mHandler=new MyHandler();
         type=getIntent().getIntExtra("type",0);
         mEtContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -157,7 +156,8 @@ public class SerchImageActivity extends BaseActivity {
         }.start();
     }
 
-    Handler mHandler=new Handler(){
+    class MyHandler extends Handler{
+
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
@@ -169,7 +169,7 @@ public class SerchImageActivity extends BaseActivity {
                 case 2:
                     String url= (String) msg.obj;
                     if(StringUtils.isEmpty(url)){
-                       ToastShow.showToast2(SerchImageActivity.this,getString(R.string.picture_is_not_loaded));
+                        ToastShow.showToast2(SerchImageActivity.this,getString(R.string.picture_is_not_loaded));
                         return;
                     }
                     if(type==TYPE_BACKGROUND){
@@ -183,7 +183,7 @@ public class SerchImageActivity extends BaseActivity {
                     break;
             }
         }
-    };
+    }
 
     private void goSystemSet(final String url){
         showDialog();

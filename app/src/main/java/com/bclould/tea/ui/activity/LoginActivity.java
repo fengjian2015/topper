@@ -2,10 +2,8 @@ package com.bclould.tea.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
@@ -17,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.LoginBaseActivity;
@@ -29,15 +26,12 @@ import com.bclould.tea.ui.widget.MyAutoCompleteTextView;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import static com.bclould.tea.Presenter.LoginPresenter.LOGINPW;
 import static com.bclould.tea.ui.activity.my.systemxet.SystemSetActivity.PRIVATE;
 
@@ -45,9 +39,7 @@ import static com.bclould.tea.ui.activity.my.systemxet.SystemSetActivity.PRIVATE
  * Created by GA on 2017/9/20.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginActivity extends LoginBaseActivity {
-
 
     @Bind(R.id.iv_back)
     ImageView mIvBack;

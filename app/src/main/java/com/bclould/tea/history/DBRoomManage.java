@@ -18,7 +18,6 @@ import java.util.List;
  * Created by GIjia on 2018/5/24.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DBRoomManage {
     private final Context mContext;
     private static Object lock = new Object();

@@ -2,8 +2,6 @@ package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -30,7 +28,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/7/31.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class WalletPVAdapter extends PagerAdapter implements CardAdapter {
 
     private final Context mContext;

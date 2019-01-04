@@ -1,12 +1,9 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -30,7 +27,6 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.ExchangeOrderInfo;
@@ -40,7 +36,6 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -61,7 +56,6 @@ import static com.bclould.tea.R.style.BottomDialog;
  * Created by GA on 2018/4/4.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CoinExchangeActivity extends BaseActivity {
 
     @Bind(R.id.bark)

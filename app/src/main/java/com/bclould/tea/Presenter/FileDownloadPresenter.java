@@ -32,7 +32,6 @@ import java.util.Map;
  * Created by GA on 2018/7/11.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FileDownloadPresenter {
 
     private static FileDownloadPresenter instance;

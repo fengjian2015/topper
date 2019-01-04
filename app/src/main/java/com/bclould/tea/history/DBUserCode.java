@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import com.bclould.tea.model.UserCodeInfo;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +12,6 @@ import java.util.List;
  * Created by GIjia on 2018/6/15.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DBUserCode {
     private static Object lock = new Object();
     private final Context mContext;

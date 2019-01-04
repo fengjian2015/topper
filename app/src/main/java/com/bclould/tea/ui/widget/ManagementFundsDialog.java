@@ -3,22 +3,18 @@ package com.bclould.tea.ui.widget;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bclould.tea.R;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -26,7 +22,6 @@ import butterknife.ButterKnife;
  * Created by GIjia on 2018/7/30.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ManagementFundsDialog extends Dialog {
 
 

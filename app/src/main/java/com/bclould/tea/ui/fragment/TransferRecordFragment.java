@@ -30,7 +30,6 @@ import butterknife.ButterKnife;
 /**
  * Created by GIjia on 2018/8/22.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class TransferRecordFragment extends LazyFragment {
 
     private View view;

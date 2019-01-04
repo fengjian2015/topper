@@ -18,7 +18,6 @@ import android.support.annotation.RequiresApi;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.utils.UtilTool;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class IMCoreService extends Service {
     private final static int time = 15 * 1000;
     public final static String CORE_SERVICE_NAME="com.bclould.tea.service.IMCoreService";

@@ -1,9 +1,7 @@
 package com.bclould.tea.ui.activity.my.addcollect;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ImageView;
 import com.bclould.tea.R;
@@ -19,7 +17,6 @@ import butterknife.OnClick;
  * Created by GA on 2018/7/13.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AddCollectActivity extends BaseActivity implements AddCollectContacts.View{
     @Bind(R.id.bark)
     ImageView mBark;

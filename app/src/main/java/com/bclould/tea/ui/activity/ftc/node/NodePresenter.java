@@ -2,8 +2,6 @@ package com.bclould.tea.ui.activity.ftc.node;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 
@@ -27,7 +25,6 @@ import java.util.List;
  * Created by GIjia on 2018/12/27.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class NodePresenter implements NodeContacts.Presenter{
     private NodeContacts.View mView;
     private Activity mActivity;

@@ -1,7 +1,5 @@
 package com.bclould.tea.ui.adapter;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +23,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/11/3.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class OutCoinSiteRVAdapter extends RecyclerView.Adapter {
 
     private final List<OutCoinSiteInfo.MessageBean> mSiteBeanList;

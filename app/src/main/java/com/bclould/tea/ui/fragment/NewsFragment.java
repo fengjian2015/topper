@@ -66,7 +66,6 @@ import static android.app.Activity.RESULT_OK;
  * Created by GA on 2018/3/21.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsFragment extends Fragment implements OnBannerListener {
     private static NewsFragment instance = null;
     @Bind(R.id.xx)
@@ -320,7 +319,6 @@ public class NewsFragment extends Fragment implements OnBannerListener {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

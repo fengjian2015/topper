@@ -4,10 +4,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -24,11 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bclould.tea.Presenter.BlockchainGuessPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BetInfo;
 import com.bclould.tea.model.GuessInfo;
 import com.bclould.tea.model.MessageInfo;
@@ -39,24 +35,19 @@ import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.ui.widget.WinningPopWindow;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,7 +58,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_GUESS_MSG;
  * Created by GA on 2018/4/23.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class GuessDetailsActivity extends BaseActivity {
 
     private static final int PLUS = 0;
@@ -400,7 +390,7 @@ public class GuessDetailsActivity extends BaseActivity {
         mBlockchainGuessPresenter.getGuessInfo(mBet_id, mPeriod_qty, new BlockchainGuessPresenter.CallBack3() {
             @Override
             public void send(GuessInfo.DataBean data) {
-                if (!GuessDetailsActivity.this.isDestroyed()) {
+                if (ActivityUtil.isActivityOnTop(GuessDetailsActivity.this)) {
                     mLlError.setVisibility(View.GONE);
                     UtilTool.Log("投注列表", data.getBetList().size() + "");
                     mDataList.addAll(data.getBetList());
@@ -448,15 +438,15 @@ public class GuessDetailsActivity extends BaseActivity {
                         }
                         if (data.getStatus() == 2) {
                             mLlGuessCount.setVisibility(View.GONE);
-                            mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
-                            mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
+                            mBtnBet.setBackground(getResources().getDrawable(R.drawable.bg_gray_shape));
+                            mBtnRandom.setBackground(getResources().getDrawable(R.drawable.bg_grey_shape2));
                             mImageView.setVisibility(View.GONE);
                         } else {
                             mImageView.setVisibility(View.VISIBLE);
                             if (data.getOver_count_num() == 0) {
                                 mLlGuessCount.setVisibility(View.GONE);
-                                mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
-                                mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
+                                mBtnBet.setBackground(getResources().getDrawable(R.drawable.bg_gray_shape));
+                                mBtnRandom.setBackground(getResources().getDrawable(R.drawable.bg_grey_shape2));
                             } else {
                                 mLlGuessCount.setVisibility(View.VISIBLE);
                             }
@@ -478,8 +468,8 @@ public class GuessDetailsActivity extends BaseActivity {
                         mLlBet.setVisibility(View.GONE);
                         mLlTime.setVisibility(View.GONE);
                         mBtnBet.setVisibility(View.GONE);
-                        mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
-                        mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
+                        mBtnBet.setBackground(getResources().getDrawable(R.drawable.bg_gray_shape));
+                        mBtnRandom.setBackground(getResources().getDrawable(R.drawable.bg_grey_shape2));
                     }
                 }
             }
@@ -1342,8 +1332,8 @@ public class GuessDetailsActivity extends BaseActivity {
                 mOver_count_num -= count;
                 if (mOver_count_num == 0) {
                     mLlGuessCount.setVisibility(View.GONE);
-                    mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
-                    mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
+                    mBtnBet.setBackground(getResources().getDrawable(R.drawable.bg_gray_shape));
+                    mBtnRandom.setBackground(getResources().getDrawable(R.drawable.bg_grey_shape2));
                 }
                 EventBus.getDefault().post(new MessageEvent(getString(R.string.bet)));
                 switch (count) {

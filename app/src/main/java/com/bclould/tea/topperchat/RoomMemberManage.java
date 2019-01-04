@@ -1,12 +1,6 @@
 package com.bclould.tea.topperchat;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
-import com.bclould.tea.R;
-import com.bclould.tea.crypto.otr.OtrChatListenerManager;
-import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
@@ -14,28 +8,15 @@ import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.PublicInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
-import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.greenrobot.eventbus.EventBus;
-import org.msgpack.jackson.dataformat.MessagePackFactory;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static com.bclould.tea.topperchat.WsContans.MSG_GROUP;
-import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER;
-import static com.bclould.tea.topperchat.WsContans.MSG_STEANGER;
 
 /**
  * Created by GIjia on 2018/6/25.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class RoomMemberManage {
     private static RoomMemberManage mInstance;
     /** 每次只执行一个任务的线程池 */

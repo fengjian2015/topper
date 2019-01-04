@@ -1,25 +1,16 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.webkit.WebView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
-import com.bclould.tea.utils.MySharedPreferences;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,7 +19,6 @@ import butterknife.OnClick;
  * Created by GA on 2018/5/9.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class GonggaoDetailActivity extends BaseActivity {
 
     @Bind(R.id.progressBar)
@@ -46,7 +36,6 @@ public class GonggaoDetailActivity extends BaseActivity {
     @Bind(R.id.ll_load_error)
     LinearLayout mLlLoadError;
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

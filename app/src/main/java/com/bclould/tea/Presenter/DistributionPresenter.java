@@ -2,8 +2,6 @@ package com.bclould.tea.Presenter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
@@ -27,7 +25,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GIjia on 2018/9/25.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DistributionPresenter {
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;

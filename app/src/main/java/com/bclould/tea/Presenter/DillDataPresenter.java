@@ -1,10 +1,7 @@
 package com.bclould.tea.Presenter;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.widget.Toast;
-
 import com.bclould.tea.R;
 import com.bclould.tea.model.OSSInfo;
 import com.bclould.tea.model.InOutInfo;
@@ -13,9 +10,7 @@ import com.bclould.tea.model.UrlInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.UtilTool;
-
 import java.util.List;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -26,7 +21,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/2/28.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DillDataPresenter {
 
     private final Context mContext;

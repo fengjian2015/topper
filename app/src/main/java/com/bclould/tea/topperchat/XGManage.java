@@ -13,7 +13,6 @@ import com.tencent.android.tpush.XGPushManager;
 /**
  * Created by GIjia on 2018/7/17.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class XGManage {
     private static XGManage mInstance;
     private Context mContext;

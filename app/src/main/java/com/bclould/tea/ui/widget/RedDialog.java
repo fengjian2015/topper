@@ -26,7 +26,6 @@ import butterknife.ButterKnife;
  * Created by GIjia on 2018/8/8.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class RedDialog extends Dialog {
     @Bind(R.id.tv_detail)
     TextView mTvDetail;

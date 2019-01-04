@@ -1,9 +1,7 @@
 package com.bclould.tea.ui.activity.ftc.node;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -25,7 +23,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class NodeActivity extends BaseActivity implements NodeContacts.View{
     @Bind(R.id.tv_all)
     TextView mTvAll;

@@ -1,27 +1,20 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.RedPacketPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.ui.widget.ChangeTextSpaceView;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -30,7 +23,6 @@ import butterknife.OnClick;
  * Created by GA on 2018/1/23.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class GrabQRCodeRedActivity extends BaseActivity {
 
     @Bind(R.id.bark)
@@ -55,7 +47,9 @@ public class GrabQRCodeRedActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
+        }
         setContentView(R.layout.activity_grab_qr_red);
         ButterKnife.bind(this);
         mMgr = new DBManager(this);

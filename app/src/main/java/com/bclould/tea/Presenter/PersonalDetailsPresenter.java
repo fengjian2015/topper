@@ -2,8 +2,6 @@ package com.bclould.tea.Presenter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
@@ -29,7 +27,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/4/19.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PersonalDetailsPresenter {
 
     private final Context mContext;
@@ -169,7 +166,7 @@ public class PersonalDetailsPresenter {
 
                     @Override
                     public void onNext(AuatarListInfo remarkListInfo) {
-                        if (((Activity) mContext).isDestroyed()) return;
+                        if (!ActivityUtil.isActivityOnTop(mContext)) return;
                         hideDialog();
                         if (remarkListInfo.getStatus() == 1) {
                             callBack2.send(remarkListInfo.getData());

@@ -1,7 +1,6 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,8 +35,6 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.xmpp.RoomManage;
 import com.bumptech.glide.Glide;
 
@@ -53,7 +50,6 @@ import static com.bclould.tea.R.style.BottomDialog;
  * Created by GA on 2017/12/28.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SendRedPacketActivity extends BaseActivity {
 
     @Bind(R.id.bark)
@@ -236,7 +232,6 @@ public class SendRedPacketActivity extends BaseActivity {
         int redCount = 1;
         double redSum = 0;
         mRedPacketPresenter.sendRedPacket(mUser, type, mCoin, mRemark, 1, redCount, redSum, mCount, password, new RedPacketPresenter.CallBack() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void send(int id, String response) {
                 setData(id);

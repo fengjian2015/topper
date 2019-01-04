@@ -76,7 +76,6 @@ public class GonggaoManagerRVAdapter extends RecyclerView.Adapter {
             super(view);
             ButterKnife.bind(this, view);
             view.setOnClickListener(new View.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, NewsDetailsActivity.class);

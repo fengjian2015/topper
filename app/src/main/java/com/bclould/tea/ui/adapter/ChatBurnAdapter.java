@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -106,7 +105,6 @@ import static com.bclould.tea.utils.UtilTool.Log;
  * Created by GA on 2018/3/9.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ChatBurnAdapter extends RecyclerView.Adapter {
 
     public static final int FROM_TEXT_MSG = 0;//接收文本消息类型

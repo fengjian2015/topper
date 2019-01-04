@@ -10,7 +10,6 @@ import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.topperchat.WsOfflineConnection;
 import com.bclould.tea.utils.UtilTool;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class IMLogin {
 	public static void login(Context context) {
 		new LoginThread(context,++WsConnection.loginNumber).start();

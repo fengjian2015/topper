@@ -1,39 +1,26 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.text.InputFilter;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.Presenter.IndividualDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.BaseInfo;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
-
 import org.greenrobot.eventbus.EventBus;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import static com.bclould.tea.Presenter.LoginPresenter.MYUSERNAME;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ModificationNameActivity extends BaseActivity {
 
     @Bind(R.id.et_name)

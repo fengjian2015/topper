@@ -1,26 +1,19 @@
 package com.bclould.tea.topperchat;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.bclould.tea.utils.UtilTool;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushRegisterResult;
 import com.tencent.android.tpush.XGPushShowedResult;
 import com.tencent.android.tpush.XGPushTextMessage;
-
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by GIjia on 2018/7/17.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class XGReceiver extends XGPushBaseReceiver {
     @Override
     public void onRegisterResult(Context context, int i, XGPushRegisterResult xgPushRegisterResult) {

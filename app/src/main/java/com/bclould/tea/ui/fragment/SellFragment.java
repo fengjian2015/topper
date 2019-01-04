@@ -1,9 +1,7 @@
 package com.bclould.tea.ui.fragment;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.bclould.tea.Presenter.BuySellPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseFragment;
@@ -21,30 +18,23 @@ import com.bclould.tea.ui.adapter.BuySellRVAdapter;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
-import com.bclould.tea.utils.UtilTool;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-import static com.bclould.tea.Presenter.LoginPresenter.STATE;
 import static com.bclould.tea.Presenter.LoginPresenter.STATE_ID;
 
 /**
  * Created by GA on 2017/9/20.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SellFragment extends BaseFragment {
 
     @Bind(R.id.recycler_view)

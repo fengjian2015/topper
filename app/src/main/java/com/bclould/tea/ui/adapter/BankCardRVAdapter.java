@@ -1,7 +1,5 @@
 package com.bclould.tea.ui.adapter;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +29,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/9/26.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class BankCardRVAdapter extends RecyclerView.Adapter {
 
     private final BankCardActivity mActivity;
@@ -107,9 +104,9 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
             mCardType.setText(split[split.length - 1]);
             mBankCardNumber.setText(data.getCard_number());
             if (data.getIs_default() == 1) {
-                mRlCard.setBackground(mActivity.getDrawable(R.drawable.bg_bank_card_shape2));
+                mRlCard.setBackground(mActivity.getResources().getDrawable(R.drawable.bg_bank_card_shape2));
             } else {
-                mRlCard.setBackground(mActivity.getDrawable(R.drawable.bg_bank_card_shape));
+                mRlCard.setBackground(mActivity.getResources().getDrawable(R.drawable.bg_bank_card_shape));
             }
             mIvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override

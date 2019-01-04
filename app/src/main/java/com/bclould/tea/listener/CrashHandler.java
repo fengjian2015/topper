@@ -20,7 +20,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     private final Context mContext;

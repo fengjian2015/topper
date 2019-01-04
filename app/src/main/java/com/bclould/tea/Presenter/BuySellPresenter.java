@@ -2,8 +2,6 @@ package com.bclould.tea.Presenter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -25,8 +23,6 @@ import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.List;
-import java.util.Observable;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -36,7 +32,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/1/19.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class BuySellPresenter {
 
     private final Context mContext;

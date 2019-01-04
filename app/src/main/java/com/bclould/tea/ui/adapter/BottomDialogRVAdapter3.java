@@ -64,7 +64,6 @@ public class BottomDialogRVAdapter3 extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
 
             view.setOnClickListener(new View.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onClick(View view) {
                     if (mContext instanceof RealNameC1Activity) {

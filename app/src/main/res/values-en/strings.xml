@@ -1959,7 +1959,7 @@ Please reset encryption request</string>
 
     <string name="click_to_view">Click to View</string>
 
-    <string name="et_order_who_or_mailbox">Enter Username or Email</string>
+    <string name="et_order_who_or_mailbox">Enter user, email or phone number</string>
 
     <string name="group1">Group</string>
 

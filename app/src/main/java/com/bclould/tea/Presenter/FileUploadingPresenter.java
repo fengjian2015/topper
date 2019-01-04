@@ -5,12 +5,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.alibaba.sdk.android.oss.ClientException;
@@ -38,7 +36,6 @@ import java.util.List;
  * Created by GA on 2018/7/18.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FileUploadingPresenter {
 
     private final Context mContext;

@@ -2,8 +2,6 @@ package com.bclould.tea.Presenter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -31,7 +29,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/1/12.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class RedPacketPresenter {
 
     private final Context mContext;

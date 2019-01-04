@@ -1,11 +1,8 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,9 +15,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.LoginBaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.ConfirmDialog;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.UtilTool;
 
@@ -28,7 +23,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AuthenticationActivity extends LoginBaseActivity {
 
     @Bind(R.id.iv_move)

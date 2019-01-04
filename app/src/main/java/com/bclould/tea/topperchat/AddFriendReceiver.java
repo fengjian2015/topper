@@ -5,12 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
-
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
@@ -23,9 +20,7 @@ import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
-
 import org.greenrobot.eventbus.EventBus;
-
 import static com.bclould.tea.ui.activity.my.systemxet.SystemSetActivity.INFORM;
 import static com.bclould.tea.ui.fragment.FriendListFragment.NEWFRIEND;
 import static com.bclould.tea.utils.MySharedPreferences.SETTING;
@@ -34,7 +29,6 @@ import static com.bclould.tea.utils.MySharedPreferences.SETTING;
  * Created by GA on 2018/6/20.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 //广播接收器
 public class AddFriendReceiver extends BroadcastReceiver {
 

@@ -4,14 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import com.bclould.tea.utils.UtilTool;
 
 /**
  * Created by GIjia on 2018/8/7.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DBBurnManager {
 
     private Object lock=new Object();

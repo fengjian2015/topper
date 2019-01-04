@@ -1,12 +1,8 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -20,35 +16,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
-import com.bclould.tea.model.ProvinceBean;
 import com.bclould.tea.model.TransferListInfo;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
 import com.bclould.tea.ui.adapter.PayRecordRVAdapter;
 import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.TimeSelectUtil;
-import com.bclould.tea.utils.UtilTool;
-import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
-import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
-import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -59,7 +41,6 @@ import static com.bclould.tea.R.style.BottomDialog;
  * Created by GA on 2018/3/20.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PayRecordActivity extends BaseActivity implements TimeSelectUtil.OnTimeReturnListener {
     @Bind(R.id.tv_date)
     TextView mTvDate;

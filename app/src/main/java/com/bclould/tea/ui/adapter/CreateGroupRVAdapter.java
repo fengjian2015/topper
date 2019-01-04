@@ -1,18 +1,14 @@
 package com.bclould.tea.ui.adapter;
 
 import android.graphics.BitmapFactory;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomMember;
@@ -29,7 +25,6 @@ import butterknife.ButterKnife;
 /**
  * Created by GA on 2018/1/5.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CreateGroupRVAdapter extends RecyclerView.Adapter {
 
     private final List<UserInfo> mUserInfos;

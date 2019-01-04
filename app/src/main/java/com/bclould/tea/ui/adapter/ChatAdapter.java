@@ -102,7 +102,6 @@ import static com.bclould.tea.utils.UtilTool.Log;
  * Created by GA on 2018/3/9.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ChatAdapter extends RecyclerView.Adapter {
 
     public static final int FROM_TEXT_MSG = 0;//接收文本消息类型

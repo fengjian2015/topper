@@ -3,8 +3,6 @@ package com.bclould.tea.Presenter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -33,7 +31,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/3/22.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ReceiptPaymentPresenter {
 
     private final Context mContext;

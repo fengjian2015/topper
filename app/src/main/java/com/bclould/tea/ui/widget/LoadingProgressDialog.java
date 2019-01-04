@@ -15,7 +15,6 @@ import com.bclould.tea.utils.ActivityUtil;
  * Created by GA on 2017/11/15.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class LoadingProgressDialog extends Dialog {
     private Context context = null;
     private static LoadingProgressDialog sLoadingProgressDialog = null;

@@ -3,8 +3,6 @@ package com.bclould.tea.ui.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +36,6 @@ import static com.bclould.tea.ui.activity.CollectActivity.COLLECT_JOSN;
  * Created by GA on 2018/7/13.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CollectRVAdapter extends RecyclerView.Adapter {
 
     private final List<CollectInfo.DataBean> mDataList;

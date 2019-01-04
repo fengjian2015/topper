@@ -20,7 +20,6 @@ import java.util.Map;
  * Created by GIjia on 2018/5/22.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class RoomManage {
     public final static String ROOM_TYPE_SINGLE = "single";
     public final static String ROOM_TYPE_MULTI = "multi";

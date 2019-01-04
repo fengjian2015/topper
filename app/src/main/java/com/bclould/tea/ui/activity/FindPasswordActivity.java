@@ -1,10 +1,8 @@
 package com.bclould.tea.ui.activity;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
@@ -15,20 +13,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bclould.tea.Presenter.FindPasswordPresenter;
 import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.LoginBaseActivity;
-import com.bclould.tea.base.MyApp;
-import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
-
 import java.util.Timer;
 import java.util.TimerTask;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -37,7 +28,6 @@ import butterknife.OnClick;
  * Created by GA on 2017/11/1.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FindPasswordActivity extends LoginBaseActivity {
 
 

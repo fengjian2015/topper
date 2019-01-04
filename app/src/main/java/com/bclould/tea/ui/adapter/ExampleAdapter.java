@@ -69,7 +69,6 @@ import static com.bclould.tea.utils.UtilTool.Log;
  * 博客：http://blog.csdn.net/wgyscsf
  *//*
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ExampleAdapter extends BaseAdapter {
 
     private final Context mContext;

@@ -1,9 +1,7 @@
 package com.bclould.tea.ui.fragment;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,15 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import com.bclould.tea.Presenter.DillDataPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.TransferInfo;
 import com.bclould.tea.ui.adapter.BillDataRVAapter;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -27,7 +22,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/9/22.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class BillDataFragment extends Fragment {
 
     public static BillDataFragment instance = null;

@@ -1,10 +1,8 @@
 package com.bclould.tea.ui.fragment;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.BlockchainGuessPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.GuessListInfo;
@@ -30,14 +27,11 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -46,7 +40,6 @@ import butterknife.OnClick;
  * Created by GA on 2018/4/23.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PersonageGuessFragment extends Fragment {
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;

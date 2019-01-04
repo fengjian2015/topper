@@ -1,8 +1,6 @@
 package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +22,6 @@ import static com.bclould.tea.ui.activity.ConversationRecordFindActivity.VIDEO_M
  * Created by GIjia on 2018/5/15.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MessageRecordSelectAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<Integer> selectList;

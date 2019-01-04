@@ -1,9 +1,7 @@
 package com.bclould.tea.ui.fragment;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,17 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.bclould.tea.Presenter.RealNamePresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.QuestionInfo;
 import com.bclould.tea.ui.adapter.AllProblemRVAdapter;
 import com.bclould.tea.ui.widget.ClearEditText;
 import com.bclould.tea.utils.ActivityUtil;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,7 +26,6 @@ import butterknife.OnClick;
  * Created by GA on 2017/10/17.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AllProblemFragment extends Fragment {
 
     public static AllProblemFragment instance = null;

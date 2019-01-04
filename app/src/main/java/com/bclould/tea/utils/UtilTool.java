@@ -39,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
@@ -118,7 +119,6 @@ import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_ZIP;
  * Created by GA on 2017/10/23.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class UtilTool {
     private static final int QR_HEIGHT = 1000;
     private static final int QR_WIDTH = 1000;
@@ -815,7 +815,7 @@ public class UtilTool {
 
     public static int getUserId() {
 
-        return MySharedPreferences.getInstance().getInteger(USERID);
+        return MySharedPreferences.getInstance().getInteger(LoginPresenter.USERID);
 
     }
 
@@ -1039,11 +1039,11 @@ public class UtilTool {
     public static void getGroupImage(DBRoomManage dbRoomManage, String roomId, Activity context, ImageView imageView) {
         String url = dbRoomManage.findRoomUrl(roomId);
         if (!StringUtils.isEmpty(url)) {
-            if (Util.isOnMainThread() && context != null && !context.isDestroyed()) {
+            if (Util.isOnMainThread() && ActivityUtil.isActivityOnTop(context)) {
                 Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).dontAnimate().error(R.mipmap.img_group_head)).into(imageView);
             }
         } else {
-            if (Util.isOnMainThread() && context != null && !context.isDestroyed()) {
+            if (Util.isOnMainThread() && ActivityUtil.isActivityOnTop(context)) {
                 Glide.with(context).load(R.mipmap.img_group_head).apply(RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.img_group_head).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
         }
@@ -1052,11 +1052,11 @@ public class UtilTool {
 
     public static void getGroupImage(String url, Activity context, ImageView imageView) {
         if (!StringUtils.isEmpty(url)) {
-            if (Util.isOnMainThread() && context != null && !context.isDestroyed()) {
+            if (Util.isOnMainThread() && ActivityUtil.isActivityOnTop(context)) {
                 Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).dontAnimate().error(R.mipmap.img_group_head)).into(imageView);
             }
         } else {
-            if (Util.isOnMainThread() && context != null && !context.isDestroyed()) {
+            if (Util.isOnMainThread() && ActivityUtil.isActivityOnTop(context)) {
                 Glide.with(context).load(R.mipmap.img_group_head).apply(RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.img_group_head).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
         }

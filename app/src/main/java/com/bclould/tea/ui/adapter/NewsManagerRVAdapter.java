@@ -2,8 +2,6 @@ package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.NewsNoticePresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.GonggaoListInfo;
@@ -19,9 +16,7 @@ import com.bclould.tea.ui.activity.NewsDetailsActivity;
 import com.bclould.tea.ui.activity.NewsEditActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bumptech.glide.Glide;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -29,7 +24,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/5/8.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsManagerRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;

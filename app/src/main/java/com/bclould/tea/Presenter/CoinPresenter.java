@@ -2,8 +2,6 @@ package com.bclould.tea.Presenter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
@@ -30,7 +28,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/2/26.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CoinPresenter {
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;

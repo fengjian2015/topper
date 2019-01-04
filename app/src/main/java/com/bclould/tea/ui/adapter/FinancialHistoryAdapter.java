@@ -1,8 +1,6 @@
 package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +19,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/9/29.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FinancialHistoryAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;

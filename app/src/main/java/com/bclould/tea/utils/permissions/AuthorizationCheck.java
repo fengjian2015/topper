@@ -23,7 +23,6 @@ import com.bclould.tea.utils.ToastShow;
  * 本类不提供静态方法，需要使用前先实例化
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AuthorizationCheck{
     public String ACCESS_NETWORK_STATE = "应用程序获取网络状态信息";
     public String ACCESS_WIFI_STATE = "应用程序获取WI-FI网络状态信息";
@@ -72,30 +71,31 @@ public class AuthorizationCheck{
      * @param activity              当前Activty
      * @return  true 为有权限   false 没有权限
      */
-    public  boolean authorizationCheck(String checkAuthorization, Activity activity){
-        int targetSdkVersion =0;
-        try {
-            final PackageInfo info = activity.getPackageManager().getPackageInfo(
-                    activity.getPackageName(), 0);
-            targetSdkVersion = info.applicationInfo.targetSdkVersion;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (targetSdkVersion >= Build.VERSION_CODES.M) {
-                if (activity.checkSelfPermission(checkAuthorization) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
+
+    public boolean authorizationCheck(String checkAuthorization, Activity activity){
+            int targetSdkVersion = 0;
+            try {
+                final PackageInfo info = activity.getPackageManager().getPackageInfo(
+                        activity.getPackageName(), 0);
+                targetSdkVersion = info.applicationInfo.targetSdkVersion;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (targetSdkVersion >= Build.VERSION_CODES.M) {
+                    if (activity.checkSelfPermission(checkAuthorization) != PackageManager.PERMISSION_GRANTED) {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 } else {
-                    return true;
-                }
-            } else {
-                if (PermissionChecker.checkSelfPermission(activity,checkAuthorization) != PermissionChecker.PERMISSION_GRANTED) {
-                    return false;
-                } else {
-                    return true;
+                    if (PermissionChecker.checkSelfPermission(activity, checkAuthorization) != PermissionChecker.PERMISSION_GRANTED) {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
             }
-        }
         return true;
     }
 

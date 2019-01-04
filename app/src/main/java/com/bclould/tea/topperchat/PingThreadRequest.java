@@ -11,7 +11,6 @@ import com.bclould.tea.utils.UtilTool;
  * Created by GIjia on 2018/6/12.
  * 一分鐘沒有得到反饋需要重連
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PingThreadRequest extends Thread {
     private Context context;
     private int pingNumber;

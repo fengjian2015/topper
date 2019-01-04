@@ -4,14 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 
 import com.bclould.tea.R;
 import com.bclould.tea.utils.UtilTool;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CenterIcon1 extends View {
 
 	public static int w;

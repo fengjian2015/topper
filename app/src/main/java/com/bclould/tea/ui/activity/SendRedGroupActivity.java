@@ -55,7 +55,6 @@ import butterknife.OnClick;
 
 import static com.bclould.tea.R.style.BottomDialog;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SendRedGroupActivity extends BaseActivity {
 
     @Bind(R.id.bark)
@@ -307,7 +306,6 @@ public class SendRedGroupActivity extends BaseActivity {
         if (mRemark.isEmpty())
             mRemark = getString(R.string.congratulation);
         new RedPacketPresenter(this).sendRedPacket(roomId, type, mCoin, mRemark, 1, redCount, singleMoney, mCount, password, new RedPacketPresenter.CallBack() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void send(int id, String response) {
                 setData(id);

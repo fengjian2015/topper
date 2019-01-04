@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat;
  * Created by CodeBear on 2017/7/10.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class RecordUtil {
     private String outPutFileName;
 

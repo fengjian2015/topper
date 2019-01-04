@@ -66,7 +66,6 @@ import static android.app.Activity.RESULT_OK;
  *//*
 
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CloudMessageFragment extends Fragment implements IConnectStateChangeListener {
 
 
@@ -411,7 +410,6 @@ public class CloudMessageFragment extends Fragment implements IConnectStateChang
         popChildClick();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

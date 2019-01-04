@@ -2,8 +2,6 @@ package com.bclould.tea.ui.activity.ftc.myteam;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.Presenter.DistributionPresenter;
 import com.bclould.tea.base.BaseView;
@@ -17,7 +15,6 @@ import java.util.List;
  * Created by GIjia on 2018/12/25.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MyTeamPresenter implements MyTeamContacts.Presenter{
     private MyTeamContacts.View mView;
     private Activity mActivity;

@@ -1,10 +1,8 @@
 package com.bclould.tea.ui.fragment;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +32,6 @@ import butterknife.OnClick;
 /**
  * Created by GIjia on 2018/8/22.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class UpgradeFragment extends LazyFragment {
     @Bind(R.id.iv_remove)
     ImageView mIvRemove;

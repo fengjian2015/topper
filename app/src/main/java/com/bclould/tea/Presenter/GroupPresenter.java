@@ -2,8 +2,6 @@ package com.bclould.tea.Presenter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
@@ -42,7 +40,6 @@ import io.reactivex.schedulers.Schedulers;
  * 房間的請求
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class GroupPresenter {
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;

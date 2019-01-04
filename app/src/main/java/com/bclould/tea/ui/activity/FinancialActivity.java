@@ -54,7 +54,6 @@ import butterknife.OnClick;
 
 import static com.bclould.tea.R.style.BottomDialog;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FinancialActivity extends BaseActivity {
 
     @Bind(R.id.tv_all_money)

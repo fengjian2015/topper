@@ -17,9 +17,7 @@ import com.bclould.tea.topperchat.WsConnection;
 
 import java.util.List;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ActivityUtil {
-	@SuppressLint("NewApi")
 	public static boolean isActivityOnTop(Activity act) {
 		if (act != null) {
 			if (Build.VERSION.SDK_INT >= 17) {

@@ -1,20 +1,13 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.ui.widget.PWDDialog;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PayOutsideCallsActivity extends BaseActivity {
     private String content;
     private PWDDialog pwdDialog;

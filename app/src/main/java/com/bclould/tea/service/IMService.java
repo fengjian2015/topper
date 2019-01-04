@@ -18,7 +18,6 @@ import com.bclould.tea.xmpp.RoomManage;
 
 import static com.bclould.tea.topperchat.WsContans.IMSERVEICE_TIME;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class IMService extends Service{
     private final static int EXLOGIN = 1;
     private Handler handler = null;

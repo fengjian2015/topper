@@ -3,8 +3,6 @@ package com.bclould.tea.ui.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
-import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
@@ -45,7 +42,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_TRANSFER_MSG;
  * Created by GIjia on 2018/5/15.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MessageRecordAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<MessageInfo> messageInfoList;

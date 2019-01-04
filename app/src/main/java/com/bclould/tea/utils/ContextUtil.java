@@ -10,7 +10,6 @@ import android.support.annotation.RequiresApi;
  * Created by fengjian on 2018/12/28.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ContextUtil {
     /**
      * 判断是否还存活

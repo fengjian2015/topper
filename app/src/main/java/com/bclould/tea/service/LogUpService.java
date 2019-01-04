@@ -2,21 +2,16 @@ package com.bclould.tea.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
-
 import java.io.File;
 
 /**
  * Created by GA on 2018/4/4.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class LogUpService extends Service {
     File logFile = new File(Constants.LOG_DIR + UtilTool.getUserId() + UtilTool.createtFileName() + ".txt");
 

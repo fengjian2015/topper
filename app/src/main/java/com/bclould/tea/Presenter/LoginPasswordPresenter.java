@@ -1,8 +1,6 @@
 package com.bclould.tea.Presenter;
 
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
@@ -23,7 +21,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2017/11/15.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginPasswordPresenter {
 
     private LoginPasswordActivity mLoginPasswordActivity;

@@ -1,10 +1,7 @@
 package com.bclould.tea.Presenter;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.widget.Toast;
-
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.ModeOfPaymentInfo;
@@ -13,11 +10,8 @@ import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -28,7 +22,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2017/11/15.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SubscribeCoinPresenter {
 
     private final Context mContext;

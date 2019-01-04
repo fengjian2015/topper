@@ -1,6 +1,5 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,22 +14,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.Presenter.RedPacketPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.alipay.AlipayClient;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,7 +33,6 @@ import butterknife.OnClick;
  * Created by GA on 2018/9/3.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SendRedAlipaylActivity extends BaseActivity {
 
     @Bind(R.id.bark)
@@ -165,7 +158,6 @@ public class SendRedAlipaylActivity extends BaseActivity {
             mRemark = getString(R.string.congratulation);
         double redSum = 0;
         mRedPacketPresenter.sendRedPacket(mRoomId, type, "CNY", mRemark, 3, redCount, redSum, mCount, password, new RedPacketPresenter.CallBack() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void send(final int id, String response) {
                 AlipayClient.getInstance().payV2(SendRedAlipaylActivity.this, response, new PersonalDetailsPresenter.CallBack7() {

@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -46,10 +45,8 @@ import com.bclould.tea.topperchat.AddFriendReceiver;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.authorization.AuthorizationActivity;
 import com.bclould.tea.ui.fragment.ConversationFragment;
-import com.bclould.tea.ui.fragment.DiscoverFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.Constants;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.IMUtils;
 import com.bclould.tea.utils.MessageEvent;
@@ -82,7 +79,6 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 import static com.bclould.tea.Presenter.LoginPresenter.IS_UPDATE;
 
 
-@android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends BaseActivity {
     @Bind(R.id.number)
     TextView mNumber;

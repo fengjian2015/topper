@@ -1,13 +1,10 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,23 +12,18 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.FileDownloadPresenter;
 import com.bclould.tea.Presenter.UpdateLogPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.DownloadInfo;
 import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.io.File;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -40,7 +32,6 @@ import butterknife.OnClick;
  * Created by GA on 2018/7/11.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class VersionsUpdateActivity extends BaseActivity {
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;

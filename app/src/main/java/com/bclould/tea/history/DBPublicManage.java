@@ -4,15 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
-import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.PublicDetailsInfo;
 import com.bclould.tea.model.PublicInfo;
-import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.utils.UtilTool;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +14,6 @@ import java.util.List;
  * Created by GIjia on 2018/5/24.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DBPublicManage {
     private final Context mContext;
     private static Object lock = new Object();

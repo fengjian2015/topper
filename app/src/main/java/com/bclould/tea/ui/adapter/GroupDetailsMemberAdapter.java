@@ -3,8 +3,6 @@ package com.bclould.tea.ui.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -28,7 +26,6 @@ import java.util.List;
 /**
  * Created by GIjia on 2018/6/20.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class GroupDetailsMemberAdapter extends BaseAdapter{
     private Context context;
     private List<RoomMemberInfo> list;

@@ -79,7 +79,6 @@ import static android.app.Activity.RESULT_OK;
  * Created by GA on 2017/12/12.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ConversationFragment extends Fragment implements IConnectStateChangeListener {
 
     @Bind(R.id.iv_more)
@@ -310,7 +309,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         popChildClick();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

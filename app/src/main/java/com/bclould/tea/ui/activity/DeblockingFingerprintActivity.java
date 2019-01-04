@@ -1,29 +1,22 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.FingerprintUtil;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -32,7 +25,6 @@ import butterknife.OnClick;
  * Created by GA on 2018/8/2.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DeblockingFingerprintActivity extends BaseActivity {
     @Bind(R.id.iv_logo)
     ImageView mIvLogo;

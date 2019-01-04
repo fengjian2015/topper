@@ -1,12 +1,9 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -21,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.Presenter.RedPacketPresenter;
 import com.bclould.tea.R;
@@ -35,14 +31,10 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,7 +45,6 @@ import static com.bclould.tea.R.style.BottomDialog;
  * Created by GA on 2018/4/2.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ChatTransferActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;

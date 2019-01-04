@@ -3,22 +3,16 @@ package com.bclould.tea.utils;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
-
 import java.util.Locale;
-
 import static com.bclould.tea.Presenter.LoginPresenter.STATE;
 
 /**
  * Created by GA on 2017/11/10.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class LocaleChangeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {

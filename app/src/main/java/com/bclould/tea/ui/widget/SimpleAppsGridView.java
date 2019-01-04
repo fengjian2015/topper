@@ -19,7 +19,6 @@ import java.util.ArrayList;
 /**
  * Created by GA on 2017/12/27.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SimpleAppsGridView extends RelativeLayout {
 
     protected View view;

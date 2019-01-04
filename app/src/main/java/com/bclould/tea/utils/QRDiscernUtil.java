@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
 import android.util.Base64;
 import android.widget.Toast;
-
 import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.MessageInfo;
@@ -30,7 +27,6 @@ import com.bclould.tea.ui.activity.PaymentActivity;
 import com.bclould.tea.ui.activity.ProblemFeedBackActivity;
 import com.bclould.tea.ui.activity.ScanQRResultActivty;
 import com.bclould.tea.ui.activity.SelectConversationActivity;
-import com.bclould.tea.ui.activity.StartActivity;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
@@ -56,7 +52,6 @@ import static com.bclould.tea.utils.Constants.REDPACKAGE;
  * Created by GIjia on 2018/7/5.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class QRDiscernUtil {
     private Activity mContext;
     private String url;
@@ -165,6 +160,7 @@ public class QRDiscernUtil {
         }
         return result;
     }
+
 
     Handler mHandler = new Handler() {
         @Override

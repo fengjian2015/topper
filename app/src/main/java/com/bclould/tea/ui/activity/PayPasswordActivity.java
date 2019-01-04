@@ -1,10 +1,7 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -13,15 +10,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.bclould.tea.Presenter.PayPasswordPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -30,10 +22,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/10/11.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PayPasswordActivity extends BaseActivity {
-
-
     @Bind(R.id.et_pay_password)
     EditText mEtPayPassword;
     @Bind(R.id.eye)

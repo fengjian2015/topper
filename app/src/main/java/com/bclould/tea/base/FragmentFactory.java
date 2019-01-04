@@ -1,8 +1,6 @@
 package com.bclould.tea.base;
 
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 
 import com.bclould.tea.ui.fragment.ConversationFragment;
@@ -19,7 +17,6 @@ import java.util.Map;
  * Fragment的工厂，保证创建的Fragment的唯一性
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FragmentFactory {
     private static FragmentFactory fragmentFactory;
 

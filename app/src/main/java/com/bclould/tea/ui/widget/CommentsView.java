@@ -2,9 +2,7 @@ package com.bclould.tea.ui.widget;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -29,7 +27,6 @@ import java.util.List;
  * Created by GA on 2018/6/12.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CommentsView extends LinearLayout {
 
     private Context mContext;

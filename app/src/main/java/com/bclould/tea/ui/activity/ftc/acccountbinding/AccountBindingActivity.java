@@ -1,8 +1,6 @@
 package com.bclould.tea.ui.activity.ftc.acccountbinding;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +14,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AccountBindingActivity extends BaseActivity implements AccountBindingContacts.View{
 
     @Bind(R.id.et_email)

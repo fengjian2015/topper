@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.KeyEvent;
 import android.view.View;
@@ -27,20 +26,15 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.alibaba.fastjson.JSON;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseNormalActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.LocationInfo;
 import com.bclould.tea.ui.adapter.LocationListAdapter;
 import com.bclould.tea.ui.widget.AppTitle;
-import com.bclould.tea.ui.widget.CenterIcon;
 import com.bclould.tea.ui.widget.CenterIcon1;
 import com.bclould.tea.ui.widget.ScreenListPopWindow;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.LoadingProgressUtil;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
@@ -66,11 +60,11 @@ import com.tencent.mapsdk.raster.model.MarkerOptions;
 import com.tencent.tencentmap.mapsdk.map.MapView;
 import com.tencent.tencentmap.mapsdk.map.TencentMap;
 import com.tencent.tencentmap.mapsdk.map.UiSettings;
-
 import org.xutils.common.util.LogUtil;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
@@ -81,7 +75,6 @@ import okhttp3.Response;
 /**
  * Created by wushange on 2016/07/13.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class LocationActivity extends BaseNormalActivity implements
         TencentLocationListener, TencentMap.OnMapCameraChangeListener {
     @ViewInject(R.id.apptitle)
@@ -90,17 +83,12 @@ public class LocationActivity extends BaseNormalActivity implements
     LinearLayout ll_sel_location;
     @ViewInject(R.id.mapview)
     private MapView mapView;
-
     @ViewInject(R.id.poi_list)
     private EasyRecyclerView mRecyclerView;
-
     @ViewInject(R.id.et_search)
-
     private EditText mEtSearch;
-
     @ViewInject(R.id.rl_data)
     private RelativeLayout rl_data;
-
     LocationListAdapter mAdapter;
     private Marker mLocationMarker;
     private Marker mCenterMarker;
@@ -120,6 +108,8 @@ public class LocationActivity extends BaseNormalActivity implements
     private ScreenListPopWindow screenListPopWindow;
     private String title;
 
+    private MyHandler mHandler;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -131,7 +121,7 @@ public class LocationActivity extends BaseNormalActivity implements
         x.Ext.init(this.getApplication());
         x.Ext.setDebug(true);
         x.view().inject(this);
-
+        mHandler = new MyHandler(this);
         context = this;
         checkSelf();
         initView();
@@ -303,7 +293,13 @@ public class LocationActivity extends BaseNormalActivity implements
         }).start();
     }
 
-    Handler mHandler=new Handler(){
+    class MyHandler extends Handler{
+        private final WeakReference<LocationActivity> mActivty;
+
+        public MyHandler(LocationActivity activity){
+            mActivty =new WeakReference<LocationActivity>(activity);
+        }
+
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
@@ -323,7 +319,8 @@ public class LocationActivity extends BaseNormalActivity implements
                     break;
             }
         }
-    };
+
+    }
 
     private void showPop(){
         if(screenListPopWindow!=null){
@@ -343,7 +340,6 @@ public class LocationActivity extends BaseNormalActivity implements
         screenListPopWindow.showAsDropDown(rl_data,0,2);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onLocationChanged(TencentLocation tencentLocation, int error, String reason) {
         LogUtil.e("----onLocationChanged---" + "----" + error + "---" + reason + tencentLocation.toString());
@@ -477,6 +473,10 @@ public class LocationActivity extends BaseNormalActivity implements
     @Override
     protected void onDestroy() {
         mapView.onDestroy();
+        if(mHandler != null){
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
+        }
         super.onDestroy();
     }
 

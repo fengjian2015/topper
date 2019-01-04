@@ -1,9 +1,6 @@
 package com.bclould.tea.Presenter;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.utils.UtilTool;
@@ -17,7 +14,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2017/12/8.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CloudMessagePresenter {
 
     private final Context mContext;

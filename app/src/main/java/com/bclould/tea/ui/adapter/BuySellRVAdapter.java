@@ -2,9 +2,7 @@ package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +11,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.BuySellPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.DealListInfo;
 import com.bclould.tea.ui.activity.BuySellActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.UtilTool;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -30,7 +25,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/9/20.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class BuySellRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;

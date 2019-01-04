@@ -1,27 +1,18 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.isseiaoki.simplecropview.CropImageView;
-
 import java.io.File;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -29,7 +20,6 @@ import butterknife.OnClick;
 import static com.bclould.tea.ui.activity.SerchImageActivity.TYPE_GROUP;
 import static com.bclould.tea.ui.activity.SerchImageActivity.TYPE_PERSONAL;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CropImageActivity extends BaseActivity {
 
     @Bind(R.id.CropImageView)

@@ -1,12 +1,10 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -58,7 +56,6 @@ import static com.bclould.tea.R.style.BottomDialog;
  * Created by GA on 2018/1/22.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SendQRCodeRedActivity extends BaseActivity {
 
 
@@ -227,10 +224,10 @@ public class SendQRCodeRedActivity extends BaseActivity {
         window.setWindowAnimations(BottomDialog);
         mBottomDialog.setContentView(contentView);
         mBottomDialog.show();
-        RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
-        TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
-        Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
-        Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
+        RecyclerView recyclerView = mBottomDialog.findViewById(R.id.recycler_view);
+        TextView tvTitle =  mBottomDialog.findViewById(R.id.tv_title);
+        Button addCoin =  mBottomDialog.findViewById(R.id.btn_add_coin);
+        Button cancel =  mBottomDialog.findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

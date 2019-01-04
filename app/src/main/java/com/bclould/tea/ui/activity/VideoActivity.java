@@ -1,15 +1,12 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,34 +16,26 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.VideoPlayer;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.danikula.videocache.HttpProxyCacheServer;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
 
 
@@ -54,7 +43,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
  * Created by GA on 2018/3/8.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class VideoActivity extends BaseActivity {
 
 

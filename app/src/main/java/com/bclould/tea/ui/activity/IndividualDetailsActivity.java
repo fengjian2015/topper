@@ -1,10 +1,7 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bclould.tea.Presenter.IndividualDetailsPresenter;
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
@@ -23,27 +19,21 @@ import com.bclould.tea.model.IndividualInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import static com.bclould.tea.topperchat.WsContans.TOCO_SERVICE;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class IndividualDetailsActivity extends BaseActivity {
 
     @Bind(R.id.bark)
@@ -189,7 +179,7 @@ public class IndividualDetailsActivity extends BaseActivity {
         mPresenter.getIndividual(mUser, true, new IndividualDetailsPresenter.CallBack() {
             @Override
             public void send(IndividualInfo.DataBean data) {
-                if (!IndividualDetailsActivity.this.isDestroyed()) {
+                if (ActivityUtil.isActivityOnTop(IndividualDetailsActivity.this)) {
                     mLlData.setVisibility(View.VISIBLE);
                     mLlError.setVisibility(View.GONE);
                     if (data == null) return;

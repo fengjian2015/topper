@@ -20,7 +20,6 @@ import static com.bclould.tea.Presenter.LoginPresenter.BIND_FTC;
  * Created by GIjia on 2018/12/25.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AccountBindingPresenter implements AccountBindingContacts.Presenter{
     private AccountBindingContacts.View mView;
     private Activity mActivity;

@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
 import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -65,7 +64,6 @@ import java.util.Locale;
 
 import static com.bclould.tea.filepicker.YsFilePicker.MAX_UPLOAD_SIZE;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class YsFilePickerActivity extends BaseActivity implements OnLongClickListener {
 
     final private String[] mVideoExtensions = {"avi", "mp4", "3gp", "mov"};

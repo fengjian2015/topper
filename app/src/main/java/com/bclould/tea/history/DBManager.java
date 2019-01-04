@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DBManager {
     private final Context mContext;
     private static Object lock = new Object();

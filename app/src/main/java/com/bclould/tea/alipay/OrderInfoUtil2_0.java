@@ -1,11 +1,6 @@
 package com.bclould.tea.alipay;
 
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
-import com.bclould.tea.utils.UtilTool;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -17,8 +12,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class OrderInfoUtil2_0 {
 	
 	/**
@@ -67,9 +60,7 @@ public class OrderInfoUtil2_0 {
 
 	/**
 	 * 构造支付订单参数列表
-	 * @param pid
 	 * @param app_id
-	 * @param target_id
 	 * @return
 	 */
 	public static Map<String, String> buildOrderParamMap(String app_id, boolean rsa2) {

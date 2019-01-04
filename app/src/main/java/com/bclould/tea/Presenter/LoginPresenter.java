@@ -47,7 +47,6 @@ import static com.bclould.tea.ui.activity.SetGesturePWActivity.GESTURE_ANSWER;
  * Created by GA on 2017/11/15.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginPresenter {
 
     public static final String TOCOID = "toco_id";

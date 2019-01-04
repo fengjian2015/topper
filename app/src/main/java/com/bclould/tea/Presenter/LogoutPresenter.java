@@ -32,7 +32,6 @@ import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
  * Created by GA on 2017/11/21.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class LogoutPresenter {
 
     private final Activity mActivity;

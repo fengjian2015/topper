@@ -17,7 +17,6 @@ import com.bclould.tea.utils.ToastShow;
  * Created by Administrator on 2017/3/20.
  * 检测权限
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AuthorizationUserTools {
     /**
      * 拨打电话

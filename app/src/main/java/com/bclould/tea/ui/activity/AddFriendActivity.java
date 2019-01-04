@@ -3,10 +3,8 @@ package com.bclould.tea.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,14 +19,11 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.CloudMessagePresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.ui.adapter.AddFriendAdapter;
 import com.bclould.tea.ui.widget.ClearEditText;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.utils.permissions.AuthorizationUserTools;
@@ -44,7 +39,6 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/25.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AddFriendActivity extends BaseActivity {
 
 

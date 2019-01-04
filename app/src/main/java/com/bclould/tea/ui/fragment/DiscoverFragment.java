@@ -2,10 +2,8 @@ package com.bclould.tea.ui.fragment;
 
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -15,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.FileUploadingActivity;
@@ -30,20 +27,16 @@ import com.bclould.tea.ui.adapter.CloudMessageVPAdapter;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.UtilTool;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DiscoverFragment extends Fragment {
     public static DiscoverFragment instance = null;
     @Bind(R.id.gonggao_xx)

@@ -28,7 +28,6 @@ import java.util.regex.Matcher;
 /**
  * Created by xux on 2016/7/6.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class HyperLinkUtil {
     private OnChangeLinkListener mOnChangeLinkListener;
 

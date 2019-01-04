@@ -37,7 +37,6 @@ import java.util.Stack;
  * Created by GA on 2017/9/18.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MyApp extends Application {
 
     public static MyApp instance = null;

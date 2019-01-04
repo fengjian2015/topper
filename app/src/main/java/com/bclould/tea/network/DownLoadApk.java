@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
@@ -22,7 +21,6 @@ import java.io.File;
  * Created by lenovo on 2018/2/1 0001.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DownLoadApk {
     public static final String TAG = DownLoadApk.class.getSimpleName();
 

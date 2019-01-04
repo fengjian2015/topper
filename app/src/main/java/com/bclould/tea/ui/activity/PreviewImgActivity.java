@@ -1,6 +1,5 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,18 +10,11 @@ import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
-import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.ui.fragment.PreviewImgFragment;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -59,7 +51,10 @@ public class PreviewImgActivity extends BaseActivity {
     private void init() {
         mFragmentList = new ArrayList<>();
         for (int i = 0; i < mImgList.size(); i++) {
-            PreviewImgFragment previewImgFragment = new PreviewImgFragment(mImgList.get(i));
+            PreviewImgFragment previewImgFragment = new PreviewImgFragment();
+            Bundle bundle=new Bundle();
+            bundle.putString("mImgUrl",mImgList.get(i));
+            previewImgFragment.setArguments(bundle);
             mFragmentList.add(previewImgFragment);
         }
         // 类似缓存

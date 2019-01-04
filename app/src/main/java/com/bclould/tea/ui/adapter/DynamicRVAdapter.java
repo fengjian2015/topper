@@ -3,8 +3,6 @@ package com.bclould.tea.ui.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,7 +50,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/9/27.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DynamicRVAdapter extends RecyclerView.Adapter {
 
     public static final int TEXT_DYNAMIC = 0;//文本动态

@@ -1,6 +1,5 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -18,29 +17,20 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.topperchat.WsConnection;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Locale;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -51,7 +41,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_LINK_MSG;
  * Created by GA on 2018/5/8.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsDetailsActivity extends BaseActivity {
     @Bind(R.id.web_view)
     WebView mWebView;
@@ -306,12 +295,14 @@ public class NewsDetailsActivity extends BaseActivity {
                 json.put("id", UtilTool.getUserId());
                 json.put("content", content);
                 UtilTool.Log("新聞", json.toString());
-                mWebView.evaluateJavascript("javascript:review('" + json.toString() + "')", new ValueCallback<String>() {
-                    @Override
-                    public void onReceiveValue(String value) {
-                        UtilTool.Log("新聞", value);
-                    }
-                });
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    mWebView.evaluateJavascript("javascript:review('" + json.toString() + "')", new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String value) {
+                            UtilTool.Log("新聞", value);
+                        }
+                    });
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

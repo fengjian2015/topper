@@ -51,7 +51,6 @@ import static com.bclould.tea.R.style.BottomDialog;
  * Created by GA on 2018/5/30.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class RewardActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;

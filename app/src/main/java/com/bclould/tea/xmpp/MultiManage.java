@@ -38,7 +38,6 @@ import org.msgpack.jackson.dataformat.MessagePackFactory;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +64,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_WITHDRAW_MSG;
 /**
  * Created by GIjia on 2018/5/23.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MultiManage implements Room{
 
     private DBManager mMgr;

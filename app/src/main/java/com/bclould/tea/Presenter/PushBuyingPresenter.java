@@ -2,8 +2,6 @@ package com.bclould.tea.Presenter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -35,7 +33,6 @@ import static com.bclould.tea.Presenter.LoginPresenter.CURRENCY;
  * Created by GA on 2018/1/19.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PushBuyingPresenter {
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;

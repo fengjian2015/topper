@@ -23,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
@@ -60,11 +59,9 @@ import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,7 +69,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -84,7 +80,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
  * Created by GA on 2017/9/19.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FriendListFragment extends Fragment implements FriendListRVAdapter.OnclickListener{
 
     public static final String NEWFRIEND = "new_friend";
@@ -411,7 +406,6 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
         popChildClick();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

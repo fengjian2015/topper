@@ -2,12 +2,9 @@ package com.bclould.tea.ui.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -39,10 +36,9 @@ import com.bclould.tea.model.BankCardInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter3;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 
@@ -58,7 +54,6 @@ import static com.bclould.tea.R.style.BottomDialog;
  * Created by GA on 2017/9/26.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class BankCardBindingActivity extends BaseActivity {
 
     private static final int REQUEST_CODE_CAMERA = 1;
@@ -319,7 +314,7 @@ public class BankCardBindingActivity extends BaseActivity {
         mBankCardPresenter.bankCardInfo(cardNumber, mStateId, new BankCardPresenter.CallBack() {
             @Override
             public void send(BankCardInfo.DataBean data) {
-                if (!BankCardBindingActivity.this.isDestroyed()) {
+                if (ActivityUtil.isActivityOnTop(BankCardBindingActivity.this)) {
                     Intent intent = new Intent(BankCardBindingActivity.this, BankCardBindingActivity2.class);
                     if (data.getTruename() != null && data.getTruename().isEmpty()) {
                         showDialog();

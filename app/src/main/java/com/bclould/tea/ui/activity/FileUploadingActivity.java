@@ -1,28 +1,20 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.FileUploadingPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,7 +23,6 @@ import butterknife.OnClick;
  * Created by GA on 2018/7/18.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FileUploadingActivity extends BaseActivity {
     @Bind(R.id.iv_img)
     ImageView mIvImg;

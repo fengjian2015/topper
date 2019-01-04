@@ -1,29 +1,21 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.UpdateLogPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.GestureLockViewGroup;
 import com.bclould.tea.ui.widget.PWDDialog;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -32,7 +24,6 @@ import butterknife.OnClick;
  * Created by GA on 2018/5/22.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SetGesturePWActivity extends BaseActivity {
 
     public static final String GESTURE_ANSWER = "gesture_answer";

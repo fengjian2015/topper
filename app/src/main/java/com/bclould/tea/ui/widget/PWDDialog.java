@@ -35,7 +35,6 @@ import static com.bclould.tea.R.style.BottomDialog;
 /**
  * Created by GIjia on 2018/7/20.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PWDDialog {
     private Activity context;
     private Animation mEnterAnim;

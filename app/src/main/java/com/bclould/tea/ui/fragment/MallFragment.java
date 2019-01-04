@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +45,6 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/19.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MallFragment extends Fragment {
 
     public static MallFragment instance = null;

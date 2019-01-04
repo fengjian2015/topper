@@ -1,10 +1,7 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -15,15 +12,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,7 +27,6 @@ import static com.bclould.tea.Presenter.LoginPresenter.LOGINSET;
  * Created by GA on 2018/3/12.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginSetActivity extends BaseActivity {
     @Bind(R.id.cb_email)
     CheckBox mCbEmail;

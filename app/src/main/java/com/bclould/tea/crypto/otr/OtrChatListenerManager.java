@@ -17,7 +17,6 @@ import java.util.HashMap;
 /**
  * Created by GIjia on 2018/5/7.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class OtrChatListenerManager {
     private final String protocolName="xmpp";
     public static OtrChatListenerManager mInstance;
@@ -44,7 +43,6 @@ public class OtrChatListenerManager {
         return "false";
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void changeState(String mUser,Context context){
         try {
             if (getIsAboutOpen(sessionID(UtilTool.getTocoId(),mUser))){
@@ -136,7 +134,6 @@ public class OtrChatListenerManager {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void startSession(SessionID sessionID){
         if(!isExist(sessionID))return;
         hashMap.get(sessionID.toString()).startSession(sessionID);
@@ -161,7 +158,6 @@ public class OtrChatListenerManager {
         return hashMap.get(sessionID.toString()).sentMessagesChange(msg,sessionID);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void endMessage(SessionID sessionID){
         if(!isExist(sessionID))return;
         hashMap.get(sessionID.toString()).endMessage(sessionID,true);

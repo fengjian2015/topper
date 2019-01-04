@@ -2,8 +2,6 @@ package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.OrderListInfo;
 import com.bclould.tea.ui.activity.OrderCloseActivity;
 import com.bclould.tea.ui.activity.OrderDetailsActivity;
 import com.bclould.tea.utils.UtilTool;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -28,7 +23,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/9/20.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class OrderRVAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final DBManager mMgr;
@@ -114,11 +108,11 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             }
             if (dataBean.getType() == 1) {
                 mTvName.setText(dataBean.getUser_name());
-                mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));
+                mTvCoinType.setBackground(mContext.getResources().getDrawable(R.drawable.bg_buysell_shape));
                 mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.blue2));
             } else {
                 mTvName.setText(dataBean.getUser_name());
-                mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
+                mTvCoinType.setBackground(mContext.getResources().getDrawable(R.drawable.bg_buysell_shape2));
                 mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.green2));
             }
 
@@ -183,12 +177,12 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
                     UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
                 }
                 mTvName.setText(dataBean.getUser_name());
-                mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));
+                mTvCoinType.setBackground(mContext.getResources().getDrawable(R.drawable.bg_buysell_shape));
                 mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.blue2));
             } else {
                 UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
                 mTvName.setText(dataBean.getUser_name());
-                mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
+                mTvCoinType.setBackground(mContext.getResources().getDrawable(R.drawable.bg_buysell_shape2));
                 mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.green2));
             }
 

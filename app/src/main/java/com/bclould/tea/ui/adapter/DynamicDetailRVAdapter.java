@@ -42,7 +42,6 @@ import butterknife.ButterKnife;
  *//*
 
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DynamicDetailRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;

@@ -2,9 +2,6 @@ package com.bclould.tea.Presenter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.FGCInfo;
@@ -27,7 +24,6 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by GIjia on 2018/10/12.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FinanciaPresenter {
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;

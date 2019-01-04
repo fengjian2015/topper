@@ -7,8 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
@@ -51,7 +49,6 @@ import static com.luck.picture.lib.config.PictureMimeType.ofImage;
  * Created by fengjian on 2018/12/28.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SystemSetPresenter implements SystemSetContacts.Presenter {
     private SystemSetContacts.View mView;
     private Activity mActivity;

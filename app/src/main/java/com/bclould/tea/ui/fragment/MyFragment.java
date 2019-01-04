@@ -49,7 +49,6 @@ import static com.bclould.tea.Presenter.LoginPresenter.BIND_FTC;
  * Created by GA on 2017/9/19.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MyFragment extends Fragment {
 
     public static MyFragment instance = null;

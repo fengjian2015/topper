@@ -1,7 +1,5 @@
 package com.bclould.tea.ui.activity;
 
-import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -9,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,9 +15,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseNormalActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.adapter.FriendDataVPAdapter;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StatusBarCompat;
 
@@ -195,7 +190,6 @@ public class FriendDataActivity extends BaseNormalActivity {
     }
 
     //设置关注状态
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setAttention(boolean isClick) {
 
         if (isClick) {
@@ -208,7 +202,7 @@ public class FriendDataActivity extends BaseNormalActivity {
 
         } else {
 
-            mAttention.setBackground(getDrawable(R.drawable.bg_buysell_shape));
+            mAttention.setBackground(getResources().getDrawable(R.drawable.bg_buysell_shape));
 
             mAttention.setText(getString(R.string.attention));
 

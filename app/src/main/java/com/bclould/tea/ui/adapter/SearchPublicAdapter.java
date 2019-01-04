@@ -2,29 +2,17 @@ package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
-import com.bclould.tea.history.DBManager;
-import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.PublicInfo;
-import com.bclould.tea.ui.activity.IndividualDetailsActivity;
 import com.bclould.tea.ui.activity.PublicDetailsActivity;
-import com.bclould.tea.ui.activity.SearchPublicActivity;
 import com.bclould.tea.utils.UtilTool;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.request.RequestOptions;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -32,7 +20,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/12/12.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SearchPublicAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;

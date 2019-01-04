@@ -10,7 +10,6 @@ import com.bclould.tea.utils.UtilTool;
 /**
  * Created by GIjia on 2018/6/12.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PingThread extends Thread {
     private Context context;
     private int pingNumber;

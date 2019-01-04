@@ -2,21 +2,15 @@ package com.bclould.tea.Presenter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
-import com.bclould.tea.model.GroupCreateInfo;
 import com.bclould.tea.model.PublicDetailsInfo;
 import com.bclould.tea.model.PublicInfo;
-import com.bclould.tea.model.UnclaimedRedInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -25,7 +19,6 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by GIjia on 2018/7/27.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PublicPresenter {
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;

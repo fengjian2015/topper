@@ -5,14 +5,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.alipay.sdk.app.AuthTask;
 import com.alipay.sdk.app.PayTask;
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
@@ -24,7 +21,6 @@ import java.util.Map;
  * Created by GIjia on 2018/8/7.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AlipayClient {
     private static AlipayClient mInstance;
     private Context mContext;

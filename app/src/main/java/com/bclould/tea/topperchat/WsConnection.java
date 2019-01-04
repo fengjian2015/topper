@@ -62,7 +62,6 @@ import static com.bclould.tea.topperchat.WsContans.TYPE;
 /**
  * Created by fengjian on 2018/6/5.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class WsConnection {
     private static WsConnection mInstance;
     private static Context mContext;

@@ -1,13 +1,10 @@
 package com.bclould.tea.ui.activity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.IndividualDetailsPresenter;
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
@@ -15,6 +12,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.IndividualInfo;
 import com.bclould.tea.model.UserInfo;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
@@ -27,7 +25,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class FriendVerificationActivity extends BaseActivity {
     @Bind(R.id.iv_touxiang)
     ImageView mIvTouxiang;
@@ -113,7 +110,7 @@ public class FriendVerificationActivity extends BaseActivity {
         mPresenter.getIndividual(userId, true, new IndividualDetailsPresenter.CallBack() {
             @Override
             public void send(IndividualInfo.DataBean data) {
-                if (!FriendVerificationActivity.this.isDestroyed()) {
+                if (ActivityUtil.isActivityOnTop(FriendVerificationActivity.this)) {
                     if (data == null) return;
                     name = data.getName();
                     country = data.getCountry();

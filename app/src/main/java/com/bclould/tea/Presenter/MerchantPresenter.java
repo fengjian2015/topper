@@ -1,8 +1,6 @@
 package com.bclould.tea.Presenter;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tea.model.BaseInfo;
@@ -18,7 +16,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/5/29.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MerchantPresenter {
 
     private Context mContext;

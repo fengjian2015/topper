@@ -1,10 +1,7 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -14,37 +11,28 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bclould.tea.Presenter.PublicPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.model.PublicInfo;
 import com.bclould.tea.topperchat.RoomMemberManage;
 import com.bclould.tea.ui.adapter.PublicListRVAdapter;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.gjiazhe.wavesidebar.WaveSideBar;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PublicActivity extends BaseActivity implements PublicListRVAdapter.OnclickListener {
 
     @Bind(R.id.recycler_view)
@@ -82,7 +70,7 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
         String message=getString(R.string.public_open);
         String email=getString(R.string.official_email);
         SpannableString spannableString = new SpannableString(message+email);
-        spannableString.setSpan(new ForegroundColorSpan(getColor(R.color.secondary_text_color)), message.length()-1,spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.secondary_text_color)), message.length()-1,spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mTvPublic.setText(spannableString);
 
     }

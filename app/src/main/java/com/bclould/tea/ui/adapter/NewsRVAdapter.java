@@ -1,27 +1,22 @@
 package com.bclould.tea.ui.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.model.NewsListInfo;
 import com.bclould.tea.ui.activity.NewsDetailsActivity;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -30,7 +25,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/3/21.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsRVAdapter extends RecyclerView.Adapter {
 
     private final Activity mContext;
@@ -176,7 +170,7 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
                     .centerCrop()
                     .placeholder(R.mipmap.ic_empty_photo)
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
-            if(mContext==null||mContext.isDestroyed())return;
+            if(!ActivityUtil.isActivityOnTop(mContext))return;
             Glide.with(mContext).load(listBean.getIndex_pic()).apply(requestOptions).into(mIvImage);
         }
     }

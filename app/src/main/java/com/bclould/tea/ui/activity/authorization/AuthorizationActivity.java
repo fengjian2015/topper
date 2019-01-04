@@ -27,7 +27,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AuthorizationActivity extends BaseActivity implements AuthorizationContacts.View{
     @Bind(R.id.tv_title_top)
     TextView mTvTitleTop;

@@ -123,7 +123,6 @@ import sj.keyboard.widget.RecordIndicator;
  * Created by GA on 2017/9/20.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ConversationActivity extends BaseActivity implements FuncLayout.OnFuncKeyBoardListener, XhsEmoticonsKeyBoard.OnResultOTR, MessageManageListener, TextView.OnEditorActionListener
                         ,IConnectStateChangeListener {
 

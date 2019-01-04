@@ -37,7 +37,6 @@ import butterknife.OnClick;
  * Created by GA on 2018/5/17.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class PayPwSelectorActivity extends BaseActivity {
 
     public static final String GESTURE_PW_SELE = "gesture_pw_sele";

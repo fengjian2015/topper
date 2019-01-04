@@ -6,8 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,7 +21,6 @@ import java.util.List;
  * Created by GA on 2018/5/22.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class GestureLockViewGroup extends RelativeLayout {
 
     private static final String TAG = "GestureLockViewGroup";

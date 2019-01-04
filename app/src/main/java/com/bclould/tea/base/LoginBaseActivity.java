@@ -1,9 +1,7 @@
 package com.bclould.tea.base;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.R;
 import com.bclould.tea.utils.AppLanguageUtils;
@@ -11,7 +9,6 @@ import com.bclould.tea.utils.AppLanguageUtils;
 /**
  * Created by GIjia on 2018/6/29.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginBaseActivity extends SwipeActivity {
 
 

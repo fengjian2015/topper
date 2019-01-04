@@ -12,7 +12,6 @@ import com.bclould.tea.base.MyApp;
  * Created by GA on 2017/9/28.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MySharedPreferences {
 
     public static final String SETTING = "setting";

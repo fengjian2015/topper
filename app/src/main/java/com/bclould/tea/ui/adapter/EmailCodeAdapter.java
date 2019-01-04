@@ -1,19 +1,15 @@
 package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBUserCode;
 import com.bclould.tea.ui.activity.LoginActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +17,6 @@ import java.util.List;
  * Created by GIjia on 2018/6/15.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class EmailCodeAdapter extends BaseAdapter implements Filterable {
     private List<String> mList;
     private ArrayFilter mFilter;

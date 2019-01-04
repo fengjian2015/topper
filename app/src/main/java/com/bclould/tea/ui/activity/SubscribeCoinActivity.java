@@ -1,26 +1,16 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-
 import com.bclould.tea.Presenter.SubscribeCoinPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.MyAssetsInfo;
 import com.bclould.tea.ui.adapter.SubscribeCoinRVAdatper;
-import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.MySharedPreferences;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -29,7 +19,6 @@ import butterknife.OnClick;
  * Created by GA on 2017/11/8.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class SubscribeCoinActivity extends BaseActivity {
 
 

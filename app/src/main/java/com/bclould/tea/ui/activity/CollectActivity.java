@@ -3,10 +3,8 @@ package com.bclould.tea.ui.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,7 +47,6 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_HTML_MSG;
  * Created by GA on 2018/7/13.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class CollectActivity extends BaseActivity {
 
     List<CollectInfo.DataBean> mDataList = new ArrayList<>();

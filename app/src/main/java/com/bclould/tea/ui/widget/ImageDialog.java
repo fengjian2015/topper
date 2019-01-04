@@ -31,7 +31,6 @@ import butterknife.ButterKnife;
  * Created by GIjia on 2018/7/30.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ImageDialog extends Dialog {
     @Bind(R.id.image)
     ImageView mImage;

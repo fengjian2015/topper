@@ -3,8 +3,6 @@ package com.bclould.tea.Presenter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -35,7 +33,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/5/8.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsNoticePresenter {
 
     private static final String NEWS_JSON = UtilTool.getTocoId() + "news_json";

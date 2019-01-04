@@ -1,11 +1,8 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,15 +18,12 @@ import com.bclould.tea.Presenter.BankCardPresenter;
 import com.bclould.tea.Presenter.CurrencyInOutPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.CardListInfo;
 import com.bclould.tea.ui.adapter.BankCardRVAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.SpaceItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,7 +41,6 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/26.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class BankCardActivity extends BaseActivity {
 
 

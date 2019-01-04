@@ -1,8 +1,5 @@
 package com.bclould.tea.network;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSAuthCredentialsProvider;
@@ -19,7 +16,6 @@ import org.greenrobot.eventbus.EventBus;
  * Created by GA on 2018/6/13.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class OSSupload {
 
     private static OSSupload instance;

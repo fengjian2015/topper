@@ -46,7 +46,6 @@ public class FindPasswordPresenter {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void sendRegcode(final String email) {
         showDialog();
         RetrofitUtil.getInstance(mContext)

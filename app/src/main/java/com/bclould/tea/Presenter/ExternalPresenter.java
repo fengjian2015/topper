@@ -46,7 +46,6 @@ import okhttp3.Response;
  * Created by GIjia on 2018/12/21.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ExternalPresenter {
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;

@@ -1,14 +1,10 @@
 package com.bclould.tea.utils;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 
 /**
  * Created by GA on 2017/10/27.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOPPERCHAT";
     public static final int BET_ARR_COUNT = 4;

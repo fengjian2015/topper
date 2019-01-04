@@ -8,7 +8,6 @@ import com.bclould.tea.service.IMService;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.utils.UtilTool;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginThread extends Thread {
 	private Context context;
 	public static boolean isStartExReconnect = false;

@@ -34,7 +34,6 @@ import java.util.Hashtable;
 /**
  * Created by GIjia on 2018/5/4.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost  {
     private final String protocolName="xmpp";
     private final String OPEN_OTR="?OTR";
@@ -73,7 +72,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
         localEngineImpl.addOtrEngineListener(this);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public String startSession(SessionID sessionID){
         try {
             getHandler(sessionID.getRemoteUserId(),10000);
@@ -96,7 +94,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
             handler=new Handler(Looper.getMainLooper());
         }
         handler.postDelayed(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
                 SessionStatus sessionStatus =localEngineImpl.getSessionStatus(sessionID(UtilTool.getTocoId(),from));
@@ -134,7 +131,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
             return otrEngineHost.lastInjectedMessage;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public String receivedMessagesChange(String msg, SessionID sessionID){
         try {
             SessionStatus sStatus = localEngineImpl.getSessionStatus(sessionID(UtilTool.getTocoId(),sessionID.getRemoteUserId()));
@@ -178,7 +174,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
         return otrKeyManagerDefault.getLocalFingerprint(sessionID);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void endMessage(SessionID sessionID,boolean isSend){
         try {
             OtrChatListenerManager.getInstance().addOTRState(sessionID.getRemoteUserId(),"false");
@@ -197,7 +192,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
      * 用於判斷消息會話
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public boolean isOtrMessage(String chatMsg, String from){
         try {
             if(chatMsg.contains(OPEN_OTR)){
@@ -220,7 +214,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
      * @param from
      * @return
      */
-    @SuppressLint("NewApi")
     public boolean isOtrEstablishMessage(String chatMsg, String from){
         try {
             if(chatMsg.contains(OPEN_OTR)){
@@ -245,7 +238,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
 
 
     private Hashtable<String, OtrSm> mOtrSms=new Hashtable<>();
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void sessionStatusChanged(SessionID sessionID) {
         SessionStatus sStatus = localEngineImpl.getSessionStatus(sessionID);

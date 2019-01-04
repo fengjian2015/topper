@@ -3,11 +3,8 @@ package com.bclould.tea.ui.activity.my.addcollect;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
-
 import com.bclould.tea.Presenter.CollectPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseView;
@@ -29,7 +26,6 @@ import org.jsoup.select.Elements;
  * Created by fengjian on 2018/12/27.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AddCollectPresenter implements AddCollectContacts.Presenter{
     private AddCollectContacts.View mView;
     private Activity mActivity;

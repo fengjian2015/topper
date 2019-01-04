@@ -2,14 +2,11 @@ package com.bclould.tea.ui.fragment;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.network.https.GlideProgressListener;
@@ -31,7 +28,6 @@ import java.io.File;
 /**
  * Created by GA on 2018/3/7.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class ImageViewFragment extends Fragment implements GlideProgressListener{
     private String imageUrl;
     private ProgressBar loadBar;

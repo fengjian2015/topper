@@ -2,8 +2,6 @@ package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +23,6 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/10/18.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AllProblemRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;

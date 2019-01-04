@@ -2,10 +2,7 @@ package com.bclould.tea.Presenter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.widget.Toast;
-
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.DynamicListInfo;
@@ -31,7 +28,6 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/3/22.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DynamicPresenter {
     private static final String DYNAMIC_JSON = UtilTool.getTocoId() + "dynamic_json";
     private final Context mContext;

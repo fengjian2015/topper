@@ -4,9 +4,6 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ComponentName;
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import java.util.ArrayList;
 
 public class CheckClassIsWork {
@@ -23,7 +20,6 @@ public class CheckClassIsWork {
 		return false;   
 	}  
 	
-	@RequiresApi(api = Build.VERSION_CODES.N)
 	public static boolean isTopActivity(Context context, String topActivity){
 		ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
 		if(am.getRunningTasks(1)==null||am.getRunningTasks(1).size()==0){

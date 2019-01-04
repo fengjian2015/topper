@@ -1,9 +1,8 @@
 package com.bclould.tea.ui.fragment;
 
-import android.os.Build;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,10 +37,8 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/4/27.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MyPushSellFragment extends Fragment {
 
-    private final String mCoinName;
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.ll_no_data)
@@ -63,10 +60,7 @@ public class MyPushSellFragment extends Fragment {
     private int PULL_DOWN = 1;
     private MyPushAdRVAdapter mMyPushAdRVAdapter;
     private boolean isFinish = true;
-
-    public MyPushSellFragment(String coinName) {
-        mCoinName = coinName;
-    }
+    private  String mCoinName;
 
     @Nullable
     @Override
@@ -81,6 +75,8 @@ public class MyPushSellFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Bundle bundle=getArguments();
+        mCoinName=bundle.getString("mCoinName");
         initListener();
         mBuySellPresenter = new BuySellPresenter(getContext());
         initRecyclerView();

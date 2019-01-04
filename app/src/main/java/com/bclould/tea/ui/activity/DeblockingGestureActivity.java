@@ -1,23 +1,18 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.GestureLockViewGroup;
-import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
@@ -30,7 +25,6 @@ import static com.bclould.tea.ui.activity.SetGesturePWActivity.GESTURE_ANSWER;
  * Created by GA on 2018/8/2.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class DeblockingGestureActivity extends BaseActivity {
     @Bind(R.id.iv_logo)
     ImageView mIvLogo;
