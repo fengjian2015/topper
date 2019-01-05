@@ -147,9 +147,9 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     public void initInterface() {
         mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));
-        mgr = new DBManager(getActivity());
-        mDBRoomMember = new DBRoomMember(getActivity());
-        mDBRoomManage = new DBRoomManage(getActivity());
+        mgr = new DBManager(getContext());
+        mDBRoomMember = new DBRoomMember(getContext());
+        mDBRoomManage = new DBRoomManage(getContext());
         mRefreshList = new RefreshList();
         createFile();
 

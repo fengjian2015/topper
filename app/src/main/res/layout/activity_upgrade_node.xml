@@ -18,48 +18,52 @@
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
         android:background="@drawable/bg_shallow_shape"
-        android:paddingLeft="@dimen/x30"
         android:orientation="vertical"
+        android:paddingLeft="@dimen/x30"
         android:paddingRight="@dimen/x30">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
             android:gravity="center_vertical">
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
                 style="@style/MainTextShallowStyle30"
-                android:text="@string/current"
-                android:gravity="center"/>
-            <TextView
-                android:id="@+id/tv_level"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:text="@string/current" />
+
+            <TextView
+                android:id="@+id/tv_level"
                 style="@style/MainTextShallowStyle30"
-                android:layout_alignParentRight="true"/>
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center" />
         </RelativeLayout>
 
-        <View
-            style="@style/HorizontalBoundaryStyle"/>
+        <View style="@style/HorizontalBoundaryStyle" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
             android:gravity="center_vertical">
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
                 style="@style/MainTextShallowStyle30"
-                android:text="@string/available"
-                android:gravity="center"/>
-            <TextView
-                android:id="@+id/tv_available"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:text="@string/available" />
+
+            <TextView
+                android:id="@+id/tv_available"
                 style="@style/MainTextShallowStyle30"
-                android:layout_alignParentRight="true"/>
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center" />
         </RelativeLayout>
     </LinearLayout>
     <RelativeLayout

@@ -87,7 +87,7 @@ public class UpgradeNodePresenter implements UpgradeNodeContacts.Presenter{
                 consensusFragment.setUpgradeInfo(mUpgradeInfo);
                 superFragment.setUpgradeInfo(mUpgradeInfo);
                 lordFragment.setUpgradeInfo(mUpgradeInfo);
-
+                mView.setView(baseInfo);
             }
 
             @Override
