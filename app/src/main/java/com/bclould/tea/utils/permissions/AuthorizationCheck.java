@@ -133,7 +133,6 @@ public class AuthorizationCheck{
         if(activity.isFinishing()){
             return;
         }
-        ;
         if(isMustOpen){
             ConfirmCancelDialog diaolg=new ConfirmCancelDialog(activity);
             diaolg.show();

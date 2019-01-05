@@ -146,55 +146,58 @@ public class DynamicPresenter implements DynamicContacts.Presenter{
     }
 
     private void showDeleteCommentDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mActivity, R.style.dialog);
-        deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(mActivity.getResources().getString(R.string.whether_delete_comment));
-        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
-            }
-        });
-        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
-        confirm.setText(mActivity.getResources().getString(R.string.delete));
-        confirm.setTextColor(mActivity.getResources().getColor(R.color.red));
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDynamicPresenter.deleteComment(Integer.parseInt(mCommentId), new com.bclould.tea.Presenter.DynamicPresenter.CallBack() {
-                    @Override
-                    public void send() {
-                        for (int i = 0; i < mDataList.size(); i++) {
-                            if (mDataList.get(i).getReviewList().size() != 0 && mDataList.get(i).getReview_count() != 0) {
-                                if (mDataList.get(i).getId() == Integer.parseInt(mDynamicId)) {
-                                    for (int j = 0; j < mDataList.get(i).getReviewList().size(); j++) {
-                                        if (mDataList.get(i).getReviewList().get(j).getId() == Integer.parseInt(mCommentId)) {
-                                            mDataList.get(i).getReviewList().remove(j);
-                                            mDataList.get(i).setReview_count(mDataList.get(i).getReview_count() - 1);
-                                            mDynamicRVAdapter.notifyItemChanged(i);
-                                            break;
+        if(ActivityUtil.isActivityOnTop(mActivity)) {
+            final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mActivity, R.style.dialog);
+            deleteCacheDialog.show();
+            deleteCacheDialog.setTitle(mActivity.getResources().getString(R.string.whether_delete_comment));
+            Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteCacheDialog.dismiss();
+                }
+            });
+            Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+            confirm.setText(mActivity.getResources().getString(R.string.delete));
+            confirm.setTextColor(mActivity.getResources().getColor(R.color.red));
+            confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mDynamicPresenter.deleteComment(Integer.parseInt(mCommentId), new com.bclould.tea.Presenter.DynamicPresenter.CallBack() {
+                        @Override
+                        public void send() {
+                            for (int i = 0; i < mDataList.size(); i++) {
+                                if (mDataList.get(i).getReviewList().size() != 0 && mDataList.get(i).getReview_count() != 0) {
+                                    if (mDataList.get(i).getId() == Integer.parseInt(mDynamicId)) {
+                                        for (int j = 0; j < mDataList.get(i).getReviewList().size(); j++) {
+                                            if (mDataList.get(i).getReviewList().get(j).getId() == Integer.parseInt(mCommentId)) {
+                                                mDataList.get(i).getReviewList().remove(j);
+                                                mDataList.get(i).setReview_count(mDataList.get(i).getReview_count() - 1);
+                                                mDynamicRVAdapter.notifyItemChanged(i);
+                                                break;
+                                            }
                                         }
                                     }
                                 }
                             }
+                            deleteCacheDialog.dismiss();
                         }
-                        deleteCacheDialog.dismiss();
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
     }
 
-    @SuppressLint("HandlerLeak")
     private void showRewardSucceedDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_reward, mActivity, R.style.dialog);
-        deleteCacheDialog.show();
-        new Handler() {
-            public void handleMessage(Message msg) {
-                deleteCacheDialog.dismiss();
-            }
-        }.sendEmptyMessageDelayed(0, 1500);
+        if(ActivityUtil.isActivityOnTop(mActivity)){
+            final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_reward, mActivity, R.style.dialog);
+            deleteCacheDialog.show();
+            new Handler() {
+                public void handleMessage(Message msg) {
+                    deleteCacheDialog.dismiss();
+                }
+            }.sendEmptyMessageDelayed(0, 1500);
+        }
     }
 
 

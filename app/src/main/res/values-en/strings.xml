@@ -2389,4 +2389,14 @@ Please reset encryption request</string>
     <string name="confirm_login"> confirm login </string>
     <string name="allow">allow </string>
     <string name="topperchat_authorization">TopperChat authorization </string>
+    <string name="error">Error </string>
+    <string name="mall">shop </string>
+    <string name="miner_cost">Miner costs: </string>
+    <string name="block">block TXID: </string>
+    <string name="address1">Address: </string>
+    <string name="input_address_name_email">Enter the address, username or mailbox to search </string>
+    <string name="et_emily_or_phone">Please enter the email number or mobile number </string>
+    <string name="please_enter_code">Please enter the verification code </string>
+    <string name="toast_email_or_phone">Email number or mobile number cannot be empty</string>
+    <string name="email_or_phone">email/mobile</string>
 </resources>

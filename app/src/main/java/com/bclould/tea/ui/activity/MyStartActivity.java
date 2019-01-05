@@ -109,7 +109,7 @@ public class MyStartActivity extends BaseActivity {
     }
 
     private void show(final String content) {
-        if(hasFocus) {
+        if(hasFocus&& ActivityUtil.isActivityOnTop(this)){
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -120,14 +120,16 @@ public class MyStartActivity extends BaseActivity {
     }
 
     private void shutDown() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mWinningPopWindow != null) {
-                    mWinningPopWindow.dismiss();
+        if(hasFocus&& ActivityUtil.isActivityOnTop(this)) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mWinningPopWindow != null) {
+                        mWinningPopWindow.dismiss();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

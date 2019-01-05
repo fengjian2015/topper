@@ -1277,4 +1277,14 @@
     <string name="confirm_login">確認登錄</string>
     <string name="allow">允許</string>
     <string name="topperchat_authorization">TopperChat授權</string>
+    <string name="error">出錯了</string>
+    <string name="mall">商城</string>
+    <string name="miner_cost">礦工費用：</string>
+    <string name="block">區塊TXID：</string>
+    <string name="address1">地址：</string>
+    <string name="input_address_name_email">輸入地址、用戶名或郵箱進行搜索</string>
+    <string name="et_emily_or_phone">請輸入電郵號或手機號</string>
+    <string name="please_enter_code">請輸入驗證碼</string>
+    <string name="toast_email_or_phone">電郵號或手機號不能為空</string>
+    <string name="email_or_phone">電郵/手機</string>
 </resources>

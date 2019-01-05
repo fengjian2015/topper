@@ -18,9 +18,12 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.ui.adapter.BlockchainGambleVPAdapter;
 import com.bclould.tea.ui.widget.WinningPopWindow;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.WinningManager;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -89,13 +92,15 @@ public class BlockchainGambleActivity extends BaseActivity {
     }
 
     private void show(final String content){
-        if(hasFocus){
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mWinningPopWindow=new WinningPopWindow(BlockchainGambleActivity.this,content,mRlTitle);
-                }
-            });
+        if(hasFocus&& ActivityUtil.isActivityOnTop(this)) {
+            if (hasFocus && ActivityUtil.isActivityOnTop(this)) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mWinningPopWindow = new WinningPopWindow(BlockchainGambleActivity.this, content, mRlTitle);
+                    }
+                });
+            }
         }
     }
 
@@ -107,7 +112,7 @@ public class BlockchainGambleActivity extends BaseActivity {
                     mWinningPopWindow.dismiss();
                 }
             }
-        });
+        });;
     }
 
     @Override

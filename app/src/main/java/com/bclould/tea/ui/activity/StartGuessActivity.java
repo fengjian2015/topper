@@ -28,6 +28,7 @@ import com.bclould.tea.ui.adapter.BottomDialogRVAdapter;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.ui.widget.WinningPopWindow;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
@@ -134,7 +135,7 @@ public class StartGuessActivity extends BaseActivity {
     }
 
     private void show(final String content) {
-        if(hasFocus) {
+        if(hasFocus&& ActivityUtil.isActivityOnTop(this)){
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -145,14 +146,16 @@ public class StartGuessActivity extends BaseActivity {
     }
 
     private void shutDown() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mWinningPopWindow != null) {
-                    mWinningPopWindow.dismiss();
+        if(hasFocus&& ActivityUtil.isActivityOnTop(this)) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mWinningPopWindow != null) {
+                        mWinningPopWindow.dismiss();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

@@ -256,11 +256,13 @@ public class RedPacketRecordActivity extends BaseActivity {
 
             @Override
             public void finishRefresh() {
-                isFinish = true;
-                if (type == PULL_UP) {
-                    mRefreshLayout.finishLoadMore();
-                } else {
-                    mRefreshLayout.finishRefresh();
+                if (ActivityUtil.isActivityOnTop(RedPacketRecordActivity.this)) {
+                    isFinish = true;
+                    if (type == PULL_UP) {
+                        mRefreshLayout.finishLoadMore();
+                    } else {
+                        mRefreshLayout.finishRefresh();
+                    }
                 }
             }
         });
