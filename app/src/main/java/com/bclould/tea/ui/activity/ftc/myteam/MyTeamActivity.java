@@ -1,15 +1,16 @@
 package com.bclould.tea.ui.activity.ftc.myteam;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.MyTeamInfo;
+import com.bclould.tea.ui.activity.my.teamreward.TeamRewardActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -19,7 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MyTeamActivity extends BaseActivity implements MyTeamContacts.View{
+public class MyTeamActivity extends BaseActivity implements MyTeamContacts.View {
 
 
     @Bind(R.id.tv_team_number)
@@ -36,14 +37,17 @@ public class MyTeamActivity extends BaseActivity implements MyTeamContacts.View{
     SmartRefreshLayout mRefreshLayout;
     @Bind(R.id.tv_break)
     TextView mTvBreak;
+    @Bind(R.id.tv_team_push_reward)
+    TextView mTvTeamPushReward;
 
     private MyTeamContacts.Presenter mMyTeamPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_team);
         ButterKnife.bind(this);
-        mMyTeamPresenter=new MyTeamPresenter();
+        mMyTeamPresenter = new MyTeamPresenter();
         mMyTeamPresenter.bindView(this);
         mMyTeamPresenter.start(this);
 
@@ -62,21 +66,21 @@ public class MyTeamActivity extends BaseActivity implements MyTeamContacts.View{
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                mMyTeamPresenter.initHttp(true,1);
+                mMyTeamPresenter.initHttp(true, 1);
             }
         });
 
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                mMyTeamPresenter.initHttp(false,mMyTeamPresenter.getPage()+1);
+                mMyTeamPresenter.initHttp(false, mMyTeamPresenter.getPage() + 1);
                 mRefreshLayout.finishLoadMore();
             }
         });
         mRecyclerView.setAdapter(mMyTeamPresenter.getMyTeamAdapter());
     }
 
-    @OnClick({R.id.bark,R.id.tv_break})
+    @OnClick({R.id.bark, R.id.tv_break,R.id.rl_reward})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -84,7 +88,10 @@ public class MyTeamActivity extends BaseActivity implements MyTeamContacts.View{
                 break;
             case R.id.tv_break:
                 mMyTeamPresenter.setUserId(0);
-                mMyTeamPresenter.initHttp(true,1);
+                mMyTeamPresenter.initHttp(true, 1);
+                break;
+            case R.id.rl_reward:
+                startActivity(new Intent(this, TeamRewardActivity.class));
                 break;
         }
     }
@@ -96,9 +103,9 @@ public class MyTeamActivity extends BaseActivity implements MyTeamContacts.View{
 
     @Override
     public void setResetRecycler(boolean isRefresh) {
-        if(isRefresh){
+        if (isRefresh) {
             mRefreshLayout.finishRefresh();
-        }else{
+        } else {
             mRefreshLayout.finishLoadMore();
         }
     }
@@ -109,5 +116,6 @@ public class MyTeamActivity extends BaseActivity implements MyTeamContacts.View{
         mTvDirectDriveNumber.setText(baseInfo.getData().getPush_member());
         mTvPerformance.setText(baseInfo.getData().getPerformance());
         mTvTeamName.setText(baseInfo.getData().getUser_name());
+        mTvTeamPushReward.setText(baseInfo.getData().getTeam_push_reward());
     }
 }

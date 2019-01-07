@@ -170,45 +170,50 @@ public class SwipeActivity extends AppCompatActivity {
 
         @Override
         public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
-            if (swipeEnabled && !canSwipe && !ignoreSwipe) {
-                if (swipeAnyWhere) {
-                    switch (ev.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            downX = ev.getX();
-                            downY = ev.getY();
-                            currentX = downX;
-                            currentY = downY;
-                            lastX = downX;
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            float dx = ev.getX() - downX;
-                            float dy = ev.getY() - downY;
-                            if (dx * dx + dy * dy > touchSlop * touchSlop) {
-                                if (dy == 0f || Math.abs(dx / dy) > 1) {
-                                    downX = ev.getX();
-                                    downY = ev.getY();
-                                    currentX = downX;
-                                    currentY = downY;
-                                    lastX = downX;
-                                    canSwipe = true;
-                                    tracker = VelocityTracker.obtain();
-                                    return true;
-                                } else {
-                                    ignoreSwipe = true;
+            try {
+                if (swipeEnabled && !canSwipe && !ignoreSwipe) {
+                    if (swipeAnyWhere) {
+                        switch (ev.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                downX = ev.getX();
+                                downY = ev.getY();
+                                currentX = downX;
+                                currentY = downY;
+                                lastX = downX;
+                                break;
+                            case MotionEvent.ACTION_MOVE:
+                                float dx = ev.getX() - downX;
+                                float dy = ev.getY() - downY;
+                                if (dx * dx + dy * dy > touchSlop * touchSlop) {
+                                    if (dy == 0f || Math.abs(dx / dy) > 1) {
+                                        downX = ev.getX();
+                                        downY = ev.getY();
+                                        currentX = downX;
+                                        currentY = downY;
+                                        lastX = downX;
+                                        canSwipe = true;
+                                        tracker = VelocityTracker.obtain();
+                                        return true;
+                                    } else {
+                                        ignoreSwipe = true;
+                                    }
                                 }
-                            }
-                            break;
+                                break;
+                        }
+                    } else if (ev.getAction() == MotionEvent.ACTION_DOWN && ev.getX() < sideWidth) {
+                        canSwipe = true;
+                        tracker = VelocityTracker.obtain();
+                        return true;
                     }
-                } else if (ev.getAction() == MotionEvent.ACTION_DOWN && ev.getX() < sideWidth) {
-                    canSwipe = true;
-                    tracker = VelocityTracker.obtain();
-                    return true;
                 }
+                if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
+                    ignoreSwipe = false;
+                }
+                return super.dispatchTouchEvent(ev);
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
-                ignoreSwipe = false;
-            }
-            return super.dispatchTouchEvent(ev);
+            return true;
         }
 
         @Override

@@ -99,6 +99,32 @@
                 style="@style/MainTextShallowStyle30"/>
 
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_reward"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:paddingBottom="@dimen/y20"
+            android:paddingRight="@dimen/y30"
+            android:paddingLeft="@dimen/y30"
+            android:paddingTop="@dimen/y20">
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv4"
+                android:text="@string/team_direct_reward"/>
+
+            <TextView
+                android:id="@+id/tv_team_push_reward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                style="@style/MainTextShallowStyle30"/>
+
+        </RelativeLayout>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"

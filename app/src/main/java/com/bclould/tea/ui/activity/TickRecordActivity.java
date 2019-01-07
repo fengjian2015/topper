@@ -193,7 +193,7 @@ public class TickRecordActivity extends BaseActivity implements TimeSelectUtil.O
                 mTimeSelectUtil.initOptionPicker();
                 break;
             case R.id.ll_error:
-                initData();
+                initHttp(true,1);
                 break;
         }
     }
@@ -207,6 +207,7 @@ public class TickRecordActivity extends BaseActivity implements TimeSelectUtil.O
 
     @Override
     protected void onDestroy() {
+        if(mTimeSelectUtil==null)return;
         mTimeSelectUtil.dismiss();
         super.onDestroy();
     }

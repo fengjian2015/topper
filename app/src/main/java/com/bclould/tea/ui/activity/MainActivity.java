@@ -213,8 +213,7 @@ public class MainActivity extends BaseActivity {
             checkVersion();
         }
         if (1 == whence) {
-            ConversationFragment conversationFragment = ConversationFragment.getInstance();
-            conversationFragment.initInterface();
+
             setSelector(0);
             //切换Fragment
             changeFragment(0);
@@ -225,8 +224,7 @@ public class MainActivity extends BaseActivity {
             getChatBackGround();
             mallLogin();
         } else if (2 == whence || 3 == whence) {
-            ConversationFragment conversationFragment = ConversationFragment.getInstance();
-            conversationFragment.initInterface();
+
             setSelector(0);
             //切换Fragment
             changeFragment(0);

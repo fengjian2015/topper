@@ -2380,4 +2380,10 @@
     <string name="please_enter_code">请输入验证码</string>
     <string name="toast_email_or_phone">电邮号或手机号不能为空</string>
     <string name="email_or_phone">电邮/手机</string>
+
+    <string name="team_direct_reward">团队直推奖励</string>
+    <string name="no_reward_record">没有奖励记录</string>
+    <string name="team_direct_reward_record">团队直推奖励记录</string>
+    <string name="reward_source">数据来源：%1$s购买节点%2$s</string>
+    <string name="get_direct_rewards">获得直推奖励</string>
 </resources>

@@ -40,5 +40,4 @@ public class WinningPopWindow extends PopupWindow {
             }
         });
     }
-
 }

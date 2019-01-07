@@ -19,7 +19,7 @@ public class LoginThread extends Thread {
 
 	@Override
 	public void run() {
-		while (true&&loginNumber==WsConnection.loginNumber) {
+		while (loginNumber==WsConnection.loginNumber) {
 			if (WsConnection.getInstance().getOutConnection()) {
 				UtilTool.Log("fengjian","關閉連接");
 				WsConnection.getInstance().goMainActivity(2);

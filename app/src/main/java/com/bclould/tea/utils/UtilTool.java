@@ -1518,25 +1518,25 @@ public class UtilTool {
     }
 
     public static void install(Context context, File file) {
-        if (Build.VERSION.SDK_INT >= 24) {
-            Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
-            Intent install = new Intent(Intent.ACTION_VIEW);
-            install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent install = new Intent(Intent.ACTION_VIEW);
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
             install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加这一句表示对目标应用临时授权该Uri所代表的文件
-            install.setDataAndType(uri, "application/vnd.android.package-archive");
-            context.startActivity(install);
         } else {
             String path = file.getAbsolutePath();
-            Uri uri;
             if(!path.contains("file://")) {
                 uri = Uri.parse("file://" + path);
             }else{
                 uri = Uri.parse(path);
             }
-            Intent install = new Intent(Intent.ACTION_VIEW);
-            install.setDataAndType(uri, "application/vnd.android.package-archive");
-            install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(install);
+        }
+        install.setDataAndType(uri, "application/vnd.android.package-archive");
+        try {
+            context.startActivity(install);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

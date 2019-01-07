@@ -203,18 +203,23 @@ public class DBRoomMember {
     }
 
     public String findMemberName(String roomId,String toco_id) {
-        synchronized (lock) {
-            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
-            String name = null;
-            Cursor cursor = db.rawQuery("select name from RoomMember where roomId=? and jid=? and my_user=?",
-                    new String[]{roomId, toco_id, UtilTool.getTocoId()});
-            while (cursor.moveToNext()) {
-                name = cursor.getString(cursor.getColumnIndex("name"));
+        try {
+            synchronized (lock) {
+                SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+                String name = null;
+                Cursor cursor = db.rawQuery("select name from RoomMember where roomId=? and jid=? and my_user=?",
+                        new String[]{roomId, toco_id, UtilTool.getTocoId()});
+                while (cursor.moveToNext()) {
+                    name = cursor.getString(cursor.getColumnIndex("name"));
+                }
+                cursor.close();
+                DatabaseManager.getInstance().closeWritableDatabase();
+                return name;
             }
-            cursor.close();
-            DatabaseManager.getInstance().closeWritableDatabase();
-            return name;
+        }catch (Exception e){
+            e.printStackTrace();
         }
+        return "";
     }
 
     public String findMemberUrl(String roomId,String toco_id) {

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.ui.adapter.BlockchainGambleVPAdapter;
@@ -27,6 +28,7 @@ import com.bclould.tea.utils.WinningManager;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -62,7 +64,7 @@ public class BlockchainGambleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blockchain_gamble);
         ButterKnife.bind(this);
-        setTitle(getString(R.string.insert_coins_guess),R.mipmap.icon_nav_add);
+        setTitle(getString(R.string.insert_coins_guess), R.mipmap.icon_nav_add);
         EventBus.getDefault().register(this);//初始化EventBus
         getPhoneSize();
         mViewPager.setCurrentItem(0);
@@ -71,13 +73,18 @@ public class BlockchainGambleActivity extends BaseActivity {
         initViewPager();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
     //接受通知
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(EventBusUtil.winning_show)) {
             show(event.getContent());
-        }else if (msg.equals(EventBusUtil.winning_shut_down)) {
+        } else if (msg.equals(EventBusUtil.winning_shut_down)) {
             shutDown();
         }
     }
@@ -86,33 +93,32 @@ public class BlockchainGambleActivity extends BaseActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         // TODO Auto-generated method stub
         super.onWindowFocusChanged(hasFocus);
-        if(hasFocus){
-            this.hasFocus=hasFocus;
+        if (hasFocus) {
+            this.hasFocus = hasFocus;
         }
     }
 
-    private void show(final String content){
-        if(hasFocus&& ActivityUtil.isActivityOnTop(this)) {
-            if (hasFocus && ActivityUtil.isActivityOnTop(this)) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mWinningPopWindow = new WinningPopWindow(BlockchainGambleActivity.this, content, mRlTitle);
-                    }
-                });
-            }
+    private void show(final String content) {
+        if (hasFocus && ActivityUtil.isActivityOnTop(this)) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mWinningPopWindow = new WinningPopWindow(BlockchainGambleActivity.this, content, mRlTitle);
+                }
+            });
         }
     }
 
-    private void shutDown(){
+    private void shutDown() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(mWinningPopWindow!= null){
+                if (mWinningPopWindow != null) {
                     mWinningPopWindow.dismiss();
                 }
             }
-        });;
+        });
+        ;
     }
 
     @Override

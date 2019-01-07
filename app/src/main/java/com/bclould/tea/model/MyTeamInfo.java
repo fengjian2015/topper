@@ -54,7 +54,16 @@ public class MyTeamInfo {
         private String push_member;
         private String performance;
         private String user_name;
+        private String team_push_reward;
         private List<UserListBean> user_list;
+
+        public String getTeam_push_reward() {
+            return team_push_reward;
+        }
+
+        public void setTeam_push_reward(String team_push_reward) {
+            this.team_push_reward = team_push_reward;
+        }
 
         public String getTeam_member() {
             return team_member;

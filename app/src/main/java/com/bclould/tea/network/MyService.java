@@ -4,6 +4,7 @@ package com.bclould.tea.network;
 import com.bclould.tea.model.AuatarListInfo;
 import com.bclould.tea.model.BankCardInfo;
 import com.bclould.tea.model.BaseInfo;
+import com.bclould.tea.model.base.BaseListInfo;
 import com.bclould.tea.model.BetInfo;
 import com.bclould.tea.model.BindingInfo;
 import com.bclould.tea.model.CardListInfo;
@@ -68,12 +69,10 @@ import com.bclould.tea.model.VersionInfo;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -1698,5 +1697,13 @@ public interface MyService {
     Observable<ExternalUserInfo> getExUser(
             @Header("Authorization") String token,
             @Field("access_token") String access_token
+    );
+
+    //充币提币记录
+    @GET("team/node/buy/reward/list")
+    Observable<BaseListInfo> teamReward(
+            @Header("Authorization") String token,
+            @Query("page") int page,
+            @Query("date") String date
     );
 }

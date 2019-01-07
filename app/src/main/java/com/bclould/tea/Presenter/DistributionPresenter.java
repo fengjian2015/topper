@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
+import com.bclould.tea.model.base.BaseListInfo;
 import com.bclould.tea.model.BindingInfo;
 import com.bclould.tea.model.HistoryInfo;
 import com.bclould.tea.model.MyTeamInfo;
@@ -361,6 +362,45 @@ public class DistributionPresenter {
                 });
     }
 
+    public void teamReward(int page,String date,final CallBack7 callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .teamReward(UtilTool.getToken(),page,date)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseListInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseListInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send(baseInfo);
+                        } else {
+                            callBack.error();
+                            ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        callBack.error();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //定义接口
     public interface CallBack {
         void send(BaseInfo baseInfo);
@@ -402,6 +442,12 @@ public class DistributionPresenter {
     //定义接口
     public interface CallBack6 {
         void send(HistoryInfo baseInfo);
+        void error();
+    }
+
+    //定义接口
+    public interface CallBack7{
+        void send(BaseListInfo baseInfo);
         void error();
     }
 }
