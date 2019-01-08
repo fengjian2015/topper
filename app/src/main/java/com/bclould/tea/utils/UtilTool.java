@@ -841,7 +841,7 @@ public class UtilTool {
 
     //打印日志
     public static void Log(String clazzName, String s) {
-//        if(!Constants.isDebug)return;
+        if(!Constants.isDebug)return;
         String name = getFunctionName();
         if (name != null) {
             Log.e(clazzName, name + " - " + s);

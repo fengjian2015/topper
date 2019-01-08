@@ -1,4 +1,4 @@
-package com.bclould.tea.ui.activity.my.teamreward;
+package com.bclould.tea.ui.activity.my.taskrecord;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,8 +7,11 @@ import android.view.View;
 import com.bclould.tea.Presenter.DistributionPresenter;
 import com.bclould.tea.base.BaseView;
 import com.bclould.tea.model.base.BaseListInfo;
+import com.bclould.tea.ui.activity.ftc.teamreward.TeamRewardContacts;
+import com.bclould.tea.ui.adapter.TaskRecordAdapter;
 import com.bclould.tea.ui.adapter.TeamRewardAdapter;
 import com.bclould.tea.utils.TimeSelectUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,11 +20,11 @@ import java.util.List;
  * Created by fengjian on 2019/1/7.
  */
 
-public class TeamRewardPresenter implements TeamRewardContacts.Presenter, TimeSelectUtil.OnTimeReturnListener {
-    private TeamRewardContacts.View mView;
+public class TaskRecordPresenter implements TaskRecordContacts.Presenter, TimeSelectUtil.OnTimeReturnListener {
+    private TaskRecordContacts.View mView;
     private Activity mActivity;
 
-    private TeamRewardAdapter mTeamRewardAdapter;
+    private TaskRecordAdapter mTaskRecordAdapter;
     List<HashMap> mInOutList = new ArrayList<>();
     private TimeSelectUtil mTimeSelectUtil;
 
@@ -32,7 +35,7 @@ public class TeamRewardPresenter implements TeamRewardContacts.Presenter, TimeSe
 
     @Override
     public void bindView(BaseView view) {
-        mView = (TeamRewardContacts.View) view;
+        mView = (TaskRecordContacts.View) view;
     }
 
     @Override
@@ -51,8 +54,8 @@ public class TeamRewardPresenter implements TeamRewardContacts.Presenter, TimeSe
     }
 
     private void initRecyclerView() {
-        mTeamRewardAdapter = new TeamRewardAdapter(mActivity, mInOutList);
-        mView.setAdapter(mTeamRewardAdapter);
+        mTaskRecordAdapter = new TaskRecordAdapter(mActivity, mInOutList);
+        mView.setAdapter(mTaskRecordAdapter);
     }
 
     private void initData() {
@@ -90,7 +93,7 @@ public class TeamRewardPresenter implements TeamRewardContacts.Presenter, TimeSe
                 if (data.getData().size() != 0) {
                     mView.setViewIsGone(View.VISIBLE,View.GONE,View.GONE);
                     mInOutList.addAll((List)data.getData());
-                    mTeamRewardAdapter.notifyDataSetChanged();
+                    mTaskRecordAdapter.notifyDataSetChanged();
                 } else {
                     mView.setViewIsGone(View.GONE,View.VISIBLE,View.GONE);
                 }

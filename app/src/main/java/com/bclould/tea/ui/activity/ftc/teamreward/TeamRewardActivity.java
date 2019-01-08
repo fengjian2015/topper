@@ -1,4 +1,4 @@
-package com.bclould.tea.ui.activity.my.teamreward;
+package com.bclould.tea.ui.activity.ftc.teamreward;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.ui.adapter.OutDataAdapter;
 import com.bclould.tea.ui.adapter.TeamRewardAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;

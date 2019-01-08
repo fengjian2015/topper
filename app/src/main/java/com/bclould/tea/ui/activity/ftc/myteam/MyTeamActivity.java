@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.MyTeamInfo;
-import com.bclould.tea.ui.activity.my.teamreward.TeamRewardActivity;
+import com.bclould.tea.ui.activity.ftc.teamreward.TeamRewardActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;

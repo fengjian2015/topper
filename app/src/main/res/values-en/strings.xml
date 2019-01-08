@@ -2399,4 +2399,12 @@ Please reset encryption request</string>
     <string name="please_enter_code">Please enter the verification code </string>
     <string name="toast_email_or_phone">Email number or mobile number cannot be empty</string>
     <string name="email_or_phone">email/mobile</string>
+    <string name="team_direct_reward">Team direct push rewards</string>
+    <string name="no_reward_record"> no reward record </string>
+    <string name="team_direct_reward_record"> team direct push reward record </string>
+    <string name="reward_source">Data source: %1$s purchase node %2$s</string>
+    <string name="get_direct_rewards">Get a direct push reward</string>
+    <string name="no_task_record"> no task record </string>
+    <string name="task_record">task record </string>
+    <string name="task">task </string>
 </resources>

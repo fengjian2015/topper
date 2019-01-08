@@ -46,6 +46,7 @@ import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.authorization.AuthorizationActivity;
 import com.bclould.tea.ui.fragment.ConversationFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.IMUtils;
@@ -96,6 +97,7 @@ public class MainActivity extends BaseActivity {
     private AddFriendReceiver mReceiver;
 
     private Bundle mBundle;//用系統分享
+    private boolean hasFocus;
 
     //单例
     public static MainActivity getInstance() {
@@ -272,24 +274,26 @@ public class MainActivity extends BaseActivity {
     }
 
     public void showLoginOut() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, MainActivity.this, R.style.dialog);
-        deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(this.getString(R.string.force_quit_login_again));
-        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
-        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
-            }
-        });
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
-                startActivity(new Intent(MainActivity.this, InitialActivity.class));
-            }
-        });
+        if (hasFocus && ActivityUtil.isActivityOnTop(this)) {
+            final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, MainActivity.this, R.style.dialog);
+            deleteCacheDialog.show();
+            deleteCacheDialog.setTitle(this.getString(R.string.force_quit_login_again));
+            Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+            Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteCacheDialog.dismiss();
+                }
+            });
+            confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteCacheDialog.dismiss();
+                    startActivity(new Intent(MainActivity.this, InitialActivity.class));
+                }
+            });
+        }
     }
 
     private void initAddFriendReceiver() {
@@ -711,5 +715,14 @@ public class MainActivity extends BaseActivity {
 
     public interface MyOnTouchListener {
         boolean onTouch(MotionEvent ev);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // TODO Auto-generated method stub
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            this.hasFocus = hasFocus;
+        }
     }
 }

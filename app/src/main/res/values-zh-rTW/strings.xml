@@ -1287,4 +1287,12 @@
     <string name="please_enter_code">請輸入驗證碼</string>
     <string name="toast_email_or_phone">電郵號或手機號不能為空</string>
     <string name="email_or_phone">電郵/手機</string>
+    <string name="team_direct_reward">團隊直推獎勵</string>
+    <string name="no_reward_record">沒有獎勵記錄</string>
+    <string name="team_direct_reward_record">團隊直推獎勵記錄</string>
+    <string name="reward_source">數據來源：%1$s購買節點%2$s</string>
+    <string name="get_direct_rewards">獲得直推獎勵</string>
+    <string name="no_task_record">沒有任務記錄</string>
+    <string name="task_record">任務記錄</string>
+    <string name="task">任務</string>
 </resources>

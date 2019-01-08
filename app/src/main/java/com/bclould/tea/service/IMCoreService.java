@@ -96,7 +96,7 @@ public class IMCoreService extends Service {
     public void onDestroy() {
         super.onDestroy();
         try {
-//            this.unregisterReceiver(broadcast);
+            this.unregisterReceiver(broadcast);
             handler.removeMessages(0);
             handler = null;
             UtilTool.Log("fengjian","core service destory");

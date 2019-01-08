@@ -385,22 +385,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         }
     }
 
-    //广播接收器
-    public class MyReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            boolean type = intent.getBooleanExtra("type", false);
-            if (mRlUnunited != null) {
-                if (type) {
-                    mRlUnunited.setVisibility(View.GONE);
-                } else {
-                    mRlUnunited.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
