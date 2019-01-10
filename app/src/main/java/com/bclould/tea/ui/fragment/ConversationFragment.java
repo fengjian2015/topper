@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,13 +47,16 @@ import com.bclould.tea.ui.activity.LoginActivity;
 import com.bclould.tea.ui.activity.MyFriendActivity;
 import com.bclould.tea.ui.activity.PublicActivity;
 import com.bclould.tea.ui.activity.RegisterActivity;
+import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
 import com.bclould.tea.ui.adapter.ConversationAdapter;
+import com.bclould.tea.ui.widget.MenuListPopWindow2;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.IConnectStateChangeListener;
 import com.google.gson.Gson;
@@ -66,6 +70,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -120,10 +125,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     private ConversationAdapter mConversationAdapter;
     private int imState = -1;
     private DisplayMetrics mDm;
-    private int mHeightPixels;
-    private ViewGroup mView;
-    private PopupWindow mPopupWindow;
-    private int QRCODE = 1;
     private RefreshList mRefreshList;
     private LinearLayoutManager linearLayoutManager;
 
@@ -261,12 +262,9 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     //获取屏幕高度
     private void getPhoneSize() {
-
         mDm = new DisplayMetrics();
-
         if (getActivity() != null)
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
-        mHeightPixels = mDm.heightPixels;
     }
 
     @OnClick({R.id.iv_more, R.id.rl_ununited, R.id.iv_search, R.id.btn_login, R.id.tv_register})
@@ -298,17 +296,68 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     //初始化pop
     private void initPopWindow() {
-
         int widthPixels = mDm.widthPixels;
-
-        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_message, null);
-
-        mPopupWindow = new PopupWindow(mView, ViewGroup.LayoutParams.WRAP_CONTENT, (int) (getResources().getDimension(R.dimen.y300)), true);
-        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-
-        mPopupWindow.showAsDropDown(mXx, (widthPixels - mPopupWindow.getWidth()), 0);
-        popChildClick();
+        List<HashMap> list=new ArrayList<>();
+        list.add(MenuListPopWindow2.setHashMapData(getContext(),R.string.start_group,R.mipmap.icon_chat_startgroupchat));
+        list.add(MenuListPopWindow2.setHashMapData(getContext(),R.string.my_friend,R.mipmap.icon_chat_myfriend));
+        list.add(MenuListPopWindow2.setHashMapData(getContext(),R.string.add_friend,R.mipmap.icon_talk_add));
+        list.add(MenuListPopWindow2.setHashMapData(getContext(),R.string.the_pulice,R.mipmap.icon_thepublic1));
+        list.add(MenuListPopWindow2.setHashMapData(getContext(),R.string.rich_scan,R.mipmap.icon_news_flicking));
+        final MenuListPopWindow2 menuListPopWindow2=new MenuListPopWindow2(getActivity(),(int) (getResources().getDimension(R.dimen.y500)),list);
+        menuListPopWindow2.showAsDropDown(mXx, (widthPixels - menuListPopWindow2.getPopupWidth()), 0);
+        menuListPopWindow2.setListOnClick(new MenuListPopWindow2.ListOnClick() {
+            @Override
+            public void onclickitem(int position) {
+                switch (position) {
+                    case 0:
+                        if (!WsConnection.getInstance().getOutConnection()) {
+                            startActivity(new Intent(getActivity(), GroupListActivity.class));
+                        } else {
+                            startActivity(new Intent(getActivity(), InitialActivity.class));
+                        }
+                        menuListPopWindow2.dismiss();
+                        break;
+                    case 1:
+                        if (!WsConnection.getInstance().getOutConnection()) {
+                            startActivity(new Intent(getActivity(), MyFriendActivity.class));
+                        } else {
+                            startActivity(new Intent(getActivity(), InitialActivity.class));
+                        }
+                        menuListPopWindow2.dismiss();
+                        break;
+                    case 2:
+                        if (!WsConnection.getInstance().getOutConnection()) {
+                            startActivity(new Intent(getActivity(), AddFriendActivity.class));
+                        } else {
+                            startActivity(new Intent(getActivity(), InitialActivity.class));
+                        }
+                        menuListPopWindow2.dismiss();
+                        break;
+                    case 3:
+                        if (!WsConnection.getInstance().getOutConnection()) {
+                            startActivity(new Intent(getActivity(), PublicActivity.class));
+                        } else {
+                            startActivity(new Intent(getActivity(), InitialActivity.class));
+                        }
+                        menuListPopWindow2.dismiss();
+                        break;
+                    case 4:
+                        if (!WsConnection.getInstance().getOutConnection()) {
+                            if (!AuthorizationUserTools.isCameraCanUse(getActivity()))
+                                return;
+                            Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
+                            intent.putExtra("code", 1);
+                            startActivityForResult(intent, 0);
+                        } else {
+                            startActivity(new Intent(getActivity(), InitialActivity.class));
+                        }
+                        menuListPopWindow2.dismiss();
+                        break;
+                }
+            }
+        });
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -327,61 +376,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                 intent.putExtra("type", true);
                 startActivity(intent);
             }
-        }
-    }
-
-    //给pop子控件设置点击事件
-    private void popChildClick() {
-
-        int childCount = mView.getChildCount();
-
-        for (int i = 0; i < childCount; i++) {
-
-            final View childAt = mView.getChildAt(i);
-
-            childAt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    int index = mView.indexOfChild(childAt);
-
-                    switch (index) {
-                        case 0:
-                            if (!WsConnection.getInstance().getOutConnection()) {
-                                startActivity(new Intent(getActivity(), GroupListActivity.class));
-                            } else {
-                                startActivity(new Intent(getActivity(), InitialActivity.class));
-                            }
-                            mPopupWindow.dismiss();
-                            break;
-                        case 1:
-                            if (!WsConnection.getInstance().getOutConnection()) {
-                                startActivity(new Intent(getActivity(), MyFriendActivity.class));
-                            } else {
-                                startActivity(new Intent(getActivity(), InitialActivity.class));
-                            }
-                            mPopupWindow.dismiss();
-                            break;
-                        case 2:
-                            if (!WsConnection.getInstance().getOutConnection()) {
-                                startActivity(new Intent(getActivity(), AddFriendActivity.class));
-                            } else {
-                                startActivity(new Intent(getActivity(), InitialActivity.class));
-                            }
-                            mPopupWindow.dismiss();
-                            break;
-                        case 3:
-                            if (!WsConnection.getInstance().getOutConnection()) {
-                                startActivity(new Intent(getActivity(), PublicActivity.class));
-                            } else {
-                                startActivity(new Intent(getActivity(), InitialActivity.class));
-                            }
-                            mPopupWindow.dismiss();
-                            break;
-                    }
-
-                }
-            });
         }
     }
 

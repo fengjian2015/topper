@@ -21,12 +21,18 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.ui.widget.MenuListPopWindow2;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -71,9 +77,6 @@ public class ReceiptPaymentActivity extends BaseActivity {
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
     private DisplayMetrics mDm;
-    private int mHeightPixels;
-    private ViewGroup mView;
-    private PopupWindow mPopupWindow;
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private boolean mType;
     private LoadingProgressDialog mProgressDialog;
@@ -165,21 +168,35 @@ public class ReceiptPaymentActivity extends BaseActivity {
     private void getPhoneSize() {
         mDm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(mDm);
-        mHeightPixels = mDm.heightPixels;
     }
 
     //初始化pop
     private void initPopWindow() {
-
         int widthPixels = mDm.widthPixels;
-
-        mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_receipt_payment, null);
-
-        mPopupWindow = new PopupWindow(mView, ViewGroup.LayoutParams.WRAP_CONTENT, (int) (getResources().getDimension(R.dimen.y200)), true);
-        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-
-        mPopupWindow.showAsDropDown(mXx2, (widthPixels - mPopupWindow.getWidth()), 0);
-        popChildClick();
+        List<HashMap> list=new ArrayList<>();
+        list.add(MenuListPopWindow2.setHashMapData(this,R.string.receipt,R.mipmap.icon_pay_c));
+        list.add(MenuListPopWindow2.setHashMapData(this,R.string.payment,R.mipmap.icon_get_c));
+        final MenuListPopWindow2 menuListPopWindow2=new MenuListPopWindow2(this,(int) (getResources().getDimension(R.dimen.y200)),list);
+        menuListPopWindow2.showAsDropDown(mXx2,(widthPixels - menuListPopWindow2.getPopupWidth()), 0);
+        menuListPopWindow2.setListOnClick(new MenuListPopWindow2.ListOnClick() {
+            @Override
+            public void onclickitem(int position) {
+                switch (position) {
+                    case 0:
+                        mTvAdd.setText(getResources().getString(R.string.receipt));
+                        mTvAdd.setTextColor(Color.rgb(124, 161, 229));
+                        moneyIn();
+                        menuListPopWindow2.dismiss();
+                        break;
+                    case 1:
+                        Intent intent = new Intent(ReceiptPaymentActivity.this, PaymentActivity.class);
+                        intent.putExtra("type", Constants.MONEYOUT);
+                        startActivityForResult(intent, MONEYOUT);
+                        menuListPopWindow2.dismiss();
+                        break;
+                }
+            }
+        });
     }
 
     private void showDialog() {
@@ -254,28 +271,5 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 }
             }
         }
-    }
-
-    private void popChildClick() {
-        final TextView receipt = (TextView) mView.findViewById(R.id.pop_receipt);
-        receipt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mTvAdd.setText(receipt.getText());
-                mTvAdd.setTextColor(Color.rgb(124, 161, 229));
-                mPopupWindow.dismiss();
-                moneyIn();
-            }
-        });
-        final TextView payment = (TextView) mView.findViewById(R.id.pop_payment);
-        payment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPopupWindow.dismiss();
-                Intent intent = new Intent(ReceiptPaymentActivity.this, PaymentActivity.class);
-                intent.putExtra("type", Constants.MONEYOUT);
-                startActivityForResult(intent, MONEYOUT);
-            }
-        });
     }
 }

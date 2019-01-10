@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bclould.tea.Presenter.BlockchainGuessPresenter;
 import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.R;
@@ -33,11 +34,14 @@ import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -135,18 +139,14 @@ public class StartGuessActivity extends BaseActivity {
     }
 
     private void show(final String content) {
-        if(hasFocus&& ActivityUtil.isActivityOnTop(this)){
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mWinningPopWindow = new WinningPopWindow(StartGuessActivity.this, content, mRlTitle);
-                }
-            });
+        if (hasFocus && ActivityUtil.isActivityOnTop(this)) {
+            mWinningPopWindow = new WinningPopWindow(StartGuessActivity.this, content);
+            mWinningPopWindow.show(mRlTitle);
         }
     }
 
     private void shutDown() {
-        if(hasFocus&& ActivityUtil.isActivityOnTop(this)) {
+        if (hasFocus && ActivityUtil.isActivityOnTop(this)) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

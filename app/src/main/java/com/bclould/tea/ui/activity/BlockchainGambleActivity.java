@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -100,12 +101,8 @@ public class BlockchainGambleActivity extends BaseActivity {
 
     private void show(final String content) {
         if (hasFocus && ActivityUtil.isActivityOnTop(this)) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mWinningPopWindow = new WinningPopWindow(BlockchainGambleActivity.this, content, mRlTitle);
-                }
-            });
+            mWinningPopWindow = new WinningPopWindow(BlockchainGambleActivity.this, content);
+            mWinningPopWindow.show(mRlTitle);
         }
     }
 

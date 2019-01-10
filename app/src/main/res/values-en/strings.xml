@@ -2407,4 +2407,8 @@ Please reset encryption request</string>
     <string name="no_task_record"> no task record </string>
     <string name="task_record">task record </string>
     <string name="task">task </string>
+    <string name="about_public_number">Follow the public number </string>
+    <string name="unsubscribe">unfollow </string>
+    <string name="enter_public_number"> enter the public number </string>
+    <string name="system_notification"> system announcement </string>
 </resources>

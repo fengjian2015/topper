@@ -38,7 +38,7 @@ public class GonggaoManagerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gong_gao);
         ButterKnife.bind(this);
-        setTitle(getString(R.string.gonggao_manager));
+        setTitle(getString(R.string.system_notification));
         mViewPager.setCurrentItem(0);
         setSelector(0);
         initTopMenu();

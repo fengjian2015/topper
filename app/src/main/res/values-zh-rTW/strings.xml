@@ -1295,4 +1295,8 @@
     <string name="no_task_record">沒有任務記錄</string>
     <string name="task_record">任務記錄</string>
     <string name="task">任務</string>
+    <string name="about_public_number">關注公眾號</string>
+    <string name="unsubscribe">取消關注</string>
+    <string name="enter_public_number">進入公眾號</string>
+    <string name="system_notification">系統公告</string>
 </resources>

@@ -86,8 +86,6 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
     public static FriendListFragment instance = null;
     @Bind(R.id.iv_search)
     ImageView mIvSearch;
-    @Bind(R.id.iv_more)
-    ImageView mIvMore;
     @Bind(R.id.rl_title)
     RelativeLayout mRlTitle;
     @Bind(R.id.xx)
@@ -113,13 +111,6 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
     @Bind(R.id.status_bar_fix)
     View mStatusBarFix;
 
-    private int QRCODE = 1;
-    private DisplayMetrics mDm;
-    private int mHeightPixels;
-    private ViewGroup mView;
-    private PopupWindow mPopupWindow;
-
-    private TreeMap<String, Boolean> mFromMap = new TreeMap<>();
     private List<UserInfo> mUsers = new ArrayList<>();
     Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -189,12 +180,6 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
     //获取屏幕高度
     private void getPhoneSize() {
         mSideBar.setIndexItems();
-        mDm = new DisplayMetrics();
-
-        if (getActivity() != null)
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
-
-        mHeightPixels = mDm.heightPixels;
     }
 
     @Override
@@ -366,12 +351,9 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
     }
 
 
-    @OnClick({R.id.iv_more, R.id.iv_search, R.id.news_friend, R.id.my_group, R.id.my_public})
+    @OnClick({ R.id.iv_search, R.id.news_friend, R.id.my_group, R.id.my_public})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_more:
-                initPopWindow();
-                break;
             case R.id.iv_search:
                 startActivity(new Intent(getActivity(), SearchActivity.class));
                 break;
@@ -391,20 +373,6 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
         }
     }
 
-    //初始化pop
-    private void initPopWindow() {
-
-        int widthPixels = mDm.widthPixels;
-
-        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_message, null);
-
-        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
-        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-
-        mPopupWindow.showAsDropDown(mXx, (widthPixels - widthPixels / 100 * 35 - 20), 0);
-
-        popChildClick();
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -423,45 +391,6 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
                 intent.putExtra("type", true);
                 startActivity(intent);
             }
-        }
-    }
-
-    //给pop子控件设置点击事件
-    private void popChildClick() {
-
-        int childCount = mView.getChildCount();
-
-        for (int i = 0; i < childCount; i++) {
-
-            final View childAt = mView.getChildAt(i);
-
-            childAt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    int index = mView.indexOfChild(childAt);
-
-                    switch (index) {
-                        case 0:
-                            if (!AuthorizationUserTools.isCameraCanUse(getActivity()))
-                                return;
-                            Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
-                            intent.putExtra("code", QRCODE);
-                            startActivityForResult(intent, 0);
-                            mPopupWindow.dismiss();
-                            break;
-                        case 1:
-                            startActivity(new Intent(getActivity(), SendQRCodeRedActivity.class));
-                            mPopupWindow.dismiss();
-                            break;
-                        case 2:
-                            startActivity(new Intent(getActivity(), AddFriendActivity.class));
-                            mPopupWindow.dismiss();
-                            break;
-                    }
-
-                }
-            });
         }
     }
 

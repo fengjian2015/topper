@@ -95,12 +95,7 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
     @Bind(R.id.status_bar_fix)
     View mStatusBarFix;
 
-    private int QRCODE = 1;
     private DisplayMetrics mDm;
-    private int mHeightPixels;
-    private ViewGroup mView;
-    private PopupWindow mPopupWindow;
-
     private TreeMap<String, Boolean> mFromMap = new TreeMap<>();
     private List<UserInfo> mUsers = new ArrayList<>();
     @SuppressLint("HandlerLeak")
@@ -170,8 +165,6 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
 
         if (this != null)
             this.getWindowManager().getDefaultDisplay().getMetrics(mDm);
-
-        mHeightPixels = mDm.heightPixels;
     }
 
     @Override
@@ -372,20 +365,6 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
         }
     }
 
-    //初始化pop
-    private void initPopWindow() {
-
-        int widthPixels = mDm.widthPixels;
-
-        mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_message, null);
-
-        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
-        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-
-        mPopupWindow.showAsDropDown(mXx, (widthPixels - widthPixels / 100 * 35 - 20), 0);
-
-        popChildClick();
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -404,45 +383,6 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
                 intent.putExtra("type", true);
                 startActivity(intent);
             }
-        }
-    }
-
-    //给pop子控件设置点击事件
-    private void popChildClick() {
-
-        int childCount = mView.getChildCount();
-
-        for (int i = 0; i < childCount; i++) {
-
-            final View childAt = mView.getChildAt(i);
-
-            childAt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    int index = mView.indexOfChild(childAt);
-
-                    switch (index) {
-                        case 0:
-                            if (!AuthorizationUserTools.isCameraCanUse(MyFriendActivity.this))
-                                return;
-                            Intent intent = new Intent(MyFriendActivity.this, ScanQRCodeActivity.class);
-                            intent.putExtra("code", QRCODE);
-                            startActivityForResult(intent, 0);
-                            mPopupWindow.dismiss();
-                            break;
-                        case 1:
-                            startActivity(new Intent(MyFriendActivity.this, SendQRCodeRedActivity.class));
-                            mPopupWindow.dismiss();
-                            break;
-                        case 2:
-                            startActivity(new Intent(MyFriendActivity.this, AddFriendActivity.class));
-                            mPopupWindow.dismiss();
-                            break;
-                    }
-
-                }
-            });
         }
     }
 

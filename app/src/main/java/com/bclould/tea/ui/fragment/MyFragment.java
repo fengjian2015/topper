@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.ui.activity.GonggaoManagerActivity;
 import com.bclould.tea.ui.activity.ftc.acccountbinding.AccountBindingActivity;
 import com.bclould.tea.ui.activity.CollectActivity;
 import com.bclould.tea.ui.activity.my.dynamic.DynamicActivity;
@@ -178,7 +179,8 @@ public class MyFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.rl_dynamic, R.id.rl_collect, R.id.rl_already_login, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we, R.id.rl_no_login, R.id.rl_my_team, R.id.rl_participation_profit, R.id.rl_account_binding})
+    @OnClick({R.id.rl_dynamic, R.id.rl_collect, R.id.rl_already_login, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we, R.id.rl_no_login, R.id.rl_my_team, R.id.rl_participation_profit,
+            R.id.rl_account_binding,R.id.rl_announcement})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_already_login:
@@ -256,6 +258,13 @@ public class MyFragment extends Fragment {
                     } else {
                         startActivity(new Intent(getActivity(), AccountBindingActivity.class));
                     }
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
+                break;
+            case R.id.rl_announcement:
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    startActivity(new Intent(getActivity(), GonggaoManagerActivity.class));
                 } else {
                     startActivity(new Intent(getActivity(), InitialActivity.class));
                 }

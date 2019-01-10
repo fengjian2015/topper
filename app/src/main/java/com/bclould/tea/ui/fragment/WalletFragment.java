@@ -1,34 +1,48 @@
 package com.bclould.tea.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bclould.tea.R;
 import com.bclould.tea.model.CardInfo;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.ui.activity.AddFriendActivity;
 import com.bclould.tea.ui.activity.BlockchainGambleActivity;
 import com.bclould.tea.ui.activity.CoinExchangeActivity;
 import com.bclould.tea.ui.activity.FGCExchangeActivity;
 import com.bclould.tea.ui.activity.FinancialActivity;
+import com.bclould.tea.ui.activity.GroupListActivity;
 import com.bclould.tea.ui.activity.InitialActivity;
+import com.bclould.tea.ui.activity.MyFriendActivity;
 import com.bclould.tea.ui.activity.NewsManagerActivity;
 import com.bclould.tea.ui.activity.OtcActivity;
 import com.bclould.tea.ui.activity.PayRecordActivity;
+import com.bclould.tea.ui.activity.PublicActivity;
+import com.bclould.tea.ui.activity.ReceiptPaymentActivity;
+import com.bclould.tea.ui.activity.ScanQRCodeActivity;
+import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tea.ui.adapter.WalletPVAdapter;
+import com.bclould.tea.ui.widget.MenuListPopWindow2;
 import com.bclould.tea.utils.ShadowTransformer;
 import com.bclould.tea.utils.StatusBarCompat;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -67,9 +81,10 @@ public class WalletFragment extends Fragment {
     RelativeLayout mRlMyAd;
     @Bind(R.id.iv_bill)
     ImageView mIvBill;
+    @Bind(R.id.rl_menu)
+    RelativeLayout mRlMenu;
     private WalletPVAdapter mWalletPVAdapter;
     private ShadowTransformer mCardShadowTransformer;
-
 
     public static WalletFragment getInstance() {
         if (instance == null) {
@@ -90,6 +105,8 @@ public class WalletFragment extends Fragment {
         initViewPage();
         return view;
     }
+
+
 
     private void initViewPage() {
         initData();
@@ -143,7 +160,7 @@ public class WalletFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.rl_otc, R.id.rl_guess, R.id.rl_exchange, R.id.rl_my_ad,R.id.rl_financial_management,R.id.rl_fgc_exchange})
+    @OnClick({R.id.rl_otc, R.id.rl_guess, R.id.rl_exchange, R.id.rl_my_ad, R.id.rl_financial_management, R.id.rl_fgc_exchange, R.id.iv_menu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_otc:
@@ -188,8 +205,52 @@ public class WalletFragment extends Fragment {
                     startActivity(new Intent(getActivity(), InitialActivity.class));
                 }
                 break;
+            case R.id.iv_menu:
+                initPopWindow();
+                break;
         }
     }
+
+    private void initPopWindow() {
+        List<HashMap> list=new ArrayList<>();
+        list.add(MenuListPopWindow2.setHashMapData(getContext(),R.string.receipt_payment,R.mipmap.icon_news_receiving));
+        list.add(MenuListPopWindow2.setHashMapData(getContext(),R.string.qr_code_red_package,R.mipmap.icon_news_codeenvelope));
+        list.add(MenuListPopWindow2.setHashMapData(getContext(),R.string.add_friend,R.mipmap.icon_talk_add));
+        final MenuListPopWindow2 menuListPopWindow2=new MenuListPopWindow2(getActivity(),(int) (getResources().getDimension(R.dimen.y300)),list);
+        menuListPopWindow2.showAsDropDown(mRlMenu,30, 0);
+        menuListPopWindow2.setListOnClick(new MenuListPopWindow2.ListOnClick() {
+            @Override
+            public void onclickitem(int position) {
+                switch (position) {
+                    case 0:
+                        if (!WsConnection.getInstance().getOutConnection()) {
+                            startActivity(new Intent(getActivity(), ReceiptPaymentActivity.class));
+                        } else {
+                            startActivity(new Intent(getActivity(), InitialActivity.class));
+                        }
+                        menuListPopWindow2.dismiss();
+                        break;
+                    case 1:
+                        if (!WsConnection.getInstance().getOutConnection()) {
+                            startActivity(new Intent(getActivity(), SendQRCodeRedActivity.class));
+                        } else {
+                            startActivity(new Intent(getActivity(), InitialActivity.class));
+                        }
+                        menuListPopWindow2.dismiss();
+                        break;
+                    case 2:
+                        if (!WsConnection.getInstance().getOutConnection()) {
+                            startActivity(new Intent(getActivity(), AddFriendActivity.class));
+                        } else {
+                            startActivity(new Intent(getActivity(), InitialActivity.class));
+                        }
+                        menuListPopWindow2.dismiss();
+                        break;
+                }
+            }
+        });
+    }
+
 
     @OnClick(R.id.iv_bill)
     public void onViewClicked() {

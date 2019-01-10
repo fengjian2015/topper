@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.bclould.tea.Presenter.BlockchainGuessPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
@@ -28,12 +29,15 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -79,7 +83,7 @@ public class MyJoinActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_join);
         ButterKnife.bind(this);
-        setTitle(getString(R.string.my_join),getString(R.string.filtrate));
+        setTitle(getString(R.string.my_join), getString(R.string.filtrate));
         EventBus.getDefault().register(this);//初始化EventBus
         init();
     }
@@ -114,18 +118,14 @@ public class MyJoinActivity extends BaseActivity {
     }
 
     private void show(final String content) {
-        if(hasFocus&& ActivityUtil.isActivityOnTop(this)){
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mWinningPopWindow = new WinningPopWindow(MyJoinActivity.this, content, mRlTitle);
-                }
-            });
+        if (hasFocus && ActivityUtil.isActivityOnTop(this)) {
+            mWinningPopWindow = new WinningPopWindow(MyJoinActivity.this, content);
+            mWinningPopWindow.show(mRlTitle);
         }
     }
 
     private void shutDown() {
-        if(hasFocus&& ActivityUtil.isActivityOnTop(this)) {
+        if (hasFocus && ActivityUtil.isActivityOnTop(this)) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.bclould.tea.Presenter.BlockchainGuessPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
@@ -83,7 +84,7 @@ public class MyStartActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_start);
         ButterKnife.bind(this);
-        setTitle(getString(R.string.my_start),getString(R.string.filtrate));
+        setTitle(getString(R.string.my_start), getString(R.string.filtrate));
         EventBus.getDefault().register(this);//初始化EventBus
         init();
     }
@@ -109,18 +110,14 @@ public class MyStartActivity extends BaseActivity {
     }
 
     private void show(final String content) {
-        if(hasFocus&& ActivityUtil.isActivityOnTop(this)){
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mWinningPopWindow = new WinningPopWindow(MyStartActivity.this, content, mRlTitle);
-                }
-            });
+        if (hasFocus && ActivityUtil.isActivityOnTop(this)) {
+            mWinningPopWindow = new WinningPopWindow(MyStartActivity.this, content);
+            mWinningPopWindow.show(mRlTitle);
         }
     }
 
     private void shutDown() {
-        if(hasFocus&& ActivityUtil.isActivityOnTop(this)) {
+        if (hasFocus && ActivityUtil.isActivityOnTop(this)) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -137,6 +134,7 @@ public class MyStartActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);//初始化EventBus
     }
+
     private void init() {
         initListener();
         mMap.put(getString(R.string.filtrate), 0);

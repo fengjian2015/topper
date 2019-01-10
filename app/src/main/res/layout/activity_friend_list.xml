@@ -45,14 +45,7 @@
             android:visibility="gone"
             android:src="@mipmap/icon_seek"/>
 
-        <ImageView
-            android:id="@+id/iv_more"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:padding="@dimen/x25"
-            android:visibility="gone"
-            android:src="@mipmap/ico_nav_add"/>
+
 
     </RelativeLayout>
 

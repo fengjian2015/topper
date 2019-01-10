@@ -70,12 +70,6 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     private static NewsFragment instance = null;
     @Bind(R.id.xx)
     TextView mXx;
-    @Bind(R.id.iv_search)
-    ImageView mIvSearch;
-    @Bind(R.id.iv_menu)
-    ImageView mIvMenu;
-    @Bind(R.id.ll_menu)
-    LinearLayout mLlMenu;
     @Bind(R.id.banner)
     Banner mBanner;
     @Bind(R.id.recycler_view)
@@ -101,11 +95,6 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     private int mPageSize = 10;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private DisplayMetrics mDm;
-    private int mHeightPixels;
-    private ViewGroup mView;
-    private PopupWindow mPopupWindow;
-    private int QRCODE = 1;
     private NewsNoticePresenter mNewsNoticePresenter;
     public LinearLayoutManager mLinearLayoutManager;
     private RequestOptions mRequestOptions = new RequestOptions()
@@ -131,28 +120,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_news, container, false);
         ButterKnife.bind(this, view);
-        init();
-        getPhoneSize();
         return view;
-    }
-
-    private void init() {
-        mLlMenu.bringToFront();
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        layoutParams.setMargins(0, StatusBarCompat.getStateBarHeight(getActivity()), 0, 0);
-        mLlMenu.setLayoutParams(layoutParams);
-    }
-
-    //获取屏幕高度
-    private void getPhoneSize() {
-
-        mDm = new DisplayMetrics();
-
-        if (getActivity() != null)
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
-
-        mHeightPixels = mDm.heightPixels;
     }
 
     @Override
@@ -308,17 +276,6 @@ public class NewsFragment extends Fragment implements OnBannerListener {
         startActivity(intent);
     }
 
-    @OnClick({R.id.iv_search, R.id.iv_menu})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.iv_search:
-                break;
-            case R.id.iv_menu:
-                initPopWindow();
-                break;
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -336,79 +293,6 @@ public class NewsFragment extends Fragment implements OnBannerListener {
                 intent.putExtra("type", true);
                 startActivity(intent);
             }
-        }
-    }
-
-    private void initPopWindow() {
-
-        int widthPixels = mDm.widthPixels;
-
-        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_news, null);
-
-        mPopupWindow = new PopupWindow(mView, ViewGroup.LayoutParams.WRAP_CONTENT, (int) (getResources().getDimension(R.dimen.y400)), true);
-        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-
-        mPopupWindow.showAsDropDown(mLlMenu, (widthPixels - mPopupWindow.getWidth()), 0);
-
-        popChildClick();
-    }
-
-    //给pop子控件设置点击事件
-    private void popChildClick() {
-
-        int childCount = mView.getChildCount();
-
-        for (int i = 0; i < childCount; i++) {
-
-            final View childAt = mView.getChildAt(i);
-
-            childAt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    int index = mView.indexOfChild(childAt);
-
-                    switch (index) {
-                        case 0:
-                            if (!WsConnection.getInstance().getOutConnection()) {
-                                if (!AuthorizationUserTools.isCameraCanUse(getActivity()))
-                                    return;
-                                Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
-                                intent.putExtra("code", QRCODE);
-                                startActivityForResult(intent, 0);
-                            } else {
-                                startActivity(new Intent(getActivity(), InitialActivity.class));
-                            }
-                            mPopupWindow.dismiss();
-                            break;
-                        case 1:
-                            if (!WsConnection.getInstance().getOutConnection()) {
-                                startActivity(new Intent(getActivity(), ReceiptPaymentActivity.class));
-                            } else {
-                                startActivity(new Intent(getActivity(), InitialActivity.class));
-                            }
-                            mPopupWindow.dismiss();
-                            break;
-                        case 2:
-                            if (!WsConnection.getInstance().getOutConnection()) {
-                                startActivity(new Intent(getActivity(), SendQRCodeRedActivity.class));
-                            } else {
-                                startActivity(new Intent(getActivity(), InitialActivity.class));
-                            }
-                            mPopupWindow.dismiss();
-                            break;
-                        case 3:
-                            if (!WsConnection.getInstance().getOutConnection()) {
-                                startActivity(new Intent(getActivity(), AddFriendActivity.class));
-                            } else {
-                                startActivity(new Intent(getActivity(), InitialActivity.class));
-                            }
-                            mPopupWindow.dismiss();
-                            break;
-                    }
-
-                }
-            });
         }
     }
 }

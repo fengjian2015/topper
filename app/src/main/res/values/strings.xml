@@ -2388,4 +2388,8 @@
     <string name="no_task_record">没有任务记录</string>
     <string name="task_record">任务记录</string>
     <string name="task">任务</string>
+    <string name="about_public_number">关注公众号</string>
+    <string name="unsubscribe">取消关注</string>
+    <string name="enter_public_number">进入公众号</string>
+    <string name="system_notification">系统公告</string>
 </resources>
