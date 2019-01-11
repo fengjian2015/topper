@@ -224,6 +224,40 @@
                     android:src="@mipmap/iocn_person_turninto" />
 
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_exchange_frc"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y130"
+                >
+
+                <ImageView
+                    android:id="@+id/iv14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:src="@mipmap/icon_frc" />
+
+                <TextView
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_toRightOf="@+id/iv14"
+                    android:text="@string/exchange_frc" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:src="@mipmap/iocn_person_turninto" />
+
+            </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_my_ad"
                 android:layout_width="match_parent"

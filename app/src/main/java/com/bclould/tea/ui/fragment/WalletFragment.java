@@ -35,6 +35,7 @@ import com.bclould.tea.ui.activity.PublicActivity;
 import com.bclould.tea.ui.activity.ReceiptPaymentActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
+import com.bclould.tea.ui.activity.wallet.exchangefrc.ExchangeFRCActivity;
 import com.bclould.tea.ui.adapter.WalletPVAdapter;
 import com.bclould.tea.ui.widget.MenuListPopWindow2;
 import com.bclould.tea.utils.ShadowTransformer;
@@ -160,7 +161,7 @@ public class WalletFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.rl_otc, R.id.rl_guess, R.id.rl_exchange, R.id.rl_my_ad, R.id.rl_financial_management, R.id.rl_fgc_exchange, R.id.iv_menu})
+    @OnClick({R.id.rl_otc, R.id.rl_guess, R.id.rl_exchange, R.id.rl_my_ad, R.id.rl_financial_management, R.id.rl_fgc_exchange, R.id.iv_menu,R.id.rl_exchange_frc})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_otc:
@@ -207,6 +208,13 @@ public class WalletFragment extends Fragment {
                 break;
             case R.id.iv_menu:
                 initPopWindow();
+                break;
+            case R.id.rl_exchange_frc:
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    startActivity(new Intent(getActivity(), ExchangeFRCActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
                 break;
         }
     }

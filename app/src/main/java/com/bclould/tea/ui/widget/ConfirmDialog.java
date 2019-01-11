@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -45,6 +46,10 @@ public class ConfirmDialog extends Dialog {
         init();
     }
 
+    public void setTvTitleColor(int color){
+        mTvTitle.setTextColor(color);
+    }
+
     public void setTvTitle(String title){
         if(!StringUtils.isEmpty(title)){
             mTvTitle.setVisibility(View.VISIBLE);
@@ -52,8 +57,19 @@ public class ConfirmDialog extends Dialog {
         }
     }
 
+    public void setTvContentColor(int color){
+        mTvContent.setTextColor(color);
+    }
+
     public void setTvContent(String content){
         if(!StringUtils.isEmpty(content)) {
+            mTvContent.setVisibility(View.VISIBLE);
+            mTvContent.setText(content);
+        }
+    }
+
+    public void setTvContent(SpannableStringBuilder content){
+        if(!StringUtils.isEmpty(content.toString())) {
             mTvContent.setVisibility(View.VISIBLE);
             mTvContent.setText(content);
         }

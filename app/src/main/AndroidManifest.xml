@@ -1370,6 +1370,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.activity.wallet.exchangefrc.ExchangeFRCActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 </manifest>

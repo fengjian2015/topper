@@ -110,14 +110,8 @@ public class HTMLActivity extends BaseActivity {
                 if (mProgressBar == null) {
                     return;
                 }
-                if (mProgressBar.getProgress() != 100) {
-                    mLlLoadError.setVisibility(View.VISIBLE);
-                    mWebView.setVisibility(View.GONE);
-                    return;
-                } else {
-                    mLlLoadError.setVisibility(View.GONE);
-                    mWebView.setVisibility(View.VISIBLE);
-                }
+                mWebView.setVisibility(View.VISIBLE);
+                mLlLoadError.setVisibility(View.GONE);
                 mProgressBar.setVisibility(View.GONE);
                 if (mWebView.canGoBack()) {
                     mIvFinish.setVisibility(View.VISIBLE);
@@ -244,6 +238,8 @@ public class HTMLActivity extends BaseActivity {
         if (mWebView.canGoBack()) {
             mIvFinish.setVisibility(View.VISIBLE);
             mWebView.goBack();
+            mWebView.setVisibility(View.VISIBLE);
+            mLlLoadError.setVisibility(View.GONE);
         } else {
             this.finish();
         }

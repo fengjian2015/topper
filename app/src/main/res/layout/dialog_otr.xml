@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingBottom="@dimen/y30"
+        android:paddingBottom="@dimen/y40"
         android:paddingLeft="@dimen/x20"
         android:paddingRight="@dimen/x20"
-        android:paddingTop="@dimen/y30">
+        android:paddingTop="@dimen/y40">
 
         <TextView
             android:id="@+id/tv_title"
@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_title"
             android:gravity="center"
+            android:layout_marginTop="@dimen/y30"
             android:visibility="gone"/>
 
     </RelativeLayout>
