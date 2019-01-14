@@ -20,6 +20,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TaskRecordActivity extends BaseActivity implements TaskRecordContacts.View{
@@ -45,6 +46,7 @@ public class TaskRecordActivity extends BaseActivity implements TaskRecordContac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_record);
+        ButterKnife.bind(this);
         mPresenter=new TaskRecordPresenter();
         mPresenter.bindView(this);
         mPresenter.start(this);

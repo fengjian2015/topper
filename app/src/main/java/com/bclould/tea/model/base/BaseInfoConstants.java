@@ -9,4 +9,13 @@ public class BaseInfoConstants {
     public static String CREATED_AT="created_at";
     public static String NAME="name";
     public static String BUY_NUMBER="buy_number";
+    public static String ICON="icon";
+    public static String TITLE="title";
+    public static String DESC="desc";
+    public static String CODE="code";
+    public static String IS_COMPLETE="is_complete";
+    public static String COIN_NAME="coin_name";
+    public static String ANDROID_URL="android_url";
+    public static String COIN_ID="coin_id";
+
 }

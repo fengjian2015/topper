@@ -35,5 +35,5 @@
 
     <View
         style="@style/HorizontalBoundaryStyle"
-        android:layout_marginTop="@dimen/y30"/>
+        />
 </LinearLayout>

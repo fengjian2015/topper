@@ -2392,12 +2392,15 @@
     <string name="unsubscribe">取消关注</string>
     <string name="enter_public_number">进入公众号</string>
     <string name="system_notification">系统公告</string>
-
     <string name="exchange_frc">兑换FRC</string>
     <string name="you_want_exchange">你想兑换多少</string>
     <string name="echange_frc_help">一次性兑换1000GC，可以获得申购编号！</string>
     <string name="exchange_for">兑换为</string>
     <string name="got_it">知道了</string>
     <string name="frc_congratulations">恭喜您成为\n第%1$s位申购成功的客户！</string>
+    <string name="mission_center">任务中心</string>
 
+    <string name="earned">已赚</string>
+    <string name="earn">赚</string>
+    <string name="receive_award">领取奖励</string>
 </resources>

@@ -29,6 +29,7 @@ import com.bclould.tea.ui.activity.ftc.node.NodeActivity;
 import com.bclould.tea.ui.activity.PersonalDetailsActivity;
 import com.bclould.tea.ui.activity.my.systemxet.SystemSetActivity;
 import com.bclould.tea.ui.activity.my.UserSafetyActivity;
+import com.bclould.tea.ui.activity.my.taskcenter.TaskCenterActivity;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -180,7 +181,7 @@ public class MyFragment extends Fragment {
     }
 
     @OnClick({R.id.rl_dynamic, R.id.rl_collect, R.id.rl_already_login, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we, R.id.rl_no_login, R.id.rl_my_team, R.id.rl_participation_profit,
-            R.id.rl_account_binding,R.id.rl_announcement})
+            R.id.rl_account_binding,R.id.rl_announcement,R.id.rl_mission_center})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_already_login:
@@ -265,6 +266,13 @@ public class MyFragment extends Fragment {
             case R.id.rl_announcement:
                 if (!WsConnection.getInstance().getOutConnection()) {
                     startActivity(new Intent(getActivity(), GonggaoManagerActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
+                break;
+            case R.id.rl_mission_center:
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    startActivity(new Intent(getActivity(), TaskCenterActivity.class));
                 } else {
                     startActivity(new Intent(getActivity(), InitialActivity.class));
                 }

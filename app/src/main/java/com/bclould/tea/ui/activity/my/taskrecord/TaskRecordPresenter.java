@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.bclould.tea.Presenter.DistributionPresenter;
+import com.bclould.tea.Presenter.TaskPersenter;
 import com.bclould.tea.base.BaseView;
 import com.bclould.tea.model.base.BaseListInfo;
 import com.bclould.tea.ui.activity.ftc.teamreward.TeamRewardContacts;
@@ -30,8 +31,8 @@ public class TaskRecordPresenter implements TaskRecordContacts.Presenter, TimeSe
 
     String mDate = "";
     private int page = 1;
+    private int page_size=20;
 
-    private DistributionPresenter mDillDataPresenter;
 
     @Override
     public void bindView(BaseView view) {
@@ -63,7 +64,6 @@ public class TaskRecordPresenter implements TaskRecordContacts.Presenter, TimeSe
         mTimeSelectUtil.setOnTimeReturnListener(this);
         mDate = mTimeSelectUtil.getDate();
         mView.setDateView(mDate);
-        mDillDataPresenter = new DistributionPresenter(mActivity);
     }
 
 
@@ -74,12 +74,11 @@ public class TaskRecordPresenter implements TaskRecordContacts.Presenter, TimeSe
         } else {
             p = page + 1;
         }
-        mDillDataPresenter.teamReward(p, mDate, new DistributionPresenter.CallBack7() {
+        new TaskPersenter(mActivity).taskRecords(p,page_size, mDate, new TaskPersenter.CallBack1() {
             @Override
             public void send(BaseListInfo data) {
                 mView.resetRefresh(isRefresh);
-               data.getData();
-                if (data.getData().size() == 20) {
+                if (data.getData().size() == page_size) {
                     mView.setEnableLoadMore(true);
                 } else {
                     mView.setEnableLoadMore(false);

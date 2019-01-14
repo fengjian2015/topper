@@ -65,7 +65,9 @@ public class TaskRecordAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(Map dataBean) {
-
+            mTvTime.setText(dataBean.get(BaseInfoConstants.CREATED_AT)+"");
+            mTvTitle.setText(dataBean.get(BaseInfoConstants.TITLE)+"");
+            mTvOutMoney.setText("+"+dataBean.get(BaseInfoConstants.NUMBER)+" "+dataBean.get(BaseInfoConstants.COIN_ID));
         }
     }
 

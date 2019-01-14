@@ -134,6 +134,42 @@
                 android:paddingBottom="@dimen/y10"
                 android:paddingTop="@dimen/y10">
                 <RelativeLayout
+                    android:id="@+id/rl_mission_center"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y110"
+                    android:paddingBottom="@dimen/y20"
+                    android:paddingTop="@dimen/y20">
+
+                    <ImageView
+                        android:id="@+id/iv14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:src="@mipmap/icon_task"/>
+
+                    <TextView
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:layout_toRightOf="@+id/iv14"
+                        android:text="@string/mission_center"/>
+
+                    <ImageView
+                        android:layout_width="@dimen/x15"
+                        android:layout_height="@dimen/x25"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="14dp"
+                        android:layout_marginRight="14dp"
+                        android:src="@mipmap/iocn_person_turninto" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/rl_announcement"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/y110"
@@ -160,10 +196,12 @@
                     <ImageView
                         android:layout_width="@dimen/x15"
                         android:layout_height="@dimen/x25"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x25"
-                        android:src="@mipmap/iocn_person_turninto"/>
+                        android:layout_marginEnd="14dp"
+                        android:layout_marginRight="14dp"
+                        android:src="@mipmap/iocn_person_turninto" />
 
                 </RelativeLayout>
                 <RelativeLayout

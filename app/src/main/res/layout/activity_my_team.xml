@@ -120,10 +120,17 @@
                 android:id="@+id/tv_team_push_reward"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/iv_image"
+                android:layout_marginRight="@dimen/x20"
+                style="@style/MainTextShallowStyle30"/>
+            <ImageView
+                android:id="@+id/iv_image"
+                android:layout_width="@dimen/x15"
+                android:layout_height="@dimen/x25"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                style="@style/MainTextShallowStyle30"/>
-
+                android:src="@mipmap/iocn_person_turninto"/>
         </RelativeLayout>
     </LinearLayout>
     <RelativeLayout

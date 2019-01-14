@@ -65,6 +65,7 @@ import com.bclould.tea.model.UpdateLogInfo;
 import com.bclould.tea.model.UpgradeInfo;
 import com.bclould.tea.model.UserDataInfo;
 import com.bclould.tea.model.VersionInfo;
+import com.bclould.tea.model.base.BaseMapInfo;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -1705,5 +1706,28 @@ public interface MyService {
             @Header("Authorization") String token,
             @Query("page") int page,
             @Query("date") String date
+    );
+
+    //任务记录
+    @GET("api/task/records")
+    Observable<BaseListInfo> taskRecords(
+            @Header("Authorization") String token,
+            @Query("page") int page,
+            @Query("page_size") int page_size,
+            @Query("date") String date
+    );
+
+    //任务中心
+    @GET("api/task/lists")
+    Observable<BaseListInfo> taskLists(
+            @Header("Authorization") String token
+    );
+
+    //任务完成
+    @FormUrlEncoded
+    @POST("api/task/reward")
+    Observable<BaseMapInfo> taskReward(
+            @Header("Authorization") String token,
+            @Field("code") String code
     );
 }

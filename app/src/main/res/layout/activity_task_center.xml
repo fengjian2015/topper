@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context="com.bclould.tea.ui.activity.my.taskcenter.TaskCenterActivity">
     <include
         android:id="@+id/rl_title"
@@ -48,6 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srlDisableContentWhenRefresh="true"
+        android:layout_marginTop="@dimen/y20"
         app:srlEnableScrollContentWhenRefreshed="false">
     <com.scwang.smartrefresh.header.WaterDropHeader
         android:layout_width="match_parent"
@@ -59,7 +61,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/x40"
             android:paddingRight="@dimen/x40"
-            android:visibility="gone">
+            >
         </android.support.v7.widget.RecyclerView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.bclould.tea.Presenter.GroupPresenter;
+import com.bclould.tea.Presenter.TaskPersenter;
 import com.bclould.tea.R;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBConversationBurnManage;
@@ -29,6 +30,7 @@ import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.UserInfo;
+import com.bclould.tea.model.base.BaseMapInfo;
 import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.ui.activity.ConversationActivity;
@@ -295,6 +297,19 @@ public class SocketListener {
         mgr.updateMessageStatus(id, 1);
         mgr.deleteSingleMsgId(id);
         EventBus.getDefault().post(messageEvent);
+        if(WsConnection.getInstance().isFirstChat){
+            WsConnection.getInstance().isFirstChat=false;
+            loginReward();
+        }
+    }
+
+    private void loginReward(){
+        new TaskPersenter(context).taskReward("chat",false, new TaskPersenter.CallBack2() {
+            @Override
+            public void send(BaseMapInfo baseInfo) {}
+            @Override
+            public void error() {}
+        });
     }
 
     /**

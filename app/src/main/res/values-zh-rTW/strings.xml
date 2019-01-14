@@ -1299,4 +1299,11 @@
     <string name="unsubscribe">取消關注</string>
     <string name="enter_public_number">進入公眾號</string>
     <string name="system_notification">系統公告</string>
+    <string name="exchange_frc">兌換FRC</string>
+    <string name="you_want_exchange">你想兌換多少</string>
+    <string name="echange_frc_help">一次性兌換1000GC，可以獲得申購編號！ </string>
+    <string name="exchange_for">兌換為</string>
+    <string name="got_it">知道了</string>
+    <string name="frc_congratulations">恭喜您成為\n第%1$s位申購成功的客戶！ </string>
+    <string name="mission_center">任務中心</string>
 </resources>

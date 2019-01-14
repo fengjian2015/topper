@@ -6,7 +6,7 @@
 
 
     <stroke
-        android:width="@dimen/x4"
+        android:width="@dimen/x2"
         android:color="@color/secondary_text_color"/>
 
 </shape>

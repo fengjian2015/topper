@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.model.base.BaseInfoConstants;
+import com.bclould.tea.utils.UtilTool;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +25,10 @@ import butterknife.ButterKnife;
 
 public class TaskCenterAdapter extends RecyclerView.Adapter {
     private final Context mContext;
-    private final List<HashMap> mData;
+    private final List<Map> mData;
+    private OnItemListener onItemListener;
 
-    public TaskCenterAdapter(Context context, List<HashMap> data) {
+    public TaskCenterAdapter(Context context, List<Map> data) {
         mContext = context;
         mData = data;
     }
@@ -39,7 +42,7 @@ public class TaskCenterAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setData(mData.get(position));
+        viewHolder.setData(mData.get(position),position);
     }
 
     @Override
@@ -64,14 +67,49 @@ public class TaskCenterAdapter extends RecyclerView.Adapter {
         @Bind(R.id.iv_earned)
         ImageView mIvEarned;
 
+        int position;
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
 
-        public void setData(Map dataBean) {
-
+        public void setData(Map dataBean, final int position) {
+            this.position=position;
+            mTvTitle.setText(dataBean.get(BaseInfoConstants.TITLE)+"");
+            mTvContent.setText(dataBean.get(BaseInfoConstants.DESC)+"");
+            UtilTool.setCircleImg(mContext,dataBean.get(BaseInfoConstants.ICON)+"",mIvImage);
+            if((boolean)dataBean.get(BaseInfoConstants.IS_COMPLETE)){
+                mTvEarned.setVisibility(View.VISIBLE);
+                mIvEarned.setVisibility(View.VISIBLE);
+                mTvEarn.setVisibility(View.GONE);
+                mTvEarned.setText(mContext.getResources().getString(R.string.earned)+dataBean.get(BaseInfoConstants.NUMBER)+dataBean.get(BaseInfoConstants.COIN_NAME));
+            }else {
+                mTvEarned.setVisibility(View.GONE);
+                mIvEarned.setVisibility(View.GONE);
+                mTvEarn.setVisibility(View.VISIBLE);
+                if("login".equals(dataBean.get(BaseInfoConstants.CODE)+"")){
+                    mTvEarn.setText(mContext.getResources().getString(R.string.receive_award));
+                }else{
+                    mTvEarn.setText(mContext.getResources().getString(R.string.earn)+dataBean.get(BaseInfoConstants.COIN_NAME));
+                }
+                mTvEarn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(onItemListener!=null){
+                            onItemListener.onItemClick(position);
+                        }
+                    }
+                });
+            }
         }
+    }
+
+    public void addOnItemListener(OnItemListener onItemListener){
+        this.onItemListener=onItemListener;
+    }
+
+    public interface OnItemListener{
+        void onItemClick(int position);
     }
 
 }

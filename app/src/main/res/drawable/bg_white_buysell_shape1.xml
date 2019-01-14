@@ -6,7 +6,7 @@
 
 
     <stroke
-        android:width="@dimen/x4"
+        android:width="@dimen/x2"
         android:color="@color/btn_bg_color"/>
     <solid android:color="#F2F5FC"></solid>
 
