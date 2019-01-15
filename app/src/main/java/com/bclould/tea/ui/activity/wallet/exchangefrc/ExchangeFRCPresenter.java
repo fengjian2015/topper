@@ -113,6 +113,7 @@ public class ExchangeFRCPresenter implements ExchangeFRCContacts.Presenter {
         String result= String.format(mActivity.getString(R.string.echange_frc_help) ,data.getData().get(BaseInfoConstants.NUMBER_CONDITION));
         mView.setmTvEchangeFrcHelp(result);
         mView.setmTvBalance(mActivity.getString(R.string.available)+data.getData().get(BaseInfoConstants.OVER_NUM)+"GC");
+        mView.setmTvRemaining(mActivity.getString(R.string.remaining_convertible)+data.getData().get(BaseInfoConstants.LAST)+"GC");
         if(UtilTool.parseDouble(data.getData().get(BaseInfoConstants.USER_NO)+"")==0){
             mView.setmRlSuccessShow(View.GONE);
         }else{
@@ -123,7 +124,10 @@ public class ExchangeFRCPresenter implements ExchangeFRCContacts.Presenter {
     }
 
     private double getRateMoney(double number){
-        if(rate==null||rate.length>=2) {
+        if(rate==null){
+            return 0;
+        }
+        if(rate.length>=2) {
             return (number / UtilTool.parseDouble(rate[0]) * UtilTool.parseDouble(rate[1]));
         }else{
             return 0;

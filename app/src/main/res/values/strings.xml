@@ -2404,4 +2404,5 @@
     <string name="receive_award">领取奖励</string>
     <string name="current_rate">当前兑率</string>
     <string name="echange_frc_success">您是第%1$s位申购成功的客户</string>
+    <string name="remaining_convertible">剩余可兑换:</string>
 </resources>

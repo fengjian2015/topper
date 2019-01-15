@@ -53,6 +53,8 @@ public class ExchangeFRCActivity extends BaseActivity implements ExchangeFRCCont
     TextView mTvSuccess;
     @Bind(R.id.rl_success)
     RelativeLayout mRlSuccess;
+    @Bind(R.id.tv_remaining)
+    TextView mTvRemaining;
 
     private ExchangeFRCContacts.Presenter mPresenter;
 
@@ -164,5 +166,10 @@ public class ExchangeFRCActivity extends BaseActivity implements ExchangeFRCCont
     @Override
     public void setmTvExchangeRate(String content) {
         mTvExchangeRate.setText(content);
+    }
+
+    @Override
+    public void setmTvRemaining(String content) {
+        mTvRemaining.setText(content);
     }
 }

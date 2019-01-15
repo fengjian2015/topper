@@ -24,4 +24,5 @@ public class BaseInfoConstants {
     public static String FRC_NUMBER="frc_number";
     public static String USER_NO="user_no";
     public static String EXCHANGE="exchange";
+    public static String LAST="last";
 }

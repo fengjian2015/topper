@@ -29,6 +29,7 @@ public class ExchangeFRCContacts {
         void setmTvEchangeFrcHelp(String content);
         void setmTvProportion(String content);
         void setmTvExchangeRate(String content);
+        void setmTvRemaining(String content);
 
     }
 }
