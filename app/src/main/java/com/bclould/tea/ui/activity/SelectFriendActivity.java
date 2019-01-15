@@ -17,6 +17,7 @@ import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.adapter.SelectFriendAdapter;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.ui.widget.ShareDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
@@ -175,6 +176,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
     }
 
     private void showDeleteDialog(String remark, final String name, final String user,String url) {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         ShareDialog shareDialog=new ShareDialog(this);
         shareDialog.show();
         shareDialog.setTvName(remark);

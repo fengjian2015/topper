@@ -13,6 +13,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.model.OutCoinSiteInfo;
 import com.bclould.tea.ui.activity.OutCoinSiteActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 
 import java.util.List;
 
@@ -80,6 +81,7 @@ public class OutCoinSiteRVAdapter extends RecyclerView.Adapter {
             mIvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(!ActivityUtil.isActivityOnTop(mOutCoinSiteActivity))return;
                     final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mOutCoinSiteActivity, R.style.dialog);
                     deleteCacheDialog.show();
                     deleteCacheDialog.setTitle(mOutCoinSiteActivity.getString(R.string.delete_site_hint));

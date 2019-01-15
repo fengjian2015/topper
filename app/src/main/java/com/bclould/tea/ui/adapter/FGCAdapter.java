@@ -86,7 +86,7 @@ public class FGCAdapter extends RecyclerView.Adapter {
             mTvTime.setText(hashMap.getCreated_at());
             mTvRate.setText(hashMap.getRate() + ":1");
             mTvMoney.setText(hashMap.getCoin_number() + "USDT");
-            mTvIncome.setText("+" + hashMap.getFgc_number() + "FGC");
+            mTvIncome.setText("+" + hashMap.getFgc_number() + "GC");
         }
 
     }

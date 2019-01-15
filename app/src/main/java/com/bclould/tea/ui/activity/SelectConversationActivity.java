@@ -304,6 +304,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
     }
 
     private void showDeleteDialog(String remark, final String name, final String user, final String chatType,String url) {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         ShareDialog shareDialog=new ShareDialog(this);
         shareDialog.show();
         shareDialog.setTvName(remark);
@@ -606,6 +607,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
     }
 
     private void showDeleteDialog(final String url) {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.whether_collect_this_page));

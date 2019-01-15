@@ -34,6 +34,7 @@ import com.bclould.tea.ui.adapter.LocationListAdapter;
 import com.bclould.tea.ui.widget.AppTitle;
 import com.bclould.tea.ui.widget.CenterIcon1;
 import com.bclould.tea.ui.widget.ScreenListPopWindow;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.LoadingProgressUtil;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
@@ -337,6 +338,7 @@ public class LocationActivity extends BaseNormalActivity implements
                 tencentMap.animateTo(latLngLocation);
             }
         });
+        if(!ActivityUtil.isActivityOnTop(this))return;
         screenListPopWindow.showAsDropDown(rl_data,0,2);
     }
 

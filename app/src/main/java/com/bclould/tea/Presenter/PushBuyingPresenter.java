@@ -16,6 +16,7 @@ import com.bclould.tea.ui.activity.PushBuyingActivity;
 import com.bclould.tea.ui.activity.RealNameC1Activity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -110,6 +111,7 @@ public class PushBuyingPresenter {
 
 
     private void showHintDialog(final int type) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         switch (type) {

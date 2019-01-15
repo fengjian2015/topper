@@ -27,6 +27,7 @@ import com.bclould.tea.ui.activity.RewardActivity;
 import com.bclould.tea.ui.activity.VideoActivity;
 import com.bclould.tea.ui.widget.CommentsView;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
@@ -732,6 +733,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
     }
 
     private void showDialog(final String id) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.delete_dynamic_hint));
@@ -956,6 +958,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
     }
 
     private void showPWDialog(final String guessPw, final int guessId, final int period_aty) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_command, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGuessPw = (EditText) deleteCacheDialog.findViewById(R.id.et_guess_password);

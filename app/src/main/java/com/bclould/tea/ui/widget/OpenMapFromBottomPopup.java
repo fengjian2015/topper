@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
 import com.bclould.tea.R;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.ToastShow;
 
 import java.io.File;
@@ -45,6 +46,7 @@ public class OpenMapFromBottomPopup extends PopupWindow implements View.OnClickL
         setBackgroundDrawable(new BitmapDrawable());
         setOutsideTouchable(true);
         setContentView(view);
+        if(!ActivityUtil.isActivityOnTop(context))return;
         showAtLocation(parent, Gravity.RIGHT | Gravity.BOTTOM, 10, 10);;
         update();
         bindEvent();

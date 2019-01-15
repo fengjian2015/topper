@@ -19,6 +19,7 @@ import com.bclould.tea.ui.activity.SelectorLanguageActivity;
 import com.bclould.tea.ui.activity.SerchImageActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -129,6 +130,7 @@ public class SystemSetPresenter implements SystemSetContacts.Presenter {
     //显示退出弹框
     @Override
     public void showDialog() {
+        if(!ActivityUtil.isActivityOnTop(mActivity))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mActivity, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mActivity.getString(R.string.logout_hint));
@@ -273,7 +275,7 @@ public class SystemSetPresenter implements SystemSetContacts.Presenter {
 
     //显示Dialog
     private void showCacheDialog() {
-
+        if(!ActivityUtil.isActivityOnTop(mActivity))return;
         DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mActivity, R.style.dialog);
 
         deleteCacheDialog.show();

@@ -177,6 +177,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
         list.add(MenuListPopWindow2.setHashMapData(this,R.string.receipt,R.mipmap.icon_pay_c));
         list.add(MenuListPopWindow2.setHashMapData(this,R.string.payment,R.mipmap.icon_get_c));
         final MenuListPopWindow2 menuListPopWindow2=new MenuListPopWindow2(this,(int) (getResources().getDimension(R.dimen.y200)),list);
+        if(!ActivityUtil.isActivityOnTop(this))return;
         menuListPopWindow2.showAsDropDown(mXx2,(widthPixels - menuListPopWindow2.getPopupWidth()), 0);
         menuListPopWindow2.setListOnClick(new MenuListPopWindow2.ListOnClick() {
             @Override

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.utils.ActivityUtil;
 
 import java.util.List;
 
@@ -80,6 +81,7 @@ public class MenuListPopWindow extends Dialog {
         //将设置好的属性set回去
         window.setAttributes(lp);
         window.setGravity(Gravity.BOTTOM);
+        if(!ActivityUtil.isActivityOnTop(context))return;
         window.setWindowAnimations(BottomDialog);
         setContentView(view);
 

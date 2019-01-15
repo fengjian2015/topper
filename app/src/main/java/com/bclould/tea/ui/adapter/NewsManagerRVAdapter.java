@@ -15,6 +15,7 @@ import com.bclould.tea.model.GonggaoListInfo;
 import com.bclould.tea.ui.activity.NewsDetailsActivity;
 import com.bclould.tea.ui.activity.NewsEditActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bumptech.glide.Glide;
 import java.util.List;
 import butterknife.Bind;
@@ -142,6 +143,7 @@ public class NewsManagerRVAdapter extends RecyclerView.Adapter {
     }
 
     private void showDialog(final int id) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.delete_news_hint));

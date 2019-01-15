@@ -27,6 +27,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
@@ -210,6 +211,7 @@ public class NewsEditActivity extends BaseActivity {
     }
 
     private void showSaveDialog() {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.whether_save_draft));
@@ -237,6 +239,7 @@ public class NewsEditActivity extends BaseActivity {
     }
 
     private void showServiceChargeDialog() {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.publish_news_hint) + mAd_cost + mCoin_name + getString(R.string.ggf));

@@ -19,6 +19,7 @@ import com.bclould.tea.ui.activity.RealNameC1Activity;
 import com.bclould.tea.ui.activity.TransferAccountsActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
 
@@ -107,6 +108,7 @@ public class CurrencyInOutPresenter {
     }
 
     private void showSetPwDialog() {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.set_pay_pw_hint));
@@ -207,6 +209,7 @@ public class CurrencyInOutPresenter {
     }
 
     private void showHintDialog() {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.real_name_authentication_hint));

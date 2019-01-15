@@ -225,6 +225,7 @@ public class FinancialActivity extends BaseActivity {
 
     private void showTransferDialog(final int type) {
         if (baseInfo == null) return;
+        if(!ActivityUtil.isActivityOnTop(this))return;
         ManagementFundsDialog fundsDialog = new ManagementFundsDialog(this);
         fundsDialog.show();
         if (type == 1) {

@@ -38,6 +38,7 @@ import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tea.ui.activity.wallet.exchangefrc.ExchangeFRCActivity;
 import com.bclould.tea.ui.adapter.WalletPVAdapter;
 import com.bclould.tea.ui.widget.MenuListPopWindow2;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.ShadowTransformer;
 import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.permissions.AuthorizationUserTools;
@@ -225,6 +226,7 @@ public class WalletFragment extends Fragment {
         list.add(MenuListPopWindow2.setHashMapData(getContext(),R.string.qr_code_red_package,R.mipmap.icon_news_codeenvelope));
         list.add(MenuListPopWindow2.setHashMapData(getContext(),R.string.add_friend,R.mipmap.icon_talk_add));
         final MenuListPopWindow2 menuListPopWindow2=new MenuListPopWindow2(getActivity(),(int) (getResources().getDimension(R.dimen.y300)),list);
+        if(!ActivityUtil.isActivityOnTop(getContext()))return;
         menuListPopWindow2.showAsDropDown(mRlMenu,30, 0);
         menuListPopWindow2.setListOnClick(new MenuListPopWindow2.ListOnClick() {
             @Override

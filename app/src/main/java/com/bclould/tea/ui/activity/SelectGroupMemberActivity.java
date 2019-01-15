@@ -15,6 +15,7 @@ import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.SelectGroupMemberAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
@@ -125,6 +126,7 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
         if (StringUtils.isEmpty(mName)) {
             mName = roomMemberInfo.getName();
         }
+        if(!ActivityUtil.isActivityOnTop(this))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.assign_to) + " " + mName + " " + getString(R.string.what));

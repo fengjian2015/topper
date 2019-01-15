@@ -113,7 +113,6 @@ public class ExchangeFRCPresenter implements ExchangeFRCContacts.Presenter {
         String result= String.format(mActivity.getString(R.string.echange_frc_help) ,data.getData().get(BaseInfoConstants.NUMBER_CONDITION));
         mView.setmTvEchangeFrcHelp(result);
         mView.setmTvBalance(mActivity.getString(R.string.available)+data.getData().get(BaseInfoConstants.OVER_NUM)+"GC");
-        String  no=UtilTool.subZeroAndDot(data.getData().get(BaseInfoConstants.USER_NO)+"");
         if(UtilTool.parseDouble(data.getData().get(BaseInfoConstants.USER_NO)+"")==0){
             mView.setmRlSuccessShow(View.GONE);
         }else{

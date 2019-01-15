@@ -19,6 +19,7 @@ import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.UpgradeInfo;
 import com.bclould.tea.ui.widget.NodePayDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
@@ -244,6 +245,7 @@ public class UpgradeFragment extends LazyFragment {
     }
 
     private void resultDialog(boolean isSuccess,String message) {
+        if(!ActivityUtil.isActivityOnTop(getContext()))return;
         NodePayDialog nodePayDialog = new NodePayDialog(getActivity());
         nodePayDialog.show();
         if(isSuccess){

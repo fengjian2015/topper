@@ -8,6 +8,7 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -45,7 +46,8 @@ public class HTMLActivity extends BaseActivity {
     LinearLayout mLlLoadError;
     private String html5Url;
     private DBManager mMgr;
-    private String nowUrl;//记录当前浏览到的地址
+
+    private boolean isError=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +99,7 @@ public class HTMLActivity extends BaseActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 UtilTool.Log("fengjian", url);
-                nowUrl = url;
+                isError=false;
                 if (url.contains("TopperChatOauth")) {
                     topperChatOauth(url);
                     return true;
@@ -114,19 +116,44 @@ public class HTMLActivity extends BaseActivity {
                 if (mProgressBar == null) {
                     return;
                 }
-                mWebView.setVisibility(View.VISIBLE);
-                mLlLoadError.setVisibility(View.GONE);
-                mProgressBar.setVisibility(View.GONE);
-                if (mWebView.canGoBack()) {
-                    mIvFinish.setVisibility(View.VISIBLE);
+                if(isError){
+                    mProgressBar.setVisibility(View.GONE);
+                }else {
+                    mWebView.setVisibility(View.VISIBLE);
+                    mLlLoadError.setVisibility(View.GONE);
+                    mProgressBar.setVisibility(View.GONE);
+                    if (mWebView.canGoBack()) {
+                        mIvFinish.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
             @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError
-                    error) {
+            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+                super.onReceivedHttpError(view, request, errorResponse);
+                if (mLlLoadError == null) return;
+                isError=true;
+                mLlLoadError.setVisibility(View.VISIBLE);
+                mWebView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    return;
+                }
+                if (mLlLoadError == null) return;
+                isError=true;
+                mLlLoadError.setVisibility(View.VISIBLE);
+                mWebView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
                 if (mLlLoadError == null) return;
+                isError=true;
                 mLlLoadError.setVisibility(View.VISIBLE);
                 mWebView.setVisibility(View.GONE);
             }
@@ -249,11 +276,8 @@ public class HTMLActivity extends BaseActivity {
     }
 
     private void againLoad() {
-        if (StringUtils.isEmpty(nowUrl)) {
-            mWebView.loadUrl(html5Url);
-        } else {
-            mWebView.loadUrl(nowUrl);
-        }
+        isError=false;
+        mWebView.reload();
     }
 
     private void goBack() {
@@ -262,6 +286,7 @@ public class HTMLActivity extends BaseActivity {
             mWebView.goBack();
             mWebView.setVisibility(View.VISIBLE);
             mLlLoadError.setVisibility(View.GONE);
+            isError=false;
         } else {
             this.finish();
         }

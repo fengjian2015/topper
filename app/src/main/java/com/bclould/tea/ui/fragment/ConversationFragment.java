@@ -51,6 +51,7 @@ import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
 import com.bclould.tea.ui.adapter.ConversationAdapter;
 import com.bclould.tea.ui.widget.MenuListPopWindow2;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
@@ -304,6 +305,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         list.add(MenuListPopWindow2.setHashMapData(getContext(),R.string.the_pulice,R.mipmap.icon_thepublic1));
         list.add(MenuListPopWindow2.setHashMapData(getContext(),R.string.rich_scan,R.mipmap.icon_news_flicking));
         final MenuListPopWindow2 menuListPopWindow2=new MenuListPopWindow2(getActivity(),(int) (getResources().getDimension(R.dimen.y500)),list);
+        if(!ActivityUtil.isActivityOnTop(getContext()))return;
         menuListPopWindow2.showAsDropDown(mXx, (widthPixels - menuListPopWindow2.getPopupWidth()), 0);
         menuListPopWindow2.setListOnClick(new MenuListPopWindow2.ListOnClick() {
             @Override

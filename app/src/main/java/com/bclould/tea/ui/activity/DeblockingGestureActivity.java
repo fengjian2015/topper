@@ -13,6 +13,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.GestureLockViewGroup;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
@@ -90,6 +91,7 @@ public class DeblockingGestureActivity extends BaseActivity {
         }
 
         private void showHintDialog() {
+            if(!ActivityUtil.isActivityOnTop(DeblockingGestureActivity.this))return;
             final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, DeblockingGestureActivity.this, R.style.dialog);
             deleteCacheDialog.show();
             deleteCacheDialog.setTitle(getString(R.string.gesture_count_exceed_hint));

@@ -13,6 +13,7 @@ import com.bclould.tea.model.FinanciaProductInfo;
 import com.bclould.tea.model.HistoryInfo;
 import com.bclould.tea.ui.adapter.FinancialHistoryAdapter;
 import com.bclould.tea.ui.widget.MenuGridPopWindow;
+import com.bclould.tea.utils.ActivityUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -182,6 +183,7 @@ public class FinancialHistoryActivity extends BaseActivity {
         if (mProductList.size() == 0) {
             return;
         }
+        if(!ActivityUtil.isActivityOnTop(this))return;
         final MenuGridPopWindow menu = new MenuGridPopWindow(this, mProductList);
         menu.setListOnClick(new MenuGridPopWindow.ListOnClick() {
             @Override

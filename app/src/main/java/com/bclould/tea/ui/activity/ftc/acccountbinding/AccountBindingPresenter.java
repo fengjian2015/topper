@@ -10,6 +10,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseView;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.ui.widget.NodePayDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
@@ -78,6 +79,7 @@ public class AccountBindingPresenter implements AccountBindingContacts.Presenter
     }
 
     private void showDialog() {
+        if(!ActivityUtil.isActivityOnTop(mActivity))return;
         NodePayDialog nodePayDialog = new NodePayDialog(mActivity);
         nodePayDialog.show();
         nodePayDialog.setTvTitle(mActivity.getString(R.string.binding_succeed));

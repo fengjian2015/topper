@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.PublicMenuInfo;
+import com.bclould.tea.utils.ActivityUtil;
 
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class MenuListPopWindow1 extends PopupWindow {
         int windowWidth  = dm.widthPixels;
         int x=windowWidth-location[0]-popupWidth;
         view.setPadding(context.getResources().getDimensionPixelSize(R.dimen.x20),0,context.getResources().getDimensionPixelSize(R.dimen.x20),popupHeight);
+        if(!ActivityUtil.isActivityOnTop(context))return;
         showAtLocation(mView,Gravity.BOTTOM|Gravity.RIGHT,x,popupHeight);
 
         RelativeLayout relativeLayout=view.findViewById(R.id.rl_data);

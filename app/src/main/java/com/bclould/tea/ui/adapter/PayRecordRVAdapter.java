@@ -14,6 +14,7 @@ import com.bclould.tea.model.TransferListInfo;
 import com.bclould.tea.ui.activity.GuessDetailsActivity;
 import com.bclould.tea.ui.activity.PayDetailsActivity;
 import com.bclould.tea.ui.activity.my.taskrecord.TaskRecordActivity;
+import com.bclould.tea.ui.activity.wallet.exchangefrc.ExchangeFRCActivity;
 
 import java.util.List;
 
@@ -80,6 +81,8 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
                         mContext.startActivity(intent);
                     } else if(mDataBean.getType_number() == 31){
                         mContext.startActivity(new Intent(mContext, TaskRecordActivity.class));
+                    }else if(mDataBean.getType_number() == 33){
+                        mContext.startActivity(new Intent(mContext, ExchangeFRCActivity.class));
                     }else {
                         Intent intent = new Intent(mContext, PayDetailsActivity.class);
                         intent.putExtra("log_id", mDataBean.getLog_id() + "");
