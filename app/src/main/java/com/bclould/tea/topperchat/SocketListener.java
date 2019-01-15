@@ -297,8 +297,9 @@ public class SocketListener {
         mgr.updateMessageStatus(id, 1);
         mgr.deleteSingleMsgId(id);
         EventBus.getDefault().post(messageEvent);
-        if(WsConnection.getInstance().isFirstChat){
-            WsConnection.getInstance().isFirstChat=false;
+        String date=UtilTool.createYMDTime();
+        if(!date.equals(WsConnection.getInstance().isFirstChat)){
+            WsConnection.getInstance().isFirstChat=date;
             loginReward();
         }
     }

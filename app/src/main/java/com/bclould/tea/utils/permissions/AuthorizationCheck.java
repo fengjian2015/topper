@@ -14,6 +14,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.ConfirmCancelDialog;
 import com.bclould.tea.ui.widget.ConfirmDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.ToastShow;
 
 
@@ -134,6 +135,7 @@ public class AuthorizationCheck{
             return;
         }
         if(isMustOpen){
+            if(!ActivityUtil.isActivityOnTop(activity))return;
             ConfirmCancelDialog diaolg=new ConfirmCancelDialog(activity);
             diaolg.show();
             diaolg.setTvTitle(activity.getString(R.string.accessibility));

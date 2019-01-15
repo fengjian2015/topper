@@ -11,9 +11,17 @@ public class BaseMapInfo {
     private int status;
     private String message;
     private HashMap data;
-
+    private int type;
     public HashMap getData() {
         return data;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public void setData(HashMap data) {

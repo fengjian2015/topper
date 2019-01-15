@@ -152,6 +152,7 @@ public class GoogleVerificationActivity extends BaseActivity {
     }
 
     private void showHintDialog() {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         mCurrencyDialog = new CurrencyDialog(R.layout.dialog_query, this, R.style.dialog);
         mCurrencyDialog.show();
     }
@@ -236,6 +237,7 @@ public class GoogleVerificationActivity extends BaseActivity {
     }
 
     private void showImgDialog() {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_img, this, R.style.dialog);
         deleteCacheDialog.show();
         ImageView ivImg = (ImageView) deleteCacheDialog.findViewById(R.id.iv_img);
@@ -251,6 +253,7 @@ public class GoogleVerificationActivity extends BaseActivity {
     private void showDialog() {
         if (mDeleteCacheDialog == null)
             mDeleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
+        if(!ActivityUtil.isActivityOnTop(this))return;
         mDeleteCacheDialog.show();
         mDeleteCacheDialog.setTitle(getString(R.string.download_google_verify));
         Button cancel = (Button) mDeleteCacheDialog.findViewById(R.id.btn_cancel);

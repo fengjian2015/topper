@@ -15,6 +15,7 @@ import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -231,6 +232,7 @@ public class ConversationDetailsActivity extends BaseActivity {
     }
 
     private void clearMessage() {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this,R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.make_sure_clear_transcript));

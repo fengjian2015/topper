@@ -28,6 +28,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
 import butterknife.Bind;
@@ -198,6 +199,7 @@ public class SendRedGroupAlipaylActivity extends BaseActivity {
         if (mDeleteCacheDialog == null) {
             mDeleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         }
+        if(!ActivityUtil.isActivityOnTop(this))return;
         mDeleteCacheDialog.show();
         mDeleteCacheDialog.setTitle(getString(R.string.alipay_red_bind_hint));
         Button cancel = (Button) mDeleteCacheDialog.findViewById(R.id.btn_cancel);

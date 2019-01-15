@@ -225,6 +225,13 @@ public class UtilTool {
         return formatter.format(curDate);
     }
 
+    public static String createYMDTime() {
+        //获取当前时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date curDate = new Date(System.currentTimeMillis());
+        return formatter.format(curDate);
+    }
+
     public static void comp(Bitmap image, File file) {
         if (image == null) return;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1439,6 +1446,14 @@ public class UtilTool {
             fileSizeString = UtilTool.removeZero(df.format((double) fileS / 1073741824)) + "G";
         }
         return fileSizeString;
+    }
+
+    public static String subZeroAndDot(String s){
+        if(s.indexOf(".") > 0){
+            s = s.replaceAll("0+?$", "");//去掉多余的0
+            s = s.replaceAll("[.]$", "");//如最后一位是.则去掉
+        }
+        return s;
     }
 
     public static int parseInt(String number) {

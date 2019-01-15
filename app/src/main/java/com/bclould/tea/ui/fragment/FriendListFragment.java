@@ -459,6 +459,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
     }
 
     private void showDeleteDialog(String mName, final String mUser, final   String roomId) {
+        if(!ActivityUtil.isActivityOnTop(getContext()))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, getActivity(), R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.confirm_delete) + " " + mName + " " + getString(R.string.what));

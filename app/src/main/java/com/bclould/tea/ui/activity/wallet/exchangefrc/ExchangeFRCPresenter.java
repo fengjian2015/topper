@@ -10,20 +10,27 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 
 import com.bclould.tea.Presenter.DistributionPresenter;
+import com.bclould.tea.Presenter.FinanciaPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseView;
+import com.bclould.tea.model.base.BaseInfoConstants;
 import com.bclould.tea.model.base.BaseListInfo;
+import com.bclould.tea.model.base.BaseMapInfo;
 import com.bclould.tea.ui.activity.my.taskrecord.TaskRecordContacts;
 import com.bclould.tea.ui.adapter.ExchangeFRCAdapter;
 import com.bclould.tea.ui.adapter.TaskRecordAdapter;
 import com.bclould.tea.ui.widget.ConfirmDialog;
+import com.bclould.tea.ui.widget.PWDDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.TimeSelectUtil;
 import com.bclould.tea.utils.ToastShow;
+import com.bclould.tea.utils.UtilTool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by fengjian on 2019/1/7.
@@ -34,8 +41,11 @@ public class ExchangeFRCPresenter implements ExchangeFRCContacts.Presenter {
     private Activity mActivity;
 
     private ExchangeFRCAdapter mExchangeFRCAdapter;
-    List<HashMap> mInOutList = new ArrayList<>();
+    List<Map> mInOutList = new ArrayList<>();
     private int page = 1;
+    private int page_size=10;
+    private String [] rate;
+    private PWDDialog pwdDialog;
 
     @Override
     public void bindView(BaseView view) {
@@ -67,33 +77,58 @@ public class ExchangeFRCPresenter implements ExchangeFRCContacts.Presenter {
         } else {
             p = page + 1;
         }
-//        mDillDataPresenter.teamReward(p, mDate, new DistributionPresenter.CallBack7() {
-//            @Override
-//            public void send(BaseListInfo data) {
-//                mView.resetRefresh(isRefresh);
-//               data.getData();
-//                if (data.getData().size() == 20) {
-//                    mView.setEnableLoadMore(true);
-//                } else {
-//                    mView.setEnableLoadMore(false);
-//                }
-//                if (isRefresh) {
-//                    page = 1;
-//                    mInOutList.clear();
-//                } else {
-//                    page++;
-//                }
-//                if (data.getData().size() != 0) {
-//                    mInOutList.addAll((List)data.getData());
-//                    mExchangeFRCAdapter.notifyDataSetChanged();
-//                }
-//            }
-//
-//            @Override
-//            public void error() {
-//                mView.resetRefresh(isRefresh);
-//            }
-//        });
+        new FinanciaPresenter(mActivity).exchangeRecordFRC(p, page_size, new FinanciaPresenter.CallBack7() {
+            @Override
+            public void send(BaseMapInfo data) {
+                mView.resetRefresh(isRefresh);
+                if (((List)data.getData().get(BaseInfoConstants.EXCHANGE)).size() == page_size) {
+                    mView.setEnableLoadMore(true);
+                } else {
+                    mView.setEnableLoadMore(false);
+                }
+                if (isRefresh) {
+                    page = 1;
+                    mInOutList.clear();
+                } else {
+                    page++;
+                }
+                setView(data);
+                if (data.getData().size() != 0) {
+                    mInOutList.addAll((List)data.getData().get(BaseInfoConstants.EXCHANGE));
+                    mExchangeFRCAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void error() {
+                mView.resetRefresh(isRefresh);
+            }
+        });
+    }
+
+    public void setView(BaseMapInfo data){
+        rate=((String)data.getData().get(BaseInfoConstants.RATE)).split(":");
+        mView.setmTvProportion("1GC = "+UtilTool.changeMoney1(getRateMoney(1))+"FRC");
+        mView.setmTvExchangeRate(mActivity.getResources().getString(R.string.current_rate)+data.getData().get(BaseInfoConstants.RATE));
+        String result= String.format(mActivity.getString(R.string.echange_frc_help) ,data.getData().get(BaseInfoConstants.NUMBER_CONDITION));
+        mView.setmTvEchangeFrcHelp(result);
+        mView.setmTvBalance(mActivity.getString(R.string.available)+data.getData().get(BaseInfoConstants.OVER_NUM)+"GC");
+        String  no=UtilTool.subZeroAndDot(data.getData().get(BaseInfoConstants.USER_NO)+"");
+        if(UtilTool.parseDouble(data.getData().get(BaseInfoConstants.USER_NO)+"")==0){
+            mView.setmRlSuccessShow(View.GONE);
+        }else{
+            mView.setmRlSuccessShow(View.VISIBLE);
+            String content= String.format(mActivity.getString(R.string.echange_frc_success) ,UtilTool.subZeroAndDot(data.getData().get(BaseInfoConstants.USER_NO)+"")+"");
+            mView.setmTvSuccess(content);
+        }
+    }
+
+    private double getRateMoney(double number){
+        if(rate==null||rate.length>=2) {
+            return (number / UtilTool.parseDouble(rate[0]) * UtilTool.parseDouble(rate[1]));
+        }else{
+            return 0;
+        }
     }
 
     @Override
@@ -102,32 +137,62 @@ public class ExchangeFRCPresenter implements ExchangeFRCContacts.Presenter {
             ToastShow.showToast2(mActivity,mActivity.getString(R.string.toast_count));
             return;
         }
-        // TODO: 2019/1/11 兑换接口
-        showDiolag();
+        showPWDialog(money);
     }
 
-    private void showDiolag(){
+    private void showPWDialog(final String money) {
+        pwdDialog = new PWDDialog(mActivity);
+        pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
+            @Override
+            public void success(String password) {
+                setPay(money,password);
+            }
+        });
+        pwdDialog.showDialog(money, "GC", mActivity.getString(R.string.exchange) + "FRC", null, null);
+    }
+
+    public void setPay(String money,String password){
+        new FinanciaPresenter(mActivity).exchangeActionFRC(money, password, new FinanciaPresenter.CallBack7() {
+            @Override
+            public void send(BaseMapInfo baseInfo) {
+                showDiolag(baseInfo.getData().get(BaseInfoConstants.USER_NO)+"");
+            }
+
+            @Override
+            public void error() {
+
+            }
+        });
+    }
+
+    private void showDiolag(String user_no){
+        if(!ActivityUtil.isActivityOnTop(mActivity))return;
+        if(UtilTool.parseDouble(user_no)==0){
+            initHttp(true);
+            return;
+        }
+        user_no=UtilTool.subZeroAndDot(user_no);
         ConfirmDialog diaolg = new ConfirmDialog(mActivity);
         diaolg.show();
         diaolg.setTvTitleColor(mActivity.getResources().getColor(R.color.btn_bg_color));
         diaolg.setTvContentColor(mActivity.getResources().getColor(R.color.app_bg_color));
         diaolg.setTvTitle(mActivity.getString(R.string.exchange_succeed));
-        String result= String.format(mActivity.getString(R.string.frc_congratulations) ,"99");
+        String result= String.format(mActivity.getString(R.string.frc_congratulations) ,user_no);
         SpannableStringBuilder ssb = new SpannableStringBuilder(result);
-        int star=result.indexOf("99");
-        ssb.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.btn_bg_color)),star,star+"99".length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        int star=result.indexOf(user_no);
+        ssb.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.btn_bg_color)),star,star+user_no.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         diaolg.setTvContent(ssb);
         diaolg.setBtnConfirm(mActivity.getString(R.string.got_it));
         diaolg.setOnClickListener(new ConfirmDialog.OnClickListener() {
             @Override
             public void onClick() {
-                mView.setmRlSuccessShow(View.VISIBLE);
+                initHttp(true);
             }
         });
     }
 
     public String exchangeMoeny(String money){
-        String change=money;
+        String change= UtilTool.changeMoney1(getRateMoney(UtilTool.parseDouble(money)));
         return change;
     }
 

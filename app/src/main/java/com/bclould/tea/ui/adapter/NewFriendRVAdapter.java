@@ -19,6 +19,7 @@ import com.bclould.tea.model.AddRequestInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.FriendVerificationActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import java.util.List;
@@ -153,6 +154,7 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
     }
 
     private void showDeleteDialog(final int position) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.delete_friend_request_hint));

@@ -17,5 +17,11 @@ public class BaseInfoConstants {
     public static String COIN_NAME="coin_name";
     public static String ANDROID_URL="android_url";
     public static String COIN_ID="coin_id";
-
+    public static String RATE="rate";
+    public static String NUMBER_CONDITION="number_condition";
+    public static String OVER_NUM="over_num";
+    public static String GC_NUMBER="gc_number";
+    public static String FRC_NUMBER="frc_number";
+    public static String USER_NO="user_no";
+    public static String EXCHANGE="exchange";
 }

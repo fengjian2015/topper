@@ -22,6 +22,7 @@ import com.bclould.tea.model.UnclaimedRedInfo;
 import com.bclould.tea.ui.activity.RedPacketActivity;
 import com.bclould.tea.ui.widget.CurrencyDialog;
 import com.bclould.tea.ui.widget.MyYAnimation;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import java.net.URLDecoder;
@@ -128,7 +129,7 @@ public class UnclaimedRedListAdapter extends RecyclerView.Adapter {
     //显示币种弹框
     private void showDialog(final UnclaimedRedInfo.DataBean mAddRequestInfo, String mUser, String mName) {
         //暫無群聊，所以沒有考慮群聊情況
-
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         mCurrencyDialog = new CurrencyDialog(R.layout.dialog_redpacket, mContext, R.style.dialog);
         Window window = mCurrencyDialog.getWindow();
         window.setWindowAnimations(R.style.CustomDialog);

@@ -1301,9 +1301,14 @@
     <string name="system_notification">系統公告</string>
     <string name="exchange_frc">兌換FRC</string>
     <string name="you_want_exchange">你想兌換多少</string>
-    <string name="echange_frc_help">一次性兌換1000GC，可以獲得申購編號！ </string>
+    <string name="echange_frc_help">一次性兌換%1$sGC，可以獲得申購編號！ </string>
     <string name="exchange_for">兌換為</string>
     <string name="got_it">知道了</string>
     <string name="frc_congratulations">恭喜您成為\n第%1$s位申購成功的客戶！ </string>
     <string name="mission_center">任務中心</string>
+    <string name="earned">已賺</string>
+    <string name="earn">賺</string>
+    <string name="receive_award">領取獎勵</string>
+    <string name="current_rate">當前兌率</string>
+    <string name="echange_frc_success">您是第%1$s位申購成功的客戶</string>
 </resources>

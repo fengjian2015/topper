@@ -117,6 +117,7 @@ public class CoinExchangeActivity extends BaseActivity {
     boolean isCheckBox = false;
 
     private void showDisclaimerDialog() {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_otc_disclaimer, this, R.style.dialog);
         deleteCacheDialog.show();
         final LinearLayout showHide = (LinearLayout) deleteCacheDialog.findViewById(R.id.ll_show_hide);

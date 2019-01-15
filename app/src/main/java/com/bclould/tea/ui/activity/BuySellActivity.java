@@ -22,6 +22,7 @@ import com.bclould.tea.model.DealListInfo;
 import com.bclould.tea.model.OrderInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
 import org.greenrobot.eventbus.EventBus;
@@ -346,6 +347,7 @@ public class BuySellActivity extends BaseActivity {
     }
 
     private void showDialog() {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.buy_coin_hint));
@@ -379,6 +381,7 @@ public class BuySellActivity extends BaseActivity {
     }
 
     public void showHintDialog() {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);

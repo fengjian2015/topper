@@ -75,7 +75,7 @@ public class WsConnection {
     private DBManager mManager;
     private ArrayList<WebSocket> mWebSocketArrayList = new ArrayList<>();
     public static int loginNumber = 0;
-    public boolean isFirstChat=true;//判断是否第一次聊天
+    public String isFirstChat;//判断是否第一次聊天
 
     public static WsConnection getInstance() {
         if (mInstance == null) {
@@ -380,7 +380,7 @@ public class WsConnection {
 
     public void goMainActivity(final int whence) {
         logoutService(mContext);
-        isFirstChat=true;
+        isFirstChat="";
         MySharedPreferences.getInstance().setString(TOKEN, "");
         MySharedPreferences.getInstance().setString(LoginPresenter.TOCOID, "");
         MyApp.getInstance().mCoinList.clear();

@@ -18,6 +18,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.model.GuessListInfo;
 import com.bclould.tea.ui.activity.GuessDetailsActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 
 import java.util.List;
@@ -183,6 +184,7 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
     }
 
     private void showPWDialog(final GuessListInfo.DataBean dataBean) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_command, mContext,R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGuessPw = (EditText) deleteCacheDialog.findViewById(R.id.et_guess_password);

@@ -1730,4 +1730,21 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("code") String code
     );
+
+    //任务完成
+    @GET("api/frc/exchange/record")
+    Observable<BaseMapInfo> exchangeRecordFRC(
+            @Header("Authorization") String token,
+            @Query("page") int page,
+            @Query("page_size") int page_size
+    );
+
+    //任务完成
+    @FormUrlEncoded
+    @POST("api/frc/exchange/action")
+    Observable<BaseMapInfo> exchangeActionFRC(
+            @Header("Authorization") String token,
+            @Field("number") String number,
+            @Field("password") String password
+    );
 }

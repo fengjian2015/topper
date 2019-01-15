@@ -426,6 +426,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     }
 
     private void showDeleteDialog(final MessageInfo messageInfo) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.confirm_delete));
@@ -2569,6 +2570,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
 
     private void showPWDialog(final MessageInfo messageInfo) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_command, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGuessPw = (EditText) deleteCacheDialog.findViewById(R.id.et_guess_password);

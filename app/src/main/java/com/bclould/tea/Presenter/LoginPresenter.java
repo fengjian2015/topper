@@ -26,6 +26,7 @@ import com.bclould.tea.ui.activity.SelectorLanguageActivity;
 import com.bclould.tea.ui.activity.SetGesturePWActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -171,6 +172,7 @@ public class LoginPresenter {
     }
 
     private void showHintDialog(String message) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_freeze, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);
@@ -217,6 +219,7 @@ public class LoginPresenter {
     }
 
     private void showGoogleDialog(final String email, final String password, final DBUserCode dbUserCode, final String language, final String coordinate) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);
@@ -235,6 +238,7 @@ public class LoginPresenter {
     }
 
     private void showEmailDialog(final String email, final String password, final DBUserCode dbUserCode, final String language, final String coordinate) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);

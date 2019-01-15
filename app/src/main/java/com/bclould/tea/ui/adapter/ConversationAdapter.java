@@ -22,6 +22,7 @@ import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.ConversationServerActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.ChatTimeUtil;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
@@ -199,6 +200,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
     }
 
     private void showDeleteDialog(final String user) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.confirm_delete_and_message));

@@ -985,6 +985,7 @@ public class GuessDetailsActivity extends BaseActivity {
     }
 
     private void showHashDialog() {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         final CurrencyDialog dialog = new CurrencyDialog(R.layout.dialog_hash, this, R.style.dialog);
         dialog.show();
         final TextView hash = (TextView) dialog.findViewById(R.id.tv_hash);

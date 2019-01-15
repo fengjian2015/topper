@@ -16,6 +16,7 @@ import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.CardListInfo;
 import com.bclould.tea.ui.activity.BankCardActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -119,6 +120,7 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
     }
 
     private void showDialog(final CardListInfo.DataBean data, final int type, final int position) {
+        if(!ActivityUtil.isActivityOnTop(mActivity))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mActivity, R.style.dialog);
         deleteCacheDialog.show();
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);

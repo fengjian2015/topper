@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
@@ -49,6 +50,7 @@ public class PWDDialog {
     }
 
     public void showDialog(String count,String coins,String desc,String imageurl,String hint){
+        if(!ActivityUtil.isActivityOnTop(context))return;
         mEnterAnim = AnimationUtils.loadAnimation(context, R.anim.dialog_enter);
         mExitAnim = AnimationUtils.loadAnimation(context, R.anim.dialog_exit);
         mRedDialog = new Dialog(context, R.style.BottomDialog2);

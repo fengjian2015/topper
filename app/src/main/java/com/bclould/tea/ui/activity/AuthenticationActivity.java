@@ -16,6 +16,7 @@ import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.ui.widget.ConfirmDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.UtilTool;
 

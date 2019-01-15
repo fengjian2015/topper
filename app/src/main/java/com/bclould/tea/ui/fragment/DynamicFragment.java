@@ -174,6 +174,7 @@ public class DynamicFragment extends Fragment {
     }
 
     private void showDeleteCommentDialog() {
+        if(!ActivityUtil.isActivityOnTop(getContext()))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, getContext(), R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.whether_delete_comment));
@@ -216,6 +217,7 @@ public class DynamicFragment extends Fragment {
 
     @SuppressLint("HandlerLeak")
     private void showRewardSucceedDialog() {
+        if(!ActivityUtil.isActivityOnTop(getContext()))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_reward, getContext(), R.style.dialog);
         deleteCacheDialog.show();
         new Handler() {

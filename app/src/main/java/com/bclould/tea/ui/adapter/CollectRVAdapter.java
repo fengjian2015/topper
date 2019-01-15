@@ -18,6 +18,7 @@ import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.activity.HTMLActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.xmpp.RoomManage;
@@ -156,6 +157,7 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
     }
 
     private void showDeleteDialog(final int position, final SwipeMenuLayout swipeView) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.delete_collect_hint));

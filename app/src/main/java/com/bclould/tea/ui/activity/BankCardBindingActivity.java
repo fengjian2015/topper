@@ -332,6 +332,7 @@ public class BankCardBindingActivity extends BaseActivity {
     }
 
     private void showDialog() {
+        if(!ActivityUtil.isActivityOnTop(this))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);

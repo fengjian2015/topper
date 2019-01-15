@@ -84,6 +84,7 @@ public class NewsBrowseRecordFragment extends Fragment {
     }
 
     private void showDialog() {
+        if(!ActivityUtil.isActivityOnTop(getContext()))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, getContext(), R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.empty_news_browsing_history_hint));

@@ -2412,16 +2412,15 @@ Please reset encryption request</string>
     <string name="enter_public_number"> enter the public number </string>
     <string name="system_notification"> system announcement </string>
     <string name="exchange_frc">Exchange FRC</string>
-        
     <string name="you_want_exchange">How much do you want to redeem </string>
-        
-    <string name="echange_frc_help">Exchange 1000GC at one time, you can get the purchase number! </string>
-        
+    <string name="echange_frc_help">Exchange %1$sGC at one time, you can get the purchase number! </string>
     <string name="exchange_for">Exchange to </string>
-        
     <string name="got_it">know </string>
-        
     <string name="frc_congratulations">Congratulations on becoming a \n%1$s successful purchase customer! </string>
-        
     <string name="mission_center">Task Center</string>
+    <string name="earned">made </string>
+    <string name="earn">earn </string>
+    <string name="receive_award">receive rewards</string>
+    <string name="current_rate">current rate </string>
+    <string name="echange_frc_success">You are the first %1$s successful customer </string>
 </resources>

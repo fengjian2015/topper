@@ -12,6 +12,7 @@ import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.ReviewInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.UtilTool;
 import java.util.ArrayList;
 import java.util.List;
@@ -162,6 +163,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter {
     }
 
     private void showDeleteDialog(final int position) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.delete_group_request_hint));

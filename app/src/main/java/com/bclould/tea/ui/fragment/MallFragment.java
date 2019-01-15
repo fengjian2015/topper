@@ -27,6 +27,7 @@ import com.bclould.tea.model.H5AuthrizationInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.widget.AuthorizationDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.SharedPreferencesUtil;
@@ -197,7 +198,7 @@ public class MallFragment extends Fragment {
             }
             String content = url.substring(url.indexOf("TopperChatOauth?") + "TopperChatOauth?".length(), url.length());
             HashMap hashMap = UtilTool.getCutting(content);
-
+            if(!ActivityUtil.isActivityOnTop(getContext()))return;
             AuthorizationDialog dialog = new AuthorizationDialog(getActivity());
             dialog.show();
             dialog.setOnClickListener(new AuthorizationDialog.OnClickListener() {

@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.model.base.BaseInfoConstants;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,16 +22,17 @@ import butterknife.ButterKnife;
 
 public class ExchangeFRCAdapter extends RecyclerView.Adapter {
     private final Context mContext;
-    private final List<HashMap> mData;
+    private final List<Map> mData;
 
-    public ExchangeFRCAdapter(Context context, List<HashMap> data) {
+
+    public ExchangeFRCAdapter(Context context, List<Map> data) {
         mContext = context;
         mData = data;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_task_record, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_fgc_list, parent, false);
         return new ViewHolder(view);
     }
 
@@ -50,13 +51,14 @@ public class ExchangeFRCAdapter extends RecyclerView.Adapter {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_money)
+        TextView mTvMoney;
         @Bind(R.id.tv_time)
         TextView mTvTime;
-        @Bind(R.id.tv_title)
-        TextView mTvTitle;
-        @Bind(R.id.tv_out_money)
-        TextView mTvOutMoney;
-
+        @Bind(R.id.tv_income)
+        TextView mTvIncome;
+        @Bind(R.id.tv_rate)
+        TextView mTvRate;
 
         ViewHolder(View view) {
             super(view);
@@ -64,7 +66,10 @@ public class ExchangeFRCAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(Map dataBean) {
-
+            mTvMoney.setText(dataBean.get(BaseInfoConstants.GC_NUMBER)+"GC");
+            mTvIncome.setText("+ "+dataBean.get(BaseInfoConstants.FRC_NUMBER)+"FRC");
+            mTvTime.setText(dataBean.get(BaseInfoConstants.CREATED_AT)+"");
+            mTvRate.setText(dataBean.get(BaseInfoConstants.RATE)+"");
         }
     }
 

@@ -428,6 +428,7 @@ public class ChatBurnAdapter extends RecyclerView.Adapter {
     }
 
     private void showDeleteDialog(final MessageInfo messageInfo) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.confirm_delete));
@@ -912,6 +913,7 @@ public class ChatBurnAdapter extends RecyclerView.Adapter {
         }
         if(!ActivityUtil.isActivityOnTop(mContext))return;
         if(mCurrencyDialog==null){
+            if(!ActivityUtil.isActivityOnTop(mContext))return;
             mCurrencyDialog = new CurrencyDialog(R.layout.dialog_redpacket, mContext, R.style.dialog);
             Window window = mCurrencyDialog.getWindow();
             window.setWindowAnimations(R.style.CustomDialog);

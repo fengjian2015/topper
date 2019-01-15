@@ -21,6 +21,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.H5AuthrizationInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.widget.AuthorizationDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.SharedPreferencesUtil;
@@ -95,10 +96,13 @@ public class HTMLActivity extends BaseActivity {
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                UtilTool.Log("fengjian",url);
-                nowUrl=url;
+                UtilTool.Log("fengjian", url);
+                nowUrl = url;
                 if (url.contains("TopperChatOauth")) {
                     topperChatOauth(url);
+                    return true;
+                } else if (url.contains("TopperChatOppenId")) {
+                    topperChatOppenId(url);
                     return true;
                 }
                 return super.shouldOverrideUrlLoading(view, url);
@@ -122,7 +126,7 @@ public class HTMLActivity extends BaseActivity {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError
                     error) {
                 super.onReceivedError(view, request, error);
-                if(mLlLoadError==null)return;
+                if (mLlLoadError == null) return;
                 mLlLoadError.setVisibility(View.VISIBLE);
                 mWebView.setVisibility(View.GONE);
             }
@@ -169,6 +173,24 @@ public class HTMLActivity extends BaseActivity {
      *
      * @param url
      */
+    private void topperChatOppenId(String url) {
+        try {
+            H5AuthrizationInfo h5AuthrizationInfo = new H5AuthrizationInfo();
+            h5AuthrizationInfo.setOpenid(UtilTool.getTocoId());
+            UtilTool.Log("fengjian", JSONObject.toJSONString(h5AuthrizationInfo));
+            mWebView.loadUrl("javascript:show2('" + JSONObject.toJSONString(h5AuthrizationInfo) + " ');");
+        } catch (Exception e) {
+            e.printStackTrace();
+            ToastShow.showToast2(HTMLActivity.this, getString(R.string.error));
+        }
+    }
+
+
+    /**
+     * 授权 http://www.bclould.com:8195/oauth/TopperChatOauth?avatar=w2&name=sdfsdf&text=sdfdsf
+     *
+     * @param url
+     */
     private void topperChatOauth(String url) {
         try {
             if (mMgr == null) {
@@ -181,7 +203,7 @@ public class HTMLActivity extends BaseActivity {
             }
             String content = url.substring(url.indexOf("TopperChatOauth?") + "TopperChatOauth?".length(), url.length());
             HashMap hashMap = UtilTool.getCutting(content);
-
+            if (!ActivityUtil.isActivityOnTop(this)) return;
             AuthorizationDialog dialog = new AuthorizationDialog(this);
             dialog.show();
             dialog.setOnClickListener(new AuthorizationDialog.OnClickListener() {
@@ -211,7 +233,7 @@ public class HTMLActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.iv_finish,R.id.ll_load_error})
+    @OnClick({R.id.bark, R.id.iv_finish, R.id.ll_load_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -226,10 +248,10 @@ public class HTMLActivity extends BaseActivity {
         }
     }
 
-    private void againLoad(){
-        if(StringUtils.isEmpty(nowUrl)){
+    private void againLoad() {
+        if (StringUtils.isEmpty(nowUrl)) {
             mWebView.loadUrl(html5Url);
-        }else {
+        } else {
             mWebView.loadUrl(nowUrl);
         }
     }

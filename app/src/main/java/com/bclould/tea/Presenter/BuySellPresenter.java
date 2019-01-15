@@ -20,6 +20,7 @@ import com.bclould.tea.ui.activity.BuySellActivity;
 import com.bclould.tea.ui.activity.PayPasswordActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.List;
@@ -243,6 +244,7 @@ public class BuySellPresenter {
     }
 
     private void showHintDialog(final int type) {
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         switch (type) {
