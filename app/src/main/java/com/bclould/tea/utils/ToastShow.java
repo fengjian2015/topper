@@ -1,6 +1,9 @@
 package com.bclould.tea.utils;
 
 import android.app.Activity;
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Gravity;
 import android.widget.Toast;
 
@@ -11,12 +14,10 @@ public class ToastShow {
 	private static Map<String, Long> map = new HashMap<String, Long>();
 	private static long MAX_SHOW_TIME = 3 * 1000;
 
-	public static void showToast(final Activity act, final String message, boolean isShowToast) {
-		if(act==null||act.isFinishing())return;
-		if(!isShowToast){
-			return;
-		}
-		act.runOnUiThread(new Runnable() {
+	public static void showToast(final Context act, final String message, boolean isShowToast) {
+
+		if(!ContextUtil.isExist(act))return;
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run() {
 				Toast.makeText(act, message, Toast.LENGTH_SHORT).show();
@@ -24,9 +25,9 @@ public class ToastShow {
 		});
 	}
 
-	public static void showToast(final Activity act, final String message) {
-		if(act==null||act.isFinishing())return;
-		act.runOnUiThread(new Runnable() {
+	public static void showToast(final Context act, final String message) {
+		if(!ContextUtil.isExist(act))return;
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run() {
 				Toast.makeText(act, message, Toast.LENGTH_SHORT).show();
@@ -34,27 +35,27 @@ public class ToastShow {
 		});
 	}
 
-	public static void showToastLength(final Activity act, final String message) {
-		if(act==null||act.isFinishing())return;
-		act.runOnUiThread(new Runnable() {
+	public static void showToastLength(final Context act, final String message) {
+		if(!ContextUtil.isExist(act))return;
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run() {
 				Toast.makeText(act, message, Toast.LENGTH_LONG).show();
 			}
 		});
 	}
-	public static void showToast2(final Activity act, final String message) {
-		if(act==null||act.isFinishing())return;
-		act.runOnUiThread(new Runnable() {
+	public static void showToast2(final Context act, final String message) {
+		if(!ContextUtil.isExist(act))return;
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run() {
 				show(act, message);
 			}
 		});
 	}
-	public static void showToastShowCenter(final Activity act, final String message) {
-		if(act==null||act.isFinishing())return;
-		act.runOnUiThread(new Runnable() {
+	public static void showToastShowCenter(final Context act, final String message) {
+		if(!ContextUtil.isExist(act))return;
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run() {
 				showTime(act, message);
@@ -76,7 +77,7 @@ public class ToastShow {
 		}
 	}
 
-	private static void show(Activity act, String message) {
+	private static void show(Context act, String message) {
 		if (!isShow(message)) {
 			return;
 		}
@@ -86,7 +87,7 @@ public class ToastShow {
 		}
 	}
 
-	private static void showTime(Activity act, String message) {
+	private static void showTime(Context act, String message) {
 		if (!isShow(message)) {
 			return;
 		}

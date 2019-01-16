@@ -52,7 +52,7 @@ public class TaskCenterActivity extends BaseActivity implements TaskCenterContac
 
     @Override
     public void initView() {
-        setTitle(getString(R.string.mission_center));
+        setTitle(getString(R.string.receive_bonus));
         initRecyclerView();
     }
 

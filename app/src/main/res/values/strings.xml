@@ -2405,4 +2405,6 @@
     <string name="current_rate">当前兑率</string>
     <string name="echange_frc_success">您是第%1$s位申购成功的客户</string>
     <string name="remaining_convertible">剩余可兑换:</string>
+    <string name="receive_bonus">领取红利</string>
+    <string name="installation_failed">安装失败</string>
 </resources>

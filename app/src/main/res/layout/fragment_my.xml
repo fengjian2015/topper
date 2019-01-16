@@ -155,7 +155,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
                         android:layout_toRightOf="@+id/iv14"
-                        android:text="@string/mission_center"/>
+                        android:text="@string/receive_bonus"/>
 
                     <ImageView
                         android:layout_width="@dimen/x15"

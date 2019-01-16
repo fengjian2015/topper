@@ -2,6 +2,7 @@ package com.bclould.tea.Presenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.base.BaseListInfo;
@@ -142,7 +143,7 @@ public class TaskPersenter {
                             callBack.send(baseInfo);
                         } else {
                             callBack.error();
-                            ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                            Toast.makeText(mContext, baseInfo.getMessage(),Toast.LENGTH_SHORT).show();
                         }
                     }
 

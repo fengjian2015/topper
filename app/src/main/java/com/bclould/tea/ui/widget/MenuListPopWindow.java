@@ -87,6 +87,7 @@ public class MenuListPopWindow extends Dialog {
 
     }
     public void showAtLocation(){
+        if(!ActivityUtil.isActivityOnTop(context))return;
         show();
     }
 

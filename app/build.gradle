@@ -37,8 +37,8 @@ android {
         applicationId "com.bclould.tea"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 102
-        versionName "102"
+        versionCode 103
+        versionName "103"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -239,4 +239,7 @@ dependencies {
 
     //线形图
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
+
+    //长图加载
+    implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
 }

@@ -157,7 +157,6 @@ public class BaseActivity extends SwipeActivity {
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
         if (!isActive) {
             //app 从后台唤醒，进入前台
             isActive = true;
@@ -176,7 +175,6 @@ public class BaseActivity extends SwipeActivity {
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this);
     }
 
     @Override

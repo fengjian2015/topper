@@ -124,10 +124,7 @@ public class ExchangeFRCPresenter implements ExchangeFRCContacts.Presenter {
     }
 
     private double getRateMoney(double number){
-        if(rate==null){
-            return 0;
-        }
-        if(rate.length>=2) {
+        if(rate!=null&&rate.length>=2) {
             return (number / UtilTool.parseDouble(rate[0]) * UtilTool.parseDouble(rate[1]));
         }else{
             return 0;

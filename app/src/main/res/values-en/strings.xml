@@ -2424,4 +2424,6 @@ Please reset encryption request</string>
     <string name="current_rate">current rate </string>
     <string name="echange_frc_success">You are the first %1$s successful customer </string>
     <string name="remaining_convertible"> remaining convertible: </string>
+    <string name="receive_bonus">receive dividends</string>
+    <string name="installation_failed"> installation failed </string>
 </resources>

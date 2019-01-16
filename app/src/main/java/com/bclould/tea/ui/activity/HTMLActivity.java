@@ -204,6 +204,10 @@ public class HTMLActivity extends BaseActivity {
         try {
             H5AuthrizationInfo h5AuthrizationInfo = new H5AuthrizationInfo();
             h5AuthrizationInfo.setOpenid(UtilTool.getTocoId());
+//            h5AuthrizationInfo.setAvatar(UtilTool.getImageUrl(mMgr, UtilTool.getTocoId()));
+            h5AuthrizationInfo.setOpenid(UtilTool.getTocoId());
+            h5AuthrizationInfo.setUser_name(UtilTool.getUser());
+            h5AuthrizationInfo.setEmail(UtilTool.getEmail());
             UtilTool.Log("fengjian", JSONObject.toJSONString(h5AuthrizationInfo));
             mWebView.loadUrl("javascript:show2('" + JSONObject.toJSONString(h5AuthrizationInfo) + " ');");
         } catch (Exception e) {

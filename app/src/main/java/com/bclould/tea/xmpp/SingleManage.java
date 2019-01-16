@@ -241,7 +241,6 @@ public class SingleManage implements Room {
             return messageInfo;
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
             messageInfo.setMessage(message);
@@ -261,6 +260,8 @@ public class SingleManage implements Room {
             changeConversationInfo(time, message, UtilTool.createChatCreatTime());
             EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
+            if(context==null)return messageInfo;
+            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
             return messageInfo;
         }
     }

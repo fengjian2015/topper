@@ -19,7 +19,11 @@
         <include
             android:id="@+id/rl_title"
             layout="@layout/activity_top"/>
-
+        <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
@@ -51,8 +55,8 @@
 
     <View
         android:id="@+id/view"
-        style="@style/VerticalBoundaryStyle"
-        android:layout_below="@+id/ll_menu"></View>
+        style="@style/HorizontalBoundaryStyle"
+        android:layout_above="@+id/ll_menu"></View>
 
     <com.bclould.tea.ui.widget.MenuLinearLayout
         android:id="@+id/ll_menu"
