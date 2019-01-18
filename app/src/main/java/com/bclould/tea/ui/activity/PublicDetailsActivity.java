@@ -1,7 +1,6 @@
 package com.bclould.tea.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,16 +12,12 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.model.PublicDetailsInfo;
-import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -120,7 +115,7 @@ public class PublicDetailsActivity extends BaseActivity {
 
     private void publicSend() {
         Intent intent = new Intent(this, ConversationPublicActivity.class);
-        intent.putExtra("roomId", id);
+        intent.putExtra("user", id);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();

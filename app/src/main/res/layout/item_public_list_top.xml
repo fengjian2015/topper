@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    >
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y280"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/start"
+        />
+
+    <TextView
+        android:id="@+id/tv_content1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_image"
+        android:background="#4D000000"
+        android:text="少时诵诗书所所所所所所所所所"
+        style="@style/MainTextShallowStyle32"
+        android:paddingRight="@dimen/x20"
+        android:paddingLeft="@dimen/x20"
+        android:paddingBottom="@dimen/y10"
+        android:paddingTop="@dimen/y10"
+        android:maxLines="2"
+        android:gravity="center_vertical"
+        android:lines="2"
+       />
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/MainTextShallowStyle32"
+        android:text="是的撒啊 撒大大撒的撒\n萨达大萨达"
+        android:layout_below="@+id/iv_image"
+        android:gravity="center_vertical"
+        android:paddingRight="@dimen/x20"
+        android:paddingLeft="@dimen/x20"
+        android:maxLines="2"
+        android:minLines="2"
+        android:lines="2"
+        />
+</RelativeLayout>

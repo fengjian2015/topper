@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,17 +29,21 @@ import java.util.List;
 
 public class MenuLinearLayout extends LinearLayout{
     private PublicMenuInfo mPublicMenuInfo;
+    private Context mContext;
 
     public MenuLinearLayout(Context context) {
         super(context);
+        mContext=context;
     }
 
     public MenuLinearLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        mContext=context;
     }
 
     public MenuLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mContext=context;
     }
 
     public void setMenuData(String menu){
@@ -49,6 +54,21 @@ public class MenuLinearLayout extends LinearLayout{
         if(mPublicMenuInfo.getButton().size()==0){
             return;
         }
+        ImageView imageView=new ImageView(mContext);
+        LayoutParams layoutParams=new LayoutParams(getResources().getDimensionPixelSize(R.dimen.x100),getResources().getDimensionPixelSize(R.dimen.y100));
+        imageView.setLayoutParams(layoutParams);
+        imageView.setPadding(getResources().getDimensionPixelSize(R.dimen.x20),0,getResources().getDimensionPixelSize(R.dimen.x20),0);
+        imageView.setImageResource(R.mipmap.public_keyboard);
+        imageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onKeyBodard!=null)
+                    onKeyBodard.onClick();
+            }
+        });
+
+        addView(imageView);
+
         for(final PublicMenuInfo.ButtonBean buttonBean:mPublicMenuInfo.getButton()){
             View view=View.inflate(getContext(), R.layout.public_list_item,null);
             view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT,1.0f));
@@ -98,4 +118,12 @@ public class MenuLinearLayout extends LinearLayout{
         }
     }
 
+    private OnKeyBodard onKeyBodard;
+    public void setOnKeyBodard(OnKeyBodard onKeyBodard){
+        this.onKeyBodard=onKeyBodard;
+    }
+
+    public interface OnKeyBodard{
+        void onClick();
+    }
 }

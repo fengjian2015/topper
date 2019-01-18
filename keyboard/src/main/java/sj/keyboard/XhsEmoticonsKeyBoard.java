@@ -30,6 +30,7 @@ import java.util.TimerTask;
 
 import sj.keyboard.adpater.PageSetAdapter;
 import sj.keyboard.data.PageSetEntity;
+import sj.keyboard.interfaces.OnPublicIsShowListener;
 import sj.keyboard.utils.EmoticonsKeyboardUtils;
 import sj.keyboard.utils.MenuGridListPopWindow;
 import sj.keyboard.utils.RecordUtil;
@@ -71,6 +72,8 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     private OnResultOTR onResultOTR;
     private String roomType;//房间类型
     private boolean isBurnReading;//是否是閱後即焚
+    private boolean isPublic;//是否是公众号
+
     private MenuGridListPopWindow menu;
     private TextView mTvCancel;
     private TextView mTvRecordingSend;
@@ -89,6 +92,10 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     private ImageView mBtnCamera;
     private MenuGridListPopWindow.ListOnClick mListOnClick;
     private DecibelThread mDecibelThread;
+
+    private ImageView ivKeyboard;//专用于公众号
+    private OnPublicIsShowListener onPublicIsShowListener;
+    private boolean isShowKeyBoard;
 
     public XhsEmoticonsKeyBoard(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -130,6 +137,9 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         mTvPause = (TextView) findViewById(R.id.tv_pause);
         mBtnCamera = (ImageView) findViewById(R.id.btn_camera);
 
+        //公众号专用
+        ivKeyboard=(ImageView)findViewById(R.id.iv_keyboard);
+
         mBtnFace.setOnClickListener(this);
         mBtnMultimedia.setOnClickListener(this);
         mEtChat.setOnBackKeyClickListener(this);
@@ -147,6 +157,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
             recordIndicator.setRecordButton(mBtnVoice, mTvCancel, mTvRecordingSend, mTvStop, mTvPlay);
         }*/
     }
+
 
     protected void initFuncView() {
         initEmoticonFuncView();
@@ -195,6 +206,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
             }
         });
     }
+
 
     public void setAdapter(PageSetAdapter pageSetAdapter) {
         if (pageSetAdapter != null) {
@@ -252,11 +264,12 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     }
 
 
-    protected void showText() {
+    public void showText() {
         /*mRlInput.setVisibility(VISIBLE);
         mBtnVoice.setVisibility(GONE);*/
         mRlText.setVisibility(VISIBLE);
         mRlRecording.setVisibility(GONE);
+        isShowKeyBoard=true;
     }
 
     protected void toggleFuncView(int key) {
@@ -350,6 +363,29 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         }/*else if(i==R.id.btn_otr_text){
             onResultOTR.resultOTR();
         }*/
+        else if(i==R.id.iv_keyboard){
+            isPublicShowKeyBoard();
+        }
+    }
+
+    private void isPublicShowKeyBoard(){
+        if(isShowKeyBoard){
+            isShowKeyBoard=false;
+            mRlText.setVisibility(GONE);
+            if(onPublicIsShowListener!=null)
+            onPublicIsShowListener.keyBoardIsShow(isShowKeyBoard);
+        }else{
+            isShowKeyBoard=true;
+
+        }
+    }
+
+    public void setPublicKeyBoard(){
+        ivKeyboard.setVisibility(VISIBLE);
+        ivKeyboard.setOnClickListener(this);
+        isPublic=true;
+        isShowKeyBoard=false;
+        mRlText.setVisibility(GONE);
     }
 
 
@@ -678,6 +714,10 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         return mEmoticonsToolBarView;
     }
 
+
+    public void setOnPublicIsShow(OnPublicIsShowListener onPublicIsShowListener){
+        this.onPublicIsShowListener=onPublicIsShowListener;
+    }
 
     /**
      * 录音接口

@@ -453,6 +453,7 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
         EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh)));
         if (audioModeManger != null)
             audioModeManger.unregister();
+        if(roomManage!=null)
         roomManage.removerMessageManageListener(this);
         mediaPlayer.release();
         mediaPlayer = null;

@@ -39,8 +39,7 @@ public class PublicItemView extends LinearLayout{
         mContext=context;
     }
 
-    public void setView(Map map,List<Map> menuList){
-        setTop(map);
+    public void setView(List<Map> menuList){
         if(menuList==null) {
             menuList=new ArrayList<>();
         }
@@ -48,6 +47,10 @@ public class PublicItemView extends LinearLayout{
         if(menuList.size()<=subItemList.size()){
             for(int i = 0;i < subItemList.size(); i++){
                 View view=subItemList.get(i);
+                if(i==0){
+                    setTop(menuList.get(i),menuList.size()<=1);
+                    continue;
+                }
                 if(i<menuList.size()){
                     setData(view,menuList.get(i),i==menuList.size()-1);
                 }else{
@@ -60,11 +63,19 @@ public class PublicItemView extends LinearLayout{
             Map contentMap=menuList.get(i);
             View view;
             if(i<subItemList.size()){
+                if(i==0){
+                    setTop(menuList.get(i),menuList.size()<=1);
+                    continue;
+                }
                 view=subItemList.get(i);
                 setData(view,contentMap,i==menuList.size()-1);
             }else{
                 view=View.inflate(mContext, R.layout.item_public_list,null);
                 subItemList.add(view);
+                if(i==0){
+                    setTop(menuList.get(i),menuList.size()<=1);
+                    continue;
+                }
                 addView(view);
                 setData(view,contentMap,i==menuList.size()-1);
             }
@@ -90,15 +101,24 @@ public class PublicItemView extends LinearLayout{
             line.setVisibility(View.VISIBLE);
     }
 
-    private void setTop(Map map){
+    private void setTop(Map map, boolean isOne){
         if(title==null){
-            title=new ImageView(mContext);
-            LayoutParams layoutParams=new LayoutParams(LayoutParams.MATCH_PARENT, (int) mContext.getResources().getDimension(R.dimen.y280));
-            title.setLayoutParams(layoutParams);
-            ((ImageView)title).setScaleType(ImageView.ScaleType.CENTER_CROP);
+            title=View.inflate(mContext, R.layout.item_public_list_top,null);
             addView(title);
         }
-        UtilTool.setImage(map.get("url")+"",mContext,((ImageView)title),-1);
+        ImageView imageView=title.findViewById(R.id.iv_image);
+        TextView tv_content1=title.findViewById(R.id.tv_content1);
+        TextView tv_content=title.findViewById(R.id.tv_content);
+        if(isOne){
+            tv_content1.setVisibility(GONE);
+            tv_content.setVisibility(VISIBLE);
+            tv_content.setText(map.get("content")+"");
+        }else{
+            tv_content1.setVisibility(VISIBLE);
+            tv_content.setVisibility(GONE);
+            tv_content1.setText(map.get("content")+"");
+        }
+        UtilTool.setImage(map.get("url")+"",mContext,imageView,-1);
         title.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

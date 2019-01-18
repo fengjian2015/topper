@@ -205,7 +205,7 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
     @Override
     public void onclick(int position) {
         Intent intent = new Intent(PublicActivity.this, ConversationPublicActivity.class);
-        intent.putExtra("roomId", mUsers.get(position).getId() + "");
+        intent.putExtra("user", mUsers.get(position).getId() + "");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
