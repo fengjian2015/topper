@@ -122,7 +122,11 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
                 mTvMoney.setText(dataBean.getNumber() + " " + dataBean.getCoin_name());
                 mTvMoney.setTextColor(mContext.getResources().getColor(R.color.red));
             } else {
-                mTvMoney.setText("+" + dataBean.getNumber() + " " + dataBean.getCoin_name());
+                if(dataBean.getNumber().contains("+")){
+                    mTvMoney.setText(dataBean.getNumber() + " " + dataBean.getCoin_name());
+                }else {
+                    mTvMoney.setText("+" + dataBean.getNumber() + " " + dataBean.getCoin_name());
+                }
                 mTvMoney.setTextColor(mContext.getResources().getColor(R.color.blue2));
             }
         }

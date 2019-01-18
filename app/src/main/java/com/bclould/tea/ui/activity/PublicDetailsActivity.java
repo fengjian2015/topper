@@ -120,7 +120,7 @@ public class PublicDetailsActivity extends BaseActivity {
 
     private void publicSend() {
         Intent intent = new Intent(this, ConversationPublicActivity.class);
-        intent.putExtra("publicId", id);
+        intent.putExtra("roomId", id);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();

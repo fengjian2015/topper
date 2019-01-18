@@ -2426,4 +2426,6 @@ Please reset encryption request</string>
     <string name="remaining_convertible"> remaining convertible: </string>
     <string name="receive_bonus">receive dividends</string>
     <string name="installation_failed"> installation failed </string>
+    <string name="application_calls"> application to make a call </string>
+    <string name="application_calls_failure">Failed to get the application to make a call </string>
 </resources>

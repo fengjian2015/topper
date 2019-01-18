@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/app_bg_color"
-                android:orientation="vertical"
-                tools:context="com.bclould.tea.ui.activity.ConversationPublicActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg_color"
+    android:orientation="vertical"
+    tools:context="com.bclould.tea.ui.activity.ConversationPublicActivity">
 
     <LinearLayout
         android:id="@+id/ll_chat"
@@ -19,11 +19,13 @@
         <include
             android:id="@+id/rl_title"
             layout="@layout/activity_top"/>
-        <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        <com.meitu.scanimageview.ScanPhotoView
             android:id="@+id/iv_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            />
+
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
@@ -56,15 +58,32 @@
     <View
         android:id="@+id/view"
         style="@style/HorizontalBoundaryStyle"
-        android:layout_above="@+id/ll_menu"></View>
-
-    <com.bclould.tea.ui.widget.MenuLinearLayout
-        android:id="@+id/ll_menu"
+        android:layout_above="@+id/rl_bottom"></View>
+    <RelativeLayout
+        android:id="@+id/rl_bottom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
-        android:layout_alignParentBottom="true"
-        android:background="@color/boundary_color"
-        android:orientation="horizontal">
+        android:layout_alignParentBottom="true">
+        <ImageView
+            android:id="@+id/iv_keyboard"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/public_keyboard"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/x20"
+            android:background="@color/boundary_color"
+            android:paddingRight="@dimen/x20"/>
+        <View
+            android:id="@+id/view_line"
+            style="@style/VerticalDeepBoundaryStyle"
+            android:layout_toRightOf="@+id/iv_keyboard"/>
+        <com.bclould.tea.ui.widget.MenuLinearLayout
+            android:id="@+id/ll_menu"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:background="@color/boundary_color"
+            android:layout_toRightOf="@+id/view_line"
+            android:orientation="horizontal"/>
 
-    </com.bclould.tea.ui.widget.MenuLinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

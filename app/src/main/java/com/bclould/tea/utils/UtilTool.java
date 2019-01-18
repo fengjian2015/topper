@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
@@ -141,6 +142,11 @@ public class UtilTool {
     public static int dip2px(Context context, float dpvalue) {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpvalue * scale + 0.5f);
+    }
+
+    public static int px2dip(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
     }
 
 
@@ -557,6 +563,7 @@ public class UtilTool {
     /**
      * 目前是根据版本名判断（之前已经是使用名字转float比较大小，但版本名命名不规范，应该由code来判断，
      * 现在是0.97版本，等待都更新到0.97后再改动命名规则，不然之前版本会崩溃）
+     *
      * @param mContext
      * @return
      */
@@ -574,14 +581,14 @@ public class UtilTool {
             tag_version = versionsTag;
         }
         float newVersion = UtilTool.parseFloat(tag_version);
-        float nowVersion =UtilTool.parseFloat(versionStr);
-        if(newVersion!=0&&nowVersion!=0){
-            if (newVersion>nowVersion) {
+        float nowVersion = UtilTool.parseFloat(versionStr);
+        if (newVersion != 0 && nowVersion != 0) {
+            if (newVersion > nowVersion) {
                 return true;
             } else {
                 return false;
             }
-        }else {
+        } else {
             if (!versionStr.equals(tag_version)) {
                 return true;
             } else {
@@ -849,7 +856,7 @@ public class UtilTool {
 
     //打印日志
     public static void Log(String clazzName, String s) {
-        if(!Constants.isDebug)return;
+//        if (!Constants.isDebug) return;
         String name = getFunctionName();
         if (name != null) {
             Log.e(clazzName, name + " - " + s);
@@ -985,7 +992,7 @@ public class UtilTool {
     }
 
     public static void setCircleImg(Context context, Object url, ImageView imageView) {
-        if(context instanceof Activity&&((Activity)context).isFinishing()){
+        if (context instanceof Activity && ((Activity) context).isFinishing()) {
             return;
         }
         if (Util.isOnMainThread() && context != null) {
@@ -1001,7 +1008,7 @@ public class UtilTool {
 
     public static Bitmap getImage(DBManager mgr, String myUser, Context context, ImageView imageView) {
         Bitmap bitmap = null;
-        if(context instanceof Activity&&((Activity)context).isFinishing()){
+        if (context instanceof Activity && ((Activity) context).isFinishing()) {
             return null;
         }
         if (mgr.findUser(myUser)) {
@@ -1032,11 +1039,11 @@ public class UtilTool {
         return bitmap;
     }
 
-    public static String getImageUrl(DBManager mgr, String myUser){
+    public static String getImageUrl(DBManager mgr, String myUser) {
         if (mgr.findUser(myUser)) {
             UserInfo info = mgr.queryUser(myUser);
             return info.getPath();
-        }else if (!StringUtils.isEmpty(mgr.findStrangerPath(myUser))) {
+        } else if (!StringUtils.isEmpty(mgr.findStrangerPath(myUser))) {
             return mgr.findStrangerPath(myUser);
         } else {
             return "";
@@ -1070,8 +1077,16 @@ public class UtilTool {
         }
     }
 
+    public static void setImage(String url,Context context,ImageView imageView,int error){
+        if (Util.isOnMainThread() && ContextUtil.isExist(context)) {
+            if(error==-1||error==0)error=R.mipmap.image_placeholder;
+            Glide.with(context).load(url).apply(new RequestOptions().error(error)).into(imageView);
+        }
+    }
+
+
     public static Bitmap getImage(Context context, ImageView imageView, DBRoomMember mDBRoomMember, DBManager dbManager, String user) {
-        if(context instanceof Activity&&((Activity)context).isFinishing()){
+        if (context instanceof Activity && ((Activity) context).isFinishing()) {
             return null;
         }
         String url = mDBRoomMember.findMemberUrl(user);
@@ -1150,7 +1165,7 @@ public class UtilTool {
     public static String getPostfix3(String fileName) {
         String pos = "";
         try {
-            if(StringUtils.isEmpty(fileName)){
+            if (StringUtils.isEmpty(fileName)) {
                 return pos;
             }
             pos = fileName.substring(fileName.lastIndexOf("."));
@@ -1449,8 +1464,8 @@ public class UtilTool {
         return fileSizeString;
     }
 
-    public static String subZeroAndDot(String s){
-        if(s.indexOf(".") > 0){
+    public static String subZeroAndDot(String s) {
+        if (s.indexOf(".") > 0) {
             s = s.replaceAll("0+?$", "");//去掉多余的0
             s = s.replaceAll("[.]$", "");//如最后一位是.则去掉
         }
@@ -1541,9 +1556,9 @@ public class UtilTool {
             install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加这一句表示对目标应用临时授权该Uri所代表的文件
         } else {
             String path = file.getAbsolutePath();
-            if(!path.contains("file://")) {
+            if (!path.contains("file://")) {
                 uri = Uri.parse("file://" + path);
-            }else{
+            } else {
                 uri = Uri.parse(path);
             }
             context.startActivity(install);
@@ -1551,7 +1566,7 @@ public class UtilTool {
         install.setDataAndType(uri, "application/vnd.android.package-archive");
         try {
             context.startActivity(install);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1742,11 +1757,12 @@ public class UtilTool {
         }
         return result;
     }
-    public static String expectedReturn(double money,int day,double rate){
-        if(day==0){
-            day=1;
+
+    public static String expectedReturn(double money, int day, double rate) {
+        if (day == 0) {
+            day = 1;
         }
-        double expected=money*rate*day/365;
+        double expected = money * rate * day / 365;
         return changeMoney(expected);
     }
 
@@ -1762,18 +1778,19 @@ public class UtilTool {
 
     /**
      * 截取&字符
+     *
      * @param content
      * @return
      */
     public static HashMap getCutting(String content) throws UnsupportedEncodingException {
-        content= URLDecoder.decode(content,"utf-8");
-        HashMap hashMap=new HashMap();
-        String[] sq=content.split("&");
-        for (int i=0;i<sq.length;i++){
-            String[] sq1=sq[i].split("=");
-            if(sq1.length>=2) {
+        content = URLDecoder.decode(content, "utf-8");
+        HashMap hashMap = new HashMap();
+        String[] sq = content.split("&");
+        for (int i = 0; i < sq.length; i++) {
+            String[] sq1 = sq[i].split("=");
+            if (sq1.length >= 2) {
                 hashMap.put(sq1[0], sq1[1]);
-            }else{
+            } else {
                 hashMap.put(sq1[0], "");
             }
         }
@@ -1782,10 +1799,11 @@ public class UtilTool {
 
     /**
      * 计算出图片初次显示需要放大倍数
+     *
      * @param imagePath 图片的绝对路径
      */
-    public static float getImageScale(Context context, String imagePath){
-        if(TextUtils.isEmpty(imagePath)) {
+    public static float getImageScale(Context context, String imagePath) {
+        if (TextUtils.isEmpty(imagePath)) {
             return 2.0f;
         }
 
@@ -1797,7 +1815,7 @@ public class UtilTool {
             error.printStackTrace();
         }
 
-        if(bitmap == null) {
+        if (bitmap == null) {
             return 2.0f;
         }
 
@@ -1805,7 +1823,7 @@ public class UtilTool {
         int dw = bitmap.getWidth();
         int dh = bitmap.getHeight();
 
-        WindowManager wm = ((Activity)context).getWindowManager();
+        WindowManager wm = ((Activity) context).getWindowManager();
         int width = wm.getDefaultDisplay().getWidth();
         int height = wm.getDefaultDisplay().getHeight();
 
@@ -1832,18 +1850,19 @@ public class UtilTool {
 
     /**
      * 计算出图片初次显示需要放大倍数
+     *
      * @param imagePath 图片的绝对路径
      */
-    public static float getImageScale(Context context, int imagePath){
+    public static float getImageScale(Context context, int imagePath) {
 
         Bitmap bitmap = null;
         try {
-            bitmap= BitmapFactory.decodeResource(context.getResources(), imagePath);
+            bitmap = BitmapFactory.decodeResource(context.getResources(), imagePath);
         } catch (OutOfMemoryError error) {
             error.printStackTrace();
         }
 
-        if(bitmap == null) {
+        if (bitmap == null) {
             return 2.0f;
         }
 
@@ -1851,7 +1870,7 @@ public class UtilTool {
         int dw = bitmap.getWidth();
         int dh = bitmap.getHeight();
 
-        WindowManager wm = ((Activity)context).getWindowManager();
+        WindowManager wm = ((Activity) context).getWindowManager();
         int width = wm.getDefaultDisplay().getWidth();
         int height = wm.getDefaultDisplay().getHeight();
 
@@ -1874,5 +1893,29 @@ public class UtilTool {
         }
         bitmap.recycle();
         return scale;
+    }
+
+    // Drawable转换成Bitmap
+    public static Bitmap drawable2Bitmap(Drawable drawable) {
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+    // 将Bitmap转换成InputStream
+    public static InputStream bitmap2InputStream(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        InputStream is = new ByteArrayInputStream(baos.toByteArray());
+        return is;
+    }
+
+    // Drawable转换成InputStream
+    public static InputStream drawable2InputStream(Drawable d) {
+        Bitmap bitmap = drawable2Bitmap(d);
+        return bitmap2InputStream(bitmap);
     }
 }

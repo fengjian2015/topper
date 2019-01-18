@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="@dimen/x30"
+    android:paddingLeft="@dimen/x30"
+    android:paddingTop="@dimen/x20"
+    >
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/MainTextShallowStyle32"
+        android:text="是的撒啊 撒大大撒的撒\n萨达大萨达"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:minLines="2"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_toLeftOf="@+id/iv_image"
+        />
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="@dimen/x116"
+        android:layout_height="@dimen/y116"
+        android:layout_alignParentRight="true"
+        android:scaleType="centerCrop"
+        />
+    <View
+        android:id="@+id/view_line"
+        style="@style/HorizontalBoundaryStyle"
+        android:layout_below="@+id/iv_image"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y10"
+        android:layout_toLeftOf="@+id/iv_image"
+        ></View>
+</RelativeLayout>

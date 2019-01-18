@@ -277,6 +277,13 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
+    <!--縱向分割线樣式-->
+    <style name="VerticalDeepBoundaryStyle">
+        <item name="android:background">@color/secondary_text_color</item>
+        <item name="android:layout_width">@dimen/x1</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
     <!--頂部導航欄樣式-->
     <style name="TopNavigationBarStyle">
         <item name="android:background">@color/app_bg_color</item>

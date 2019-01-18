@@ -206,7 +206,18 @@ public class AuthorizationUserTools {
         boolean haveAuthorization =  check.authorizationCheck(Manifest.permission.READ_PHONE_STATE,activity);
         if(!haveAuthorization){
             if(needPromot){
-                check.authorizationPromotPhoneState(activity);
+                check.authorizationPromot(activity,activity.getString(R.string.application_storage_space),true,false,false);
+            }
+        }
+        return haveAuthorization;
+    }
+
+    public static boolean getCallPhone(Activity activity, boolean needPromot){
+        AuthorizationCheck check = new AuthorizationCheck();
+        boolean haveAuthorization =  check.authorizationCheck(Manifest.permission.CALL_PHONE,activity);
+        if(!haveAuthorization){
+            if(needPromot){
+                check.authorizationPromot(activity,activity.getString(R.string.application_calls),true,false,false);
             }
         }
         return haveAuthorization;

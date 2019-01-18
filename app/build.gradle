@@ -37,8 +37,8 @@ android {
         applicationId "com.bclould.tea"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 103
-        versionName "103"
+        versionCode 104
+        versionName "104"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -242,4 +242,5 @@ dependencies {
 
     //长图加载
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
+    compile project(path: ':scanimageview')
 }

@@ -1,7 +1,11 @@
 package com.bclould.tea.ui.activity;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -14,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bclould.tea.Presenter.OrderDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
@@ -22,10 +27,16 @@ import com.bclould.tea.model.OrderInfo2;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
+
 import org.greenrobot.eventbus.EventBus;
+
 import java.util.Timer;
 import java.util.TimerTask;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -116,7 +127,7 @@ public class OrderDetailsActivity extends BaseActivity {
                 @Override
                 public void run() {
                     try {
-                        if(mTvTime==null)return;
+                        if (mTvTime == null) return;
                         mRecLen--;
                         int second = mRecLen % 60;
                         int minute = mRecLen / 60;
@@ -126,7 +137,7 @@ public class OrderDetailsActivity extends BaseActivity {
                             finish();
                             Toast.makeText(OrderDetailsActivity.this, getString(R.string.order_timeout), Toast.LENGTH_SHORT).show();
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -147,7 +158,7 @@ public class OrderDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
         ButterKnife.bind(this);
-        setTitle("",getString(R.string.help));
+        setTitle("", getString(R.string.help));
         initInterface();
     }
 
@@ -346,7 +357,8 @@ public class OrderDetailsActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.ll_error, R.id.btn_contact, R.id.bark, R.id.tv_add, R.id.btn_buy_cancel, R.id.btn_sell_cancel, R.id.btn_buy_confirm, R.id.btn_sell_confirm})
+    @OnClick({R.id.ll_error, R.id.btn_contact, R.id.bark, R.id.tv_add, R.id.btn_buy_cancel, R.id.btn_sell_cancel, R.id.btn_buy_confirm, R.id.btn_sell_confirm, R.id.tv_copy_deal,
+            R.id.tv_copy_order, R.id.tv_copy_bank, R.id.tv_phone})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -391,7 +403,39 @@ public class OrderDetailsActivity extends BaseActivity {
             case R.id.ll_error:
                 initData();
                 break;
+            case R.id.tv_copy_deal:
+                copySecretKey(mTvDealNumber.getText().toString());
+                break;
+            case R.id.tv_copy_order:
+                copySecretKey(mInfo.getData().getOrder_no());
+                break;
+            case R.id.tv_copy_bank:
+                copySecretKey(mTvBankNumber.getText().toString());
+                break;
+            case R.id.tv_phone:
+                goPhone();
+                break;
         }
+    }
+
+    private void goPhone() {
+        String phoneNumber = mTvPhone.getText().toString();
+        if (StringUtils.isEmpty(phoneNumber)) return;
+        if(AuthorizationUserTools.getCallPhone(this,false)){
+            //打开拨号界面，填充输入手机号码，让用户自主的选择
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }else{
+            UtilTool.getPermissions(this, Manifest.permission.CALL_PHONE, "", getString(R.string.application_calls_failure));
+        }
+    }
+
+    private void copySecretKey(String content) {
+        if (StringUtils.isEmpty(content)) return;
+        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setText(content);
+        Toast.makeText(this, getString(R.string.copy_succeed), Toast.LENGTH_LONG).show();
     }
 
     private Dialog mRedDialog;
@@ -401,7 +445,7 @@ public class OrderDetailsActivity extends BaseActivity {
     private GridView mGridView;
 
     private void showPWDialog(final int type) {
-        pwdDialog=new PWDDialog(this);
+        pwdDialog = new PWDDialog(this);
         pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
             @Override
             public void success(String password) {
@@ -416,14 +460,15 @@ public class OrderDetailsActivity extends BaseActivity {
         });
         String content = "";
         if (type == 0) {
-            content=getString(R.string.cancel_order_hint);
+            content = getString(R.string.cancel_order_hint);
         } else if (type == 1) {
-            content=getString(R.string.fk_hint);
+            content = getString(R.string.fk_hint);
         } else if (type == 2) {
-            content=getString(R.string.fb_hint);
+            content = getString(R.string.fb_hint);
         }
-        pwdDialog.showDialog(content,null,null,null,null);
+        pwdDialog.showDialog(content, null, null, null, null);
     }
+
     private void confirmGiveCoin(String password) {
         if (mType.equals(getString(R.string.order))) {
             mOrderDetailsPresenter.confirmGiveCoin(mInfo.getData().getTrans_id(), mInfo.getData().getId(), password, new OrderDetailsPresenter.CallBack2() {

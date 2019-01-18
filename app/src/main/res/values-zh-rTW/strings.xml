@@ -1314,4 +1314,6 @@
     <string name="remaining_convertible">剩餘可兌換:</string>
     <string name="receive_bonus">領取紅利</string>
     <string name="installation_failed">安裝失敗</string>
+    <string name="application_calls">應用程序撥打電話</string>
+    <string name="application_calls_failure">獲取應用程序撥打電話權限失敗</string>
 </resources>

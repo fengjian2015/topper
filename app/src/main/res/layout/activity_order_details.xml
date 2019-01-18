@@ -13,7 +13,7 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+
         >
 
         <LinearLayout
@@ -52,15 +52,22 @@
                             style="@style/MainTextShallowStyle30"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
-
+                        <TextView
+                            android:id="@+id/tv_copy_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            style="@style/BlueTextStyle30"
+                            android:text="@string/copy"/>
                         <TextView
                             android:id="@+id/tv_pay_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
                             android:textColor="#FE6633"
                             android:textSize="@dimen/x30"
+                            android:layout_below="@+id/tv_order_number"
+                            android:layout_marginTop="@dimen/y15"
                             android:textStyle="bold"/>
 
                         <TextView
@@ -267,9 +274,16 @@
                             style="@style/RedTextStyle28"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                            android:layout_toLeftOf="@+id/tv_copy_deal"
+                            android:layout_marginRight="@dimen/x10"
                             android:textStyle="bold"/>
-
+                        <TextView
+                            android:id="@+id/tv_copy_deal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            style="@style/BlueTextStyle30"
+                            android:text="@string/copy"/>
                     </RelativeLayout>
 
 
@@ -365,7 +379,14 @@
                             android:layout_below="@+id/tv_bank_site"
                             android:layout_marginTop="@dimen/y5"
                             android:layout_toRightOf="@+id/iv_bank"/>
-
+                        <TextView
+                            android:id="@+id/tv_copy_bank"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            style="@style/BlueTextStyle30"
+                            android:layout_centerVertical="true"
+                            android:text="@string/copy"/>
                     </RelativeLayout>
 
                     <!--<RelativeLayout

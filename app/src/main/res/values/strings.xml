@@ -2407,4 +2407,6 @@
     <string name="remaining_convertible">剩余可兑换:</string>
     <string name="receive_bonus">领取红利</string>
     <string name="installation_failed">安装失败</string>
+    <string name="application_calls">应用程序拨打电话</string>
+    <string name="application_calls_failure">获取应用程序拨打电话权限失败</string>
 </resources>
