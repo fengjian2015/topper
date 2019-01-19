@@ -12,8 +12,8 @@ public class Constants {
 //    public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";
     public static final String BASE_URL = isDebug ? "http://www.bclould.com:8191/" : "http://api.ftcep.com:33324/";
     public static final String NEW_BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "http://api.ftcep.com:33324/";
-    public static final String DOMAINNAME3 = isDebug ? "wss://socket.bclould.com:8179/toco_server" : "ws://socket.cnblocklink.com:2087/toco_server";
-    public static final String MSG_OFFLINE = isDebug ? "wss://socket.bclould.com:8180/users_offline_msg" : "ws://offline.cnblocklink.com:8443/users_offline_msg";
+    public static final String DOMAINNAME3 = isDebug ? "wss://socket.bclould.com:8179/toco_server" : "ws://39.105.50.169:2087/toco_server";
+    public static final String MSG_OFFLINE = isDebug ? "wss://socket.bclould.com:8180/users_offline_msg" : "ws://123.56.10.153:8443/users_offline_msg";
     //商城
     public static final String WEB_MALL=isDebug ? "http://www.bclould.com:8127/wap/" :"http://api.ftcep.com:8443/wap/";
 

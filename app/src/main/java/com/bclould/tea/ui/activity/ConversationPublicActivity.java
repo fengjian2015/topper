@@ -2,8 +2,10 @@ package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -171,17 +173,31 @@ public class ConversationPublicActivity extends BaseActivity implements FuncLayo
         audioModeManger.register(this);
         setOnClick();
         setMenu();
+        setImage();
+    }
+
+    private void setImage() {
+        if ("3".equals(roomId)) {
+            mIvImage.setVisibility(View.VISIBLE);
+            mRefreshLayout.setVisibility(View.GONE);
+            Resources r = getResources();
+            Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                    + r.getResourcePackageName(R.mipmap.public_background) + "/"
+                    + r.getResourceTypeName(R.mipmap.public_background) + "/"
+                    + r.getResourceEntryName(R.mipmap.public_background));
+            mIvImage.setImageURI(uri);
+        }
     }
 
     private void setMenu() {
         String menu = mDBPublicManage.findPublicMenu(roomId);
         mLlMenu.setMenuData(menu);
-        mLlMenu.setOnKeyBodard(new MenuLinearLayout.OnKeyBodard() {
-            @Override
-            public void onClick() {
-                showKeyBoard();
-            }
-        });
+//        mLlMenu.setOnKeyBodard(new MenuLinearLayout.OnKeyBodard() {
+//            @Override
+//            public void onClick() {
+//                showKeyBoard();
+//            }
+//        });
     }
 
     @Override
