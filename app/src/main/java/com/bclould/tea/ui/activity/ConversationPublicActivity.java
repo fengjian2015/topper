@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,8 +41,10 @@ import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.PublicAdapter;
+import com.bclould.tea.ui.widget.ConfirmCancelDialog;
 import com.bclould.tea.ui.widget.ImageDialog;
 import com.bclould.tea.ui.widget.MenuLinearLayout;
+import com.bclould.tea.ui.widget.PublicActivitylDialog;
 import com.bclould.tea.ui.widget.SimpleAppsGridView;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AudioModeManger;
@@ -126,6 +127,8 @@ public class ConversationPublicActivity extends BaseActivity implements FuncLayo
     MenuLinearLayout mLlMenu;
     @Bind(R.id.rl_bottom)
     RelativeLayout mRlBottom;
+    @Bind(R.id.rl_activity)
+    RelativeLayout mRlActivity;
 
     private String roomId;//房間id
     private String mName;
@@ -178,6 +181,7 @@ public class ConversationPublicActivity extends BaseActivity implements FuncLayo
 
     private void setImage() {
         if ("3".equals(roomId)) {
+            mRlActivity.setVisibility(View.VISIBLE);
             mIvImage.setVisibility(View.VISIBLE);
             mRefreshLayout.setVisibility(View.GONE);
             Resources r = getResources();
@@ -923,6 +927,7 @@ public class ConversationPublicActivity extends BaseActivity implements FuncLayo
 //            mUserImage = UtilTool.getImage(mMgr, mUser, this);
             clearNotification();
         }
+        setTitleName();
         roomType = bundle.getString("chatType");
         if (RoomManage.getInstance().getRoom(roomId) == null) {
             if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
@@ -938,7 +943,7 @@ public class ConversationPublicActivity extends BaseActivity implements FuncLayo
             roomManage = RoomManage.getInstance().getRoom(roomId);
         }
         roomManage.addMessageManageListener(this);
-        setTitleName();
+
     }
 
     private void clearNotification() {
@@ -959,7 +964,7 @@ public class ConversationPublicActivity extends BaseActivity implements FuncLayo
     private void initAdapter() {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mChatAdapter = new PublicAdapter(this, mMessageList, roomId, mMgr, mediaPlayer, mName, roomType, mRlTitle, mDBRoomMember);
+        mChatAdapter = new PublicAdapter(this, mMessageList, roomId, mMgr, mediaPlayer, mName, roomType, mRlTitle, mDBRoomMember, mDBPublicManage);
         mRecyclerView.setAdapter(mChatAdapter);
         mRefreshLayout.setEnableLoadMore(false);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -993,7 +998,7 @@ public class ConversationPublicActivity extends BaseActivity implements FuncLayo
         return view;
     }
 
-    @OnClick({R.id.bark, R.id.iv_more})
+    @OnClick({R.id.bark, R.id.iv_more, R.id.rl_tanchuang,R.id.iv_2})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -1007,8 +1012,19 @@ public class ConversationPublicActivity extends BaseActivity implements FuncLayo
             case R.id.iv_more:
                 goPublicDetail();
                 break;
+            case R.id.rl_tanchuang:
+                showPublic();
+                break;
+            case R.id.iv_2:
+                mRlActivity.setVisibility(View.GONE);
+                break;
 
         }
+    }
+
+    private void showPublic(){
+        PublicActivitylDialog diaolg=new PublicActivitylDialog(this);
+        diaolg.show();
     }
 
     private void showKeyBoard() {

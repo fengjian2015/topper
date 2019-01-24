@@ -54,6 +54,8 @@
     <color name="white1">#80ffffff</color>
     <color name="red_envelope">#f9bc77</color>
     <color name="task_item">#F2F5FC</color>
+    <color name="yellow"> #ffde71</color>
+    <color name="red1">#f23f36</color>
 
     <!--2.0版本主要顏色-->
     <color name="app_bg_color">#242f43</color><!--用于APP的背景色，顶部导航栏背景色用于按钮和icon颜色-->

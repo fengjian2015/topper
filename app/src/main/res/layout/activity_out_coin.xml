@@ -118,8 +118,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/tv_coin_name"
-                android:text="0"
+                android:text="0000000000000"
                 android:textColor="#FF8721"
+                android:maxLength="12"
                 android:textSize="@dimen/x28"/>
 
             <TextView

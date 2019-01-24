@@ -44,6 +44,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.UserInfo;
@@ -88,6 +89,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
@@ -237,6 +239,59 @@ public class UtilTool {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date curDate = new Date(System.currentTimeMillis());
         return formatter.format(curDate);
+    }
+
+    public static String getDate(String time,String timeformatter) {
+        //获取当前时间
+        SimpleDateFormat formatter = new SimpleDateFormat(timeformatter);
+        Date curDate = new Date(parseLong(time));
+        return formatter.format(curDate);
+    }
+
+    /**
+     * 获取剩余天时秒分
+     * @param time 秒
+     * @return
+     */
+    public static String getDateRemaining(long time){
+        try {
+            long day=time/(24*60*60);
+            long hour=(time/(60*60)-day*24);
+            long min=((time/(60))-day*24*60-hour*60);
+            long s=(time-day*24*60*60-hour*60*60-min*60);
+
+            String newday;
+            String newhour;
+            String newmin;
+            String news;
+            if(day<10){
+                newday="0"+day;
+            }else{
+                newday=day+"";
+            }
+            if(hour<10){
+                newhour="0"+hour;
+            }else{
+                newhour=hour+"";
+            }
+            if(min<10){
+                newmin="0"+min;
+            }else{
+                newmin=min+"";
+            }
+            if(s<10){
+                news="0"+s;
+            }else{
+                news=s+"";
+            }
+
+
+            return newday+":"+newhour+":"+newmin+":"+news;
+        }catch (Exception e){
+            return "00:00:00:00";
+        }
+
+
     }
 
     public static void comp(Bitmap image, File file) {
@@ -951,6 +1006,12 @@ public class UtilTool {
 
     }
 
+    public static String base64PetToJson(String prefix, HashMap hashMap) {
+        String jsonresult = com.alibaba.fastjson.JSONObject.toJSONString(hashMap);
+        String str = Base64.encodeToString(jsonresult.getBytes(), Base64.DEFAULT);
+        return prefix + str;
+    }
+
     public static String base64PetToJson(Context context, String prefix, String key, String value, String message) {
         String jsonresult = "";//定义返回字符串
         JSONObject object = new JSONObject();//创建一个总的对象，这个对象对整个json串
@@ -1077,14 +1138,68 @@ public class UtilTool {
         }
     }
 
-    public static void setImage(String url,Context context,ImageView imageView,int error){
+    public static void setImage(String url, Context context, ImageView imageView, int error) {
         if (Util.isOnMainThread() && ContextUtil.isExist(context)) {
-            if(error==-1||error==0)error=R.mipmap.image_placeholder;
+            if (error == -1 || error == 0) error = R.mipmap.image_placeholder;
             Glide.with(context).load(url).apply(new RequestOptions().error(error)).into(imageView);
         }
     }
 
 
+    /**
+     * 查房间成员、好友、公众号
+     *
+     * @param context
+     * @param imageView
+     * @param mDBRoomMember
+     * @param dbManager
+     * @param dbPublicManage
+     * @param user
+     * @return
+     */
+    public static Bitmap getImage(Context context, ImageView imageView, DBRoomMember mDBRoomMember, DBManager dbManager, DBPublicManage dbPublicManage, String user) {
+        if (context instanceof Activity && ((Activity) context).isFinishing()) {
+            return null;
+        }
+        String url = mDBRoomMember.findMemberUrl(user);
+        if (StringUtils.isEmpty(url) && dbManager.findUser(user)) {
+            UserInfo info = dbManager.queryUser(user);
+            if (!StringUtils.isEmpty(info.getPath())) {
+                url = info.getPath();
+            }
+        }
+        if (StringUtils.isEmpty(url)) {
+            url = dbManager.findStrangerPath(user);
+        }
+        if (StringUtils.isEmpty(url)) {
+            url = dbManager.findUserPath(user);
+        }
+        if (StringUtils.isEmpty(url)) {
+            url = dbPublicManage.findPublicLogo(user);
+        }
+        Bitmap bitmap = null;
+        if (!StringUtils.isEmpty(url)) {
+            if (Util.isOnMainThread() && context != null) {
+                Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
+            }
+        } else {
+            if (Util.isOnMainThread() && context != null) {
+                Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
+            }
+        }
+        return bitmap;
+    }
+
+    /**
+     * 查好友、群成员
+     *
+     * @param context
+     * @param imageView
+     * @param mDBRoomMember
+     * @param dbManager
+     * @param user
+     * @return
+     */
     public static Bitmap getImage(Context context, ImageView imageView, DBRoomMember mDBRoomMember, DBManager dbManager, String user) {
         if (context instanceof Activity && ((Activity) context).isFinishing()) {
             return null;
@@ -1483,6 +1598,14 @@ public class UtilTool {
     public static double parseDouble(String number) {
         try {
             return Double.parseDouble(number);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public static long parseLong(String number) {
+        try {
+            return Long.parseLong(number);
         } catch (Exception e) {
             return 0;
         }
@@ -1917,5 +2040,36 @@ public class UtilTool {
     public static InputStream drawable2InputStream(Drawable d) {
         Bitmap bitmap = drawable2Bitmap(d);
         return bitmap2InputStream(bitmap);
+    }
+
+    /**
+     * 递归删除 文件/文件夹
+     *
+     * @param file
+     */
+    public static void deleteFile(File file) {
+
+        Log("fengjian", "delete file path=" + file.getAbsolutePath());
+        if (file.exists()) {
+            if (file.isFile()) {
+                file.delete();
+            } else if (file.isDirectory()) {
+                File files[] = file.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    deleteFile(files[i]);
+                }
+            }
+            file.delete();
+        } else {
+            Log("fengjian", "delete file no exists " + file.getAbsolutePath());
+        }
+    }
+
+    public static int getRandom(int startNum,int endNum){
+        if(endNum > startNum){
+            Random random = new Random();
+            return random.nextInt(endNum - startNum) + startNum;
+        }
+        return 0;
     }
 }

@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Base64;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
 import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.MessageInfo;
@@ -21,7 +23,10 @@ import com.bclould.tea.model.ReceiptInfo;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.GroupConfirmActivity;
 import com.bclould.tea.ui.activity.HTMLActivity;
+import com.bclould.tea.ui.activity.InCoinActivity;
 import com.bclould.tea.ui.activity.IndividualDetailsActivity;
+import com.bclould.tea.ui.activity.MyAssetsActivity;
+import com.bclould.tea.ui.activity.OutCoinActivity;
 import com.bclould.tea.ui.activity.PayReceiptResultActivity;
 import com.bclould.tea.ui.activity.PaymentActivity;
 import com.bclould.tea.ui.activity.ProblemFeedBackActivity;
@@ -40,6 +45,7 @@ import com.google.zxing.qrcode.QRCodeReader;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -371,7 +377,19 @@ public class QRDiscernUtil {
                 intent.putExtra("username", replace);
                 mContext.startActivity(intent);
                 mContext.finish();
-            } else if(!StringUtils.isEmpty(result) && UtilTool.checkLinkedExe(result)){
+            } else if(result.startsWith(Constants.QOUCOIN)){
+                String base64 = result.substring(Constants.QOUCOIN.length(), result.length());
+                String jsonresult = new String(Base64.decode(base64, Base64.DEFAULT));
+                UtilTool.Log("fengjian",jsonresult);
+                HashMap hashMap= JSON.parseObject(jsonresult,HashMap.class);
+
+                Intent intent = new Intent(mContext, OutCoinActivity.class);
+                intent.putExtra("id", UtilTool.parseInt(hashMap.get("cid")+""));
+                intent.putExtra("coinName", hashMap.get("coinName")+"");
+                intent.putExtra("address",hashMap.get("address")+"");
+                mContext.startActivity(intent);
+                mContext.finish();
+            }else if(!StringUtils.isEmpty(result) && UtilTool.checkLinkedExe(result)){
                 Intent intent=new Intent(mContext, HTMLActivity.class);
                 intent.putExtra("html5Url",result);
                 mContext.startActivity(intent);

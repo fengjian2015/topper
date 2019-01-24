@@ -94,6 +94,21 @@ public class DBPublicManage {
         }
     }
 
+    public String findPublicLogo(String publicId) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            String logo = null;
+            Cursor cursor = db.rawQuery("select logo from PublicDB where publicId=? and my_user=?",
+                    new String[]{publicId, UtilTool.getTocoId()});
+            while (cursor.moveToNext()) {
+                logo = cursor.getString(cursor.getColumnIndex("logo"));
+            }
+            cursor.close();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return logo;
+        }
+    }
+
     public String findPublicName(String publicId) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);

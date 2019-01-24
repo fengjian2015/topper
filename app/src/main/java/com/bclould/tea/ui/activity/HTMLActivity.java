@@ -91,6 +91,7 @@ public class HTMLActivity extends BaseActivity {
         // 开启 Application Caches 功能
         mWebView.getSettings().setAppCacheEnabled(true);
         mWebView.getSettings().setBlockNetworkImage(false);
+
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             mWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);

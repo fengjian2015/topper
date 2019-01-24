@@ -25,4 +25,8 @@ public class BaseInfoConstants {
     public static String USER_NO="user_no";
     public static String EXCHANGE="exchange";
     public static String LAST="last";
+    public static String RULE="rule";
+    public static String CAN_RECEIVE="can_receive";
+    public static String RECOMMEND="recommend";
+    public static String GC_DELIVERY_LAST_TIME="gc_delivery_last_time";
 }

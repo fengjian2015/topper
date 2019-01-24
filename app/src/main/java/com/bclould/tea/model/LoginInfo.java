@@ -70,6 +70,31 @@ public class LoginInfo {
         private boolean bind_ftc;
         private String email;
         private String mobile;
+        private boolean gc_delivery;
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getMobile() {
+            return mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
+        }
+
+        public boolean isGc_delivery() {
+            return gc_delivery;
+        }
+
+        public void setGc_delivery(boolean gc_delivery) {
+            this.gc_delivery = gc_delivery;
+        }
 
         public boolean isBind_ftc() {
             return bind_ftc;

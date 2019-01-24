@@ -1,10 +1,8 @@
 package com.bclould.tea.ui.fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,22 +11,24 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.topperchat.WsConnection;
-import com.bclould.tea.ui.activity.GonggaoManagerActivity;
-import com.bclould.tea.ui.activity.ftc.acccountbinding.AccountBindingActivity;
 import com.bclould.tea.ui.activity.CollectActivity;
-import com.bclould.tea.ui.activity.my.dynamic.DynamicActivity;
-import com.bclould.tea.ui.activity.my.GuanYuMeActivity;
+import com.bclould.tea.ui.activity.GonggaoManagerActivity;
 import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.LoginActivity;
 import com.bclould.tea.ui.activity.MyBindingActivity;
+import com.bclould.tea.ui.activity.PersonalDetailsActivity;
+import com.bclould.tea.ui.activity.ftc.acccountbinding.AccountBindingActivity;
 import com.bclould.tea.ui.activity.ftc.myteam.MyTeamActivity;
 import com.bclould.tea.ui.activity.ftc.node.NodeActivity;
-import com.bclould.tea.ui.activity.PersonalDetailsActivity;
-import com.bclould.tea.ui.activity.my.systemxet.SystemSetActivity;
+import com.bclould.tea.ui.activity.my.GuanYuMeActivity;
+import com.bclould.tea.ui.activity.my.NewYearActivitiesActivity;
 import com.bclould.tea.ui.activity.my.UserSafetyActivity;
+import com.bclould.tea.ui.activity.my.dynamic.DynamicActivity;
+import com.bclould.tea.ui.activity.my.systemxet.SystemSetActivity;
 import com.bclould.tea.ui.activity.my.taskcenter.TaskCenterActivity;
 import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
@@ -46,6 +46,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.bclould.tea.Presenter.LoginPresenter.BIND_FTC;
+import static com.bclould.tea.Presenter.LoginPresenter.GC_DELIVERY;
 
 /**
  * Created by GA on 2017/9/19.
@@ -98,6 +99,9 @@ public class MyFragment extends Fragment {
     RelativeLayout mRlParticipationProfit;
     @Bind(R.id.rl_my_team)
     RelativeLayout mRlMyTeam;
+    @Bind(R.id.iv_activity)
+    ImageView mIvActivity;
+    private LoginPresenter mLoginPresenter;
 
 
     private DBManager mMgr;
@@ -118,6 +122,7 @@ public class MyFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         init();
+        mLoginPresenter = new LoginPresenter(getContext());
         return view;
     }
 
@@ -134,6 +139,29 @@ public class MyFragment extends Fragment {
         } else if (msg.equals(EventBusUtil.change_name)) {
             init();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPersonal();
+    }
+
+    private void getPersonal() {
+        if (mLoginPresenter == null) {
+            mLoginPresenter = new LoginPresenter(getContext());
+        }
+        mLoginPresenter.getPersonal(new LoginPresenter.CallBack5() {
+            @Override
+            public void send() {
+                init();
+            }
+
+            @Override
+            public void error() {
+
+            }
+        });
     }
 
     @Override
@@ -171,6 +199,12 @@ public class MyFragment extends Fragment {
             mRlParticipationProfit.setVisibility(View.GONE);
             mRlMyTeam.setVisibility(View.GONE);
         }
+        boolean gc_delivery=MySharedPreferences.getInstance().getBoolean(GC_DELIVERY);
+        if(gc_delivery){
+            mIvActivity.setVisibility(View.VISIBLE);
+        }else{
+            mIvActivity.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -181,7 +215,7 @@ public class MyFragment extends Fragment {
     }
 
     @OnClick({R.id.rl_dynamic, R.id.rl_collect, R.id.rl_already_login, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we, R.id.rl_no_login, R.id.rl_my_team, R.id.rl_participation_profit,
-            R.id.rl_account_binding,R.id.rl_announcement,R.id.rl_mission_center})
+            R.id.rl_account_binding, R.id.rl_announcement, R.id.rl_mission_center, R.id.iv_activity})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_already_login:
@@ -273,6 +307,13 @@ public class MyFragment extends Fragment {
             case R.id.rl_mission_center:
                 if (!WsConnection.getInstance().getOutConnection()) {
                     startActivity(new Intent(getActivity(), TaskCenterActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
+                break;
+            case R.id.iv_activity:
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    startActivity(new Intent(getActivity(), NewYearActivitiesActivity.class));
                 } else {
                     startActivity(new Intent(getActivity(), InitialActivity.class));
                 }

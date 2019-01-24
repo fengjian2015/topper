@@ -150,7 +150,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<BaseInfo> modifyPassword(
             @Header("Authorization") String token,
-            @Field("google_code") String google_code,
+            @Field("vcode") String vcode,
             @Field("new_password") String new_password,
             @Field("new_password_confirmation") String new_password_confirmation
     );
@@ -160,7 +160,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<BaseInfo> modifySecondPassword(
             @Header("Authorization") String token,
-            @Field("google_code") String google_code,
+            @Field("vcode") String vcode,
             @Field("second_password") String second_password,
             @Field("second_password_confirmation") String second_password_confirmation
     );
@@ -1746,5 +1746,30 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("number") String number,
             @Field("password") String password
+    );
+
+    //任务完成
+    @GET("api/get/coin/number")
+    Observable<BaseMapInfo> coinNumber(
+            @Header("Authorization") String token,
+            @Query("coin_id") int id
+    );
+
+    //我的信息
+    @GET("api/user/info")
+    Observable<LoginInfo> userInfo(
+            @Header("Authorization") String token
+    );
+
+    //黄金大派送
+    @GET("api/gc/activity/info")
+    Observable<BaseMapInfo> activityInfo(
+            @Header("Authorization") String token
+    );
+
+    //任务完成
+    @POST("api/gc/activity/receive")
+    Observable<BaseMapInfo> activityReceive(
+            @Header("Authorization") String token
     );
 }

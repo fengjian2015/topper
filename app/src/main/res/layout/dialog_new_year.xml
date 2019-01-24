@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="@dimen/x550"
+        android:layout_height="@dimen/y500"
+        android:background="@mipmap/icon_newyearwindow_bg"
+        android:paddingBottom="@dimen/y80"
+        android:paddingTop="@dimen/y200"
+        >
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MainTextDeepStyle30"
+            android:textColor="@color/yellow"
+            android:text="ssssssssssssssssss"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MainTextDeepStyle36"
+            android:textColor="@color/yellow"
+            android:text="ssssssssss"
+            android:layout_marginTop="@dimen/x20"
+            android:layout_below="@+id/tv_title"
+            android:layout_centerHorizontal="true"
+            />
+        <Button
+            android:id="@+id/bt_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y60"
+            android:background="@drawable/bg_yellow_shape1"
+            android:textColor="@color/yellow"
+            android:gravity="center"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30"
+            android:paddingTop="@dimen/y5"
+            android:paddingBottom="@dimen/y5"
+            android:textSize="@dimen/x30"
+            android:layout_marginTop="@dimen/x20"
+            android:text="@string/click_receive"
+            android:layout_below="@+id/tv_content"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

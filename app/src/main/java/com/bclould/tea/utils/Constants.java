@@ -8,7 +8,7 @@ package com.bclould.tea.utils;
 public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOPPERCHAT";
     public static final int BET_ARR_COUNT = 4;
-    public static final boolean isDebug = false;
+    public static final boolean isDebug = true;
 //    public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";
     public static final String BASE_URL = isDebug ? "http://www.bclould.com:8191/" : "http://api.ftcep.com:33324/";
     public static final String NEW_BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "http://api.ftcep.com:33324/";
@@ -30,6 +30,7 @@ public class Constants {
     public static final String BUSINESSCARD = "businessCard";
     public static final String COMMANDUSERNAME="CommandUserName";
     public static final String GROUPCARD = "groupCard";
+    public static final String QOUCOIN="outcoin";
     public static final String BUCKET_NAME = isDebug ? "toco--bucket" : "topper-bucket";
     public static final String BUCKET_NAME2 = "topper-chat-bucket";
     public static final String APK_BUCKET_NAME = "toco--bucket";
@@ -40,6 +41,7 @@ public class Constants {
     public static final String ALBUM = "/sdcard/tocotalk/album/";
     public static final String DOWNLOAD = "/sdcard/tocotalk/download/";
     public static final String VIDEO = "/sdcard/tocotalk/video/";
+    public static final String WEB_CACHE="/webcache/";
     public static final String QRMONEYIN = "qrMoneyIn";
     public static final String DATAMONEYIN = "dataMoneyIn";
     public static final String OTC_DISCLAIMER = "otc_disclaimer";

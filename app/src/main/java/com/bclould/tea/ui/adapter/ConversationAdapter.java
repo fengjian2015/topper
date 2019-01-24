@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
@@ -48,14 +49,16 @@ public class ConversationAdapter extends RecyclerView.Adapter {
     private RelativeLayout mRlTitle;
     private DBRoomMember mDBRoomMember;
     private DBRoomManage mDBRoomManage;
+    private DBPublicManage mDBPublicManage;
 
-    public ConversationAdapter(Activity context, List<ConversationInfo> ConversationList, DBManager mgr, RelativeLayout mRlTitle, DBRoomMember mDBRoomMember, DBRoomManage mDBRoomManage) {
+    public ConversationAdapter(Activity context, List<ConversationInfo> ConversationList, DBManager mgr, RelativeLayout mRlTitle, DBRoomMember mDBRoomMember, DBRoomManage mDBRoomManage, DBPublicManage dBPublicManage) {
         mContext = context;
         mConversationList = ConversationList;
         mMgr = mgr;
         this.mRlTitle=mRlTitle;
         this.mDBRoomMember=mDBRoomMember;
         this.mDBRoomManage=mDBRoomManage;
+        this.mDBPublicManage=dBPublicManage;
     }
 
     @Override
@@ -151,13 +154,15 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                } else {
                    mTab1ItemName.setText(roomName);
                }
-           }else {
+           }else if(RoomManage.ROOM_TYPE_SINGLE.equals(conversationInfo.getChatType())){
                setNameAndUrl(mTab1ItemImg,conversationInfo.getUser());
                String remark = mMgr.queryRemark(conversationInfo.getUser());
                if (!StringUtils.isEmpty(remark)) {
                    mTab1ItemName.setText(remark);
-               } else {
+               } if(!StringUtils.isEmpty(conversationInfo.getFriend())){
                    mTab1ItemName.setText(conversationInfo.getFriend());
+               }else{
+                   mTab1ItemName.setText(conversationInfo.getUser());
                }
            }
 
@@ -196,7 +201,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
     }
 
     private void setNameAndUrl(ImageView mIvTouxiang, String user){
-        UtilTool.getImage(mContext, mIvTouxiang,mDBRoomMember,mMgr,user);
+        UtilTool.getImage(mContext, mIvTouxiang,mDBRoomMember,mMgr,mDBPublicManage,user);
     }
 
     private void showDeleteDialog(final String user) {

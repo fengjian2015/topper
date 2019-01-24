@@ -10,7 +10,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebStorage;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.bclould.tea.Presenter.LoginPresenter;
@@ -44,6 +47,7 @@ import com.koushikdutta.async.http.WebSocket;
 import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -380,14 +384,9 @@ public class WsConnection {
     }
 
     public void goMainActivity(final int whence) {
+        clearData();
         logoutService(mContext);
         isFirstChat="";
-        MySharedPreferences.getInstance().setString(TOKEN, "");
-        MySharedPreferences.getInstance().setString(LoginPresenter.TOCOID, "");
-        MyApp.getInstance().mCoinList.clear();
-        MyApp.getInstance().mPayCoinList.clear();
-        MyApp.getInstance().mOtcCoinList.clear();
-        MyApp.getInstance().mBetCoinList.clear();
         if (getIsCheckActvity()) {
             if (mContext == null) {
                 if (MyApp.getInstance() == null) {
@@ -404,6 +403,26 @@ public class WsConnection {
             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_the_interface)));
             setIsCheckActvity(false);
         }
+    }
+
+    public void clearData(){
+        MySharedPreferences.getInstance().setString(TOKEN, "");
+        MySharedPreferences.getInstance().setString(LoginPresenter.TOCOID, "");
+        MyApp.getInstance().mCoinList.clear();
+        MyApp.getInstance().mPayCoinList.clear();
+        MyApp.getInstance().mOtcCoinList.clear();
+        MyApp.getInstance().mBetCoinList.clear();
+        CookieSyncManager.createInstance(mContext.getApplicationContext());
+        CookieManager cookieManager = CookieManager.getInstance();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cookieManager.removeSessionCookies(null);
+            cookieManager.removeAllCookie();
+            cookieManager.flush();
+        } else {
+            cookieManager.removeAllCookie();
+            CookieSyncManager.getInstance().sync();
+        }
+        WebStorage.getInstance().deleteAllData(); //清空WebView的localStorage
     }
 
     //退出登錄用

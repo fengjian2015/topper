@@ -62,6 +62,7 @@ public class LoginPresenter {
     public static final String STATE_ID = "state_id";
     public static final String ALIPAY_UUID = "alipay_uuid";
     public static final String BIND_FTC="bind_ftc";
+    public static final String GC_DELIVERY="gc_delivery";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
@@ -162,6 +163,63 @@ public class LoginPresenter {
                     public void onError(Throwable e) {
                         hideDialog();
                         UtilTool.Log("登录", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void getPersonal(final CallBack5 callBack) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .userInfo(UtilTool.getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<LoginInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(LoginInfo baseInfo) {
+                       if (baseInfo.getStatus() == 1) {
+                           MySharedPreferences.getInstance().setBoolean(GC_DELIVERY,baseInfo.getData().isGc_delivery());
+                            MySharedPreferences.getInstance().setBoolean(BIND_FTC,baseInfo.getData().isBind_ftc());
+                            MySharedPreferences.getInstance().setLong(TOKEN_TIME, System.currentTimeMillis());
+                            MySharedPreferences.getInstance().setString(TOCOID, baseInfo.getData().getToco_id());
+                            MySharedPreferences.getInstance().setInteger(USERID, baseInfo.getData().getUser_id());
+                            MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName());
+//                            MySharedPreferences.getInstance().setString(EMAIL, email);
+//                            MySharedPreferences.getInstance().setString(LOGINPW, password);
+                            MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
+                            MySharedPreferences.getInstance().setInteger(IS_UPDATE, baseInfo.getData().getIs_update());
+                            MySharedPreferences.getInstance().setInteger(STATE_ID, baseInfo.getData().getCountry_id());
+                            MySharedPreferences.getInstance().setString(ALIPAY_UUID, baseInfo.getData().getAlipay_uuid());
+
+                            if (baseInfo.getData().getFingerprint() == 1) {
+                                MySharedPreferences.getInstance().setBoolean(PayPwSelectorActivity.FINGERPRINT_PW_SELE, true);
+                            } else {
+                                MySharedPreferences.getInstance().setBoolean(PayPwSelectorActivity.FINGERPRINT_PW_SELE, false);
+                            }
+                            if (baseInfo.getData().getGesture() == 1) {
+                                MySharedPreferences.getInstance().setBoolean(PayPwSelectorActivity.GESTURE_PW_SELE, true);
+                                MySharedPreferences.getInstance().setString(SetGesturePWActivity.GESTURE_ANSWER, baseInfo.getData().getGesture_number());
+                            } else {
+                                MySharedPreferences.getInstance().setBoolean(PayPwSelectorActivity.GESTURE_PW_SELE, false);
+                            }
+                            if (!baseInfo.getData().getCountry().isEmpty()) {
+                                MySharedPreferences.getInstance().setString(STATE, baseInfo.getData().getCountry());
+                            }
+                           callBack.send();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
                     }
 
                     @Override
@@ -419,6 +477,14 @@ public class LoginPresenter {
     //定义接口
     public interface CallBack4 {
         void send(String coordinate);
+
+        void error();
+    }
+
+
+    //定义接口
+    public interface CallBack5 {
+        void send();
 
         void error();
     }

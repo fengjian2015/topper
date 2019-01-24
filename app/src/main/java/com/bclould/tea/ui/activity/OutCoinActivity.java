@@ -1,8 +1,10 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,18 +13,28 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.bclould.tea.Presenter.CurrencyInOutPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.InCoinInfo;
+import com.bclould.tea.model.base.BaseInfoConstants;
+import com.bclould.tea.model.base.BaseMapInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.ToastShow;
+import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+
+import java.util.HashMap;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -107,6 +119,20 @@ public class OutCoinActivity extends BaseActivity {
                 }
             }
         });
+        if(StringUtils.isEmpty(mOver)) {
+            currencyInOutPresenter.coinNumber(mId, new CurrencyInOutPresenter.CallBack1() {
+                @Override
+                public void send(BaseMapInfo data) {
+                    mOver=data.getData().get(BaseInfoConstants.OVER_NUM)+"";
+                    mTvCoinCount.setText(mOver);
+                }
+
+                @Override
+                public void error() {
+
+                }
+            });
+        }
     }
 
     private void initIntent() {
@@ -114,8 +140,11 @@ public class OutCoinActivity extends BaseActivity {
         mId = intent.getIntExtra("id", 0);
         mCoinName = intent.getStringExtra("coinName");
         mOver = intent.getStringExtra("over");
+        mTvOutCoinSite.setText(intent.getStringExtra("address"));
+
         mTvCoinName.setText(mCoinName);
         mTvCoinCount.setText(mOver);
+
     }
 
     @OnClick({R.id.ll_error,R.id.iv_qr_code, R.id.bark, R.id.tv_add, R.id.iv_selector_site, R.id.btn_confirm})
@@ -210,13 +239,20 @@ public class OutCoinActivity extends BaseActivity {
             } else if (requestCode == SCANOUTSITE) {
                 try {
                     String result = data.getStringExtra("address");
-                    Gson gson = new Gson();
-                    InCoinInfo inCoinInfo = gson.fromJson(result, InCoinInfo.class);
-                    if (inCoinInfo.getCoin().equals(mCoinName)) {
-                        mSite = inCoinInfo.getAddress();
-                        mTvOutCoinSite.setText(mSite);
-                    } else {
-                        Toast.makeText(this, getString(R.string.scan_no) + mCoinName + getString(R.string.address), Toast.LENGTH_SHORT).show();
+                    if(result.startsWith(Constants.QOUCOIN)) {
+                        String base64 = result.substring(Constants.QOUCOIN.length(), result.length());
+                        String jsonresult = new String(Base64.decode(base64, Base64.DEFAULT));
+                        HashMap hashMap = JSON.parseObject(jsonresult, HashMap.class);
+//                    Gson gson = new Gson();
+//                    InCoinInfo inCoinInfo = gson.fromJson(result, InCoinInfo.class);
+                        if (hashMap.get("coin").equals(mCoinName)) {
+                            mSite = hashMap.get("address") + "";
+                            mTvOutCoinSite.setText(mSite);
+                        } else {
+                            Toast.makeText(this, getString(R.string.scan_no) + mCoinName + getString(R.string.address), Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        ToastShow.showToast2(this,getString(R.string.please_upgrade_latest_version));
                     }
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();

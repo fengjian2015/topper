@@ -17,8 +17,12 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -85,11 +89,17 @@ public class InCoinActivity extends BaseActivity {
                             String desc = data.getDesc().replace("\\n", "\n");
                             mTvTitle.setText(data.getTitle());
                             mTvDesc.setText(desc);
-                            JSONObject object = new JSONObject();//创建一个总的对象，这个对象对整个json串
-                            object.put("coin", mCoinName);
-                            object.put("address", data.getAddress());
-                            String jsonresult = object.toString();//生成返回字符串
-                            Bitmap qrImage = UtilTool.createQRImage(jsonresult);
+
+                            HashMap qrCardInfo=new HashMap();
+                            qrCardInfo.put("coin",mCoinName);
+                            qrCardInfo.put("address",data.getAddress());
+                            qrCardInfo.put("cid",mId+"");
+                            Bitmap qrImage = UtilTool.createQRImage(UtilTool.base64PetToJson( Constants.QOUCOIN,qrCardInfo ));
+//                            JSONObject object = new JSONObject();//创建一个总的对象，这个对象对整个json串
+//                            object.put("coin", mCoinName);
+//                            object.put("address", data.getAddress());
+//                            String jsonresult = object.toString();//生成返回字符串
+//                            Bitmap qrImage = UtilTool.createQRImage(jsonresult);
                             mIvSiteQr.setImageBitmap(qrImage);
                             mTvSite.setText(data.getAddress());
                         }

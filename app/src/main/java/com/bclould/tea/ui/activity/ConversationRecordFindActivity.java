@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.MessageRecordAdapter;
@@ -73,6 +74,7 @@ public class ConversationRecordFindActivity extends BaseActivity implements Mess
 
     private DBManager mMdb;
     private DBRoomMember mDBRoomMember;
+    private DBPublicManage mDBPublicManage;
     private String user;
     private int mOffset = 1;
     private int type=TEXT_SELECT;
@@ -94,6 +96,7 @@ public class ConversationRecordFindActivity extends BaseActivity implements Mess
         user = getIntent().getStringExtra("user");
         mMdb = new DBManager(this);
         mDBRoomMember=new DBRoomMember(this);
+        mDBPublicManage=new DBPublicManage(this);
 //        selectList.add(DATE_MSG);
         selectList.add(IMAGE_MSG);
         selectList.add(VIDEO_MSG);
@@ -106,7 +109,7 @@ public class ConversationRecordFindActivity extends BaseActivity implements Mess
         selectAdapter.addOnItemClickListener(this);
 
         //初始化結果適配器
-        recordAdapter = new MessageRecordAdapter(this, messageInfoList, mMdb,mDBRoomMember,roomId);
+        recordAdapter = new MessageRecordAdapter(this, messageInfoList, mMdb,mDBRoomMember,mDBPublicManage,roomId);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recordAdapter);
 

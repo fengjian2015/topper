@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
@@ -128,6 +129,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     private DisplayMetrics mDm;
     private RefreshList mRefreshList;
     private LinearLayoutManager linearLayoutManager;
+    private DBPublicManage mDBPublicManage;
 
     public static ConversationFragment getInstance() {
 
@@ -153,6 +155,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         mgr = new DBManager(getContext());
         mDBRoomMember = new DBRoomMember(getContext());
         mDBRoomManage = new DBRoomManage(getContext());
+        mDBPublicManage = new DBPublicManage(getContext());
         mRefreshList = new RefreshList();
         createFile();
 
@@ -485,7 +488,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     private void initRecyclerView() {
         if (mRecyclerView == null) return;
-        mConversationAdapter = new ConversationAdapter(getActivity(), getSimpleData(), mgr, mRlTitle, mDBRoomMember, mDBRoomManage);
+        mConversationAdapter = new ConversationAdapter(getActivity(), getSimpleData(), mgr, mRlTitle, mDBRoomMember, mDBRoomManage,mDBPublicManage);
         linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mConversationAdapter);

@@ -9,11 +9,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bclould.tea.Presenter.LoginPasswordPresenter;
+import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.UtilTool;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,6 +43,11 @@ public class LoginPasswordActivity extends BaseActivity {
     EditText mEtVcode;
     @Bind(R.id.btn_finish)
     Button mBtnFinish;
+    @Bind(R.id.tv_send)
+    TextView mTvSend;
+
+    private int mRecLen;
+    Timer mTimer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +69,7 @@ public class LoginPasswordActivity extends BaseActivity {
 
     boolean isEye = false;
 
-    @OnClick({R.id.bark, R.id.eye, R.id.btn_finish})
+    @OnClick({R.id.bark, R.id.eye, R.id.btn_finish,R.id.tv_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -69,6 +83,9 @@ public class LoginPasswordActivity extends BaseActivity {
                 if (checkEdit()) {
                     submit();
                 }
+                break;
+            case R.id.tv_send:
+                sendVcode();
                 break;
         }
     }
@@ -89,19 +106,57 @@ public class LoginPasswordActivity extends BaseActivity {
     //验证手机号和密码
     private boolean checkEdit() {
         String password = mEtPayPassword.getText().toString().trim();
-        if (mEtPayPassword.getText().toString().trim().equals("")) {
+        if (StringUtils.isEmpty(password)) {
             Toast.makeText(this, getString(R.string.toast_password), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtPayPassword);
         } else if (mEtVcode.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getString(R.string.toast_password), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtVcode);
-        } else if (password.length() <= 6) {
-            Toast.makeText(this, getString(R.string.limit_digit), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtPayPassword);
-
         } else {
             return true;
         }
         return false;
+    }
+
+    private void sendVcode() {
+        new RegisterPresenter(this).sendRegcode(UtilTool.getEmail(), new RegisterPresenter.CallBack() {
+            @Override
+            public void send() {
+                Toast.makeText(LoginPasswordActivity.this, getString(R.string.send_succeed), Toast.LENGTH_SHORT).show();
+                mRecLen = 60;
+                mTimer = new Timer();
+                mTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {      // UI thread
+                            @Override
+                            public void run() {
+                                mRecLen--;
+                                mTvSend.setText(mRecLen + "s" + getString(R.string.back_send));
+                                if (mRecLen <= 0) {
+                                    if (mTimer != null) {
+                                        mTimer.cancel();
+                                        mTimer = null;
+                                    }
+                                    mTvSend.setEnabled(true);
+                                    mTvSend.setText(getString(R.string.send));
+                                } else {
+                                    mTvSend.setEnabled(false);
+                                }
+                            }
+                        });
+                    }
+                }, 1000, 1000);
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
     }
 }

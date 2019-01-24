@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
@@ -49,13 +50,15 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
     private DBManager mMdb;
     private DBRoomMember mDBRoomMember;
     private String roomId;
+    private DBPublicManage mDBPublicManage;
 
-    public MessageRecordAdapter(Context context, List<MessageInfo> messageInfoList, DBManager mMdb, DBRoomMember mDBRoomMember, String roomId) {
+    public MessageRecordAdapter(Context context, List<MessageInfo> messageInfoList, DBManager mMdb, DBRoomMember mDBRoomMember,DBPublicManage mDBPublicManage, String roomId) {
         this.context = context;
         this.messageInfoList = messageInfoList;
         this.mMdb = mMdb;
         this.mDBRoomMember=mDBRoomMember;
         this.roomId=roomId;
+        this.mDBPublicManage=mDBPublicManage;
     }
 
     public void setType(int type) {
@@ -133,7 +136,7 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
         ((TextViewHolder) holder).tvContent.setText(messageInfoList.get(position).getMessage());
         ((TextViewHolder) holder).tvTime.setText(ChatTimeUtil.getConversation(messageInfoList.get(position).getCreateTime()));
 
-        UtilTool.getImage(context,((TextViewHolder)holder).ivHead,mDBRoomMember,mMdb,send);
+        UtilTool.getImage(context,((TextViewHolder)holder).ivHead,mDBRoomMember,mMdb,mDBPublicManage,send);
         /*Bitmap bitmap=UtilTool.getImage(mMdb, send, context);
         ((TextViewHolder) holder).ivHead.setImageBitmap(bitmap);*/
         ((TextViewHolder) holder).rlCache.setOnClickListener(new View.OnClickListener() {

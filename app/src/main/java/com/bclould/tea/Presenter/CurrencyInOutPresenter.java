@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
+import com.bclould.tea.model.base.BaseMapInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.activity.BankCardActivity;
 import com.bclould.tea.ui.activity.BankCardBindingActivity;
@@ -311,10 +312,49 @@ public class CurrencyInOutPresenter {
                 });
     }
 
+    public void coinNumber(int id, final CallBack1 callBack) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .coinNumber(UtilTool.getToken(), id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseMapInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull BaseMapInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1)
+                            callBack.send(baseInfo);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        callBack.error();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
     //定义接口
     public interface CallBack {
 
         void send(BaseInfo.DataBean data);
+
+        void error();
+    }
+
+    //定义接口
+    public interface CallBack1 {
+
+        void send(BaseMapInfo data);
 
         void error();
     }

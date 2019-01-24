@@ -227,7 +227,7 @@
     <string name="cancel_order">取消訂單</string>
     <string name="confirm_payment">確認付款</string>
     <string name="trading_hint">交易提示</string>
-    <string name="trading_hint2">1.場外交易中，買家的匯款將直接進入賣家賬號，交易過程中賣家出售的數字資產將由平台託管。\n2.請在規定時間內完成付款，並務必點擊“確認付款”，賣家確認收款後，系統會將數字資產劃轉至您的賬戶。\n3.請勿頻繁取消訂單，否則將導致限制交易。\n4.打款前請務必根據對方提供的電郵、手機號或者TopperChat聯繫賣家，以免出現賣家一直未放行訂單超時情況\n5.打款的時候可以把參考號發給賣家以便參看是哪筆交易</string>
+    <string name="trading_hint2">1.場外交易中，買家的匯款將直接進入賣家賬號，交易過程中賣家出售的數字資產將由平台託管。\n2.請在規定時間內完成付款，並務必點擊“確認付款”，賣家確認收款後，系統會將數字資產劃轉至您的賬戶。\n3.請勿頻繁取消訂單，否則將導致限制交易。\n4.打款前請務必根據對方提供的電郵、手機號或者TopperChat聯繫賣家，以免出現賣家一直未放行訂單超時情況\n5.打款的時候可以把參考號發給賣家以便參看是哪筆交易\n6.請勿在匯款時備註敏感文字，如區塊鏈，交易幣等信息</string>
     <string name="order">訂單</string>
     <string name="selector_coin">選擇幣種</string>
     <string name="push_ad">發佈廣告</string>

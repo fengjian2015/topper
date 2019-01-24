@@ -33,12 +33,13 @@ import com.bclould.tea.Presenter.FileDownloadPresenter;
 import com.bclould.tea.Presenter.GrabRedPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.SerMap;
 import com.bclould.tea.ui.activity.ChatLookLocationActivity;
-import com.bclould.tea.ui.activity.ConversationBurnActivity;
+import com.bclould.tea.ui.activity.ConversationPublicActivity;
 import com.bclould.tea.ui.activity.FileOpenActivity;
 import com.bclould.tea.ui.activity.GroupConfirmActivity;
 import com.bclould.tea.ui.activity.GuessDetailsActivity;
@@ -149,11 +150,12 @@ public class PublicAdapter extends RecyclerView.Adapter {
     private String mName;
     private RelativeLayout mrlTitle;
     private DBRoomMember mDBRoomMember;
+    private DBPublicManage mDBPublicManage;
     private RedDialog mRedDialog;
     private final GrabRedPresenter mGrabRedPresenter;
     ArrayList<String> mImageList = new ArrayList<>();
 
-    public PublicAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle, DBRoomMember mDBRoomMember) {
+    public PublicAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle, DBRoomMember mDBRoomMember, DBPublicManage dBPublicManage) {
         mContext = context;
         mMessageList = messageList;
         mMediaPlayer = mediaPlayer;
@@ -165,6 +167,7 @@ public class PublicAdapter extends RecyclerView.Adapter {
         mName = name;
         mrlTitle = rlTitle;
         this.mDBRoomMember = mDBRoomMember;
+        this.mDBPublicManage=dBPublicManage;
     }
 
     @Override
@@ -564,7 +567,7 @@ public class PublicAdapter extends RecyclerView.Adapter {
     }
 
     private void setNameAndUrl(ImageView mIvTouxiang, MessageInfo messageInfo, TextView tvName) {
-        UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember, mMgr, messageInfo.getSend());
+        UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember, mMgr,mDBPublicManage, messageInfo.getSend());
 
         if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
             String name = mMgr.queryRemark(messageInfo.getSend());
@@ -2610,7 +2613,7 @@ public class PublicAdapter extends RecyclerView.Adapter {
 
     public void playVoice(MediaPlayer mediaPlayer, String fileName, final AnimationDrawable anim, final int position) {
         try {
-            ((ConversationBurnActivity) mContext).isPlayVoi1ce(true);
+            ((ConversationPublicActivity) mContext).isPlayVoi1ce(true);
             if (mAnim != null) {
                 mAnim.selectDrawable(0);
                 mAnim.stop();
@@ -2622,7 +2625,7 @@ public class PublicAdapter extends RecyclerView.Adapter {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
-                    ((ConversationBurnActivity) mContext).isPlayVoi1ce(false);
+                    ((ConversationPublicActivity) mContext).isPlayVoi1ce(false);
                     mediaPlayer.reset();
                     anim.selectDrawable(0);
                     anim.stop();
@@ -2630,7 +2633,7 @@ public class PublicAdapter extends RecyclerView.Adapter {
                     notifyItemChanged(position);
                     for (int i = position; i < mMessageList.size(); i++) {
                         if (mMessageList.get(i).getMsgType() == FROM_VOICE_MSG && mMessageList.get(i).getVoiceStatus() != 1) {
-                            View view = ((ConversationBurnActivity) mContext).getItemView(i);
+                            View view = ((ConversationPublicActivity) mContext).getItemView(i);
                             if (view != null) {
                                 ImageView mIvAnim = view.findViewById(R.id.iv_anim);
                                 mAnim = (AnimationDrawable) mIvAnim.getBackground();
@@ -2675,11 +2678,11 @@ public class PublicAdapter extends RecyclerView.Adapter {
         @Override
         public void handleMessage(Message msg) {
             try {
-                ((ConversationBurnActivity) mContext).isPlayVoi1ce(true);
+                ((ConversationPublicActivity) mContext).isPlayVoi1ce(true);
                 mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
-                        ((ConversationBurnActivity) mContext).isPlayVoi1ce(false);
+                        ((ConversationPublicActivity) mContext).isPlayVoi1ce(false);
                         mediaPlayer.reset();
                         mAnim.selectDrawable(0);
                         mAnim.stop();
@@ -2687,7 +2690,7 @@ public class PublicAdapter extends RecyclerView.Adapter {
                         notifyItemChanged(voicePosition);
                         for (int i = voicePosition; i < mMessageList.size(); i++) {
                             if (mMessageList.get(i).getMsgType() == FROM_VOICE_MSG && mMessageList.get(i).getVoiceStatus() != 1) {
-                                View view = ((ConversationBurnActivity) mContext).getItemView(i);
+                                View view = ((ConversationPublicActivity) mContext).getItemView(i);
                                 if (view != null) {
                                     ImageView mIvAnim = view.findViewById(R.id.iv_anim);
                                     mAnim = (AnimationDrawable) mIvAnim.getBackground();
