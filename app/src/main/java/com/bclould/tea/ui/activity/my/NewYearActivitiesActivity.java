@@ -32,6 +32,7 @@ import com.bclould.tea.utils.UtilTool;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class NewYearActivitiesActivity extends BaseActivity {
 
@@ -229,4 +230,12 @@ public class NewYearActivitiesActivity extends BaseActivity {
             musicPlayer.stop();
     }
 
+    @OnClick({R.id.bark})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bark:
+                finish();
+                break;
+        }
+    }
 }

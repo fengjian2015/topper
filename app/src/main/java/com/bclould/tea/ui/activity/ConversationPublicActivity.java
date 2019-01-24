@@ -146,6 +146,7 @@ public class ConversationPublicActivity extends BaseActivity implements FuncLayo
     private int currentPosition;//記錄刷新位置
     private AudioModeManger audioModeManger;
     private DBPublicManage mDBPublicManage;
+    private boolean isFirstPublic=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -1013,12 +1014,25 @@ public class ConversationPublicActivity extends BaseActivity implements FuncLayo
                 goPublicDetail();
                 break;
             case R.id.rl_tanchuang:
-                showPublic();
+                Intent intent = new Intent(this, HTMLActivity.class);
+                intent.putExtra("html5Url", "http://fitoex.com:33324/index");
+                startActivity(intent);
                 break;
             case R.id.iv_2:
                 mRlActivity.setVisibility(View.GONE);
                 break;
 
+        }
+    }
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // TODO Auto-generated method stub
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus&&!isFirstPublic) {
+            isFirstPublic=true;
+            showPublic();
         }
     }
 

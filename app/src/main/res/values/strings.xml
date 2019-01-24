@@ -2416,4 +2416,5 @@
     <string name="gold_delivery">黄金大派送</string>
     <string name="click_receive">点击领取</string>
     <string name="new_year_content">您当前已推荐%1$s名用户，再邀请%2$s名用户，就可以领取%3$s黄金啦！</string>
+    <string name="rate_exchange">兑率</string>
 </resources>

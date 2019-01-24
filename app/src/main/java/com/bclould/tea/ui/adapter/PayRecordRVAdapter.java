@@ -83,6 +83,8 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
                         mContext.startActivity(new Intent(mContext, TaskRecordActivity.class));
                     }else if(mDataBean.getType_number() == 33){
                         mContext.startActivity(new Intent(mContext, ExchangeFRCActivity.class));
+                    }else if(mDataBean.getType_number() == 14||mDataBean.getType_number() == 15){
+                        return;
                     }else {
                         Intent intent = new Intent(mContext, PayDetailsActivity.class);
                         intent.putExtra("log_id", mDataBean.getLog_id() + "");

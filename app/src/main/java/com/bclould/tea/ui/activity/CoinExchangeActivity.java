@@ -27,7 +27,6 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.ExchangeOrderInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
@@ -40,8 +39,11 @@ import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +51,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.bclould.tea.Presenter.LoginPresenter.CURRENCY;
 import static com.bclould.tea.R.style.BottomDialog;
 
 /**
@@ -92,20 +93,37 @@ public class CoinExchangeActivity extends BaseActivity {
     ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
+    @Bind(R.id.refresh_layout)
+    SmartRefreshLayout mRefreshLayout;
+
     private CoinPresenter mCoinPresenter;
     private Dialog mBottomDialog;
     private CoinExchangeRVAdapter mCoinExchangeRVAdapter;
-    private String mPrice = "";
+
     private String mServiceCharge;
     private PWDDialog pwdDialog;
     private String logo;
+
+    private double cny_rate;
+    private double usd_rate;
+
+    List<CoinListInfo.DataBean> mCoinList = new ArrayList<>();
+    List<String> mCoin = new ArrayList<>();
+
+    int mPageSize = 10;
+    int mPage = 1;
+    List<ExchangeOrderInfo.DataBean.ListBean> mExchangeOrderList = new ArrayList<>();
+
+    private String mListCoinName;//请求列表的coinName
+
+    boolean isCheckBox = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_exchange);
         ButterKnife.bind(this);
-        setTitle(getString(R.string.lrwmzpm),getString(R.string.question));
+        setTitle(getString(R.string.lrwmzpm), getString(R.string.question));
         initListener();
         initRecylerView();
         initData();
@@ -114,87 +132,25 @@ public class CoinExchangeActivity extends BaseActivity {
             showDisclaimerDialog();
     }
 
-    boolean isCheckBox = false;
-
-    private void showDisclaimerDialog() {
-        if(!ActivityUtil.isActivityOnTop(this))return;
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_otc_disclaimer, this, R.style.dialog);
-        deleteCacheDialog.show();
-        final LinearLayout showHide = (LinearLayout) deleteCacheDialog.findViewById(R.id.ll_show_hide);
-        final CheckBox checkBox = (CheckBox) deleteCacheDialog.findViewById(R.id.check_box);
-        final Button roger = (Button) deleteCacheDialog.findViewById(R.id.btn_roger);
-        roger.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
-            }
-        });
-        showHide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isCheckBox = !isCheckBox;
-                checkBox.setChecked(isCheckBox);
-                MySharedPreferences.getInstance().setBoolean(Constants.EXCHANGE_DISCLAIMER, isCheckBox);
-            }
-        });
-    }
-
-    private void initListener() {
-        mEtCount.setFilters(new InputFilter[]{lengthFilter});
-        mEtCount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String counts = mEtCount.getText().toString();
-                if (counts != null && !counts.isEmpty() && mPrice != null && !mPrice.isEmpty()) {
-                    double count = Double.parseDouble(counts);
-                    double price = Double.parseDouble(mPrice);
-                    DecimalFormat df = new DecimalFormat("0.000000");
-                    String sum = df.format(count * price);
-                    mTvPrice.setText(UtilTool.removeZero(sum));
-                } else {
-                    mTvPrice.setText(mPrice);
-                }
-            }
-        });
-    }
-
-    private InputFilter lengthFilter = new InputFilter() {
-
-        @Override
-        public CharSequence filter(CharSequence source, int start, int end,
-                                   Spanned dest, int dstart, int dend) {
-            // source:当前输入的字符
-            // start:输入字符的开始位置
-            // end:输入字符的结束位置
-            // dest：当前已显示的内容
-            // dstart:当前光标开始位置
-            // dent:当前光标结束位置
-            if (dest.length() == 0 && source.equals(".")) {
-                return "0.";
-            }
-            String dValue = dest.toString();
-            String[] splitArray = dValue.split("\\.");
-            if (splitArray.length > 1) {
-                String dotValue = splitArray[1];
-                if (dotValue.length() == 2) {
-                    return "";
-                }
-            }
-            return null;
-        }
-
-    };
-
     private void initRecylerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mCoinExchangeRVAdapter = new CoinExchangeRVAdapter(this, mExchangeOrderList);
+        mRecyclerView.setAdapter(mCoinExchangeRVAdapter);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRefreshLayout.setEnableLoadMore(false);
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                initListData(true);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                initListData(false);
+            }
+        });
         mCoinExchangeRVAdapter = new CoinExchangeRVAdapter(this, mExchangeOrderList);
         mRecyclerView.setAdapter(mCoinExchangeRVAdapter);
     }
@@ -204,31 +160,39 @@ public class CoinExchangeActivity extends BaseActivity {
         initCoin();
     }
 
-    private void initPrice(String name) {
-        mCoinPresenter.getCoinPrice(name, new CoinPresenter.CallBack2() {
+    private void initListData(final boolean isRefresh) {
+        int p = 1;
+        if (isRefresh) {
+            p = 1;
+        } else {
+            p = mPage + 1;
+        }
+        mCoinPresenter.exchangeOrder("USDT", mListCoinName, p, mPageSize, new CoinPresenter.CallBack3() {
             @Override
-            public void send(BaseInfo.DataBean data) {
-                if (!CoinExchangeActivity.this.isDestroyed()) {
-                    if (data.getUSDT() != null && data.getRate() != null && data.getTrend() != null) {
-                        if (!data.getUSDT().isEmpty() && !data.getRate().isEmpty() && !data.getTrend().isEmpty()) {
-                            mRlData.setVisibility(View.VISIBLE);
-                            mLlError.setVisibility(View.GONE);
-                            double usdt = Double.parseDouble(data.getUSDT());
-                            double cny = Double.parseDouble(data.getRate());
-                            DecimalFormat df = new DecimalFormat("#.00");
-                            String price = df.format(cny * usdt);
-                            mTvPrice.setText(data.getUSDT());
-                            mPrice = mTvPrice.getText().toString();
-                            mTvCny.setText("≈ " + price + " " + MySharedPreferences.getInstance().getString(CURRENCY));
-                            if (data.getTrend().contains("-")) {
-                                mBtnFloat.setText(data.getTrend() + "%↓");
-                            } else {
-                                mBtnFloat.setText(data.getTrend() + "%↑");
-                            }
-                        }
+            public void send(ExchangeOrderInfo.DataBean data) {
+                if (data==null)return;
+                if (ActivityUtil.isActivityOnTop(CoinExchangeActivity.this)) {
+                    if (data.getOrders().size() == mPageSize) {
+                        mRefreshLayout.setEnableLoadMore(true);
+                    } else {
+                        mRefreshLayout.setEnableLoadMore(false);
                     }
+                    resetRefresh(isRefresh);
+                    if (isRefresh) {
+                        mPage = 1;
+                        mExchangeOrderList.clear();
+                    } else {
+                        mPage++;
+                    }
+                    mRlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
+                    mExchangeOrderList.addAll(data.getOrders());
+                    mCoinExchangeRVAdapter.notifyDataSetChanged();
+                    cny_rate = UtilTool.parseDouble(data.getCny_rate());
+                    usd_rate = UtilTool.parseDouble(data.getUsd_rate());
+                    mBtnFloat.setText("1:" + usd_rate);
+                    setRate(0);
                 }
-
             }
 
             @Override
@@ -236,44 +200,18 @@ public class CoinExchangeActivity extends BaseActivity {
                 if (ActivityUtil.isActivityOnTop(CoinExchangeActivity.this)) {
                     mRlData.setVisibility(View.GONE);
                     mLlError.setVisibility(View.VISIBLE);
+                    resetRefresh(isRefresh);
                 }
             }
         });
     }
-
-    int mPageSize = 100;
-    int mPage_id = 0;
-    List<ExchangeOrderInfo.DataBean> mExchangeOrderList = new ArrayList<>();
-
-    private void initListData(String name) {
-        mExchangeOrderList.clear();
-        mCoinPresenter.exchangeOrder("USDT", name, mPage_id, mPageSize, new CoinPresenter.CallBack3() {
-            @Override
-            public void send(List<ExchangeOrderInfo.DataBean> data) {
-
-                mExchangeOrderList.addAll(data);
-                mCoinExchangeRVAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void error() {
-                if (ActivityUtil.isActivityOnTop(CoinExchangeActivity.this)) {
-                    mRlData.setVisibility(View.GONE);
-                    mLlError.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-    }
-
-    List<CoinListInfo.DataBean> mCoinList = new ArrayList<>();
-    List<String> mCoin = new ArrayList<>();
 
     private void initCoin() {
         mCoinList.clear();
         mCoinPresenter.coinLists("exchange", new CoinPresenter.CallBack() {
             @Override
             public void send(List<CoinListInfo.DataBean> data) {
-                if (!CoinExchangeActivity.this.isDestroyed()) {
+                if (ActivityUtil.isActivityOnTop(CoinExchangeActivity.this)) {
                     if (data.size() != 0) {
                         mCoinList.addAll(data);
                         mCoin.add(data.get(0).getName());
@@ -282,8 +220,8 @@ public class CoinExchangeActivity extends BaseActivity {
                         mTvCoin.setText(data.get(0).getName());
                         Glide.with(CoinExchangeActivity.this).load(data.get(0).getLogo()).into(mIvLogo);
                         mTvExchange.setText(data.get(0).getName() + "/" + getString(R.string.usdt));
-                        initPrice(data.get(0).getName());
-                        initListData(data.get(0).getName());
+                        mListCoinName=data.get(0).getName();
+                        initListData(true);
                     }
                 }
             }
@@ -321,6 +259,21 @@ public class CoinExchangeActivity extends BaseActivity {
         }
     }
 
+    private void resetRefresh(boolean isRefresh) {
+        if (isRefresh) {
+            mRefreshLayout.finishRefresh();
+        } else {
+            mRefreshLayout.finishLoadMore();
+        }
+    }
+
+    private void setRate(double money) {
+        double usdt = money * usd_rate;
+        double cny = money * cny_rate;
+        mTvPrice.setText(UtilTool.changeMoney(usdt));
+        mTvCny.setText(UtilTool.changeMoney(cny));
+    }
+
     private void showPWDialog() {
         pwdDialog = new PWDDialog(this);
         pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
@@ -331,7 +284,7 @@ public class CoinExchangeActivity extends BaseActivity {
         });
         String coins = mTvCoin.getText().toString();
         String count = mEtCount.getText().toString();
-        pwdDialog.showDialog(count, coins, coins + getString(R.string.exchange) + getString(R.string.usdt), logo, getString(R.string.service_fee_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
+        pwdDialog.showDialog(count, coins, coins + getString(R.string.exchange) + getString(R.string.usdt), logo, null);
     }
 
     private void exchange(String password) {
@@ -341,7 +294,7 @@ public class CoinExchangeActivity extends BaseActivity {
         mCoinPresenter.exchange(price, count, "USDT", coin, password, new CoinPresenter.CallBack4() {
             @Override
             public void send() {
-                if (CoinExchangeActivity.this.isDestroyed()) {
+                if (ActivityUtil.isActivityOnTop(CoinExchangeActivity.this)) {
                     String remain = "";
                     for (CoinListInfo.DataBean info : mCoinList) {
                         if (info.getName().equals(coin)) {
@@ -351,7 +304,8 @@ public class CoinExchangeActivity extends BaseActivity {
                     }
                     mTvRemain.setText(remain);
                     mEtCount.setText("");
-                    initListData(mCoin.get(0));
+                    mListCoinName=mCoin.get(0);
+                    initListData(true);
                 }
             }
 
@@ -418,15 +372,85 @@ public class CoinExchangeActivity extends BaseActivity {
 
     public void hideDialog(String name, int id, String logo, String coin_over, String serviceCharge) {
         this.logo = logo;
+        mListCoinName=name;
         mCoin.clear();
         mCoin.add(name);
-        initListData(name);
         mBottomDialog.dismiss();
         mTvCoin.setText(name);
         mTvRemain.setText(getString(R.string.dqky) + coin_over + " " + name);
         Glide.with(CoinExchangeActivity.this).load(logo).into(mIvLogo);
         mTvExchange.setText(name + "/" + getString(R.string.usdt));
         mServiceCharge = serviceCharge;
-        initPrice(name);
+        initListData(true);
     }
+
+
+    private void showDisclaimerDialog() {
+        if (!ActivityUtil.isActivityOnTop(this)) return;
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_otc_disclaimer, this, R.style.dialog);
+        deleteCacheDialog.show();
+        final LinearLayout showHide = (LinearLayout) deleteCacheDialog.findViewById(R.id.ll_show_hide);
+        final CheckBox checkBox = (CheckBox) deleteCacheDialog.findViewById(R.id.check_box);
+        final Button roger = (Button) deleteCacheDialog.findViewById(R.id.btn_roger);
+        roger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        showHide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCheckBox = !isCheckBox;
+                checkBox.setChecked(isCheckBox);
+                MySharedPreferences.getInstance().setBoolean(Constants.EXCHANGE_DISCLAIMER, isCheckBox);
+            }
+        });
+    }
+
+    private void initListener() {
+        mEtCount.setFilters(new InputFilter[]{lengthFilter});
+        mEtCount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String counts = mEtCount.getText().toString();
+                setRate(UtilTool.parseDouble(counts));
+            }
+        });
+    }
+
+    private InputFilter lengthFilter = new InputFilter() {
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            // source:当前输入的字符
+            // start:输入字符的开始位置
+            // end:输入字符的结束位置
+            // dest：当前已显示的内容
+            // dstart:当前光标开始位置
+            // dent:当前光标结束位置
+            if (dest.length() == 0 && source.equals(".")) {
+                return "0.";
+            }
+            String dValue = dest.toString();
+            String[] splitArray = dValue.split("\\.");
+            if (splitArray.length > 1) {
+                String dotValue = splitArray[1];
+                if (dotValue.length() == 2) {
+                    return "";
+                }
+            }
+            return null;
+        }
+
+    };
 }

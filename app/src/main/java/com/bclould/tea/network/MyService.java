@@ -766,7 +766,7 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("market_coin_name") String market_coin_name,
             @Field("trade_coin_name") String trade_coin_name,
-            @Field("page_id") int page_id,
+            @Field("page") int page,
             @Field("page_size") int page_size
     );
 

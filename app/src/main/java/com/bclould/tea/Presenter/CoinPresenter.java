@@ -308,7 +308,7 @@ public class CoinPresenter {
 
     //定义接口
     public interface CallBack3 {
-        void send(List<ExchangeOrderInfo.DataBean> data);
+        void send(ExchangeOrderInfo.DataBean data);
 
         void error();
     }

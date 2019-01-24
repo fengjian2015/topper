@@ -22,10 +22,10 @@ import butterknife.ButterKnife;
 
 public class CoinExchangeRVAdapter extends RecyclerView.Adapter {
 
-    private final List<ExchangeOrderInfo.DataBean> mDataList;
+    private final List<ExchangeOrderInfo.DataBean.ListBean> mDataList;
     private final Context mContext;
 
-    public CoinExchangeRVAdapter(Context context, List<ExchangeOrderInfo.DataBean> dataList) {
+    public CoinExchangeRVAdapter(Context context, List<ExchangeOrderInfo.DataBean.ListBean> dataList) {
         mDataList = dataList;
         mContext = context;
     }
@@ -65,13 +65,13 @@ public class CoinExchangeRVAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
 
-        public void setData(ExchangeOrderInfo.DataBean dataBean) {
+        public void setData(ExchangeOrderInfo.DataBean.ListBean dataBean) {
             mTvName.setText(mContext.getString(R.string.exchange));
-            mTvType.setText(mContext.getString(R.string.count) + " - " + dataBean.getNumber() + " | " + mContext.getString(R.string.price) +" - " + dataBean.getPrice());
-            double sum = Double.parseDouble(dataBean.getNumber()) * Double.parseDouble(dataBean.getPrice());
-            DecimalFormat df = new DecimalFormat("#.##");
-            String str = df.format(sum);
-            mTvMoney.setText(str + " USDT");
+            mTvType.setText(mContext.getString(R.string.count) + " : " + dataBean.getNumber() + " | " + mContext.getString(R.string.rate_exchange) +" : " + dataBean.getRate());
+//            double sum = Double.parseDouble(dataBean.getNumber()) * Double.parseDouble(dataBean.getPrice());
+//            DecimalFormat df = new DecimalFormat("#.##");
+//            String str = df.format(sum);
+            mTvMoney.setText(dataBean.getPrice() + " USDT");
             mTvTime.setText(dataBean.getCreated_at());
         }
     }

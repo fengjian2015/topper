@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg_color"
     android:orientation="vertical">
+
     <include
         android:id="@+id/rl_title"
-        layout="@layout/activity_top"/>
+        layout="@layout/activity_top" />
 
     <RelativeLayout
         android:id="@+id/rl_data"
@@ -31,7 +31,7 @@
                 style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x30"/>
+                android:layout_marginLeft="@dimen/x30" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                     android:paddingLeft="@dimen/x20"
                     android:paddingRight="@dimen/x20"
                     android:singleLine="true"
-                    android:textColorHint="@color/secondary_text_color"/>
+                    android:textColorHint="@color/secondary_text_color" />
 
 
                 <LinearLayout
@@ -69,14 +69,14 @@
                     <ImageView
                         android:id="@+id/iv_logo"
                         android:layout_width="@dimen/x60"
-                        android:layout_height="@dimen/x60"/>
+                        android:layout_height="@dimen/x60" />
 
                     <TextView
                         android:id="@+id/tv_coin"
                         style="@style/MainTextShallowStyle30"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/x10"/>
+                        android:layout_marginLeft="@dimen/x10" />
 
                 </LinearLayout>
 
@@ -87,8 +87,8 @@
                 style="@style/SecondaryTextStyle24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y10"
-                android:layout_marginLeft="@dimen/x30"/>
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginTop="@dimen/y10" />
 
 
             <RelativeLayout
@@ -106,7 +106,7 @@
                     style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true" />
 
                 <Button
                     android:id="@+id/btn_float"
@@ -116,7 +116,7 @@
                     android:layout_centerVertical="true"
                     android:background="@drawable/bg_green_shape3"
                     android:textColor="@color/white"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
@@ -127,7 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x30"
-                android:layout_marginTop="@dimen/y10"/>
+                android:layout_marginTop="@dimen/y10" />
 
             <Button
                 android:id="@+id/btn_exchange"
@@ -138,7 +138,7 @@
                 android:layout_marginBottom="@dimen/y10"
                 android:layout_marginTop="@dimen/y30"
                 android:text="@string/confirm_exchange"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false" />
 
         </LinearLayout>
 
@@ -149,18 +149,28 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_exchange"
             android:layout_marginLeft="@dimen/x30"
-            android:text="@string/exchange_record"/>
+            android:text="@string/exchange_record" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/tv"
-            android:layout_marginTop="@dimen/y10"
-            android:background="@drawable/bg_pay_record_shape"
-            android:paddingLeft="@dimen/x50"
-            android:paddingRight="@dimen/x50">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_below="@+id/tv">
+
+            <com.scwang.smartrefresh.header.WaterDropHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tv"
+                android:layout_marginTop="@dimen/y10"
+                android:background="@drawable/bg_pay_record_shape"
+                android:paddingLeft="@dimen/x50"
+                android:paddingRight="@dimen/x50"></android.support.v7.widget.RecyclerView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     </RelativeLayout>
 
@@ -178,14 +188,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@mipmap/img_wrong"/>
+            android:src="@mipmap/img_wrong" />
 
         <TextView
             style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y50"
-            android:text="@string/loading_error_anew_loading_hint2"/>
+            android:text="@string/loading_error_anew_loading_hint2" />
 
     </LinearLayout>
 
