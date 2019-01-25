@@ -2428,4 +2428,11 @@ Please reset encryption request</string>
     <string name="installation_failed"> installation failed </string>
     <string name="application_calls"> application to make a call </string>
     <string name="application_calls_failure">Failed to get the application to make a call </string>
+    <string name="email_mobile_verification">Email/Mobile Verification</string>
+    <string name="please_upgrade_latest_version">The other version is too low, please upgrade to the latest version </string>
+    <string name="day1">day </string>
+    <string name="gold_delivery">Gold big delivery </string>
+    <string name="click_receive">click to receive </string>
+    <string name="new_year_content">You have already recommended %1$s users, and then invite %2$s users to receive %3$s gold! </string>
+    <string name="rate_exchange"> rate </string>
 </resources>

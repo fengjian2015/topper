@@ -1316,4 +1316,11 @@
     <string name="installation_failed">安裝失敗</string>
     <string name="application_calls">應用程序撥打電話</string>
     <string name="application_calls_failure">獲取應用程序撥打電話權限失敗</string>
+    <string name="email_mobile_verification">電郵/手機驗證</string>
+    <string name="please_upgrade_latest_version">對方版本過低，請先升級到最新版本</string>
+    <string name="day1">天</string>
+    <string name="gold_delivery">黃金大派送</string>
+    <string name="click_receive">點擊領取</string>
+    <string name="new_year_content">您當前已推薦%1$s名用戶，再邀請%2$s名用戶，就可以領取%3$s黃金啦！ </string>
+    <string name="rate_exchange">兌率</string>
 </resources>

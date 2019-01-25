@@ -25,6 +25,7 @@ import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.previewlibrary.ZoomMediaLoader;
+import com.umeng.commonsdk.UMConfigure;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -80,6 +81,9 @@ public class MyApp extends Application {
         RoomMemberManage.getInstance().setContext(this);
 
         AlipayClient.getInstance().init(this);
+
+        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null);
+        UMConfigure.setLogEnabled(true);
     }
 
 
