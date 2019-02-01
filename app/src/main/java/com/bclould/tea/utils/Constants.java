@@ -8,7 +8,7 @@ package com.bclould.tea.utils;
 public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOPPERCHAT";
     public static final int BET_ARR_COUNT = 4;
-    public static final boolean isDebug = true;
+    public static final boolean isDebug = false;
 //    public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";
     public static final String BASE_URL = isDebug ? "http://www.bclould.com:8191/" : "http://api.ftcep.com:33324/";
     public static final String NEW_BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "http://api.ftcep.com:33324/";
