@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/app_bg_color"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg_color"
+    android:orientation="vertical">
     <include
         android:id="@+id/rl_title"
         layout="@layout/activity_top"/>
@@ -34,16 +34,32 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_url"
-        style="@style/MainTextShallowStyle30"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_toRightOf="@+id/tv2"
-        android:textColor="@color/btn_bg_color"/>
-
+        >
+        <TextView
+            android:id="@+id/tv_url"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/tv2"
+            android:textColor="@color/btn_bg_color"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/tv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MainTextShallowStyle30"
+            android:layout_toRightOf="@+id/tv_url"
+            android:textColor="@color/btn_bg_color"
+            android:text="@string/share"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            />
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

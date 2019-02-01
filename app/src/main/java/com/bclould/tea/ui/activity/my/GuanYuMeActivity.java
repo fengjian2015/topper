@@ -59,7 +59,7 @@ public class GuanYuMeActivity extends BaseActivity {
         mTvLog.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
         mTvEmail.setText(Constants.CUSTOMER_SERVICE_EMAIL);
     }
-    @OnClick({R.id.bark, R.id.tv_url, R.id.btn_check_update, R.id.tv_log})
+    @OnClick({R.id.bark, R.id.tv_url, R.id.btn_check_update, R.id.tv_log,R.id.tv_share})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -75,6 +75,9 @@ public class GuanYuMeActivity extends BaseActivity {
                 break;
             case R.id.tv_log:
                 startActivity(new Intent(this, UpdateLogActivity.class));
+                break;
+            case R.id.tv_share:
+                startActivity(new Intent(this, AboutShareActivity.class));
                 break;
         }
     }

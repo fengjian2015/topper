@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg_color"
+    tools:context=".ui.activity.my.AboutShareActivity">
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/activity_top"/>
+    <RelativeLayout
+        android:id="@+id/rl_qr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_title"
+        android:background="@mipmap/icon_about_share_background">
+        <RelativeLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y420"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/qr_code_iv"
+                android:layout_width="@dimen/x250"
+                android:layout_height="@dimen/y250"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:src="@mipmap/qr_code1"/>
+
+            <ImageView
+                android:id="@+id/touxiang"
+                android:layout_width="@dimen/x60"
+                android:layout_height="@dimen/x60"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/img_nfriend_headshot1"/>
+
+        </RelativeLayout>
+        <Button
+            android:id="@+id/bt_share"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y100"
+            style="@style/LongBtnStyle"
+            android:background="@drawable/bg_red_shape"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/y60"
+            android:textColor="@color/white"
+            android:text="@string/share_now"
+            android:textSize="@dimen/x32"/>
+    </RelativeLayout>
+</RelativeLayout>

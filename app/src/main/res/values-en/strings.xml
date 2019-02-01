@@ -2435,4 +2435,6 @@ Please reset encryption request</string>
     <string name="click_receive">click to receive </string>
     <string name="new_year_content">You have already recommended %1$s users, and then invite %2$s users to receive %3$s gold! </string>
     <string name="rate_exchange"> rate </string>
+    <string name="share_to_friend">Share to friends</string>
+    <string name="share_now">Share now</string>
 </resources>

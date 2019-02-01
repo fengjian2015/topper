@@ -2409,7 +2409,6 @@
     <string name="installation_failed">安装失败</string>
     <string name="application_calls">应用程序拨打电话</string>
     <string name="application_calls_failure">获取应用程序拨打电话权限失败</string>
-
     <string name="email_mobile_verification">电邮/手机验证</string>
     <string name="please_upgrade_latest_version">对方版本过低，请先升级到最新版本</string>
     <string name="day1">天</string>
@@ -2417,4 +2416,8 @@
     <string name="click_receive">点击领取</string>
     <string name="new_year_content">您当前已推荐%1$s名用户，再邀请%2$s名用户，就可以领取%3$s黄金啦！</string>
     <string name="rate_exchange">兑率</string>
+    <string name="share_to_friend">分享给好友</string>
+    <string name="share_now">立即分享</string>
+
+    <string name="share_to_top_chat">分享到顶聊</string>
 </resources>

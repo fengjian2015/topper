@@ -9,7 +9,7 @@ public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOPPERCHAT";
     public static final int BET_ARR_COUNT = 4;
     public static final boolean isDebug = false;
-//    public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";
+    //    public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";
     public static final String BASE_URL = isDebug ? "http://www.bclould.com:8191/" : "http://api.ftcep.com:33324/";
     public static final String NEW_BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "http://api.ftcep.com:33324/";
     public static final String DOMAINNAME3 = isDebug ? "wss://39.105.50.169:8179/toco_server": "ws://39.105.50.169:2087/toco_server";
@@ -19,6 +19,8 @@ public class Constants {
 
     public static final String ORC_AK = isDebug ? "eNRbHUkGgFWlY89XGHsiQ36X" : "s6coTxHIryO2whcVmkkfwCSf";
     public static final String ORC_SK = isDebug ? "dob8UR9rhU8G6iIB5T16YrAiNyYbPZbG" : "TGMfYGkWvglX5KSzB9DgxKCbBFy0MYDz";
+    //关于我们分享二维码链接
+    public static final String ABOUT_SHARE=isDebug ? "http://www.bclould.com:8191/web/signUp?" :"http://api.ftcep.com:33324/web/signUp?";
 
     public static final String CHUANCODE = "爨^(&";
     public static final String REDBAG = "[redBag]";

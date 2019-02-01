@@ -1323,4 +1323,6 @@
     <string name="click_receive">點擊領取</string>
     <string name="new_year_content">您當前已推薦%1$s名用戶，再邀請%2$s名用戶，就可以領取%3$s黃金啦！ </string>
     <string name="rate_exchange">兌率</string>
+    <string name="share_to_friend">分享給好友</string>
+    <string name="share_now">立即分享</string>
 </resources>

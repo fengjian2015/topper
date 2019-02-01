@@ -241,7 +241,7 @@ public class UtilTool {
         return formatter.format(curDate);
     }
 
-    public static String getDate(String time,String timeformatter) {
+    public static String getDate(String time, String timeformatter) {
         //获取当前时间
         SimpleDateFormat formatter = new SimpleDateFormat(timeformatter);
         Date curDate = new Date(parseLong(time));
@@ -250,44 +250,45 @@ public class UtilTool {
 
     /**
      * 获取剩余天时秒分
+     *
      * @param time 秒
      * @return
      */
-    public static String getDateRemaining(long time){
+    public static String getDateRemaining(long time) {
         try {
-            long day=time/(24*60*60);
-            long hour=(time/(60*60)-day*24);
-            long min=((time/(60))-day*24*60-hour*60);
-            long s=(time-day*24*60*60-hour*60*60-min*60);
+            long day = time / (24 * 60 * 60);
+            long hour = (time / (60 * 60) - day * 24);
+            long min = ((time / (60)) - day * 24 * 60 - hour * 60);
+            long s = (time - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
 
             String newday;
             String newhour;
             String newmin;
             String news;
-            if(day<10){
-                newday="0"+day;
-            }else{
-                newday=day+"";
+            if (day < 10) {
+                newday = "0" + day;
+            } else {
+                newday = day + "";
             }
-            if(hour<10){
-                newhour="0"+hour;
-            }else{
-                newhour=hour+"";
+            if (hour < 10) {
+                newhour = "0" + hour;
+            } else {
+                newhour = hour + "";
             }
-            if(min<10){
-                newmin="0"+min;
-            }else{
-                newmin=min+"";
+            if (min < 10) {
+                newmin = "0" + min;
+            } else {
+                newmin = min + "";
             }
-            if(s<10){
-                news="0"+s;
-            }else{
-                news=s+"";
+            if (s < 10) {
+                news = "0" + s;
+            } else {
+                news = s + "";
             }
 
 
-            return newday+":"+newhour+":"+newmin+":"+news;
-        }catch (Exception e){
+            return newday + ":" + newhour + ":" + newmin + ":" + news;
+        } catch (Exception e) {
             return "00:00:00:00";
         }
 
@@ -1004,6 +1005,61 @@ public class UtilTool {
         }
         return str2;
 
+    }
+
+    public static String stringToJSON(String strJson) {
+        // 计数tab的个数
+        int tabNum = 0;
+        StringBuffer jsonFormat = new StringBuffer();
+        int length = strJson.length();
+        char last = 0;
+        for (int i = 0; i < length; i++) {
+            char c = strJson.charAt(i);
+            if (c == '{') {
+                tabNum++;
+                jsonFormat.append(c + "\n");
+                jsonFormat.append(getSpaceOrTab(tabNum));
+            } else if (c == '}') {
+                tabNum--;
+                jsonFormat.append("\n");
+                jsonFormat.append(getSpaceOrTab(tabNum));
+                jsonFormat.append(c);
+            } else if (c == ',') {
+                jsonFormat.append(c + "\n");
+                jsonFormat.append(getSpaceOrTab(tabNum));
+            } else if (c == ':') {
+                jsonFormat.append(c + " ");
+            } else if (c == '[') {
+                tabNum++;
+                char next = strJson.charAt(i + 1);
+                if (next == ']') {
+                    jsonFormat.append(c);
+                } else {
+                    jsonFormat.append(c + "\n");
+                    jsonFormat.append(getSpaceOrTab(tabNum));
+                }
+            } else if (c == ']') {
+                tabNum--;
+                if (last == '[') {
+                    jsonFormat.append(c);
+                } else {
+                    jsonFormat.append("\n" + getSpaceOrTab(tabNum) + c);
+                }
+            } else {
+                jsonFormat.append(c);
+            }
+            last = c;
+        }
+        return jsonFormat.toString();
+    }
+
+
+    private static String getSpaceOrTab(int tabNum) {
+        StringBuffer sbTab = new StringBuffer();
+        for (int i = 0; i < tabNum; i++) {
+            sbTab.append('\t');
+        }
+        return sbTab.toString();
     }
 
     public static String base64PetToJson(String prefix, HashMap hashMap) {
@@ -2065,8 +2121,8 @@ public class UtilTool {
         }
     }
 
-    public static int getRandom(int startNum,int endNum){
-        if(endNum > startNum){
+    public static int getRandom(int startNum, int endNum) {
+        if (endNum > startNum) {
             Random random = new Random();
             return random.nextInt(endNum - startNum) + startNum;
         }
