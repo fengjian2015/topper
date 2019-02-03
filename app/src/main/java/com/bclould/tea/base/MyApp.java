@@ -84,6 +84,8 @@ public class MyApp extends Application {
 
         UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null);
         UMConfigure.setLogEnabled(true);
+
+        onLanguageChange();
     }
 
 

@@ -21,6 +21,7 @@ public class AppLanguageUtils {
         put(Constants.SIMPLIFIED_CHINESE, Locale.SIMPLIFIED_CHINESE);
         put(Constants.TRADITIONAL_CHINESE, Locale.TRADITIONAL_CHINESE);
         put(Constants.ENGLISH, Locale.ENGLISH);
+        put(Constants.KO_RKR, Locale.KOREA);
     }};
 
     @SuppressWarnings("deprecation")
@@ -37,6 +38,8 @@ public class AppLanguageUtils {
                 locale = Locale.TRADITIONAL_CHINESE;
             } else if (newLanguage.equals("en")) {
                 locale = Locale.ENGLISH;
+            } else if ("ko-rKR".equals(newLanguage)) {
+                locale = Locale.KOREA;
             } else {
                 locale = Locale.SIMPLIFIED_CHINESE;
             }
@@ -107,6 +110,8 @@ public class AppLanguageUtils {
             locale = Locale.TRADITIONAL_CHINESE;
         } else if (language.equals("en")) {
             locale = Locale.ENGLISH;
+        } else if (language.equals("ko-rKR")) {
+            locale = Locale.KOREAN;
         } else {
             locale = new Locale(MySharedPreferences.getInstance().getString(Constants.LANGUAGE), MySharedPreferences.getInstance().getString(Constants.COUNTRY));
         }

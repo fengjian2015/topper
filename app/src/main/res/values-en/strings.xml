@@ -2316,7 +2316,7 @@ Please reset encryption request</string>
     <string name="return1">back>></string>
     <string name="up_one_level">upper level</string>
     <string name="level_Down">Next level</string>
-    <string name="total_revenue">total revenue (FTC) </string>
+    <string name="total_revenue">total revenue</string>
     <string name="current_level">current level </string>
     <string name="total_performance"> total performance </string>
     <string name="node_revenue">node revenue </string>
@@ -2437,4 +2437,6 @@ Please reset encryption request</string>
     <string name="rate_exchange"> rate </string>
     <string name="share_to_friend">Share to friends</string>
     <string name="share_now">Share now</string>
+    <string name="share_to_top_chat">Share to top chat</string>
+    <string name="korean">한국어</string>
 </resources>

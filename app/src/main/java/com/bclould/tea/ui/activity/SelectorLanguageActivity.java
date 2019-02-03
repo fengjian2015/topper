@@ -8,13 +8,16 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
+
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
+
 import java.util.Locale;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,6 +45,10 @@ public class SelectorLanguageActivity extends BaseActivity {
     CheckBox mCbEnglish;
     @Bind(R.id.rl_english)
     RelativeLayout mRlEnglish;
+    @Bind(R.id.cb_korean)
+    CheckBox mCbKorean;
+    @Bind(R.id.rl_korean)
+    RelativeLayout rlKorean;
     private String mLanguageKind = "";
 
     @Override
@@ -49,7 +56,7 @@ public class SelectorLanguageActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selector_language);
         ButterKnife.bind(this);
-        setTitle(getString(R.string.language),getString(R.string.save));
+        setTitle(getString(R.string.language), getString(R.string.save));
         MySharedPreferences.getInstance().getSp().registerOnSharedPreferenceChangeListener(mPreferenceChangeListener);
         init();
     }
@@ -63,26 +70,36 @@ public class SelectorLanguageActivity extends BaseActivity {
             mCbSimplified.setChecked(false);
             mCbTraditional.setChecked(false);
             mCbEnglish.setChecked(false);
+            mCbKorean.setChecked(false);
         } else if ("zh-cn".equals(mLanguageKind)) {
             mCbSystem.setChecked(false);
             mCbSimplified.setChecked(true);
             mCbTraditional.setChecked(false);
             mCbEnglish.setChecked(false);
+            mCbKorean.setChecked(false);
         } else if ("zh-hk".equals(mLanguageKind)) {
             mCbSystem.setChecked(false);
             mCbSimplified.setChecked(false);
             mCbTraditional.setChecked(true);
             mCbEnglish.setChecked(false);
+            mCbKorean.setChecked(false);
         } else if ("en".equals(mLanguageKind)) {
             mCbSystem.setChecked(false);
             mCbSimplified.setChecked(false);
             mCbTraditional.setChecked(false);
             mCbEnglish.setChecked(true);
+            mCbKorean.setChecked(false);
+        } else if ("ko-rKR".equals(mLanguageKind)) {
+            mCbSystem.setChecked(false);
+            mCbSimplified.setChecked(false);
+            mCbTraditional.setChecked(false);
+            mCbEnglish.setChecked(false);
+            mCbKorean.setChecked(true);
         }
     }
 
 
-    @OnClick({R.id.bark, R.id.rl_follow_system, R.id.rl_simplified_chinese, R.id.rl_chinese_traditional, R.id.rl_english, R.id.tv_add})
+    @OnClick({R.id.bark, R.id.rl_follow_system, R.id.rl_simplified_chinese, R.id.rl_chinese_traditional, R.id.rl_english, R.id.tv_add,R.id.rl_korean})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -97,6 +114,7 @@ public class SelectorLanguageActivity extends BaseActivity {
                 mCbSimplified.setChecked(false);
                 mCbTraditional.setChecked(false);
                 mCbEnglish.setChecked(false);
+                mCbKorean.setChecked(false);
                 break;
             case R.id.rl_simplified_chinese:
                 mLanguageKind = "zh-cn";
@@ -104,6 +122,7 @@ public class SelectorLanguageActivity extends BaseActivity {
                 mCbSimplified.setChecked(true);
                 mCbTraditional.setChecked(false);
                 mCbEnglish.setChecked(false);
+                mCbKorean.setChecked(false);
                 break;
             case R.id.rl_chinese_traditional:
                 mLanguageKind = "zh-hk";
@@ -111,6 +130,7 @@ public class SelectorLanguageActivity extends BaseActivity {
                 mCbSimplified.setChecked(false);
                 mCbTraditional.setChecked(true);
                 mCbEnglish.setChecked(false);
+                mCbKorean.setChecked(false);
                 break;
             case R.id.rl_english:
                 mLanguageKind = "en";
@@ -118,6 +138,15 @@ public class SelectorLanguageActivity extends BaseActivity {
                 mCbSimplified.setChecked(false);
                 mCbTraditional.setChecked(false);
                 mCbEnglish.setChecked(true);
+                mCbKorean.setChecked(false);
+                break;
+            case R.id.rl_korean:
+                mLanguageKind = "ko-rKR";
+                mCbSystem.setChecked(false);
+                mCbSimplified.setChecked(false);
+                mCbTraditional.setChecked(false);
+                mCbEnglish.setChecked(false);
+                mCbKorean.setChecked(true);
                 break;
         }
     }

@@ -1880,7 +1880,9 @@ public class UtilTool {
             language = "zh-cn";
         } else if (languageKind.equals("en")) {
             language = "en";
-        } else if (languageKind.equals("")) {
+        } else if("ko-rKR".equals(languageKind)){
+            language = "ko-rKR";
+        }else if (languageKind.equals("")) {
             String lang = MySharedPreferences.getInstance().getString(Constants.LANGUAGE);
             String country = MySharedPreferences.getInstance().getString(Constants.COUNTRY);
             language = lang + "-" + country.toLowerCase();

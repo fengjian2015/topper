@@ -2297,7 +2297,7 @@
     <string name="return1">返回>></string>
     <string name="up_one_level">上一级</string>
     <string name="level_Down">下一级</string>
-    <string name="total_revenue">总收益(FTC)</string>
+    <string name="total_revenue">总收益</string>
     <string name="current_level">当前等级</string>
     <string name="total_performance">总业绩</string>
     <string name="node_revenue">节点收益</string>
@@ -2418,6 +2418,6 @@
     <string name="rate_exchange">兑率</string>
     <string name="share_to_friend">分享给好友</string>
     <string name="share_now">立即分享</string>
-
     <string name="share_to_top_chat">分享到顶聊</string>
+    <string name="korean">한국어</string>
 </resources>

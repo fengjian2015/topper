@@ -95,6 +95,8 @@ public class SystemSetPresenter implements SystemSetContacts.Presenter {
             mView.setTvLanguageHint(mActivity.getString(R.string.chinese_traditional));
         } else if (language.equals("en")) {
             mView.setTvLanguageHint(mActivity.getString(R.string.english));
+        } else if(language.equals("ko-rKR")){
+            mView.setTvLanguageHint(mActivity.getString(R.string.korean));
         }
         mView.setOnOffPrivateSelected(privateStatus);
         isOnOff2 = privateStatus;

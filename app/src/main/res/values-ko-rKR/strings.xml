@@ -1,0 +1,2411 @@
+<resources>
+    <string name="app_name"> TopperChat </string>
+
+    <string name="toast_network_error"> 서버가 사용 중이므로 나중에 다시 시도하십시오. </string>
+
+    <string name="email"> 이메일 </string>
+
+    <string name="password"> 암호 </string>
+
+    <string name="et_emily"> 이메일을 입력하십시오. </string>
+
+    <string name="et_password"> 비밀번호를 입력하십시오. </string>
+
+    <string name="find_password"> 암호를 잊어 버렸습니다. </string>
+
+    <string name="et_captcha"> 그래픽 인증 코드 입력 </string>
+
+    <string name="login"> 로그인 </string>
+
+    <string name="register"> 등록 </string>
+        
+    <string name="username"> 사용자 이름 </string>
+
+    <string name="send_regcode"> 인증 코드 전송 </string>
+
+    <string name="et_username"> 사용자 이름을 입력하십시오. </string>
+
+    <string name="et_vcode"> 인증 코드 입력 </string>
+
+    <string name="agreement"> 서비스 계약에 동의하십시오. </string>
+
+    <string name="submit"> 제출 </string>
+
+    <string name="add"> add </string>
+
+    <string name="toast_email"> 이메일 번호는 비워 둘 수 없습니다. </string>
+
+    <string name="toast_password"> 비밀번호는 비워 둘 수 없습니다. </string>
+
+    <string name="toast_captcha"> 그래픽 인증 코드는 비워 둘 수 없습니다. </string>
+
+    <string name="toast_vcode"> 검증 코드는 비워 둘 수 없습니다. </string>
+
+    <string name="toast_agreement"> 서비스 계약에 동의하십시오. </string>
+
+    <string name="toast_succeed"> 로그인 성공 </string>
+
+    <string name="toast_pay_password"> PIN 비밀번호는 비워 둘 수 없습니다. </string>
+        
+    <string name="talk"> 채팅 </string>
+
+    <string name="trade"> 거래 </string>
+
+    <string name="exchange"> 교환 </string>
+
+    <string name="person"> 내 </string>
+
+    <string name="toast_selector"> 선택됨 </string>
+
+    <string name="toast_inconvertibility"> 동일한 통화를 사용할 수 없습니다. </string>
+
+    <string name="toast_count"> 숫자는 비워 둘 수 없습니다. </string>
+
+    <string name="toast_exchange"> 사용 완료 </string>
+
+    <string name="pocket"> 지갑 </string>
+
+    <string name="total_assets"> 모든 자산 </string>
+
+    <string name="total_coins"> 모든 통화 </string>
+
+    <string name="conversion"> Exchange </string>
+
+    <string name="total_exchange"> 모든 상환 </string>
+
+    <string name="et_count"> 수량을 입력하십시오. </string>
+
+    <string name="buy"> 구매 </string>
+
+    <string name="sell"> 판매 </string>
+    <string name="coins"> 통화 </string>
+
+    <string name="receive">수신 됨</string>
+
+    <string name="send"> 보내기 </string>
+
+    <string name="coin_address"> 현재 통화 주소 </string>
+
+    <string name="transaction_history"> 거래 내역 </string>
+
+    <string name="refresh"> 새로 고침 </string>
+
+    <string name="address"> 주소 </string>
+
+    <string name="amount"> 통화 수 </string>
+
+    <string name="payment_password"> PIN 비밀번호 </string>
+
+    <string name="et_coin_address"> 통화 주소 입력 </string>
+
+    <string name="confirm_send"> 보내기 확인 </string>
+
+    <string name="et_memo"> 메모 입력 </string>
+
+    <string name="add_friend_setting"> 친구 설정 추가 </string>
+
+    <string name="nickname"> 닉네임 </string>
+
+    <string name="phone_number"> 전화 번호 </string>
+
+    <string name="dynamic"> 동적 </string>
+
+    <string name="qr_code"> QR 코드 </string>
+
+    <string name="group_chat"> 그룹 채팅 </string>
+
+    <string name="all_address"> 모든 주소 </string>
+
+    <string name="hint"> 클릭하여 복사 </string>
+
+    <string name="add_new_address"> 새 주소 추가 </string>
+
+    <string name="my_bank_card"> 은행 카드 </string>
+
+    <string name="add_bank_card"> 은행 카드 추가 </string>
+
+    <string name="bank_card_binding"> 은행 카드 바인딩 </string>
+
+    <string name="fill_card_number"> 카드 번호를 입력하십시오. </string>
+
+    <string name="cardholder_name"> 카드 소지자 이름 </string>
+
+    <string name="id_card_number"> ID 번호 </string>
+
+    <string name="bank_card_number"> 은행 카드 번호 </string>
+    <string name="get_verification_code"> 인증 코드 받기 </string>
+
+    <string name="bank_reserved_email"> 이메일 번호 </string>
+
+    <string name="next_step"> 다음 </string>
+
+    <string name="finish_binding"> 완성 된 바인딩 </string>
+
+    <string name="binding_finish"> 바인딩 완료 </string>
+
+    <string name="toast_copy"> 복사 성공 </string>
+
+    <string name="add_site"> 주소 추가 </string>
+
+    <string name="preserve"> 저장 </string>
+
+    <string name="toast_address"> 주소는 비워 둘 수 없습니다. </string>
+    <string name="progress_dialog_loading">로드 중 ... </string>
+
+    <string name="cancel"> 취소 </string>
+
+    <string name="friend"> 친구 </string>
+
+    <string name="attention"> 따르십시오 </string>
+
+    <string name="fans"> 팬 </string>
+
+    <string name="signature"> 서명 </string>
+
+    <string name="my_dynamic"> 내 동적 </string>
+
+    <string name="my_address"> 나의 자산 </string>
+
+    <string name="authentication"> 인증 </string>
+
+    <string name="about_us"> 우리에 관해서 </string>
+
+    <string name="system_set"> 시스템 설정 </string>
+
+    <string name="clear_cache"> 캐시 지우기 </string>
+
+    <string name="edit"> 편집 </string>
+
+    <string name="ta_dynamic"> 동적 태그 </string>
+    <string name="regard_ta"> Ta 정보 </string>
+
+    <string name="finish"> 완료 </string>
+
+    <string name="selected_currency"> 통화 </string>
+
+    <string name="state"> 국가 </string>
+
+    <string name="personal_details"> 개인 정보 </string>
+
+    <string name="head_portrait"> 아바타 </string>
+
+    <string name="gender"> 성별 </string>
+
+    <string name="region"> 지역 </string>
+
+    <string name="transfer_accounts"> 전송 </string>
+
+    <string name="already_followed"> 관련되었습니다 </string>
+
+    <string name="buy_title"> 구매 정보 게시 </string>
+
+    <string name="sell_title"> 판매 정보 게시 </string>
+
+    <string name="selector_state"> 국가 선택 </string>
+
+    <string name="selector_money"> 통화 선택 </string>
+
+    <string name="selector_payment"> 지불 방법 선택 (여러 선택 가능) </string>
+
+    <string name="margin"> 프리미엄 </string>
+
+    <string name="price"> 가격 </string>
+
+    <string name="min"> 최소 거래 </string>
+
+    <string name="max"> 최대 거래 </string>
+
+    <string name="payment"> 지불 </string>
+
+    <string name="push"> 릴리스 </string>
+    <string name="set_login_pw"> 로그인 암호 설정 </string>
+
+    <string name="login_pw"> 로그인 암호 </string>
+
+    <string name="payment_pw"> PIN 비밀번호 </string>
+
+    <string name="set_payment_pw"> PIN 비밀번호 설정 </string>
+
+    <string name="et_google_code"> Google Captcha 입력 </string>
+
+    <string name="toast_google_code"> Google 인증 코드는 비워 둘 수 없습니다. </string>
+
+    <string name="up_for_cancel"> 손가락으로 미끄러지면서 보내는 것을 취소하십시오. </string>
+
+    <string name="want_to_cancle"> 손가락을 떼어 송신을 취소하십시오. </string>
+
+    <string name="time_too_short"> 녹음 시간이 너무 짧습니다. </string>
+
+    <string name="long_click_record"> 길게 누르기 녹음 </string>
+
+    <string name="hang_up_finsh"> 릴리스 종료 </string>
+
+    <string name="release_cancel"> 취소 취소 </string>
+
+    <string name="str_recorder_normal"> 보류 및 대화 </string>
+
+    <string name="str_recorder_recording"> 릴리스 종료 </string>
+
+    <string name="str_recorder_want_cancel"> 송신을 취소하려면 손가락을 떼십시오. </string>
+
+    <string name="get_code"> Google 인증을 비워 둘 수 없습니다. </string>
+
+    <string name="confirm"> OK </string>
+
+    <string name="selected_legal_tender"> 프랑스어 </string>
+
+    <string name="selector_payment_time"> 지불 기간 선택 </string>
+
+    <string name="toast_coin"> 통화는 비워 둘 수 없습니다. </string>
+
+    <string name="toast_state"> 국가를 선택하십시오. </string>
+
+    <string name="toast_legal_tender"> 통화를 선택하십시오. </string>
+
+    <string name="toast_payment_time"> 지불 기간을 선택하십시오. </string>
+
+    <string name="toast_min_limit"> 최소 금액을 입력하십시오. </string>
+
+    <string name="toast_max_limit"> 최대 금액을 입력하십시오. </string>
+
+    <string name="count"> 수량 </string>
+
+    <string name="toast_username"> 사용자 이름은 비워 둘 수 없습니다. </string>
+
+    <string name="search"> 검색 </string>
+
+    <string name="remark"> 비고 </string>
+
+    <string name="google_verify"> Google 인증 </string>
+
+    <string name="bank_card"> 은행 카드 </string>
+
+    <string name="delete"> 삭제 </string>
+
+    <string name="please_bind_the_cardholders_bank_card"> 카드 소지자의 은행 카드를 묶어주십시오. </string>
+
+    <string name="card_number"> 카드 번호 </string>
+
+    <string name="et_bank_card_number"> 은행 카드 번호를 입력하십시오. </string>
+
+    <string name="bank_card_information"> 은행 카드 정보 </string>
+
+    <string name="card_type"> 카드 유형 </string>
+
+    <string name="opening_bank"> 은행 개설 </string>
+
+    <string name="et_opening_bank"> 전체 은행 카드 은행 주소 정보를 입력하십시오. </string>
+
+    <string name="cardholder"> 카드 소지자 </string>
+
+    <string name="id_number"> 문서 번호 </string>
+
+    <string name="detail"> 세부 정보 </string>
+
+    <string name="question"> 도움 </string>
+
+    <string name="receipt_of_transfer_record">전송 레코드 없음</string>
+
+    <string name="buy_btc"> BTC 구매 </string>
+
+    <string name="help"> 도움말 </string>
+
+    <string name="trading_limit"> 거래 한도 </string>
+
+    <string name="buy_count"> 구매 횟수 </string>
+
+    <string name="warm_prompt"> 팁 </string>
+
+    <string name="buy_sell_hint1"> 1, 판매자의 거래 정보를 자세히 이해하십시오. </string>
+
+    <string name="buy_sell_hint2"> 2, 플랫폼을 통해 통신하고 관련 채팅 정보를 저장하십시오. </string>
+
+    <string name="buy_sell_hint3"> 3. 거래 분쟁이 발생하면 플랫폼을 통해 문제를 해결하십시오. </string>
+
+    <string name="transfer_record"> 전송 레코드 </string>
+
+    <string name="transfer_give">로 전송 </string>
+
+    <string name="et_selecotr_coin"> 통화 선택 </string>
+
+    <string name="confirm_transfer"> 전송 확인 </string>
+
+    <string name="lrwmzpm"> 코인 교환 </string>
+
+    <string name="confirm_exchange"> 교환 확인 </string>
+
+    <string name="record"> 레코드 </string>
+
+    <string name="create_group_chat"> 그룹 채팅 만들기 </string>
+
+    <string name="create"> 생성 </string>
+
+    <string name="group_name"> 그룹 이름 </string>
+
+    <string name="et_group_name"> 그룹 이름을 입력하십시오. </string>
+
+    <string name="invite_friend"> 친구 초대 </string>
+
+    <string name="et_comment"> 의견을 입력하십시오. </string>
+
+    <string name="all_reviews"> 모든 댓글 </string>
+
+    <string name="expect_coin"> 예상 통화 </string>
+
+    <string name="send_who"> 객체 전송 </string>
+
+    <string name="et_expect_coin"> 추가하려는 통화를 입력하십시오. </string>
+
+    <string name="contact_information"> 연락처 </string>
+
+    <string name="hint_unfinished"> 개발, 계속 지켜봐주십시오. </string>
+
+    <string name="vcode"> 확인 코드 </string>
+
+    <string name="last_step"> 이전 단계 </string>
+
+    <string name="google_Authenticator"> Google OTP </string>
+
+    <string name="download"> 다운로드 </string>
+
+    <string name="the_current_account"> 현재 계정 </string>
+
+    <string name="copy"> 복사 </string>
+
+    <string name="binding"> 바인딩 </string>
+
+    <string name="is_binding"> 바인드 </string>
+
+    <string name="unbinding"> 바인딩 해제 </string>
+
+    <string name="send_email"> 메일 보내기 </string>
+
+    <string name="red_package"> 빨간 봉투 </string>
+
+    <string name="red_package_record"> 빨간 봉투 기록 </string>
+
+    <string name="grab_qr_red_hint"> 지갑에 저장되어 있으면 직접 </string>
+
+    <string name="guanyu_me"> 회사 소개 </string>
+
+    <string name="guanwang"> 공식 웹 사이트 </string>
+
+    <string name="check_update"> 업데이트 확인 </string>
+
+    <string name="in_coin"> 충전 용 동전 </string>
+
+    <string name="in_coin_hint">이것은 귀하의 BTC 재충전 주소입니다, 귀하의 BTC를이 주소로 옮기고, 등록 된 이메일 계정을 기록해 두십시오. 오류를 기입하면 성공하지 못할 것입니다! </string>
+        
+    <string name="in_coin_hint2">1. BTC 전송은 BTC 네트워크에 의해 확인되어야합니다. 각 전송에는 원래 주소에서 적어도 0.05 BTC가 필요합니다 .3 번의 확인 후에 BTC가 자동으로 귀하의 계정에 재충전됩니다. \ n2. BTC 이외의 자산 재충전을 금지하십시오. 주소를 입력하지 않으면 TPX 자산으로 계정을 얻을 수 없으며 손실은 복구되지 않습니다. \ n3. BTC 지갑을이 주소로 전송할 때주의 사항을 작성하십시오. 귀하의 전자 메일 계정. 그렇지 않으면 계정을 얻을 수 없습니다. \ n4.이 주소를 광산 주소로 사용하지 마십시오. 그렇지 않으면 계정을 얻을 수 없습니다. </string>
+        
+    <string name="login_record"> 로그인 기록 </string>
+
+    <string name="login_set"> 로그인 설정 </string>
+
+    <string name="login_set_hint"> 돈 보안을 위해 보안 로그인 인증 모드를 선택하십시오. </string>
+
+    <string name="login_set1"> 모든 로그인을 확인하지 않아도됩니다. </string>
+
+    <string name="login_set2"> 로그인 할 때마다 이메일 확인 </string>
+
+    <string name="login_set3"> 로그인 할 때마다 Google 확인 </string>
+
+    <string name="required"> 필수 </string>
+
+    <string name="discover"> 발견 </string>
+
+    <string name="wallet"> 지갑 </string>
+
+    <string name="assets"> 에셋 </string>
+    <string name="et_coin_name"> 통화 이름을 입력하십시오. </string>
+
+    <string name="new_friend"> 새 친구 </string>
+
+    <string name="no_receipt_in_coin_record"> 동전 기록 없음 </string>
+
+    <string name="no_receipt_out_coin_record"> 동전 기록 없음 </string>
+
+    <string name="buyer"> 구매자 </string>
+
+    <string name="trading_money"> 거래 금액 </string>
+
+    <string name="trading_count"> 거래 수 </string>
+
+    <string name="trading_price"> 거래 가격 </string>
+
+    <string name="order_number"> 주문 번호 </string>
+
+    <string name="order_time"> 주문 시간 </string>
+
+    <string name="order_close_hint"> 시스템이 처리 중입니다. 기다려주십시오. 판매자가 출시 될 때까지 기다려주십시오. </string>
+
+    <string name="confirm_send_coin"> 릴리스 확인 </string>
+
+    <string name="surplus"> 나머지 </string>
+
+    <string name="cancel_order"> 주문 취소 </string>
+
+    <string name="confirm_payment"> 지불 확인 </string>
+
+    <string name="trading_hint"> 무역 정보 </string>
+
+    <string name="trading_hint2"> 1. 장외 거래에서는 구매자의 송금이 판매자의 계정으로 직접 연결되며 거래 중에 판매자가 판매 한 디지털 자산은 플랫폼에서 호스팅됩니다. \ n2 지정된 시간 내에 결제를 완료하고 "결제 확인"을 클릭하십시오 판매자가 결제를 확인하면 시스템에서 디지털 자산을 귀하의 계정으로 이전합니다. \ n3. 주문을 자주 취소하지 마십시오. 거래가 제한 될 수 있습니다. \ n4. 지불 전에 상대방이 제공 한 전자 메일, 휴대폰 번호 또는 TopperChat에 따라 판매자에게 문의하십시오. 판매자가 주문 시간 초과 상황을 공개하지 않도록 \ n5 지불이 완료되면 참조 번호를 판매자에게 보내 어떤 거래를 볼 수 있는지 확인하십시오. \ n6. 송금 (예 : 블록 체인, 거래 통화 등)시 민감한 내용을 메모하지 마십시오. </string>
+
+    <string name="order"> 주문 </string>
+
+    <string name="selector_coin"> 통화 선택 </string>
+
+    <string name="push_ad"> 광고 게시 </string>
+
+    <string name="out_coin"> 동전 올리기 </string>
+
+    <string name="send_site"> 보내는 주소 </string>
+
+    <string name="et_out_coin_site"> 동전 주소 입력 또는 선택 </string>
+
+    <string name="selecotr_site"> 주소 선택 </string>
+
+    <string name="out_coin_hint"> 1. 취급 수수료는 0.5 %입니다. 신중하게 확인하고 확인하십시오. </string>
+
+    <string name="out_coin_hint2"> 2. 각 전송의 최대 금액은 100 동전이며, 최대 한도는 100,000 동전이며 일일 한도는 500,000 동전입니다. </string>
+
+    <string name="payment_pw_hint"> 비밀번호는 6 자리 숫자입니다. </string>
+
+    <string name="payment_succeed"> 지불 성공 </string>
+
+    <string name="payment_record"> 청구서 </string>
+
+    <string name="filtrate"> 필터 </string>
+
+    <string name="qr_code_card"> QR 코드 명함 </string>
+
+    <string name="nationality"> 국적 </string>
+
+    <string name="unverified"> 인증되지 않음 </string>
+
+    <string name="probelm_feedback"> 문제 피드백 </string>
+
+    <string name="all_problem"> 모든 도움 </string>
+
+    <string name="suggestion_feedback"> 피드백 </string>
+
+    <string name="publish_dynamic"> 동적 게시 </string>
+
+    <string name="et_write_something"> 무언가를 쓰십시오 .... </string>
+
+    <string name="buysell"> 판매 및 판매 </string>
+
+    <string name="selecotr_buy_sell"> 구매 및 판매 선택 </string>
+
+    <string name="payment_time_limit"> 지불 기간 </string>
+
+    <string name="selector_payment_time_limit"> 지불 기간 선택 </string>
+
+    <string name="individual"> </string>
+
+    <string name="et_min_limit"> 거래 당 최소 회전율 </string>
+
+    <string name="et_max_limit"> 거래 당 최대 회전율 </string>
+
+    <string name="qr_code_hint"> QR 코드를 스캔하여 친구를 추가하십시오. </string>
+
+    <string name="save_qr_code"> QR 코드 저장 </string>
+
+    <string name="qr_code_red_package"> 2 차원 코드 빨간 봉투 </string>
+
+    <string name="qr_code_red_hint"> 위의 QR 코드 이미지를 쓸어 넘기고 빨간 봉투를 받으십시오. </string>
+
+    <string name="question_details"> 질문 세부 정보 </string>
+
+    <string name="real_name_verify"> 실제 이름 확인 </string>
+
+    <string name="real_name_hint"> 사용자 권한과 보안을 보장하려면 실제 정보를 입력하십시오. </string>
+
+    <string name="name"> 이름 </string>
+
+    <string name="et_name"> 실제 이름을 입력하십시오. </string>
+
+    <string name="selector_nationality"> 국적 또는 지역 선택 </string>
+
+    <string name="id_card_type"> 문서 유형 </string>
+
+    <string name="selector_id_card"> ID 선택 </string>
+
+    <string name="et_id_card_number"> 전체 ID 번호를 입력하십시오. </string>
+
+    <string name="real_name_hint2"> 계정 보안을 위해 실제 이름 인증을 사용하십시오. </string>
+
+    <string name="real_name_hint3"> 1. 실명 인증 후 실명은 변경되지 않습니다. 진실을 기입하십시오. \ n2.이 사이트는 실제 이름 충전 만 허용하며 은행 카드 같은 이름 정보는 인증 이름과 일치해야합니다. \ n3.이 사이트는 사용자가 허위 신원 정보를 제공 할 때 등록을 거절하거나 동결하고 등록 된 계정과 자산을 취소 할 수있는 권리가 있음을 의심 할만한 근거가 있습니다. </string>
+
+    <string name="receipt_payment"> 지불금 </string>
+
+    <string name="receipt"> 받기 </string>
+
+    <string name="receipt_payment_hint"> QR 코드를 스캔하여 비용을 지불하십시오 </string>
+
+    <string name="set_money_coin"> 금액 및 통화 설정 </string>
+
+    <string name="receipt_payment_record"> 지불 및 지불 기록 </string>
+
+    <string name="view_details"> 세부 정보보기 </string>
+
+    <string name="red_package_details"> 빨간 봉투 세부 정보 </string>
+
+    <string name="red_packet_hint"> 지갑에 보관 </string>
+
+    <string name="emit"> 문제 </string>
+
+    <string name="agree_with_the_protocol"> 서비스 계약에 동의하십시오. </string>
+
+    <string name="scan_qr_code_hint"> QR 코드를 상자에 넣으면 자동으로 </string>
+
+    <string name="search_friend"> 친구 검색 </string>
+
+    <string name="et_search_content"> 사용자 이름을 입력하십시오. </string>
+
+    <string name="create_red_packet"> 빨간 봉투 만들기 </string>
+
+    <string name="money"> 금액 </string>
+    <string name="et_money"> 금액을 입력하십시오. </string>
+
+    <string name="send_red_packet"> 빨간색 봉투 </string>
+
+    <string name="congratulation"> 행운을 빌어 행운을 빈다. </string>
+
+    <string name="send_red_packet_hint"> 청구되지 않은 빨간 봉투는 24 시간 후에 환불됩니다. </string>
+
+    <string name="set_money"> 금액 설정 </string>
+
+    <string name="inform"> 알림 </string>
+
+    <string name="cache"> 캐시 </string>
+
+    <string name="exit"> 종료 </string>
+
+    <string name="pricate"> 개인 정보 </string>
+
+    <string name="inform_hint"> 새 메시지가있을 때 음성 안내를 수락합니다. </string>
+
+    <string name="private_hint">로그인 암호 저장</string>
+
+    <string name="delete_cache">캐시 클리어</string>
+
+    <string name="transfer">계좌이체</string>
+
+    <string name="transfer_hint">스테이션내 이체시 수수료가 부과되지 않습니다.  \nTopperChat안전 서비스보장</string>
+
+    <string name="transfer_details">계좌이체 명세</string>
+
+    <string name="already_deposited_wallet">지갑에 예금 완료됨</string>
+
+    <string name="transfer_time">이체 시간</string>
+
+    <string name="up_id_card">주민등록증 업로드</string>
+
+    <string name="fill_in_the_information">자료 기입</string>
+
+    <string name="zhengmian_hint">주민등록증 정면측 업로드</string>
+
+    <string name="zhengmian_hint2">사진속 주민등록증의  디스플레이가 완전해야 합니다.</string>
+
+    <string name="zhengmian_hint3"> 글씨가 또렷하고 해상도가 균일해야 합니다.</string>
+
+    <string name="fanmian_hint">주민등록증 반면측 사진 업로드</string>
+
+    <string name="shouchi_hint">주민등록증 사진 업로드 </string>
+
+    <string name="huzhao_hint"> 여권 정면측 사진 업로드 </string>
+
+    <string name="huzhao_hint2"> 사진속 여권사진의  디스플레이가 정확해야 합니다.</string>
+    <string name="huzhao_shouchi_hint"> 여권사진 업로드 </string>
+
+    <string name="et_pay_pw">PIN암호 입력</string>
+
+    <string name="stop"> 일시정지</string>
+
+    <string name="user_safety">안전 센터</string>
+
+    <string name="fingerprint_lock">지문 암호</string>
+
+    <string name="title">테마</string>
+
+    <string name="left_text">좌측문자</string>
+
+    <string name="complain">컴플레인</string>
+
+    <string name="delete_cache_hint"> 모든 캐시를 클리어하시겠습니까? </string>
+
+    <string name="delete_site_hint">주소를 삭제하시겠습니까?</string>
+
+    <string name="logout_hint"> 현재 계정에서 로그아웃 하시겠습니까?  </string>
+
+    <string name="payment_pw_error_hint"> PIN암호가 잘못되였습니다，다시 시도해보십시오！  </string>
+
+    <string name="retry">재시도</string>
+
+    <string name="binding_google_hint">1.\'Google Authenticator\' 응용 프로그램을 설치하고 \'수동 키 입력\'을 선택합니다;\n2.위의 "비밀 키"를 복사하여  "비밀키" 입력란에 붙여넣고 회원님의 Topper Chat 계정을 작성하여 클릭 완성합니다;\n3."구글 검증 코드를 복사하여 위의 입력란에 붙여넣습니다;\n4. 이중 인증 암호 계정을 삭제해서는 안됩니다, 그러면 계정 조작을 계속 진행할수 없습니다, 실수로 삭제되였다면 비밀 키를 다시 설정하여 받아 오세요. </string>
+
+    <string name="set_pay_pw_hint">PIN암호 미설정 상태 </string>
+    <string name="search_issue">이슈 검색</string>
+
+    <string name="no_receipt_transfer_record">이체기록이 없음</string>
+
+    <string name="no_ad_publish">아직 광고발표가 없음</string>
+
+    <string name="number_asset">디지털 자산</string>
+
+    <string name="manage_money">재테크</string>
+
+    <string name="pawn">전당</string>
+
+    <string name="safe">보험</string>
+
+    <string name="network_error">네트워크 에러가 발생하였으니 네트워크 설정을 점검해 보세요.</string>
+
+    <string name="no_chat_record">아직 채팅기록이 없습니다.</string>
+
+    <string name="news">뉴스</string>
+
+    <string name="no_red_pagket_record">아직 레드패킷 기록이 없습니다. </string>
+
+    <string name="my_group">내 채팅그룹</string>
+
+    <string name="my_friend">내 친구</string>
+
+    <string name="opinions_and_questions">의견과 문제</string>
+
+    <string name="probelm_feedback_hint"> 우리의 더 좋은 서비스를 제공할 수 있도록 10자 이상의 문제 묘사를 작성해 주십시오.</string>
+
+    <string name="upload_Screenshot">이미지 (캡처사진 업로드)</string>
+
+    <string name="thank_hint">회원님의 피드백 감사합니다！ </string>
+
+    <string name="pull_refresh">아래로 당겨 새로 고침 </string>
+
+    <string name="update_time">업데이트 시간</string>
+
+    <string name="consent">동의</string>
+
+    <string name="look_original">원도보기</string>
+
+    <string name="rich_scan"> 스캔</string>
+
+    <string name="qr_code_red_pa​​cket">QR 코드 빨간 봉투</string>
+
+    <string name="add_friend">친구 추가</string>
+
+    <string name="id_card">주민등록증</string>
+
+    <string name="protection">여권</string>
+
+    <string name="loading">로딩중....</string>
+
+    <string name="disclaimer">면책성명</string>
+
+    <string name="otc_disclaimer"> 디지털 통화는 특별한 가상 상품으로 인터넷상의 상품 매매 행위로 일반 국민이 위험을 감수하면서 참여할 권리를 갖습니다. 디지털 통화 업계는 현재 불확실성, 통제 불능의 위험 요소(예: 사전 발굴, 급등 폭락, 딜러 조작, 팀 해체, 기술적 결함 등)가 많아 거래에 대한 높은 위험성이 있습니다, 하지만TopperChat APP플랫폼은 어떠한 심사, 보증, 배상의 법적 조항, 책임을 지지 않습니다.</string>
+
+    <string name="show_hide">선택한것을 기억하세요,더이상 제시안함</string>
+
+    <string name="compellation">성명</string>
+
+    <string name="my_roger"> 알고 있습니다. </string>
+
+    <string name="tocotalk_agreement">TopperChat서비스 프로토컬</string>
+
+    <string name="consent_agreement">나는 약관을 읽고 동의함>></string>
+
+    <string name="download_failed">다운로드실패</string>
+
+    <string name="download_completes_open"> 다운로드완성 ,클릭해서 열기 </string>
+
+    <string name="binding_google_hint1">우선 구글검증부터 바인딩해주세요.</string>
+
+    <string name="set_payment_pw_hint">패스워드 미설정상태</string>
+
+    <string name="binding_bank_hint">우선 은행카드부터 바인딩해주세요. </string>
+
+    <string name="exchange_succeed">환전 성공</string>
+
+    <string name="payment_pw_error">PIN암호가 정확하지 않습니다.</string>
+
+    <string name="loading_error">로딩실패</string>
+
+    <string name="login_in">로그인중.... </string>
+
+    <string name="china_mainland">중국- 대륙</string>
+
+    <string name="kitson">로그아웃중....</string>
+
+    <string name="delete_succeed">삭제성공</string>
+
+    <string name="publish_deal">거래발포</string>
+
+    <string name="submit_succeed">제출성공</string>
+
+    <string name="real_name_authentication_hint"> 우선 실명인증부터 해주십시오.</string>
+
+    <string name="sent"> 발송함</string>
+
+    <string name="unbinding_subscription">취소 또는 구독성공</string>
+
+    <string name="search_underway">검색중....</string>
+
+    <string name="qr_code_error">QR코드 해석 실패</string>
+
+    <string name="scan_no">회원님이 스캔한 것은...이 아닙니다. </string>
+
+    <string name="toast_remark">비고는 비워둘수 없습니다.</string>
+
+    <string name="bank_binding_unbinding">은행카드 바인딩해제</string>
+
+    <string name="set_the_default_bank_card">디폴트 은행카드 설정</string>
+
+    <string name="no_binding_bank">당신은 아직 은행카드를 바인딩하지 않았습니다.</string>
+
+    <string name="verify_pay_pw"> PIN패스워드를 입력하여 신분을 검증하십시오. </string>
+
+    <string name="verify_error">인증 실패</string>
+
+    <string name="check_pending">심사 대기중</string>
+
+    <string name="verify_error_hint">실명인증 실패입니다, 재다시 인증해보세요.</string>
+
+    <string name="verify_check_pending">실명인증심사중</string>
+
+    <string name="toast_card_number">카드번호를 비워둘수없습니다.</string>
+
+    <string name="binding_succeed">바인딩 성공</string>
+
+    <string name="binding_error">바인딩 실패</string>
+
+    <string name="toast_open_bank">계좌 개설은행을 비울수없습니다. </string>
+
+    <string name="no_less_than_the_limit">한도액보다 낮아서는 안됩니다. </string>
+    <string name="no_exceed_than_the_limit">한도액보다 높아서는 안됩니다. </string>
+
+    <string name="deal"> 거래</string>
+
+    <string name="sell_count">매각 수량</string>
+
+    <string name="work_off">매각</string>
+
+    <string name="toast_money_count">금액이나 수량은 비워둘 수 없습니다</string>
+
+    <string name="create_order">오더 만들기</string>
+
+    <string name="ad">광고</string>
+
+    <string name="dispose_unread_msg">읽지 않은 메시지 처리 </string>
+
+    <string name="voice"> 오디오</string>
+
+    <string name="oneself_send_msg"> 본인이 메지시 보냄</string>
+
+    <string name="send_error"> 발송실패</string>
+
+    <string name="second">초</string>
+
+    <string name="cancel_record">녹음 취소</string>
+
+    <string name="image">이미지</string>
+
+
+
+
+    <string name="video">영상</string>
+
+    <string name="file">파일</string>
+
+    <string name="selector_file"> 업르드할  파일을 하나를 선택하시요. </string>
+
+    <string name="toast_install_file_manage">문자관리기를 설치하세요</string>
+
+    <string name="confirm_delete">삭제하겠습니다.</string>
+
+    <string name="what">/? </string>
+
+    <string name="delete_friend"> 내 친구 삭제</string>
+
+    <string name="msg_database_update">메시지 데이터베이스 업데이트</string>
+
+    <string name="send_red_packet_le">레드패킷 발송합니다</string>
+
+    <string name="open_photo_album">앨범 열기</string>
+
+    <string name="open_camera">카메라 열기</string>
+
+    <string name="open_file_manage">문자 관리기 열기</string>
+
+    <string name="open_vidicon">비디오 카메라 열기 </string>
+
+    <string name="toast_comment"> 코멘트는 비울수 없습니다.</string>
+
+    <string name="publish_comment">코멘트 발표</string>
+
+    <string name="zan">좋아요</string>
+
+    <string name="present_phone_number"> 현제 바인딩한 핸드폰번호</string>
+
+    <string name="toast_contact_information">空연락처는 비워 둘 수 없음</string>
+
+    <string name="toast_expect_coin">기대 코인 종류는 비워둘 수 없다</string>
+
+    <string name="copy_succeed">복사성공</string>
+
+    <string name="toast_after_time"> 쾌속클릭 금지</string>
+
+    <string name="send_succeed">발송성공</string>
+
+    <string name="download_google_verify">구글 검증기 다운로드하시겠습니까?</string>
+
+    <string name="location">위치</string>
+
+    <string name="screen_shot_succeed"> 스크린샷 성공</string>
+
+    <string name="limit_digit">암호는 6자리보다 작을 수 없습니다 </string>
+
+    <string name="jurisdiction_store_hint">저장 권한 가져오기 실패</string>
+
+    <string name="jurisdiction_camera_hint">카메라 권한 가져오기 실패</string>
+
+    <string name="jurisdiction_voice_hint">음성 권한 가져오기 실패</string>
+
+    <string name="check_new_version">새 버전이 감지됨</string>
+
+    <string name="login_succeed">로그인 성공</string>
+
+    <string name="login_error">로그인 실패</string>
+
+    <string name="toast_quit_hint">다시 한번 터치하여 로그아웃</string>
+
+    <string name="login_underway">로그인중</string>
+
+    <string name="total_assets_usd">총자산(USD)</string>
+
+    <string name="seller">판매자</string>
+
+    <string name="order_cancel">주문 취소완료</string>
+
+    <string name="order_finish">주문완료</string>
+
+    <string name="order_exception">주문 이상</string>
+
+    <string name="deal_count">거래수량</string>
+
+    <string name="out_coin_hint3"> 발송하시겠습니까?</string>
+
+    <string name="confirm_fb">발송확인</string>
+
+    <string name="deal_finish">거래완성</string>
+    <string name="fen">분</string>
+
+    <string name="order_timeout">주문 시간초과</string>
+
+    <string name="payment_method">지불방식</string>
+
+    <string name="dengdai_fk">지불대기</string>
+
+    <string name="shoukuan_fs">수금방식</string>
+
+    <string name="dengdai_sk">수금대기</string>
+
+    <string name="no_time">0분</string>
+
+    <string name="fb">발송</string>
+
+    <string name="cancel_order_hint">주문을 취소하시겠습니까?</string>
+
+    <string name="fb_hint"> 오류가 발생하지 않도록 반드시 받은 대금을 확인한 후 진일보 진행하십시오.</string>
+
+    <string name="confirm_fk">지불확인</string>
+
+    <string name="fk_succeed">지불성공</string>
+
+    <string name="dengdai_fb">발송대기</string>
+
+    <string name="all">전체</string>
+
+    <string name="off_the_stocks">완성됨</string>
+
+    <string name="canceled_canc">취소됨</string>
+
+    <string name="deal_order_filtrate">거래주문 선별</string>
+
+    <string name="selecotr_state">국가선택</string>
+
+    <string name="coin_switchover">화폐종류 선택</string>
+
+    <string name="state_switchover">국가 전환</string>
+
+    <string name="toast_out_coin_site">인출 주소는 비워 둘 수 없습니다. </string>
+
+    <string name="create_fk_code">지불코드 생성</string>
+
+    <string name="create_sk_code">수금코드 생성</string>
+
+    <string name="scan_qr_code_pay">코드스캔 지불</string>
+
+    <string name="sk_person">수취인</string>
+
+    <string name="fk_person">지불인</string>
+
+    <string name="sk_succeed">수금성공</string>
+
+    <string name="year">년</string>
+
+    <string name="month">월</string>
+
+    <string name="day">일</string>
+
+    <string name="ru_zhang">입금</string>
+
+    <string name="qi_ta">기타</string>
+
+    <string name="xg_touxaing">프로필 고치기</string>
+
+    <string name="xg_succeed">고치기 성공</string>
+
+    <string name="xg_error">고치기 실패</string>
+
+    <string name="selecotr_video_hint">영상한개만 선택가능</string>
+
+    <string name="uploading">업로드 중....</string>
+
+    <string name="no_null">콘텐츠는 비울수 없습니다.</string>
+
+    <string name="up_error">업로드 실패</string>
+
+    <string name="mai">구매</string>
+
+    <string name="mai2">판매</string>
+
+    <string name="time_bar">5분</string>
+
+    <string name="time_bar2">10분</string>
+
+    <string name="time_bar3">20분</string>
+
+    <string name="time_bar4">30분</string>
+
+    <string name="alipay">알리페이</string>
+
+    <string name="we_chat">위챗</string>
+    <string name="push_ad_hint">화폐 판매 광고를 게시하려면...</string>
+
+    <string name="sxf">수수료</string>
+
+    <string name="toast_buy_sell">매매란은 비울수 없습니다.</string>
+
+    <string name="push_buy">매입발표</string>
+
+    <string name="msg">정보</string>
+
+    <string name="push_sell">판매 발표</string>
+
+    <string name="save_success">저장성공</string>
+
+    <string name="save_error">저장실패</string>
+
+    <string name="verify_succeed">인증성공</string>
+
+    <string name="passport_number">여권번호</string>
+
+    <string name="toast_name">이름을 비울수 없습니다.</string>
+
+    <string name="toast_id_card">증명서류 번호는비울수 없습니다.</string>
+
+    <string name="toast_id_card_type">증명서류 유형은 비울수 없습니다.</string>
+
+    <string name="toast_nationality">국적은 비울수 없습니다.</string>
+
+    <string name="scan_qr_code_pay_hint"> QR코드를 스캔하여 지불</string>
+
+    <string name="gg_set">설정변경</string>
+
+    <string name="qr_coder_pay">수금코드를 제시하여 상대방한테 지불</string>
+    <string name="send_request_succeed">발송신청 성공</string>
+
+    <string name="have_friend">내 친구 리스트에 있음</string>
+
+    <string name="send_request_error">발송신청 실패</string>
+
+    <string name="scan_qr_code_error">QR코드 스캔 실패</string>
+
+    <string name="open_camera_error">카메라 열기 실패</string>
+
+    <string name="quit_hint">정말 로그아웃하시겠습니까? </string>
+
+    <string name="received_money">지갑에 입금 완료</string>
+
+    <string name="out_money">상대방 지갑에 입금완료</string>
+
+    <string name="toast_huzhao_zhengmian">여권 앞면은 비워둘 수 없습니다. </string>
+
+    <string name="toast_huzhao_shouchi">여권 비워둘 수 없습니다. </string>
+
+    <string name="toast_idcard_shouchi">주민등록증 정면은 비워둘 수 없습니다.</string>
+
+    <string name="toast_idcard_fanmian">주민등록증 반면은 비워둘 수 없습니다.</string>
+
+    <string name="toast_idcard_zhengmian">주민등록증 정면사진은 비워둘 수 없습니다.</string>
+
+    <string name="up_succeed">업로드 성공</string>
+
+    <string name="play">플레이</string>
+
+    <string name="paizhao">카메라</string>
+
+    <string name="unbinding_succeed">바인딩해제 성공</string>
+
+    <string name="unbinding_error">바인딩해제 실패</string>
+
+    <string name="delete_bank_card_hint">은행카드를 삭제하시겠습니까? </string>
+
+    <string name="set_the_default_bank_card_hint">수취 은행 카드를 디폴트로 설정하시겠습니까?</string>
+
+    <string name="shift_to">입금</string>
+
+    <string name="please_bind">우선 바인딩하세요.</string>
+
+    <string name="not_bound">바인딩하지 않았습니다.</string>
+
+    <string name="limit">한도액</string>
+
+    <string name="took_red_packet">레드패킷 수령함</string>
+
+    <string name="look_red_packet">레드패킷 보기</string>
+
+    <string name="red_package_hint">회원님께 레드패킷 한개를 발송하였습니다. </string>
+
+    <string name="transfer_took">계좌이체 수령완료</string>
+
+    <string name="shiji_in_coin">실제 충전</string>
+
+    <string name="shiji_out_coin">실제 입금</string>
+
+    <string name="shiji_in_coin2">실제 인출</string>
+
+    <string name="agrd_agreed">동의함</string>
+
+    <string name="deal_money">거래금액</string>
+
+    <string name="sao">스캔</string>
+
+    <string name="putong_red">일반 레드패킷</string>
+
+    <string name="sum_send">발송한 레드패킷</string>
+
+    <string name="receive_add_request">추가요청 수신</string>
+
+    <string name="add_request">친구 요청 추가</string>
+
+    <string name="user">유저</string>
+
+    <string name="request_add">회원님이 친구 추가를 요청</string>
+
+    <string name="reject">거부</string>
+
+    <string name="ta_consent_add_friend">내 친구 추가요청을 수락하였습니다. </string>
+
+    <string name="ta_reject_add_friend">내 친구 추가요청을 거부하였습니다. </string>
+
+    <string name="toast_content">콘텐츠는 비울수 없습니다.</string>
+
+    <string name="type">유형</string>
+
+    <string name="time">시간</string>
+
+    <string name="reference_value">참고가격</string>
+
+    <string name="toast_price">가격은 비울수 없습니다.</string>
+
+    <string name="sold_out">품절</string>
+
+    <string name="sold_out_hint">이 광고를 내리겠습니까? </string>
+
+    <string name="otc_order_msg_hint">회원님이 처리할 주문이 하나 있습니다. </string>
+
+    <string name="deal_coin">거래코인 종류</string>
+
+    <string name="deal_status">거래상태</string>
+
+    <string name="look_details">세부내용 보기</string>
+
+    <string name="deal_time">거래시간</string>
+
+    <string name="red_expired_msg_hint">회원님에게 기한이 지난 레드패킷 하나가 있습니다. </string>
+
+    <string name="red_package_coin">레드패킷 코인종류</string>
+
+    <string name="refund_time">환불시간</string>
+
+    <string name="refund_money">환불금액</string>
+
+    <string name="refund_count">환불수량</string>
+
+    <string name="auth_status">인증상태</string>
+
+    <string name="auth_time">인증시간</string>
+
+    <string name="red_package_type">레드패킷 유형</string>
+
+    <string name="red_expired">레드패킷 기간오버</string>
+
+    <string name="underway">진행중</string>
+
+    <string name="exception">이상</string>
+
+    <string name="auth_succeed">인증성공</string>
+
+    <string name="auth_error_hint">인증실패입니다，다시 인증받으세요.</string>
+
+    <string name="ordinary_red_packet">일반 레드패킷</string>
+    <string name="pending">처리대기</string>
+
+    <string name="pay_inform">지불 알림</string>
+
+    <string name="default_state">중국 - 대륙</string>
+
+    <string name="pay_count">지불수량</string>
+
+    <string name="payee">수취인</string>
+
+    <string name="receipt_inform">수취 알림</string>
+
+    <string name="payer">지불인</string>
+
+    <string name="receipt_count">수금 수량</string>
+
+    <string name="wait_get_red">상대방의 레드패킷 수령을 기다리는중</string>
+
+    <string name="ta_already_received">상대방 수령완료</string>
+
+    <string name="order_update">주문 업데이트</string>
+
+    <string name="service_charge">거래 공제금</string>
+
+    <string name="connect_xmpp">인스턴트 메신저(IM)연결중...</string>
+
+    <string name="transfer_inform">계좌이체 알림</string>
+
+    <string name="transfer_count">계좌이체 수량</string>
+
+    <string name="in_account_inform">입금알림</string>
+
+    <string name="in_account_count">입금수량</string>
+
+    <string name="blockchain_gamble">블록체인 퀴즈</string>
+
+    <string name="search_error">검색실패</string>
+
+    <string name="no_user">존재하지 않는 유저입니다.</string>
+
+    <string name="et_search_friend">아이디 찾기</string>
+
+    <string name="version_updating">버전 업데이트</string>
+
+    <string name="already_new_version">이미 최신 버전입니다</string>
+
+    <string name="order_inform">주문 알림</string>
+
+    <string name="order_inform_hint">회원님에게의 새 주문 메시지가 도착했습니다, 클릭하여 자세한 내용을 보십시요. </string>
+
+    <string name="transfer_inform_hint">회원님에게 새 계좌이체 메시지가 도착하였습니다, 클릭하여 자세한 내용을 보십시요. </string>
+
+    <string name="receipt_pay_inform_hint">  회원님에게 새 수불금 메시지가 도착하였습니다, 클릭하여 자세한 내용을 보십시요.</string>
+    <string name="insert_coins_guess">투폐 퀴즈</string>
+
+    <string name="platform_guess">플랫폼 퀴즈</string>
+
+    <string name="personage_guess">개인 퀴즈</string>
+
+    <string name="my_guess">내 퀴즈</string>
+
+    <string name="regulation_statement">규제성명</string>
+
+    <string name="guess_record">이전 퀴즈</string>
+
+    <string name="no_guess">...잠시 퀴즈 없습니다.</string>
+
+    <string name="start_guess">퀴즈 개시</string>
+
+    <string name="my_join">나의 참여</string>
+
+    <string name="my_start">내가 개시</string>
+
+    <string name="kaijiang_time">발표시간</string>
+
+    <string name="bonus_chi">상금 플</string>
+
+    <string name="insert_coins_count">투폐수량</string>
+
+    <string name="kaijiang_result">발표결과</string>
+
+    <string name="zhong_jiang">당첨</string>
+
+    <string name="no_zhong_jiang">당첨 안됨</string>
+
+    <string name="coin_quiz_detail">투폐퀴즈-세부내용</string>
+
+    <string name="bet">베트</string>
+
+    <string name="present_periods">현재 기수</string>
+
+    <string name="join_time">참여시간</string>
+
+    <string name="out_coin_broad">충전 알림</string>
+
+    <string name="in_coin_coins">충전코인</string>
+
+    <string name="in_coin_count">충전수량</string>
+
+    <string name="in_coin_time">충전시간</string>
+
+    <string name="out_coin_inform">인출알림</string>
+
+    <string name="out_coin_coins">인출코인</string>
+
+    <string name="out_coin_count">인출수량</string>
+
+    <string name="out_coin_time">인출시간 </string>
+
+    <string name="out_coin_inform_hint">회원님에게 새 인출코인 메시지가 도착하였습니다, 클릭하여 자세한 내용을 보십시요.  </string>
+
+    <string name="out_coin_borad_hint">회원님에게 새 충전 메시지가 도착하였습니다, 클릭하여 자세한 내용을 보십시요. </string>
+    <string name="start_guess_service_hint">개인이 개시한 투폐퀴즈는 …지불해야 합니다.</string>
+
+    <string name="et_guess_title">퀴즈 테마를 입력하십시요.(1-20자)</string>
+
+    <string name="guess_deadline">퀴즈기한</string>
+
+    <string name="selector_deadline">기한선택</string>
+
+    <string name="time_deadline">3시간</string>
+
+    <string name="time_deadline2">6시간</string>
+
+    <string name="time_deadline3">12시간</string>
+
+    <string name="time_deadline4">24시간</string>
+
+    <string name="qi">기</string>
+
+    <string name="push_guess">퀴즈 발표</string>
+
+    <string name="toast_guess_title">퀴즈 테마는 비울수 없습니다.</string>
+
+    <string name="toast_dealine">퀴즈 기한은 비울수 없습니다.</string>
+
+    <string name="single_insert_count">단일 투폐수량</string>
+
+    <string name="usdt">USDT</string>
+
+    <string name="dqky">현재 사용가능 </string>
+    <string name="publish_succeed">발표성공</string>
+
+    <string name="hr">시간</string>
+
+    <string name="kaijiang_count_down">당첨발표 카운트다운(일 시 분 초): </string>
+
+    <string name="et_phone">핸드폰번호</string>
+
+    <string name="toast_phone">핸드폰번호는 비울수 없습니다.</string>
+
+    <string name="fa_qi_ren">개시인</string>
+
+    <string name="single_insert_coins">단일투폐</string>
+
+    <string name="present_invest_count">현재 참여인수</string>
+
+    <string name="et_digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+
+    <string name="random">랜덤</string>
+
+    <string name="no1">No.1</string>
+
+    <string name="no2">No.2</string>
+
+    <string name="no3">No.3</string>
+
+    <string name="no4">No.4</string>
+
+    <string name="guess">퀴즈</string>
+
+    <string name="toast_array">완전한 퀴스수자를 입력하세요.</string>
+
+    <string name="bet_array">투입배열</string>
+
+    <string name="contact_opposite">상대방 연락하기</string>
+
+    <string name="opposite_email">상대방 이메일</string>
+
+    <string name="seller_phone">판매자 핸드폰</string>
+
+    <string name="phone_number2">핸드폰번호</string>
+
+    <string name="relative_pay_dengdai_fb"> 상대방 지불완료,회원님의 발송을 대기중입니다.</string>
+
+    <string name="pay_succeed_dengdai_fb">지불성공，상대방의 발송을 대기중입니다.</string>
+
+    <string name="guess_timeout">퀴즈 시간초과</string>
+
+    <string name="zhong_jiang_le">당첨됨</string>
+
+    <string name="dengdai_kj">발표 대기중</string>
+
+    <string name="touzhuzhong">투입중</string>
+
+    <string name="yikaijinag">당첨발표 완료</string>
+
+    <string name="bet_zuiduo_cishu">최다 5주 투입</string>
+
+    <string name="sum_jiangjin_chi">总奖金池已满 총상금 플 다 찻음 </string>
+
+    <string name="shijidao_transfer">실제입금</string>
+
+    <string name="shijikou_coin">실제 공제금</string>
+
+    <string name="deal_number">거래 참고수자</string>
+
+    <string name="order_cancel_hint">회원님의 주문 한개가 취소되였습닌다. </string>
+
+    <string name="order_timeout_hint">회원님의 주문 한개가 시간초과입니다. </string>
+
+    <string name="order_finish_hint">회원님의 주문 한개가 완성되였습니다. </string>
+
+    <string name="no_join">미참여</string>
+
+    <string name="fa_qi_time">개시시간</string>
+
+    <string name="my_publish">내 발표</string>
+
+    <string name="my_buy">내 구매증서</string>
+
+    <string name="my_sell">내 매도증서</string>
+
+    <string name="yi_sold_out">품절</string>
+
+    <string name="deal_zhong">거래중</string>
+
+    <string name="my_ad_filtrate">내 광고 선별</string>
+
+    <string name="yi_pay">지불 완료</string>
+
+    <string name="sold_out_buy">下架买单???</string>
+
+    <string name="sold_out_sell">下架卖单???</string>
+
+    <string name="no_dynamic_publish">다이나믹 발표가 없음</string>
+
+    <string name="zhong_jiang_money">당첨금액</string>
+
+    <string name="guess_cancel">퀴즈가 취소됨</string>
+
+    <string name="otr_isopen">OTR전환</string>
+
+    <string name="otr_error"> 암호화된 메시지를 읽을 수 없습니다,암호화 요청을 다시 시작하십시오.</string>
+
+    <string name="et_sum_count">총 투입차수</string>
+
+    <string name="et_command">퀴즈암호 입력(4-8개 수자)</string>
+
+    <string name="toast_command_min">퀴즈암호는 4자리수보다 적어서는 안됩니다.</string>
+
+    <string name="et_guess_count">투입횟수 입력</string>
+
+    <string name="guess_password_title"> 이 퀴즈는 암호퀴즈이므로 암호를 입력하십시요.</string>
+
+    <string name="toast_guess_pw">암호는 비울수 없습니다.</string>
+
+    <string name="toast_guess_pw_error">암호 오류</string>
+
+    <string name="toast_guess_count_null">투입횟수는 비울수 없습니다.</string>
+
+    <string name="selector_guess_type">퀴즈유형 선택</string>
+
+    <string name="injection"> 주</string>
+
+    <string name="start_guess_type">일반 퀴즈</string>
+
+    <string name="start_guess_type2">암호 퀴즈</string>
+
+    <string name="toast_guess_type">퀴즈유형은 비울수 없습니다</string>
+
+    <string name="toast_count_ling"> 투입횟수는 1회 미만이여여서는 안됩니다. </string>
+    <string name="toast_count_max">투입횟수는 5회 초과서는 안됩니다. </string>
+
+    <string name="shijikouchu">실제 공제금</string>
+
+    <string name="push_ad_hint2">화폐 구입 광고를 게시하려면 …받아야 합니다.</string>
+
+    <string name="freeze">동결</string>
+
+    <string name="usable">사용가능</string>
+
+    <string name="et_guess_who">개시자 아이디 입력</string>
+
+    <string name="et_digits2">0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+
+    <string name="et_single_count">단일 투입수량 입력</string>
+
+    <string name="toast_bet_count">총 투입수량을 비울수 없습니다.</string>
+
+    <string name="toast_single_count">단일 투입수량을 비울수 없습니다.</string>
+
+    <string name="buy_coin_hint">오류가 발생하지 않도록 상대방의 신원에 리스크가 없음을 자세히  판단한 후 진일보 진행하십시요. </string>
+
+    <string name="fk_hint">지불하셨습니까? </string>
+
+    <string name="qukuai">블록</string>
+
+    <string name="hash_value"> 해시 값 </string>
+
+    <string name="gonggao">공고</string>
+
+    <string name="news_details">뉴스 세부내용</string>
+
+    <string name="hash_details">해시 문의</string>
+
+    <string name="news_manager">뉴스 관리</string>
+
+    <string name="publish_news">뉴스발표</string>
+
+    <string name="browse_record">브라우징 기록</string>
+
+    <string name="drafts">임시보과함</string>
+
+    <string name="no_news">잠시 뉴스 없음...</string>
+
+    <string name="copy2"><![CDATA[복사>>]]></string>
+
+    <string name="gonggao_manager">공고 기록</string>
+
+    <string name="bet_hint">입력/랜덤 배열 ,매회 최다 5주</string>
+
+    <string name="bet_hint2"> 최다 한 번에 5주까지만 투입 가능 </string>
+
+    <string name="top">맨 위에 고정</string>
+
+    <string name="new_notice">새 공고 </string>
+
+    <string name="gonggao_detail">공고 세부내용</string>
+
+    <string name="bet_succeed">투입 성공</string>
+
+    <string name="appbar_scrolling_view_behavior">发法撒旦法x</string>
+
+    <string name="et_title">테마 입력</string>
+
+    <string name="et_content">콘텐츠 입력</string>
+
+    <string name="news_edit">뉴스편집</string>
+
+    <string name="service">서비스</string>
+
+    <string name="session_details">채팅 세부내용</string>
+
+    <string name="otr_encipherment">OTR암호화</string>
+
+    <string name="my_otr_encipherment">내\nOTR암호화</string>
+
+    <string name="looking_for_chat">채팅내용 찾기</string>
+
+    <string name="top_chat">맨 위에 고정 채팅</string>
+
+    <string name="message_free">방해금지</string>
+
+    <string name="empty_talk">채팅기록 비우기</string>
+
+    <string name="otr_authenticated">검증됨</string>
+
+    <string name="otr_unauthorized">미검증</string>
+
+    <string name="detailed_information">세부내용</string>
+
+    <string name="personal_dynamic">개인 게시물</string>
+
+    <string name="make_sure_clear_transcript"> 채팅기록을 비우겠습니까?</string>
+
+    <string name="empty_success">비우기 성공</string>
+
+    <string name="remark_opposite">상대방 리마크하기</string>
+
+    <string name="message_top_change">메시지 맨위에 고정 바꾸기</string>
+
+    <string name="no_gonggao"> 발표 없음 .... </string>
+
+    <string name="et_order_who"> 사용자 이름 입력 </string>
+
+    <string name="sum_sell"> 총 판매 </string>
+
+    <string name="zhankai"> 확장 </string>
+
+    <string name="start_otr"> OTR 암호화를 열 준비가되었습니다. </string>
+
+    <string name="close_otr"> OTR 암호화를 해제하십시오. </string>
+
+    <string name="start_otr_timeout"> OTR 암호화 시간 제한을 설정합니다. </string>
+
+    <string name="is_open"> OTR 열기, 잠시 기다려주십시오. </string>
+
+    <string name="change_friend_remark"> 친구 설명 수정 </string>
+
+    <string name="no_order"> 주문하지 않음 </string>
+
+    <string name="all_order"> 모든 주문 </string>
+
+    <string name="sum_buy"> 총 구매액 </string>
+
+    <string name="anomaly_order"> 예외 주문 </string>
+
+    <string name="sum_deal_count"> 거래 수 </string>
+
+    <string name="shouqi"> 멀리 두십시오 </string>
+
+    <string name="chat_content"> 채팅 콘텐츠 </string>
+    <string name="date"> 날짜 </string>
+
+    <string name="a_transfer"> 전송 시작 </string>
+
+    <string name="send_a_red_envelope"> 빨간색 봉투를 보냄 </string>
+
+    <string name="red_envelopes_collected"> 빨간색 봉투를 받았습니다. </string>
+
+    <string name="ad_count"> 광고 수 </string>
+
+    <string name="click_the_search"> 클릭하여 검색 : </string>
+
+    <string name="ta_no_dynamic"> Ta는 역학을 발표하지 않았습니다 </string>
+
+    <string name="pick_name"> 업로드 </string>
+
+    <string name="pic_out_of_size"> 이미지 크기가 한도를 초과합니다! </string>
+
+    <string name="not_empty">는 비워 둘 수 없습니다! </string>
+
+    <string name="handles"> 액션 </string>
+
+    <string name="char_unit"> 단어 </string>
+
+    <string name="add_link"> 링크 추가 </string>
+
+    <string name="input_link_name"> 연결 이름을 입력하십시오. </string>
+
+    <string name="input_url"> 링크를 입력하십시오. </string>
+
+    <string name="publish"> 게시 </string>
+
+
+    <string name="save"> 저장 </string>
+
+    <string name="no_save"> 저장하지 마십시오. </string>
+
+    <string name="publish_news_hint"> 공제 할 광고 게시 </string>
+
+    <string name="gesture_pw"> 제스처 비밀번호 </string>
+
+    <string name="number_pw">수자 암호</string>
+
+    <string name="nonsupport_fingerprint">이 핸드폰은 지문 암호를 지원하지 않습니다. </string>
+
+    <string name="no_set_fingerprint"> 먼저 시스템 설정에서 지문을 입력하십시오. </string>
+
+    <string name="check_fingerprint_hint">지문을 검증해 주십시요.</string>
+
+    <string name="insecurity"> 현재 장치는 안전 보호상태가 안되여 있습니다.</string>
+
+    <string name="check_fingerprint_error">지문 검증 실패입니다. 다시  시도하세요</string>
+
+    <string name="close_fingerprint_hint">지문 검증을 종료하겠습니까?</string>
+
+    <string name="check_fingerprint_succeed">지문검증 성공</string>
+
+    <string name="open_fingerprint_succeed">지문검증 개통 성공</string>
+
+    <string name="finger_move_fast">손가락 이동이 너무 빠릅니다 , 다시 시도해 보세요. </string>
+
+    <string name="network_break">네트워크 연결이 끊겼습니다.</string>
+
+    <string name="network_break_click_update">네트워크에 연결한 후, 공백란을 클릭하여 리프레시 하세요. </string>
+
+    <string name="select_friends">내 친구 선택</string>
+
+    <string name="share_complete">공유완성</string>
+
+    <string name="confirm_send_to">보낸 사람에게 보낸 확인</string>
+
+    <string name="share_failure"> 공유에 실패했습니다. </string>
+
+    <string name="start_service"> 서비스 시작 </string>
+
+    <string name="gongao_details"> 발표 내용 </string>
+
+    <string name="transmit">전달</string>
+
+    <string name="forward_success"> 전달 성공 </string>
+
+    <string name="forward_failure"> 전달 실패 </string>
+
+    <string name="send_in_progress"> 보내기 </string>
+
+    <string name="view_more"> 모두보기 </string>
+
+    <string name="please_update_version"> 새 버전을보고 나서 업그레이드하십시오. </string>
+
+    <string name="baidu_map"> 바이두지도 </string>
+
+    <string name="gaode_map"> 가우지도 </string>
+
+    <string name="tencent_map"> Tencent지도 </string>
+
+    <string name="no_gode_map">지도가 설치되지 않았습니다. 먼저 다운로드하십시오. </string>
+
+    <string name="no_baidu_map"> 바이두지도를 설치하지 마십시오. </string>
+
+    <string name="no_location_obtained"> 위치가 지정되지 않았습니다. 나중에 다시 시도하십시오. </string>
+
+    <string name="pass"> 패스 </string>
+
+    <string name="no_pass"> 실패했습니다. </string>
+
+    <string name="delete_news_hint"> 광고를 삭제 하시겠습니까? </string>
+
+    <string name="empty"> 비어있는 </string>
+
+    <string name="empty_news_browsing_history_hint"> 모든 인터넷 사용 기록을 삭제 하시겠습니까? </string>
+
+    <string name="news_filtrate"> 뉴스 심사 </string>
+
+    <string name="empty_news_browsing_history"> 빈 뉴스 검색 기록 </string>
+
+    <string name="delete_news_drafts"> 뉴스 초안 삭제 </string>
+
+    <string name="delete_news_my"> 내 뉴스 삭제 </string>
+
+    <string name="empty_news_browsing_history_callback"> 빈 뉴스 검색 기록 콜백 </string>
+
+    <string name="news_browse_record_null_hint"> 인터넷 사용 기록 없음 </string>
+
+    <string name="stick"> 위쪽 </string>
+
+    <string name="cancel_the_top"> 고정 해제 </string>
+    <string name="ad_manager"> 광고 관리 </string>
+
+    <string name="ad_edit"> 광고 수정 </string>
+
+    <string name="updata_remark"> 메모 수정 </string>
+
+    <string name="person_business_card"> 개인 명함 </string>
+
+    <string name="ggf"> 광고비 </string>
+
+    <string name="delete_dynamic"> 동적 삭제 </string>
+
+    <string name="delete_dynamic_hint">이 활동을 삭제 하시겠습니까? </string>
+
+    <string name="update_log"> 업데이트 로그 </string>
+
+    <string name="zhuyao_update"> 주요 업데이트 </string>
+
+    <string name="update_log_details"> 로그 세부 정보 업데이트 </string>
+
+    <string name="reply_comment"> 댓글에 응답 </string>
+
+    <string name="look_reply"> 답장보기 >> </string>
+
+    <string name="reply"> 답장 </string>
+
+    <string name="comment_erorr"> 댓글을 입력하지 못했습니다. </string>
+
+    <string name="pack_up_reply"> 응답을 되돌려주십시오. </string>
+
+    <string name="share"> 공유 </string>
+
+    <string name="business_card"> 명함 </string>
+
+    <string name="create_group"> 그룹 만들기 </string>
+
+    <string name="group"> 그룹 : </string>
+
+    <string name="create_failure"> 만들기 실패 </string>
+
+    <string name="share_friend"> 친구와 공유 </string>
+
+    <string name="share_dynamic"> 동적으로 공유 </string>
+
+    <string name="reward"> 보상 </string>
+
+    <string name="reward_hint">별 표시 항은 반드시 기입하여야 합니다. 보상금액은 상대방의 지갑 주소로 바로 들어갑니다.</string>
+
+    <string name="reward_succeed">보상성공</string>
+
+    <string name="share_guess">퀴즈공유</string>
+
+    <string name="send_card">명함 발송</string>
+
+    <string name="no_look_ta_dy">그의 게시물 안보기</string>
+
+    <string name="no_look_ta_dy_hint">회원님은 그의 게시물 보기를 거부하였습니다.</string>
+
+    <string name="shield_dy">게시물 보기를 거부하였습니다.</string>
+
+    <string name = "no_look_ta_dy2"> Ta가 내 역 동성을 보지 못하게하십시오 </string>
+
+    <string name = "shooting"> 촬영 </string>
+
+    <string name = "open_shooting"> 촬영 열기 </string>
+
+    <string name = "destroy_service"> 서비스 삭제 </string>
+
+    <string name = "toast_uploading_dynamic"> 동적 업로드 ... </string>
+
+    <string name = "no_record"> 거래 기록 없음 </string>
+
+    <string name = "denied"> 거부 됨 </string>
+
+    <string name = "exchange_underway"> 사용 </string>
+
+    <string name = "official_email"> topperchat@outlook.com </string>
+
+    <string name = "initial_hint"> 토퍼 별 전원 </string>
+
+    <string name = "toast_email_format"> 이메일 형식이 잘못되었습니다. </string>
+
+    <string name = "tag"> 태그 </string>
+
+    <string name = "et_tag"> 입력 태그 </string>
+
+    <string name = "toast_tag"> 태그는 비워 둘 수 없습니다. </string>
+
+    <string name = "toast_username_min"> 사용자 이름은 6 자 이상이어야합니다. </string>
+
+    <string name = "dynamic_underway_uploading"> 이미 동적 업로드가 있습니다. </string>
+
+    <string name = "comment"> 주석 </string>
+
+    <string name = "hide_keyboard"> 키보드 숨기기 </string>
+
+    <string name = "remaining"> 잔액 </string>
+
+    <string name = "in_link"> 링크에서 ... </string>
+
+    <string name = "not_link"> (링크되지 않음) </string>
+
+    <string name = "change_msg_state"> 메시지 상태 변경 </string>
+
+    <string name = "et_number"> 적색 패킷 수를 입력하십시오. </string>
+
+    <string name = "payment_give"> 지불금 </string>
+
+    <string name = "connect_oss_error"> 연결 오류가 발생했습니다. </string>
+
+    <string name = "no_cache"> 캐시 정리 안함 </string>
+
+    <string name = "delete_cache_succeed"> 캐시 성공 지우기 </string>
+
+    <string name = "id"> ID : </string>
+
+    <string name = "group_member"> 그룹 회원 </string>
+
+    <string name = "group_nickname"> 그룹 이름 </string>
+
+    <string name = "group_qr"> 그룹 QR 코드 </string>
+
+    <string name = "group_announcement"> 그룹 발표 </string>
+
+    <string name = "delete_out"> 삭제 후 종료 </string>
+
+    <string name = "my_nickname_group">이 그룹에서 별명이 지정되었습니다. </string>
+
+    <string name = "out_group_success"> 종료 성공 </string>
+
+    <string name = "loading_error_hint">로드에 실패했습니다. 아무 곳이나 클릭하고 다시로드하십시오. </string>
+
+    <string name = "quit_group"> 그룹 채팅 종료 </string>
+
+    <string name = "no_reply_comment"> 의견에 답할 수 없음 </string>
+
+    <string name = "qr_scan_result"> 스캔 결과 </string>
+
+    <string name = "determine_exit"> 확인 종료 </string>
+
+    <string name = "no_group"> 그룹 채팅이 없습니다. 다시로드하십시오. </string>
+
+    <string name = "invite_failure"> 초대에 실패했습니다. </string>
+
+    <string name = "refresh_group_members"> 그룹 구성원 새로 고침 </string>
+
+    <string name="please"></string>
+
+    <string name = "service_fee_hint"> 지불 가능 </string>
+
+    <string name = "force_quit_login_again">이 계정은 다른 곳에서 로그인되었으므로 다시 로그인합니까? </string>
+
+    <string name = "refresh_the_interface"> 인터페이스 새로 고침 </string>
+
+    <string name = "exceptional_spending"> 보상 지출 </string>
+
+    <string name = "exceptional_income"> 수익금 </string>
+
+    <string name = "exceptional_coin_coins"> 보상 통화 </string>
+
+    <string name = "exceptional_coin_count"> 보상 수 </string>
+
+    <string name = "exceptional_coin_time"> 보상 시간 </string>
+
+    <string name = "exceptional_inform"> 보상 통지 </string>
+
+    <string name = "exceptional_inform_hint"> 새로운 보상 메시지가 있습니다. 세부 정보를 보려면 클릭하십시오. </string>
+    <string name = "state_district"> 지역 </string>
+
+    <string name = "choose_a_chat"> 채팅 선택 </string>
+
+    <string name = "close_activity"> 인터페이스 닫기 </string>
+
+    <string name = "group_management"> 그룹 소유자 관리 이전 </string>
+
+    <string name = "modify_group_name"> 그룹 이름 수정 </string>
+
+    <string name = "only_owner_change_group_name"> 그룹 소유자 만 그룹 이름을 수정할 수 있습니다. </string>
+
+    <string name = "refresh_group_room"> 그룹 룸 구성 새로 고침 </string>
+
+    <string name = "new_group_manager"> 새 소유자 선택 </string>
+
+    <string name = "assign_to"> 전송 결정 </string>
+
+    <string name = "transfer_success"> 성공 전송 </string>
+
+    <string name = "video_big_hint"> 게시 된 동영상의 크기는 20M를 초과 할 수 없습니다 </string>
+
+    <string name = "kick_out_success"> 성공적으로 퇴장했습니다. </string>
+
+    <string name = "group_head"> 그룹 아바타 </string>
+
+    <string name = "only_owner_change_group_image"> 그룹 소유자 만 그룹 아바타를 수정할 수 있습니다 </string>
+
+    <string name = "add_group_member"> 회원 추가 </string>
+
+    <string name = "delete_group_member"> 회원 삭제 </string>
+
+    <string name = "pless_input_money"> 금액을 입력하십시오. </string>
+
+    <string name = "a_single_amount"> 단일 금액 </string>
+
+    <string name = "total_money"> 총 금액 </string>
+
+    <string name = "number_of_red_packets"> 빨간색 패킷 </string>
+
+    <string name = "lucky_red_common_red"> 현재 주문 빨간 봉투가 일반 빨간 봉투로 변경되었습니다. </string>
+
+    <string name = "common_red_lucky_red">는 현재 일반적인 빨간 봉투이며 주문 빨간 봉투로 변경되었습니다. </string>
+
+    <string name = "toast_count_and_money"> 수량 또는 양은 비워 둘 수 없습니다. </string>
+
+    <string name = "group_member1"> 그룹 회원 </string>
+
+    <string name = "group_member_maxuser"> 인원수가 상한에 도달했습니다. </string>
+
+    <string name = "loading_error_anew_loading_hint"> ~ 오류가 발생했습니다 ~ ~을 (를) 다시로드하고 다시로드하십시오. </string>
+
+    <string name = "loading_error_anew_loading_hint2"> ~ 오류가 발생했습니다. 다시로드하려면 빈 칸을 클릭하십시오 ~ </string>
+
+    <string name = "real_name_pass"> 실제 이름 인증 전달 </string>
+
+    <string name = "reauthentication"> 재 인증 </string>
+
+    <string name = "group_member_manage"> 그룹 회원 관리 </string>
+
+    <string name = "group_red_max_out"> 적색 패킷의 최대 수는 100 개입니다. </string>
+
+    <string name = "group_red_max_out_member"> 적색 패킷 수는 사람 수보다 클 수 없습니다. </string>
+
+    <string name = "group_red_max_money"> 단일 빨간색 봉투의 최대 크기는 200입니다. </string>
+
+    <string name = "group_red_min_money"> 단일 빨간색 봉투는 0.01보다 작을 수 없습니다. </string>
+
+    <string name = "sum_rceive"> 빨간 봉투를 받았습니다. </string>
+
+    <string name = "receive_red"> 빨간색 패킷 수신 </string>
+
+    <string name = "money_highest"> 최고 금액 </string>
+
+    <string name = "max_coin"> 최대 통화 </string>
+
+    <string name = "ge_bi"> 동전 </string>
+
+    <string name = "send_red"> 빨간 봉투 발행 </string>
+
+    <string name = "back_send"> 게시물 전송 </string>
+
+    <string name = "token_stale_dated"> 신원 인증서가 만료되었습니다. 다시 로그인하십시오. </string>
+
+    <string name = "add_friends_first"> 친구를 먼저 추가하십시오. </string>
+
+    <string name = "click_to_view"> 클릭하여보기 </string>
+
+    <string name = "et_order_who_or_mailbox"> 사용자, 사서함 또는 휴대 전화 번호를 입력하십시오. </string>
+
+    <string name = "group1"> 그룹 </string>
+
+    <string name = "lucky_red_packets"> 스포츠 빨간 봉투 </string>
+
+    <string name = "best_luck"> 행운의 </string>
+
+    <string name = "red_envelope_been_robbed"> 빨간 봉투가 도둑났습니다. </string>
+
+    <string name = "refresh_msg_number"> 총 메시지 수 새로 고침 </string>
+
+    <string name = "waiting_agreed"> 동의를 기다리는 중 </string>
+
+    <string name = "search_content_notnull"> 검색 콘텐츠는 비워 둘 수 없습니다. </string>
+
+    <string name = "crop"> 자르기 </string>
+
+    <string name = "picture_is_not_loaded"> 그림이로드되지 않습니다. </string>
+
+    <string name = "network_image"> 네트워크 갤러리 </string>
+
+    <string name = "modify_group_announcement"> 그룹 발표 수정 </string>
+
+    <string name = "only_owner_change_group_announcement"> 그룹 소유자 만 그룹 공지 사항을 수정할 수 있습니다. </string>
+
+    <string name = "set_gesture"> 제스처 비밀번호 설정 </string>
+
+    <string name = "app_look"> 애플리케이션 잠금 </string>
+
+    <string name = "set_app_look"> 응용 프로그램 잠금 설정 </string>
+
+    <string name = "send_message"> 메시지 보내기 </string>
+
+    <string name = "discern_qr"> QR 코드 식별 </string>
+
+    <string name = "search_image"> 네트워크 이미지 검색 </string>
+
+    <string name = "chance"> 두 번째 기회 </string>
+
+    <string name = "hai_sheng"> 나머지 </string>
+
+    <string name = "set_gesture_hint"> 제스처를 설정하십시오. </string>
+
+    <string name = "set_gesture_hint2"> 최소 4 개 지점을 연결하고 재설정하십시오. </string>
+
+    <string name = "set_gesture_hint3"> 제스처를 재확인하십시오. </string>
+
+    <string name = "set_gesture_hint4"> 암호가 일치하지 않습니다. 재설정하십시오. </string>
+
+    <string name = "set_gesture_hint5"> 암호가 일치하지 않습니다. 다시 시도하십시오. </string>
+
+    <string name = "set_succeed"> 성공 설정 </string>
+
+    <string name = "already_set_fingerprint"> 응용 프로그램 잠금은 지문이나 제스처 중 하나만 설정할 수 있습니다. </string>
+
+    <string name = "close_fingerprint"> 지문 인증 실패 </string>
+
+    <string name = "import_gesture"> 잠금 해제 할 제스처 암호 입력 </string>
+
+    <string name = "close_gesture_hint"> 제스처 인증을 해제 하시겠습니까? </string>
+
+    <string name = "close_gesture"> 손가락 인증이 해제되었습니다. </string>
+
+    <string name = "home_msg_click_two"> 채팅 클릭 두 번 </string>
+
+    <string name = "look_all"> 모두보기 </string>
+
+    <string name = "is_allow_modify_data"> 그룹 회원이 아바타, 그룹 별명을 수정할 수 있도록 허용합니까? </string>
+
+    <string name = "draft"> [draft] </string>
+
+    <string name = "save_image"> 이미지 저장 </string>
+
+    <string name = "share_qr_code"> 공유 QR 코드 </string>
+
+    <string name = "apk_underway_update"> 다운로드 중 </string>
+
+    <string name = "install"> 설치 </string>
+    <string name = "member_at_me"> [someone @ 我] </string>
+
+    <string name = "confirm_delete_and_message"> 세션 및 채팅 기록을 삭제할 것인지 확인하십시오. </string>
+
+    <string name = "pay"> 지불 </string>
+
+    <string name = "current_location"> 현재 위치 : </string>
+
+    <string name = "choose_files"> 파일 선택 </string>
+
+    <string name = "empty_directory"> 파일 없음 </string>
+
+    <string name = "action_select_all"> 모두 선택 </string>
+
+    <string name = "action_deselect"> 선택을 취소하십시오. </string>
+
+    <string name = "action_invert_selection"> 역 선택 </string>
+
+    <string name = "im_file_select_size_sum"> 선택한 %1$s </string>
+
+    <string name = "send_complete"> 보내기 (%1$s) </string>
+
+    <string name = "ys__sort"> 정렬 </string>
+
+    <string-array name = "ys__sorting_types">
+
+        <item> 이름, 양성 순서 </item>
+
+        <item> 이름순, 역순 </item>
+
+        <item> 크기, 양의 순서 </item>
+
+        <item> 크기, 역순으로 </item>
+
+        <item> 날짜순, 긍정적 인 순서 </item>
+
+        <item> 날짜, 역순 </item>
+
+    </string-array>
+
+    <string name = "im_file_select_count"> %1$s 파일을 선택했습니다. </string>
+
+    <string name = "long_as_one_can_multiple_files"> 하나를 길게 누르면 여러 파일을 선택할 수 있습니다. </string>
+
+    <string-array name = "ys__size_units">
+
+        <item> B </item>
+
+        <item> KB </item>
+
+        <item> MB </item>
+
+        <item> GB </item>
+
+        <item> TB </item>
+
+        <item> PB </item>
+
+    </string-array>
+
+    <string name = "file_preview"> 파일 미리보기 </string>
+
+    <string name = "open_another_application"> 다른 응용 프로그램과 함께 열기 </string>
+
+    <string name = "no_file_open"> 파일을 열 수 없습니다. 관련 소프트웨어를 다운로드하십시오. </string>
+
+    <string name = "update_file_message"> 파일 메시지 업데이트 </string>
+
+    <string name = "group_chat_invitation_confirmation"> 그룹 채팅 초대장 확인 </string>
+
+    <string name = "group_initation_list"> 초대장 확인 목록 </string>
+
+    <string name = "initation_list"> 초대장 목록 </string>
+
+    <string name = "save_video"> 동영상 저장 </string>
+
+    <string name = "collect"> 컬렉션 </string>
+
+    <string name = "my_collect"> 즐겨 찾기 </string>
+
+    <string name = "no_collect_hint"> 컬렉션이 없습니다 .... </string>
+
+    <string name = "delete_collect_hint">이 컬렉션을 삭제 하시겠습니까? </string>
+
+    <string name = "add_collect"> 컬렉션 추가 </string>
+
+    <string name = "et_url"> URL 입력 </string>
+
+    <string name = "toast_url"> URL은 비워 둘 수 없습니다. </string>
+
+    <string name = "no_delete_collect_hint">이 컬렉션을 삭제할 수 없습니다. </string>
+    <string name="whether_collect_this_page">이 페이지를 책갈피로 표시할지 여부</string>
+    <string name = "qr_code_hint_group"> QR 코드를 스캔하고 그룹에 가입하십시오. </string>
+
+    <string name = "add_this_room"> 그룹 채팅에 참여 </string>
+
+    <string name = "add_success"> 합류 성공 </string>
+
+    <string name = "has_joined_room"> 그룹 채팅에 참여했습니다. </string>
+
+    <string name = "share_group_link"> 그룹 링크 공유 </string>
+
+    <string name = "select_members"> 멤버 선택 </string>
+
+    <string name = "down_fail_click"> 다운로드에 실패했습니다. 클릭하여 다시 다운로드하십시오. </string>
+
+    <string name = "intive_group"> 그룹 채팅에 초대하십시오. </string>
+
+    <string name = "click_look"> 클릭하여 세부 정보보기 </string>
+
+    <string name = "group_intive"> 그룹 채팅 초대장 </string>
+
+    <string name = "check_url_error"> URL을 식별하지 못했습니다. 올바른 URL을 입력하십시오. </string>
+
+    <string name = "merchant"> 비즈니스 </string>
+
+    <string name = "you_withdrew_a_message"> 메시지를 철회했습니다. </string>
+
+    <string name = "withdrew_a_message"> 메시지 철회 </string>
+
+    <string name = "withdrew"> 철회 </string>
+
+    <string name = "the_pulice"> 공개 번호 </string>
+
+    <string name = "long_click_haul"> 길게 누르면 드래그 앤 드롭 명령 </string>
+
+    <string name = "long_click_share"> 편집을 끝내려면 길게 누릅니다. </string>
+
+    <string name = "et_bank_card_type"> 카드 유형을 입력하십시오. </string>
+
+    <string name = "toast_card_type"> 카드 유형을 비워 둘 수 없습니다. </string>
+
+    <string name = "unclaimed_red"> 빨간색 패킷 수신 </string>
+
+    <string name = "delete_default_collect_hint">이 컬렉션은 시스템 기본 컬렉션으로 삭제할 수 없습니다 </string>
+
+    <string name = "no_red_envelope_record"> 빨간 봉투 기록 없음 </string>
+
+    <string name = "url"> 링크 </string>
+
+    <string name = "my_look"> 나는 [</string>
+
+    <string name = "share_with_you">] 그것을보기 위해 당신과 공유하십시오. </string>
+
+    <string name = "cannot_open"> 페이지를 열 수 없습니다. </string>
+
+    <string name = "dynamic_uploading"> 동적 업로드 </string>
+
+    <string name = "publish_error"> 게시 실패 </string>
+
+    <string name = "delete_friend_request_hint"> 친구 요청을 삭제 하시겠습니까? </string>
+
+    <string name = "delete_group_request_hint"> 들어오는 그룹 요청을 삭제 하시겠습니까? </string>
+    <string name = "create_qr_code_red"> QR 코드 빨간 봉투 만들기 </string>
+    <string name = "view_collection_details"> 컬렉션 세부 정보보기 </string>
+
+    <string name = "hand_slow_red_envelope_over"> 손이 느리고 빨간색 봉투가 완성됩니다. </string>
+
+    <string name = "red_envelope_expired">이 빨간 봉투는 24 시간 이상 있습니다. 이미받은 경우에는 "My Assets"에서 볼 수 있습니다. </string>
+
+    <string name = "please_choose"> 선택하십시오 </string>
+
+    <string name = "red_envelope"> 빨간 봉투 </string>
+
+    <string name = "have_deposited_my_assets">는 내 자산에 보관되어 거래에 사용할 수 있습니다. </string>
+
+    <string name = "language"> 언어 </string>
+    <string name = "follow_the_system"> 시스템을 따른다. </string>
+    <string name = "simplified_chinese"> 简体中文 </string>
+    <string name = "chinese_traditional"> 繁體中文</string>
+    <string name = "send_red_envelope"> 빨간 봉투 </string>
+    <string name = "person1"> 인물 </string>
+    <string name = "members_of_the_group">이 그룹의 구성원은 </string>
+    <string name = "Generate_qr_code_red_envelope"> 2 차원 코드 빨간 봉투 생성 </string>
+    <string name = "save_to_photo_album"> 앨범에 저장 </string>
+    <string name = "qe_code_red_explain"> 귀하의 QR 코드 빨간 봉투가 생성되었습니다. 너무 많은 사용자가 빨간 봉투를 쓸어 쓸 수 있습니다! </string>
+    <string name = "topperchat_red"> 빨간 봉투 topperchat </string>
+    <string name = "conversation_backgound"> ​​채팅 배경 설정 </string>
+    <string name = "language_pref_key"> language_pref_key </string>
+    <string name = "gesture_count_exceed_hint"> 팁 : 잠금 해제 실패 </string>
+    <string name = "again_login"> 다시 로그인하십시오. </string>
+    <string name = "cancel_gesture"> 제스처 취소 </string>
+    <string name = "expect_coin_hint"> 추가하려는 통화가있는 경우 Google에 문의하십시오! </string>
+    <string name = "backgound"> ​​배경 </string>
+    <string name = "no_public_number"> 공개 번호 없음 </string>
+    <string name = "search_public_numbers"> 공개 번호 검색 </string>
+    <string name = "login_pw_hint"> 로그인 암호, 문자, 결합 된 숫자 및 8 비트 이상 재설정 </string>
+    <string name = "payment_details"> 지불 세부 사항 </string>
+    <string name = "unfollow"> 팔로우 해제 </string>
+    <string name = "reduction_background"> ​​배경 복원 </string>
+    <string name = "update_public_number"> 공개 번호 업데이트 </string>
+    <string name = "user_freeze_hint"> 계정이 정지되었습니다. 관리자에게 문의하십시오. 이메일 : topperchat@outlook.com </string>
+    <string name = "my_friends_circle"> 친구 서클 </string>
+    <string name = "greet_hint"> TopperChat에 오신 것을 환영합니다! </string>
+    <string name = "reduction_success"> 성공 복원 </string>
+    <string name = "no_more_search_results"> 더 이상 검색 결과가 없습니다. </string>
+    <string name = "security_verification"> 보안 확인 </string>
+    <string name = "security_verification_hint"> 계정 보안을 위해 확인해야합니다. 원을 원형 영역으로 이동하십시오. </string>
+    <string name = "security_verification_success"> 보안 확인 성공 </string>
+    <string name = "security_verification_failure"> 보안 확인에 실패했습니다. </string>
+    <string name = "security_verification_failure_hint"> 아래 원을 원 영역으로 이동하십시오. </string>
+    <string name = "automatic_download_complete"> 자동 다운로드 완료 </string>
+    <string name = "automatically_download"> 자동 다운로드 </string>
+    <string name = "automatically_download_chat_video"> 채팅 비디오 자동 다운로드 </string>
+    <string name = "treasure"> 재산 </string>
+    <string name = "information"> 정보 </string>
+    <string name = "message"> 메시지 </string>
+    <string name = "my_ad_platform"> 내 광고 플랫폼 </string>
+    <string name = "start_group"> 그룹 채팅 시작 </string>
+    <string name = "add_images"> 이미지 추가 </string>
+    <string name = "send_to"> 보내기 : </string>
+    <string name = "leave_message_friend"> 친구에게 메시지 보내기 </string>
+    <string name = "exchange_record"> 사용 기록 </string>
+    <string name = "burn_after_reading"> 읽은 후에 태워 </string>
+    <string name = "authenticated"> 인증 된 </string>
+    <string name = "check_pending_hint"> 시스템 감사 ... </string>
+    <string name = "submitted_realname"> 실제 이름 확인 정보를 제출했습니다. </string>
+    <string name = "message_list_no_login"> 서둘러 친구와 로그인하고 대화하십시오. </string>
+    <string name = "login_topperchat"> Topperchat에 로그인하십시오. </string>
+    <string name = "no_message"> 아직 메시지가 없습니다. </string>
+    <string name = "register_topperchat"> Topperchat 등록 </string>
+    <string name = "my_no_login_hint"> 지금 로그인해서 더 많은 친구를 찾으십시오! </string>
+    <string name = "qi_login"> 로그인하십시오 </string>
+    <string name = "ocr_error"> 인식에 실패했습니다. </string>
+    <string name = "cell_phone_store"> 전화 보관소 </string>
+    <string name = "discern"> 식별 </string>
+    <string name = "et_card_holder"> 카드 소유자 이름을 입력하십시오. </string>
+    <string name = "toast_card_holder"> 카드 소지자는 비워 둘 수 없습니다. </string>
+    <string name = "english"> English </string>
+    <string name = "self_dynamic_no_reward"> 자신의 역 동성을 보상 할 수 없습니다. </string>
+    <string name = "look_more_coin_red"> 더 많은 통화 빨간 패킷보기 </string>
+    <string name = "selector_time"> 시간 선택 </string>
+    <string name = "selector_type"> 유형 선택 </string>
+    <string name = "look_update_log"> 업데이트 로그보기 </string>
+    <string name = "version"> 버전 </string>
+    <string name = "hand"> 손 </string>
+    <string name = "alipay_red"> Alipay 빨간 봉투 </string>
+    <string name = "zhi"> 지원 </string>
+    <string name = "alipay_red_bind_hint"> Alipay를 먼저 바인딩하십시오. </string>
+    <string name = "send_red_packet_hint2"> 미 청구 빨간색 봉투는 48 시간 후에 환불됩니다. </string>
+    <string name = "group_red"> 그룹 빨간색 패키지 </string>
+    <string name = "red_no"> 강탈되었습니다. </string>
+    <string name = "search_the_location"> 검색 주소 </string>
+    <string name = "pleass_input_location"> 주소를 입력하십시오. </string>
+    <string name = "address_not_found"> ​​주소를 찾을 수 없습니다. </string>
+    <string name = "camera_permission_info"> 카메라가 비정상 인 경우 TopperChat에서 카메라에 액세스 할 수 있는지 확인하거나 기기를 다시 시작하고 다시 시도하십시오 </string>
+    <string name = "application_storage_space"> 응용 프로그램 저장 공간 </string>
+    <string name = "accessibility"> 허가 신청서 </string>
+    <string name = "not_obtainable"> TopperChat 메서드로 가져옴 </string>
+    <string name="open_access_path">권한을 정상적으로 실행할 수 없습니다. TopperChat \ n을 사용하여 경로를 설정하는 권한을 엽니 다. 설정 -> 응용 프로그램 -> TopperChat -> 권한</string>
+    <string name = "not_obtainable1"> 현재 TopperChat은 </string>
+    <string name="open_access_path1">권한, 현재 장치 관리 응용 프로그램 또는 설정에서 \ n 설정 경로를여십시오 : 설정 -> 응용 프로그램 -> TopperChat -> 사용 권한</string>
+    <string name="applied_position">앱 위치</string>
+    <string name="application_recording">애플리케이션 녹음 </string>
+    <string name="my_team">내 조직 </string>
+    <string name="participation_profit">노드 배당금 </string>
+    <string name="team_members">조직 멤버 </string>
+    <string name="straight_push_members">직추 멤버</string>
+    <string name="team_performance">조직 업적 </string>
+    <string name="return1">뒤로 >></string>
+    <string name="up_one_level">상위</string>
+    <string name="level_Down">하위</string>
+    <string name="total_revenue">총 수익(FTC)</string>
+    <string name="current_level">현재 등급</string>
+    <string name="total_performance">총 업적</string>
+    <string name="node_revenue">노드 수익</string>
+    <string name="super_dividend">슈퍼 배당금</string>
+    <string name="main_node_dividend">메인 노드 배당금</string>
+    <string name="freed">지출</string>
+    <string name="income">수익</string>
+    <string name="dividend">배당금</string>
+    <string name="upgrade_node">노드 업그레이드</string>
+    <string name="payment_amount">지불 금액:</string>
+    <string name="ten_thousand">number만FTC </string>
+    <string name="payment_amoun1">지불 금액</string>
+    <string name="account_binding">계정 바인딩  </string>
+    <string name="email_address">이메일 주소</string>
+    <string name="bind_FTC_account"> FTC계정 바인딩</string>
+    <string name="my_binding">내 바인딩 </string>
+    <string name="profile_picture">유저 프로필 </string>
+    <string name="user_account">유저 계정</string>
+    <string name="total_assets1">총 자산</string>
+    <string name="released">지출됨</string>
+    <string name="account_fund">계정 기금</string>
+    <string name="consensus_node">컨센서스 노드</string>
+    <string name="participate_dividends">배당금 참여</string>
+    <string name="current">현재 </string>
+    <string name="available">사용 가능 </string>
+    <string name="super_node">슈퍼 노드 </string>
+    <string name="master_node">메인 노드</string>
+    <string name="purchase_history">구매 기록</string>
+    <string name="available_assets">사용 가능 자산</string>
+    <string name="yesterday_earnings">어제 수익 </string>
+    <string name="income_breakdown">수익 명세</string>
+    <string name="financial_record">재테크 기록</string>
+    <string name="due_on_demand">당좌예금</string>
+    <string name="three_months_deposit">3개월 정기 예금</string>
+    <string name="six_months_deposit">6개월 정기 예금</string>
+    <string name="twelve_months_deposit">12개월 정기 예금</string>
+    <string name="multi_banking">다종류 재테크</string>
+    <string name="more_flexible_financial_benefits">다화종, 다유형, 보다 유연한 재테크 수익</string>
+    <string name="current_rate_return">현재 연 수익율</string>
+    <string name="asset_transfer">자산 입금</string>
+    <string name="transfer_assets">자산 송금</string>
+    <string name="input_quantity">수량 입력:</string>
+    <string name="quantity_available">사용 가능 수량：</string>
+    <string name="transfer_out">송금</string>
+    <string name="available1">사용 가능</string>
+    <string name="current_rate_return1">현재 연 수익율：</string>
+    <string name="lock_time">잠금시간：</string>
+    <string name="input_quantity1">수량 입력</string>
+    <string name="starting">신고하기</string>
+    <string name="month1"> nuber개월</string>
+    <string name="insufficient_balance_available"> 사용가능 잔액 부족 </string>
+    <string name="up_hu_zhao"> 여권 업로드</string>
+    <string name="join_group_chat">그룹 채팅 가입</string>
+    <string name="we_already_friends_come_chat_together">친구 추가가 수락되였습니다. 이제부터 친구와 채팅을 시작하십시요.</string>
+    <string name="approved"> 검증 통과</string>
+    <string name="view"> 보기 </string>
+    <string name="expected"> 예상 수익 </string>
+    <string name="please_enter_referrer_name">추천인 이름을 입력하세요. </string>
+    <string name="recommendation_code"> 추천 코드</string>
+    <string name="exchange_fgc">GC 태환</string>
+    <string name="convertible_to_fgc"> GC로 환전 가능</string>
+    <string name="fgc_gains">USDT오름세</string>
+    <string name="gold_exchange"> 황금 태환</string>
+    <string name="available_fgc">사용가능GC：</string>
+    <string name="change_username">닉네임 고치기</string>
+    <string name="no_data">데이터 없음</string>
+    <string name="public_open">시스템 공식계정이 대외 오픈이기때문에 개인 또는 기업 사용자는 연락 방식을  요청할수 있습니다.：</string>
+    <string name="permissions">로그인하면 개발자는 다음과 같은 권한을 부여받습니다.</string>
+    <string name="getting_information">·회원님의 공개토큰(닉네임, 프로필 등 개인 기본정보)을 받아 오세요.</string>
+    <string name="confirm_login">로그인 확인</string>
+    <string name="allow">허용</string>
+    <string name="topperchat_authorization">Topper Chat권한</string>
+    <string name="error">잘못 되였습니다.</string>
+    <string name="mall">쇼핑몰</string>
+    <string name="miner_cost">채굴자 비용：</string>
+    <string name="block">블랙TXID：</string>
+    <string name="address1">주소：</string>
+    <string name="input_address_name_email">주소, 사용자 이름 또는 이메일을 입력하여 검색하십시요.</string>
+    <string name="et_emily_or_phone">이메일 번호 또는 휴대폰 번호를 입력하십시요.</string>
+    <string name="please_enter_code">검증 코드를 입력하십시요. </string>
+    <string name="toast_email_or_phone">이메일 번호 또는 휴대폰 번호는 비울수 없습니다.</string>
+    <string name="email_or_phone">이메일 / 핸드폰</string>
+    <string name="team_direct_reward">조직 직추 보상금</string>
+    <string name="no_reward_record">보상금 기록 없음</string>
+    <string name="team_direct_reward_record">조직 직추 보상금 기록</string>
+    <string name="reward_source">데이터 출처 ：%1$s购买节点  노드 구매%2$s</string>
+    <string name="get_direct_rewards">직추 보상금 얻기</string>
+    <string name="no_task_record">임무 기록이 없음 </string>
+    <string name="task_record">임무 기록</string>
+    <string name="task">임무 </string>
+    <string name="about_public_number">공식 계정 팔로우</string>
+    <string name="unsubscribe">팔로우 취소</string>
+    <string name="enter_public_number">공식 계정 들어가기</string>
+    <string name="system_notification">시스템 공고</string>
+    <string name = "exchange_frc"> Exchange FRC </string>
+    <string name = "you_want_exchange"> 얼마를 원하십니까? </string>
+    <string name = "echange_frc_help"> 구매 번호를 받으려면 %1$sGC를 한 번에 사용하십시오! </string>
+    <string name = "exchange_for"> 교환 대상 </string>
+    <string name = "got_it"> 알아 두십시오 </string>
+    <string name = "frc_congratulations"> \ n %1$s의 성공적인 구매 고객이 되신 것을 축하합니다! </string>
+    <string name = "mission_center"> 작업 센터 </string>
+    <string name = "earned"> 만든 </string>
+    <string name = "earn"> 적립 </string>
+    <string name = "receive_award"> 보상 받기 </string>
+    <string name = "current_rate"> 현재 환율 </string>
+    <string name = "echange_frc_success"> 귀하는 %1$s 명의 성공적인 고객입니다. </string>
+    <string name = "remaining_convertible"> 남은 전환 : </string>
+    <string name = "receive_bonus"> 배당금 지급 </string>
+    <string name = "installation_failed"> 설치 실패 </string>
+    <string name = "application_calls"> 전화 신청 </string>
+    <string name = "application_calls_failure"> 응용 프로그램을 호출하지 못했습니다. </string>
+    <string name = "email_mobile_verification"> 이메일 / 모바일 확인 </string>
+    <string name = "please_upgrade_latest_version"> 다른 버전이 너무 낮습니다. 최신 버전으로 업그레이드하십시오. </string>
+    <string name = "day1"> day </string>
+    <string name = "gold_delivery"> 골드 큰 배달 </string>
+    <string name = "click_receive"> 클릭하여 수신 </string>
+    <string name = "new_year_content"> %1$s 명의 사용자를 이미 추천 한 다음 %2$s 명의 사용자가 %3$s 금을 받으라고 초대했습니다. </string>
+    <string name = "rate_exchange"> 요금 </string>
+    <string name = "share_to_friend"> 친구와 공유 </string>
+    <string name = "share_now"> 지금 공유 </string>
+    <string name = "share_to_top_chat"> 채팅 내용 공유 </string>
+    <string name="korean">한국어</string>
+</resources>
