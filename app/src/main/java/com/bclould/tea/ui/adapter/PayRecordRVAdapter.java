@@ -89,7 +89,7 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
                         Intent intent = new Intent(mContext, PayDetailsActivity.class);
                         intent.putExtra("log_id", mDataBean.getLog_id() + "");
                         intent.putExtra("id", mDataBean.getId() + "");
-                        intent.putExtra("type_number", mDataBean.getType_number() + "");
+                        intent.putExtra("type_number", mDataBean.getType_number() );
                         mContext.startActivity(intent);
                     }
                 }

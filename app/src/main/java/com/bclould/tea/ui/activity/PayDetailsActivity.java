@@ -59,6 +59,7 @@ public class PayDetailsActivity extends BaseActivity {
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
 
+    private int type_number;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,16 +72,14 @@ public class PayDetailsActivity extends BaseActivity {
     private void initData() {
         String id = getIntent().getStringExtra("id");
         String log_id = getIntent().getStringExtra("log_id");
-        String type_number = getIntent().getStringExtra("type_number");
+        type_number = getIntent().getIntExtra("type_number",0);
         BuySellPresenter buySellPresenter = new BuySellPresenter(this);
-        if (type_number != null) {
-            if (Integer.parseInt(type_number) == 7 || Integer.parseInt(type_number) == 8) {
-                mRlTxId.setVisibility(View.VISIBLE);
-            } else {
-                mRlTxId.setVisibility(View.GONE);
-            }
+        if (type_number == 7 || type_number == 8) {
+            mRlTxId.setVisibility(View.VISIBLE);
+        } else {
+            mRlTxId.setVisibility(View.GONE);
         }
-        buySellPresenter.transRecordInfo(log_id, id, type_number, new BuySellPresenter.CallBack7() {
+        buySellPresenter.transRecordInfo(log_id, id, type_number+"", new BuySellPresenter.CallBack7() {
 
             @Override
             public void send(TransRecordInfo.DataBean data) {
@@ -88,7 +87,7 @@ public class PayDetailsActivity extends BaseActivity {
                     mLlData.setVisibility(View.VISIBLE);
                     mLlError.setVisibility(View.GONE);
                     mTvName.setText(data.getType_name());
-                    mTvLimit.setText(data.getName());
+                    setTvLimit(data);
                     mTvMoney.setText(data.getNumber());
                     mTvCount.setText(data.getCoin_name());
                     mTvPrice.setText(data.getCreated_at());
@@ -117,6 +116,14 @@ public class PayDetailsActivity extends BaseActivity {
         });
     }
 
+    private void setTvLimit(TransRecordInfo.DataBean data){
+        if(type_number==20||type_number==22||type_number==23||type_number==24){
+            mTvHintLimit.setText(getString(R.string.order_number));
+            mTvLimit.setText(data.getOrder_sn());
+        }else{
+            mTvLimit.setText(data.getName());
+        }
+    }
 
     @OnClick({R.id.bark, R.id.ll_error})
     public void onViewClicked(View view) {
