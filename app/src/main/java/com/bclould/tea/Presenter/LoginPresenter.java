@@ -34,6 +34,7 @@ import com.bclould.tea.utils.UtilTool;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -393,6 +394,9 @@ public class LoginPresenter {
         UtilTool.Log("語言", "app语言切换===" + language);
         if (mContext instanceof SelectorLanguageActivity) {
             showDialog();
+        }
+        if ("ko-rKR".equals(language)) {
+            language = "kr";
         }
         RetrofitUtil.getInstance(mContext)
                 .getServer()

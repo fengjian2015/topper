@@ -10,6 +10,9 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
+
+import java.util.Locale;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -62,6 +65,8 @@ public class ServiceAgreementActivity extends LoginBaseActivity {
     @OnClick(R.id.tv_consent)
     public void onViewClicked() {
         RegisterPresenter registerPresenter = new RegisterPresenter(this);
-        registerPresenter.register(mUser, mEmail, mPassword, mVcode,referrer);
+        Locale locale = getResources().getConfiguration().locale;
+        String language = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
+        registerPresenter.register(mUser, mEmail, mPassword, mVcode,referrer,language);
     }
 }

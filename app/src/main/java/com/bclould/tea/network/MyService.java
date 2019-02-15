@@ -115,7 +115,8 @@ public interface MyService {
     Observable<BaseInfo> signUpValidator(
             @Field("email") String email,
             @Field("name") String name,
-            @Field("inviter_id") String inviter_id
+            @Field("inviter_id") String inviter_id,
+            @Field("lang") String lang
     );
 
     //发送找回密码验证码
@@ -142,7 +143,8 @@ public interface MyService {
             @Field("email") String email,
             @Field("vcode") String vcode,
             @Field("password") String password,
-            @Field("inviter_id") String inviter_id
+            @Field("inviter_id") String inviter_id,
+            @Field("lang") String lang
     );
 
     //重置登录密码

@@ -1359,7 +1359,7 @@
 
     <string name="bet_zuiduo_cishu">최다 5주 투입</string>
 
-    <string name="sum_jiangjin_chi">总奖金池已满 총상금 플 다 찻음 </string>
+    <string name="sum_jiangjin_chi"> 총상금 플 다 찻음 </string>
 
     <string name="shijidao_transfer">실제입금</string>
 
@@ -1391,9 +1391,9 @@
 
     <string name="yi_pay">지불 완료</string>
 
-    <string name="sold_out_buy">下架买单???</string>
+    <string name="sold_out_buy">다음 주문 가져 가라</string>
 
-    <string name="sold_out_sell">下架卖单???</string>
+    <string name="sold_out_sell">아래로 판매 주문</string>
 
     <string name="no_dynamic_publish">다이나믹 발표가 없음</string>
 
@@ -2380,7 +2380,7 @@
     <string name="unsubscribe">팔로우 취소</string>
     <string name="enter_public_number">공식 계정 들어가기</string>
     <string name="system_notification">시스템 공고</string>
-    <string name = "exchange_frc"> Exchange FRC </string>
+    <string name = "exchange_frc"> 교환 FRC </string>
     <string name = "you_want_exchange"> 얼마를 원하십니까? </string>
     <string name = "echange_frc_help"> 구매 번호를 받으려면 %1$sGC를 한 번에 사용하십시오! </string>
     <string name = "exchange_for"> 교환 대상 </string>
@@ -2399,7 +2399,7 @@
     <string name = "application_calls_failure"> 응용 프로그램을 호출하지 못했습니다. </string>
     <string name = "email_mobile_verification"> 이메일 / 모바일 확인 </string>
     <string name = "please_upgrade_latest_version"> 다른 버전이 너무 낮습니다. 최신 버전으로 업그레이드하십시오. </string>
-    <string name = "day1"> day </string>
+    <string name = "day1"> 일 </string>
     <string name = "gold_delivery"> 골드 큰 배달 </string>
     <string name = "click_receive"> 클릭하여 수신 </string>
     <string name = "new_year_content"> %1$s 명의 사용자를 이미 추천 한 다음 %2$s 명의 사용자가 %3$s 금을 받으라고 초대했습니다. </string>

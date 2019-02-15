@@ -79,11 +79,11 @@ public class RegisterPresenter {
                 });
     }
 
-    public void register(String user, String email, String emailCode, String password,String inviter_id) {
+    public void register(String user, String email, String emailCode, String password,String inviter_id,String language) {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .signUp(user, email, password, emailCode,inviter_id)
+                .signUp(user, email, password, emailCode,inviter_id,language)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {
@@ -116,11 +116,11 @@ public class RegisterPresenter {
                 });
     }
 
-    public void signUpValidator(final String email, final String user,String inviter_id, final CallBack2 callBack2) {
+    public void signUpValidator(final String email, final String user,String inviter_id,String language, final CallBack2 callBack2) {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .signUpValidator(email, user,inviter_id)
+                .signUpValidator(email, user,inviter_id,language)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {

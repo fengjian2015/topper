@@ -22,6 +22,9 @@ import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.utils.permissions.AuthorizationUserTools;
 import com.google.gson.Gson;
+
+import java.util.Locale;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -143,7 +146,9 @@ public class RegisterActivity extends LoginBaseActivity {
         intent.putExtra("username", username);
         intent.putExtra("email", email);
         intent.putExtra("referrer",referrer);
-        mRegisterPresenter.signUpValidator(email, username,referrer, new RegisterPresenter.CallBack2() {
+        Locale locale = getResources().getConfiguration().locale;
+        String language = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
+        mRegisterPresenter.signUpValidator(email, username,referrer,language, new RegisterPresenter.CallBack2() {
             @Override
             public void send() {
                 startActivity(intent);

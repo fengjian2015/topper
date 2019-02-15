@@ -175,8 +175,7 @@ public class RealNamePresenter {
     public void getQuestionList(final CallBack3 callBack3) {
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .getQuestionList(UtilTool.getToken())
-                .subscribeOn(Schedulers.io())
+                .getQuestionList(UtilTool.getToken())                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<QuestionInfo>() {
                     @Override

@@ -56,6 +56,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:paddingBottom="@dimen/y30"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/btn_roger"
             android:paddingTop="@dimen/y30">
 
             <CheckBox
