@@ -64,7 +64,7 @@ public class IndividualDetailsPresenter {
 
                     @Override
                     public void onNext(IndividualInfo individualInfo) {
-                        if (context instanceof Activity && !ActivityUtil.isActivityOnTop((Activity) context))
+                        if (!ActivityUtil.isActivityOnTop(context))
                             return;
                         callBack.send(individualInfo.getData());
                         hideDialog();

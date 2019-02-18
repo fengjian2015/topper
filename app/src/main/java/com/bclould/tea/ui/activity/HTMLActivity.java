@@ -2,6 +2,7 @@ package com.bclould.tea.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -16,10 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bclould.tea.Presenter.IndividualDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.H5AuthrizationInfo;
+import com.bclould.tea.model.IndividualInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.widget.AuthorizationDialog;
 import com.bclould.tea.utils.ActivityUtil;
@@ -106,6 +109,12 @@ public class HTMLActivity extends BaseActivity {
                     return true;
                 } else if (url.contains("TopperChatOppenId")) {
                     topperChatOppenId(url);
+                    return true;
+                }else if(url.contains("TopperChatShopIM")){
+                    TopperChatShopIM(url);
+                    return true;
+                }else if(url.contains("wpa.qq.com")){
+                    goQQ(url);
                     return true;
                 }
                 return super.shouldOverrideUrlLoading(view, url);
@@ -194,6 +203,55 @@ public class HTMLActivity extends BaseActivity {
 
         });
         mWebView.loadUrl(html5Url);
+    }
+
+    /**
+     * 跳转到QQ聊天
+     * @param url
+     */
+    private void goQQ(String url){
+        try {
+            String content = url.substring(url.indexOf("msgrd?") + "msgrd?".length(), url.length());
+            HashMap hashMap = UtilTool.getCutting(content);
+            if(UtilTool.isQQClientAvailable(this)){
+                final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin="+hashMap.get("uin")+"&version=1";
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
+            }else{
+                //请安装QQ客户端
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 网页在线聊天跳转到聊天界面
+     * @param url
+     */
+    private void TopperChatShopIM(String url){
+        try {
+            String content = url.substring(url.indexOf("TopperChatShopIM?") + "TopperChatShopIM?".length(), url.length());
+            HashMap hashMap = UtilTool.getCutting(content);
+            String topperid=hashMap.get("toco_id")+"";
+            new IndividualDetailsPresenter(this).getIndividual(topperid, true, new IndividualDetailsPresenter.CallBack() {
+                @Override
+                public void send(IndividualInfo.DataBean data) {
+                    Intent intent = new Intent(HTMLActivity.this, ConversationActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", data.getName());
+                    bundle.putString("user", data.getToco_id());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void error() {
+
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
